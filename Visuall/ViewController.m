@@ -10,7 +10,7 @@
 #import "Note.h"
 #import "NotesCollection.h"
 #import "NoteItem.h"
-#import "NavigationUtil.h"
+#import "TransformUtil.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *helloWorld;
@@ -51,12 +51,12 @@
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
-    [[NavigationUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes];
+    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes];
 }
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    [[NavigationUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes];
+    [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes];
 }
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer

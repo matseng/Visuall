@@ -13,14 +13,9 @@
 @interface Note : NSObject
 
 @property CGPoint centerPoint;
-@property CGPoint centerPointView;
+@property CGPoint centerPointScreen;
 @property NSString *text;
-//@property UITextField *view;
 
 - (instancetype) initWithString: (NSString *) string andCenterX: (float) centerX andCenterY: (float) centerY;
-
-//- (UITextField *) getView;
-
-//- (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer;
 
 @end

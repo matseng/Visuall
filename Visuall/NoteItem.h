@@ -14,6 +14,7 @@
 //@property (weak, nonatomic) IBOutlet UITextField *tfield;
 @property Note *note;
 
+- (instancetype) initNote: (NSString *) title andPoint: (CGPoint) point;
 
 - (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer;
 

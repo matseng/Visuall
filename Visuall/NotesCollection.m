@@ -20,11 +20,8 @@
 - (void) initializeNotes
 {
     self.Notes = [[NSMutableArray alloc] init];
-    NoteItem *utf = [[NoteItem alloc] initWithFrame:CGRectMake(100, 100, 300, 25)];
-    utf.text = @"Hello World 1";
-    
-    
-    [self.Notes addObject:utf];
+    NoteItem *ni = [[NoteItem alloc] initNote:@"Hello World 4" andPoint:(CGPoint){ 150, 150 }];
+    [self.Notes addObject:ni];
 }
 
 

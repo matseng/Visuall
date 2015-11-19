@@ -8,37 +8,35 @@
 
 #import "NoteItem.h"
 
-@implementation NoteItem 
+@interface NoteItem()
 
-//- (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer
-//{
-//    if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
-//        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-//        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
-//        
-//        [gestureRecognizer.view setTransform:
-//         CGAffineTransformTranslate(gestureRecognizer.view.transform, translation.x, translation.y)];
-//        [gestureRecognizer setTranslation: CGPointZero inView:gestureRecognizer.view];
-//        NSLog(@"%f, %f", translation.x, translation.y);
-//    }
-//}
+@end
 
-//-(void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer withNotes:(NSArray *)Notes
-//{
-//    if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
-//        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-//        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
-//        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-//        
-//        for (UITextField *hw in Notes) {
-//            float x = hw.center.x;
-//            float y = hw.center.y;
-//            float newX = x + translation.x;
-//            float newY = y + translation.y;
-//            hw.center = CGPointMake(newX, newY);
-//        }
-//    }
-//}
+#define NOTE_WIDTH 300.0f
+#define NOTE_HEIGHT 50.0f
+
+@implementation NoteItem
+
+- (instancetype) initNote: (NSString *) title andPoint: (CGPoint) point
+{
+    self = [super init];
+    if (self) {
+        Note* note = [[Note alloc] initWithString:title andCenterX:point.x andCenterY:point.y];
+        [self setNote: note];
+        [self setFrame: CGRectMake(self.note.centerPointScreen.x - NOTE_WIDTH / 2,
+                                   self.note.centerPointScreen.y - NOTE_HEIGHT / 2,
+                                   NOTE_WIDTH,
+                                   NOTE_HEIGHT)];
+        self.text = self.note.text;
+        //        NoteItem *ni = [[NoteItem alloc] initWithFrame:CGRectMake(self.note.centerPointScreen.x, self.note.centerPointScreen.y, NOTE_WIDTH, NOTE_HEIGHT)];
+//        ni.note = note;
+//        ni.text = ni.note.text;
+        NSLog(@"Init %f, %f", self.note.centerPointScreen.x, self.note.centerPointScreen.y);
+//        return ni;
+    }
+    return self;
+    
+}
 
 - (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer
 {
@@ -47,12 +45,21 @@
         CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
 
-        float x = self.center.x + translation.x;
-        float y = self.center.y + translation.y;
+//        float translationX = translation.x;  // need to transform
+//        float translationY = translation.y;  // need to transform
+
+        NSLog(@"Previous note %f, %f", self.note.centerPointScreen.x, self.note.centerPointScreen.y);
+        NSLog(@"Previous noteItem %f, %f", self.center.x, self.center.y);
         
-        self.center = CGPointMake(x, y);
+        float xScreen = self.note.centerPointScreen.x + translation.x;
+        float yScreen = self.note.centerPointScreen.y + translation.y;
         
-        NSLog(@"%f, %f", translation.x, translation.y);
+        self.note.centerPointScreen = CGPointMake(xScreen, yScreen);
+        self.center = self.note.centerPointScreen;
+        
+        NSLog(@"New note %f, %f", self.note.centerPointScreen.x, self.note.centerPointScreen.y);
+        NSLog(@"New noteItem %f, %f", self.center.x, self.center.y);
+
     }
 }
 

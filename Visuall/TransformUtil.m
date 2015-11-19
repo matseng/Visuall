@@ -6,13 +6,13 @@
 //  Copyright © 2015 Visuall. All rights reserved.
 //
 
-#import "NavigationUtil.h"
+#import "TransformUtil.h"
 
-@implementation NavigationUtil
+@implementation TransformUtil
 
 +(id)sharedManager {
     
-    static NavigationUtil *sharedMyManager = nil;
+    static TransformUtil *sharedMyManager = nil;
     
 //    sharedMyManager.scale = 1.0;
     

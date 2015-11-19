@@ -12,7 +12,7 @@
 #import "Note.h"
 #import "NotesCollection.h"
 
-@interface NavigationUtil : NSObject
+@interface TransformUtil : NSObject
 
 @property CGPoint translation;
 @property float scale;

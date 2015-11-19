@@ -15,7 +15,8 @@
     self = [super init];
     if (self) {
         self.text = text;
-        self.centerPointView = (CGPoint){ centerX, centerY };
+        self.centerPointScreen = (CGPoint){ centerX, centerY };
+        self.centerPoint = (CGPoint){ centerX, centerY };
     }
     return self;
 }
