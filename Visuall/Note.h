@@ -13,6 +13,7 @@
 @interface Note : NSObject
 
 @property CGPoint centerPoint;
+@property CGPoint centerPointView;
 @property NSString *text;
 //@property UITextField *view;
 

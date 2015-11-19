@@ -10,13 +10,11 @@
 
 @implementation NavigationUtil
 
-@synthesize scale = _scale;
-
 +(id)sharedManager {
     
     static NavigationUtil *sharedMyManager = nil;
     
-    sharedMyManager.scale = 1.0;
+//    sharedMyManager.scale = 1.0;
     
     @synchronized(self) {
         if (sharedMyManager == nil)
@@ -39,7 +37,6 @@
             float newY = y + translation.y;
             hw.center = CGPointMake(newX, newY);
         }
-        
     }
 }
 
@@ -47,37 +44,30 @@
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         self.scale = gestureRecognizer.scale;
+        NSLog(@"0. UIGestureRecognizerStateBegan");
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGFloat scale = gestureRecognizer.scale;
         CGPoint centerPoint = [gestureRecognizer locationInView:gestureRecognizer.view];
-        //        [gestureRecognizer.view setTransform:CGAffineTransformScale(gestureRecognizer.view.transform, scale, scale)];
-        
+        NSLog(@"1. scale: %f", scale);
+        NSLog(@"2. self.scale: %f", self.scale);
         for (UITextField *hw in Notes) {
-            //            float x = hw.transform.tx;
             float x = hw.center.x;
-            //            float y = hw.transform.ty;
             float y = hw.center.y;
             float deltaX = x - centerPoint.x;
             float deltaY = y - centerPoint.y;
             float newX = centerPoint.x + deltaX / self.scale * scale;
-            //            float newX = centerPoint.x;
             float newY = centerPoint.y + deltaY / self.scale * scale;
-            //            float newY = centerPoint.y;
-            //            hw.frame.origin.x = newX;
-            //            hw.frame.origin.y = newY;
             [hw setTransform:CGAffineTransformScale(hw.transform, scale / self.scale, scale / self.scale)];
-            //            hw.frame = CGRectOffset(hw.frame, newX, newY);
-            NSLog(@"OLD: %f, %f", x, y);
-            NSLog(@"scale: %f", scale);
-            NSLog(@"NEW: %f, %f", newX, newY);
-            //            CGRect frame = hw.frame;
-            //            frame.origin.x = newX;
-            //            frame.origin.y = newY;
-            //            hw.frame = frame;
+//            NSLog(@"OLD: %f, %f", x, y);
+//            NSLog(@"scale: %f", scale);
+//            NSLog(@"NEW: %f, %f", newX, newY);
             hw.center = CGPointMake(newX, newY);
         }
-        //        [gestureRecognizer setScale:1.0];
+//        gestureRecognizer setScale:<#(CGFloat)#>
         self.scale = scale;
+        NSLog(@"3. scale: %f", scale);
+        NSLog(@"4. self.scale: %f", self.scale);
+
     }
 }
 

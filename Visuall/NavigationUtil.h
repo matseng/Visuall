@@ -16,6 +16,7 @@
 
 @property CGPoint translation;
 @property float scale;
+@property float scaleTest;
 
 +(id)sharedManager;
 
