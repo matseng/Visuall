@@ -18,6 +18,9 @@
 @property float scale;
 @property float scaleTest;
 
+@property float zoom;
+@property CGPoint pan;
+
 +(id)sharedManager;
 
 -(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NSArray *) Notes;
