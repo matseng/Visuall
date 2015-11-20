@@ -7,12 +7,13 @@
 //
 
 #import "NoteItem.h"
+#import "TransformUtil.h"
 
 @interface NoteItem()
 
 @end
 
-#define NOTE_WIDTH 300.0f
+#define NOTE_WIDTH 150.0f
 #define NOTE_HEIGHT 50.0f
 
 @implementation NoteItem
@@ -23,16 +24,14 @@
     if (self) {
         Note* note = [[Note alloc] initWithString:title andCenterX:point.x andCenterY:point.y];
         [self setNote: note];
-        [self setFrame: CGRectMake(self.note.centerPointScreen.x - NOTE_WIDTH / 2,
-                                   self.note.centerPointScreen.y - NOTE_HEIGHT / 2,
+        [self setFrame: CGRectMake(- NOTE_WIDTH / 2,
+                                   - NOTE_HEIGHT / 2,
                                    NOTE_WIDTH,
                                    NOTE_HEIGHT)];
         self.text = self.note.text;
-        //        NoteItem *ni = [[NoteItem alloc] initWithFrame:CGRectMake(self.note.centerPointScreen.x, self.note.centerPointScreen.y, NOTE_WIDTH, NOTE_HEIGHT)];
-//        ni.note = note;
-//        ni.text = ni.note.text;
-        NSLog(@"Init %f, %f", self.note.centerPointScreen.x, self.note.centerPointScreen.y);
-//        return ni;
+        [self setBorderStyle:UITextBorderStyleRoundedRect];
+        [[TransformUtil sharedManager] transformNoteItem: self];
+        NSLog(@"Init %f, %f", self.note.centerPoint.x, self.note.centerPoint.y);
     }
     return self;
     
@@ -44,21 +43,19 @@
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+//        float zoom = [[TransformUtil sharedManager] zoom];
 
-//        float translationX = translation.x;  // need to transform
-//        float translationY = translation.y;  // need to transform
-
-        NSLog(@"Previous note %f, %f", self.note.centerPointScreen.x, self.note.centerPointScreen.y);
-        NSLog(@"Previous noteItem %f, %f", self.center.x, self.center.y);
+        NSLog(@"translation.x,y %f, %f", translation.x, translation.y);
         
-        float xScreen = self.note.centerPointScreen.x + translation.x;
-        float yScreen = self.note.centerPointScreen.y + translation.y;
+//        float xCenter = self.note.centerPoint.x + translation.x / zoom;
+//        float yCenter = self.note.centerPoint.y + translation.y / zoom;
+        float xCenter = self.note.centerPoint.x + translation.x;
+        float yCenter = self.note.centerPoint.y + translation.y;
+        self.note.centerPoint = CGPointMake(xCenter, yCenter);
         
-        self.note.centerPointScreen = CGPointMake(xScreen, yScreen);
-        self.center = self.note.centerPointScreen;
+        [[TransformUtil sharedManager] transformNoteItem: self];
         
-        NSLog(@"New note %f, %f", self.note.centerPointScreen.x, self.note.centerPointScreen.y);
-        NSLog(@"New noteItem %f, %f", self.center.x, self.center.y);
+        NSLog(@"New note %f, %f", self.note.centerPoint.x, self.note.centerPoint.y);
 
     }
 }

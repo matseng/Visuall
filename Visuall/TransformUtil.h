@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 
 #import "Note.h"
+#import "NoteItem.h"
 #import "NotesCollection.h"
 
 @interface TransformUtil : NSObject
@@ -21,11 +22,16 @@
 @property float zoom;
 @property CGPoint pan;
 
+@property float _relativeScale;
+
+
 +(id)sharedManager;
 
 -(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NSArray *) Notes;
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NSArray *) Notes;
+
+-(void) transformNoteItem: (NoteItem *) noteItem;
 
 @end
 

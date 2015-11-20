@@ -20,8 +20,10 @@
 - (void) initializeNotes
 {
     self.Notes = [[NSMutableArray alloc] init];
-    NoteItem *ni = [[NoteItem alloc] initNote:@"Hello World 4" andPoint:(CGPoint){ 150, 150 }];
+    NoteItem *ni = [[NoteItem alloc] initNote:@"Hello World 0" andPoint:(CGPoint){ 150, 150 }];
+    NoteItem *ni2 = [[NoteItem alloc] initNote:@"Hello World 1" andPoint:(CGPoint){ 200, 300 }];
     [self.Notes addObject:ni];
+    [self.Notes addObject:ni2];
 }
 
 
