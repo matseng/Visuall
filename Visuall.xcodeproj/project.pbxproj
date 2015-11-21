@@ -15,6 +15,7 @@
 		712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9661BEAF21500ED6803 /* LaunchScreen.xib */; };
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
 		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
+		71B37E751C0012010048851A /* Visuall_CoreData.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E741C0012010048851A /* Visuall_CoreData.xcdatamodel */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC71871BF18D09003B7F14 /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC71861BF18D09003B7F14 /* Note.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
@@ -46,6 +47,7 @@
 		712EC9731BEAF21500ED6803 /* VisuallTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VisuallTests.m; sourceTree = "<group>"; };
 		716B04681BFC210300DA9451 /* TransformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformUtil.h; sourceTree = "<group>"; };
 		716B04691BFC210300DA9451 /* TransformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformUtil.m; sourceTree = "<group>"; };
+		71B37E741C0012010048851A /* Visuall_CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Visuall_CoreData.xcdatamodel; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC71851BF18D09003B7F14 /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note.h; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
 				71FC72131BF2E881003B7F14 /* NotesCollection.m */,
 				712EC9611BEAF21500ED6803 /* Main.storyboard */,
+				71B37E741C0012010048851A /* Visuall_CoreData.xcdatamodel */,
 				712EC9641BEAF21500ED6803 /* Images.xcassets */,
 				712EC9661BEAF21500ED6803 /* LaunchScreen.xib */,
 				712EC9571BEAF21500ED6803 /* Supporting Files */,
@@ -242,6 +245,7 @@
 			files = (
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
+				71B37E751C0012010048851A /* Visuall_CoreData.xcdatamodel in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,
 				716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */,
 				712EC95A1BEAF21500ED6803 /* main.m in Sources */,

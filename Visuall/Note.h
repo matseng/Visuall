@@ -13,7 +13,6 @@
 @interface Note : NSObject
 
 @property CGPoint centerPoint;
-@property CGPoint centerPointScreen;
 @property NSString *text;
 
 - (instancetype) initWithString: (NSString *) string andCenterX: (float) centerX andCenterY: (float) centerY;
