@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NoteItem.h"
 
 @interface NotesCollection : NSObject
 
 @property NSMutableArray *Notes;
 
 - (void) initializeNotes;
+- (void) addNote:(NoteItem *)newNote;
+
 
 //- (NSMutableArray *) getNoteViews;
 
