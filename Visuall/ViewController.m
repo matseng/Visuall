@@ -19,7 +19,6 @@
 @property (strong, nonatomic) NSMutableArray *helloWorlds;
 @property (strong, nonatomic) NotesCollection *NotesCollection;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *cruiseControl;
 @property UIView *currentGroupView;
 @property NSMutableArray *groupViews;
 @property CGPoint currentGroupViewStart;
@@ -92,11 +91,11 @@
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    if (self.modeControl.selectedSegmentIndex == 1 && self.cruiseControl.selectedSegmentIndex == 1)
+    if (self.modeControl.selectedSegmentIndex == 1)
     {
         NSLog(@"sucka");
     }
-    else if (self.modeControl.selectedSegmentIndex == 2 && self.cruiseControl.selectedSegmentIndex == 1)
+    else if (self.modeControl.selectedSegmentIndex == 2)
     {
         // State began
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -140,7 +139,7 @@
             }
         }
     }
-    else if (self.cruiseControl.selectedSegmentIndex == 0)
+    else
     {
         [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes];
     }
@@ -187,7 +186,7 @@
     if (sender.state == UIGestureRecognizerStateEnded)
     {
         
-        if (self.modeControl.selectedSegmentIndex == 0 && self.cruiseControl.selectedSegmentIndex == 1) {
+        if (self.modeControl.selectedSegmentIndex == 0) {
             
             // grab coordinates
             CGPoint gesturePoint = [sender locationInView:sender.view];
