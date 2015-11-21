@@ -24,6 +24,7 @@
 @property NSMutableArray *groupViews;
 @property CGPoint currentGroupViewStart;
 @property UIGestureRecognizer *panBackground;
+@property NSManagedObjectContext *moc;
 @end
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]

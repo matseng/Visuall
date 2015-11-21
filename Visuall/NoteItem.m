@@ -6,8 +6,9 @@
 //  Copyright © 2015 Visuall. All rights reserved.
 //
 
-#import "NoteItem.h"
+#import "Note+CoreDataProperties.h"
 #import "TransformUtil.h"
+#import "AppDelegate.h"
 
 @interface NoteItem()
 
@@ -22,16 +23,20 @@
 {
     self = [super init];
     if (self) {
-        Note* note = [[Note alloc] initWithString:title andCenterX:point.x andCenterY:point.y];
+        Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:[Note getMOC]];
+        note.title = title;
+        note.centerX = [NSNumber numberWithFloat:point.x];
+        note.centerY = [NSNumber numberWithFloat:point.y];
+//        [note setCenterX:point.x CenterY:point.y];
         [self setNote: note];
         [self setFrame: CGRectMake(- NOTE_WIDTH / 2,
                                    - NOTE_HEIGHT / 2,
                                    NOTE_WIDTH,
                                    NOTE_HEIGHT)];
-        self.text = self.note.text;
+        self.text = self.note.title;
         [self setBorderStyle:UITextBorderStyleRoundedRect];
         [[TransformUtil sharedManager] transformNoteItem: self];
-        NSLog(@"Init %f, %f", self.note.centerPoint.x, self.note.centerPoint.y);
+        NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     }
     return self;
     
@@ -49,13 +54,15 @@
         
 //        float xCenter = self.note.centerPoint.x + translation.x / zoom;
 //        float yCenter = self.note.centerPoint.y + translation.y / zoom;
-        float xCenter = self.note.centerPoint.x + translation.x;
-        float yCenter = self.note.centerPoint.y + translation.y;
-        self.note.centerPoint = CGPointMake(xCenter, yCenter);
+        float xCenter = self.note.centerX.floatValue + translation.x;
+        float yCenter = self.note.centerY.floatValue + translation.y;
+//        [self.note setCenterX:xCenter CenterY:yCenter];
+        self.note.centerX = [NSNumber numberWithFloat:xCenter];
+        self.note.centerY = [NSNumber numberWithFloat:yCenter];
         
         [[TransformUtil sharedManager] transformNoteItem: self];
         
-        NSLog(@"New note %f, %f", self.note.centerPoint.x, self.note.centerPoint.y);
+        NSLog(@"New note %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
 
     }
 }

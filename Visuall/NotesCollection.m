@@ -7,7 +7,7 @@
 //
 
 #import "NotesCollection.h"
-#import "Note.h"
+#import "Note+CoreDataProperties.h"
 #import "NoteItem.h"
 
 @interface NotesCollection () <UIGestureRecognizerDelegate>

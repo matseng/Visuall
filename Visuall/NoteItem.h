@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Note.h"
+#import "Note+CoreDataProperties.h"
 
 @interface NoteItem : UITextField
 

@@ -2,56 +2,47 @@
 //  Note.m
 //  Visuall
 //
-//  Created by Michael Tseng MacBook on 11/9/15.
+//  Created by John Mai on 11/20/15.
 //  Copyright © 2015 Visuall. All rights reserved.
 //
 
 #import "Note.h"
+#import "AppDelegate.h"
+#import <UIKit/UIKit.h>
 
 @implementation Note
 
-- (instancetype) initWithString:(NSString *)text andCenterX:(float)centerX andCenterY:(float)centerY
-{
-    self = [super init];
-    if (self) {
-        self.text = text;
-        self.centerPoint = (CGPoint){ centerX, centerY };
-    }
-    return self;
-}
-
-//- (UITextField *) getView
-//{
-//    if (!self.view) {
-//        UITextField *utf = [[UITextField alloc] initWithFrame:CGRectMake(self.centerPoint.x, self.centerPoint.y, 300, 25)];
-//        utf.text = self.text;
-//        self.view = utf;
-//    }
-//    return self.view;
+//- (instancetype) initWithString: (NSString *)text {
+//    return [self initWithString:text centerX:0 centerY:0];
 //}
-
-//- (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer
+//
+//- (instancetype) initWithString: (NSString *)text centerX: (float)pointX centerY: (float)pointY
 //{
-//    if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
-//        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-//        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
+//    if (self = [super initWithEntity:[NSEntityDescription entityForName:@"Note" inManagedObjectContext: [Note getMOC]]  insertIntoManagedObjectContext: [Note getMOC]]) {
+//        [NSEntityDescription ]
 //        
-//        [gestureRecognizer.view setTransform:
-//         CGAffineTransformTranslate(gestureRecognizer.view.transform, translation.x, translation.y)];
-//        [gestureRecognizer setTranslation: CGPointZero inView:gestureRecognizer.view];
-//        NSLog(@"%f, %f", translation.x, translation.y);
+//        self.paragraph = text;
+//        self.centerX = [NSNumber numberWithFloat: pointX];
+//        self.centerY = [NSNumber numberWithFloat: pointY];
 //    }
-//}
-
-@end
-
-//- (instancetype) initWithDictionary: (NSDictionary *) dictionary
-//{
-//    self = [super init];
-//    if (self) {
-//        self.name = [dictionary objectForKey: @"name"];
-//        self.textDescription = [dictionary objectForKey:@"description"];
-//        self.avatarURL = [dictionary objectForKey:@"avatar_url"];
-//    }
+//    
 //    return self;
 //}
+
+//- (void) centerPoint: (CGPoint)point
+//{
+//    self.centerX = [NSNumber numberWithFloat:point.x];
+//    self.centerY = [NSNumber numberWithFloat:point.y];
+//}
+//    
+//- (void) setCenterX:(float)pointX CenterY:(float)pointY
+//{
+//    self.centerX = [NSNumber numberWithFloat:pointX];
+//    self.centerY = [NSNumber numberWithFloat:pointY];
+//}
+
++ (NSManagedObjectContext *) getMOC {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    return appDelegate.managedObjectContext;
+}
+@end
