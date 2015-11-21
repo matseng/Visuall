@@ -231,6 +231,8 @@
     }
 }
 
+- (IBAction)onDeletePressed:(UIBarButtonItem *)sender {
+}
 
 
 //- (void)didReceiveMemoryWarning {

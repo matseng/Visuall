@@ -19,13 +19,11 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qkV-Pt-sir">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <subviews>
-                                    <view contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k9c-x9-eal">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k9c-x9-eal">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -43,7 +41,13 @@
                             <outletCollection property="gestureRecognizers" destination="S4Z-tg-fOV" appends="YES" id="pRd-IS-ggU"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" title="Visuall" id="T60-g4-YB5">
+                    <navigationItem key="navigationItem" title="Visuall" id="T60-g4-YB5" colorLabel="IBBuiltInLabel-Blue">
+                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="sde-xa-jLg">
+                            <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="onDeletePressed:" destination="BYZ-38-t0r" id="6ba-WS-Rg3"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="CyK-aa-rbj">
                             <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" segmentControlStyle="bar" selectedSegmentIndex="0" id="6zi-Rq-dVk">
                                 <rect key="frame" x="447" y="7" width="133" height="30"/>
@@ -72,7 +76,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1182" y="425"/>
+            <point key="canvasLocation" x="1189" y="350"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8bv-ua-UwU">
