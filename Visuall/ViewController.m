@@ -29,18 +29,15 @@
     [super viewDidLoad];
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
-                                  initWithTarget:self
-                                  action:@selector(handlePanBackground:)];
-    
-//    panBackground.cancelsTouchesInView = NO;
-    
-    [self.Background addGestureRecognizer: panBackground];
-    
+                                                    initWithTarget:self
+                                                    action:@selector(handlePanBackground:)];
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
-                                                 initWithTarget:self
-                                                 action:@selector(handlePinchBackground:)];
-    [self.Background addGestureRecognizer:pinchBackground];
+                                                    initWithTarget:self
+                                                    action:@selector(handlePinchBackground:)];
+
+//    self.Background.gestureRecognizers = @[panBackground, pinchBackground];
+    self.Background.gestureRecognizers = @[pinchBackground];
     
     self.NotesCollection = [[NotesCollection alloc] init];
     [self.NotesCollection initializeNotes];
@@ -49,6 +46,7 @@
                                        initWithTarget:self
                                        action:@selector(handlePan:)];
         [view addGestureRecognizer: pan];
+//        view.userInteractionEnabled = NO;
         [self.view addSubview:view];
     }
 }
@@ -60,7 +58,7 @@
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes];
+    [[TransformUtil sharedManager] handlePanBackground2:gestureRecognizer withNotes: self.NotesCollection.Notes];
 }
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer

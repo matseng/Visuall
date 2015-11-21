@@ -27,7 +27,7 @@
 
 +(id)sharedManager;
 
--(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NSArray *) Notes;
+-(void) handlePanBackground2: (UIPanGestureRecognizer *) pan withNotes: (NSArray *) Notes;
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NSArray *) Notes;
 
