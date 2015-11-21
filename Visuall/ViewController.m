@@ -31,7 +31,11 @@
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                   initWithTarget:self
                                   action:@selector(handlePanBackground:)];
+    
+//    panBackground.cancelsTouchesInView = NO;
+    
     [self.Background addGestureRecognizer: panBackground];
+    
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
                                                  initWithTarget:self
