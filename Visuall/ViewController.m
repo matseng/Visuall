@@ -12,6 +12,7 @@
 #import "NoteItem.h"
 #import "TransformUtil.h"
 #import "GroupItem.h"
+#import "AppDelegate.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIView *Background;
@@ -24,6 +25,7 @@
 @property NSMutableArray *groupViews;
 @property CGPoint currentGroupViewStart;
 @property UIGestureRecognizer *panBackground;
+@property NSManagedObjectContext *moc;
 @end
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
@@ -35,6 +37,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    self.moc = appDelegate.managedObjectContext;
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                   initWithTarget:self

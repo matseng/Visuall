@@ -73,8 +73,8 @@
     CGAffineTransform matrix = noteItem.transform;
     matrix.a = self.zoom;
     matrix.d = self.zoom;
-    matrix.tx = (noteItem.note.centerPoint.x * self.zoom) + self.pan.x;
-    matrix.ty = (noteItem.note.centerPoint.y * self.zoom) + self.pan.y;
+    matrix.tx = (noteItem.note.centerX.floatValue * self.zoom) + self.pan.x;
+    matrix.ty = (noteItem.note.centerY.floatValue * self.zoom) + self.pan.y;
     NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
     NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
     NSLog(@"zoom %f", self.zoom);
