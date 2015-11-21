@@ -17,8 +17,14 @@
 @property (strong, nonatomic) NSMutableArray *helloWorlds;
 @property (strong, nonatomic) NotesCollection *NotesCollection;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
-
+@property UIView *currentGroupView;
+@property NSMutableArray *groupViews;
+@property CGPoint currentGroupViewStart;
 @end
+
+#define GROUP_VIEW_BACKGROUND_COLOR [UIColor clearColor]
+#define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
+#define GROUP_VIEW_BORDER_WIDTH 1.0
 
 @implementation ViewController
 
@@ -44,6 +50,14 @@
     [self.NotesCollection initializeNotes];
     [self attachAllNotes];
     
+    // Initialize the rectangle group selection view
+    self.currentGroupView = [[UIView alloc] init];
+    self.currentGroupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
+    self.currentGroupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
+    self.currentGroupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+    
+    // Initlialize the mutable array that holds our group UIViews
+    self.groupViews = [[NSMutableArray alloc] init];
 }
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
@@ -51,17 +65,67 @@
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes];
 }
 
+
+- (CGRect) createGroupViewRect:(CGPoint)start withEnd:(CGPoint)end {
+    float x1 = start.x < end.x ? start.x : end.x;
+    float y1 = start.y < end.y ? start.y : end.y;
+    
+    float x2 = start.x < end.x ? end.x : start.x;
+    float y2 = start.y < end.y ? end.y : start.y;
+    
+    float width = x2 - x1;
+    float height = y2 - y1;
+    
+    return CGRectMake(x1, y1, width, height);
+}
+
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    if (self.modeControl.selectedSegmentIndex == 2) {
-//        hijack this instance to allow placing new groups
-
+    if (self.modeControl.selectedSegmentIndex == 1)
+    {
         NSLog(@"sucka");
-    } else {
+    }
+    else if (self.modeControl.selectedSegmentIndex == 2)
+    {
+        // State began
+        if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+        {
+            self.currentGroupViewStart = [gestureRecognizer locationInView:gestureRecognizer.view];
+            
+            [self.view addSubview:self.currentGroupView];
+        }
+        
+        // State changed
+        if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
+            
+            self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
+        }
+        
+        // State ended
+        if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
+            
+            self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
+            
+            // Make a copy of the current group view and add it to our list of group views
+            id copyOfView = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:self.currentGroupView]];
+            [self.groupViews addObject:copyOfView];
+            
+            // Render all the group views
+            for (UIView *groupView in self.groupViews) {
+                groupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
+                groupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
+                groupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+                
+                [self.view addSubview:groupView];
+            }
+        }
+    }
+    else
+    {
         [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes];
     }
-    
-    
 }
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
