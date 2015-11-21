@@ -58,7 +58,15 @@
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes];
+    if (self.modeControl.selectedSegmentIndex == 2) {
+//        hijack this instance to allow placing new groups
+
+        NSLog(@"sucka");
+    } else {
+        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes];
+    }
+    
+    
 }
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
@@ -75,6 +83,7 @@
     [textField resignFirstResponder];
     return YES;
 }
+
 
 - (IBAction)handeTap:(UITapGestureRecognizer *)sender
 {
