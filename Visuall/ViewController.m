@@ -14,6 +14,8 @@
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIView *Background;
+@property (weak, nonatomic) IBOutlet UIView *GroupsView;
+@property (weak, nonatomic) IBOutlet UIView *NotesView;
 @property (strong, nonatomic) NSMutableArray *helloWorlds;
 @property (strong, nonatomic) NotesCollection *NotesCollection;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
@@ -23,7 +25,7 @@
 @property UIGestureRecognizer *panBackground;
 @end
 
-#define GROUP_VIEW_BACKGROUND_COLOR [UIColor clearColor]
+#define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
 
@@ -57,6 +59,9 @@
     
     // Initlialize the mutable array that holds our group UIViews
     self.groupViews = [[NSMutableArray alloc] init];
+    
+    self.NotesView.opaque = NO;
+    self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
 }
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
@@ -97,13 +102,12 @@
         {
             self.currentGroupViewStart = [gestureRecognizer locationInView:gestureRecognizer.view];
             
-            [self.view addSubview:self.currentGroupView];
+            [self.GroupsView addSubview:self.currentGroupView];
         }
         
         // State changed
         if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
-            
             self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
         }
         
@@ -117,13 +121,21 @@
             id copyOfView = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:self.currentGroupView]];
             [self.groupViews addObject:copyOfView];
             
+            // Sort by area of group view
+            NSArray *sortedArray;
+            sortedArray = [self.groupViews sortedArrayUsingComparator:^NSComparisonResult(UIView *first, UIView *second) {
+                float firstArea = first.frame.size.height * first.frame.size.width;
+                float secondArea = second.frame.size.height * second.frame.size.width;
+                return firstArea < secondArea;
+            }];
+            
             // Render all the group views
-            for (UIView *groupView in self.groupViews) {
+            for (UIView *groupView in sortedArray) {
                 groupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
                 groupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
                 groupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
                 
-                [self.view addSubview:groupView];
+                [self.GroupsView addSubview:groupView];
             }
         }
     }
@@ -156,7 +168,7 @@
                                        initWithTarget:self
                                        action:@selector(handlePan:)];
         [view addGestureRecognizer: pan];
-        [self.view addSubview:view];
+        [self.NotesView addSubview:view];
     }
 }
 
@@ -166,8 +178,7 @@
                                    initWithTarget:self
                                    action:@selector(handlePan:)];
     [note addGestureRecognizer: pan];
-    [self.view addSubview:note];
-
+    [self.NotesView addSubview:note];
 }
 
 - (IBAction) handeTap:(UITapGestureRecognizer *)sender
