@@ -26,6 +26,12 @@
     [self.Notes addObject:ni2];
 }
 
+//method to add single note dynamically from main view
+- (void) addNote:(NoteItem *)newNote
+{
+    [self.Notes addObject:newNote];
+}
+
 
 
 @end
