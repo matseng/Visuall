@@ -56,7 +56,7 @@
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         NSLog(@"1. gestureRecognizer.scale %f", gestureRecognizer.scale);
         NSLog(@"2. self.zoom %f", self.zoom);
-        float zoom = gestureRecognizer.scale;
+        float zoom = self.zoom * gestureRecognizer.scale;
 //        float zoom = self.zoom * (gestureRecognizer.scale - self._relativeScale) / self._relativeScale;
         NSLog(@"--> zoom %f", zoom);
         CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
@@ -73,7 +73,7 @@
         for (NoteItem *noteItem in Notes) {
             [self transformNoteItem:noteItem];
         }
-
+        [gestureRecognizer setScale:1.0];
     }
 }
 
