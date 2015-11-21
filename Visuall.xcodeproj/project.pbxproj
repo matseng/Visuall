@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		210833181C0127AB00BA059F /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 210833151C0127AB00BA059F /* Group.m */; };
+		210833191C0127AB00BA059F /* GroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 210833171C0127AB00BA059F /* GroupItem.m */; };
+		219E5FA41C00285E00CEE0D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 219E5FA31C00285E00CEE0D5 /* UIKit.framework */; };
 		712EC95A1BEAF21500ED6803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9591BEAF21500ED6803 /* main.m */; };
 		712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC95C1BEAF21500ED6803 /* AppDelegate.m */; };
 		712EC9601BEAF21500ED6803 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC95F1BEAF21500ED6803 /* ViewController.m */; };
@@ -19,11 +22,11 @@
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC71871BF18D09003B7F14 /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC71861BF18D09003B7F14 /* Note.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
-		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; settings = {ASSET_TAGS = (); }; };
-		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; settings = {ASSET_TAGS = (); }; };
-		77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA71C011D5F00105BB5 /* linkarrow.png */; settings = {ASSET_TAGS = (); }; };
-		77E13DAA1C011DC100105BB5 /* plane.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA91C011DC100105BB5 /* plane.png */; settings = {ASSET_TAGS = (); }; };
-		77E13DAC1C01211E00105BB5 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DAB1C01211E00105BB5 /* delete.png */; settings = {ASSET_TAGS = (); }; };
+		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
+		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; };
+		77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA71C011D5F00105BB5 /* linkarrow.png */; };
+		77E13DAA1C011DC100105BB5 /* plane.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA91C011DC100105BB5 /* plane.png */; };
+		77E13DAC1C01211E00105BB5 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DAB1C01211E00105BB5 /* delete.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +40,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		210833141C0127AB00BA059F /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
+		210833151C0127AB00BA059F /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
+		210833161C0127AB00BA059F /* GroupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupItem.h; sourceTree = "<group>"; };
+		210833171C0127AB00BA059F /* GroupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupItem.m; sourceTree = "<group>"; };
+		219E5FA31C00285E00CEE0D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		712EC9541BEAF21500ED6803 /* Visuall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visuall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		712EC9581BEAF21500ED6803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		712EC9591BEAF21500ED6803 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -71,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219E5FA41C00285E00CEE0D5 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +96,7 @@
 		712EC94B1BEAF21500ED6803 = {
 			isa = PBXGroup;
 			children = (
+				219E5FA31C00285E00CEE0D5 /* UIKit.framework */,
 				712EC9561BEAF21500ED6803 /* Visuall */,
 				712EC9701BEAF21500ED6803 /* VisuallTests */,
 				712EC9551BEAF21500ED6803 /* Products */,
@@ -111,6 +121,10 @@
 				712EC95F1BEAF21500ED6803 /* ViewController.m */,
 				716B04681BFC210300DA9451 /* TransformUtil.h */,
 				716B04691BFC210300DA9451 /* TransformUtil.m */,
+				210833141C0127AB00BA059F /* Group.h */,
+				210833151C0127AB00BA059F /* Group.m */,
+				210833161C0127AB00BA059F /* GroupItem.h */,
+				210833171C0127AB00BA059F /* GroupItem.m */,
 				71E354F71BF5953600B5EA99 /* NoteItem.h */,
 				71E354F81BF5953600B5EA99 /* NoteItem.m */,
 				71FC71851BF18D09003B7F14 /* Note.h */,
@@ -263,6 +277,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
+				210833181C0127AB00BA059F /* Group.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
 				71B37E751C0012010048851A /* Visuall_CoreData.xcdatamodel in Sources */,
