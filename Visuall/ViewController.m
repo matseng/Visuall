@@ -17,8 +17,11 @@
 @property (weak, nonatomic) IBOutlet UITextField *helloWorldTwo;
 @property (weak, nonatomic) IBOutlet UITextField *helloWorldThree;
 @property (strong, nonatomic) IBOutlet UIView *Background;
+@property (strong, nonatomic) IBOutlet UIView *GroupView;
+@property (strong, nonatomic) IBOutlet UIView *NotesView;
 @property (strong, nonatomic) NSMutableArray *helloWorlds;
 @property (strong, nonatomic) NotesCollection *NotesCollection;
+@property (strong, nonatomic) UIPanGestureRecognizer *panBackground;
 
 @end
 
@@ -31,13 +34,13 @@
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                                     initWithTarget:self
                                                     action:@selector(handlePanBackground:)];
+    self.panBackground = panBackground;
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
                                                     initWithTarget:self
                                                     action:@selector(handlePinchBackground:)];
 
-//    self.Background.gestureRecognizers = @[panBackground, pinchBackground];
-    self.Background.gestureRecognizers = @[pinchBackground];
+    self.Background.gestureRecognizers = @[panBackground, pinchBackground];
     
     self.NotesCollection = [[NotesCollection alloc] init];
     [self.NotesCollection initializeNotes];
@@ -45,15 +48,24 @@
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                        initWithTarget:self
                                        action:@selector(handlePan:)];
-        [view addGestureRecognizer: pan];
-//        view.userInteractionEnabled = NO;
-        [self.view addSubview:view];
+        [view addGestureRecognizer:pan];
+        [self.NotesView addSubview:view];
+        view.userInteractionEnabled = YES;
     }
+    self.NotesView.opaque = NO;
+    self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
+    
 }
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes];
+    
+    if ([[TransformUtil sharedManager] zoom] > 1.0){
+        [self.Background removeGestureRecognizer: self.panBackground];
+    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
+        [self.Background addGestureRecognizer: self.panBackground];
+    }
 }
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer

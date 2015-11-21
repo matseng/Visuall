@@ -18,7 +18,7 @@
     @synchronized(self) {
         if (sharedMyManager == nil) {
             sharedMyManager = [[self alloc] init];
-            sharedMyManager.zoom = 2.0;
+            sharedMyManager.zoom = 1.0;
             sharedMyManager.pan = (CGPoint){0.0,0.0};
             NSLog(@"RESET ZOOM and PAN");
         }
@@ -28,6 +28,7 @@
 
 -(void) handlePanBackground2: (UIPanGestureRecognizer *) gestureRecognizer withNotes:(NSArray *)Notes
 {
+    NSLog(@"In handlePanBackground2");
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
@@ -53,7 +54,6 @@
         NSLog(@"1. gestureRecognizer.scale %f", gestureRecognizer.scale);
         NSLog(@"2. self.zoom %f", self.zoom);
         float zoom = self.zoom * gestureRecognizer.scale;
-//        float zoom = self.zoom * (gestureRecognizer.scale - self._relativeScale) / self._relativeScale;
         NSLog(@"--> zoom %f", zoom);
         CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
         float deltaX = gesturePoint.x - gesturePoint.x / self.zoom * zoom;
@@ -65,11 +65,11 @@
         
         self.zoom = zoom;
         
-        
         for (NoteItem *noteItem in Notes) {
             [self transformNoteItem:noteItem];
         }
         [gestureRecognizer setScale:1.0];
+
     }
 }
 
