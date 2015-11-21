@@ -37,27 +37,18 @@
         self.pan = CGPointMake(panX, panY);
 
         for (NoteItem *noteItem in Notes) {
-//            CGAffineTransform t = noteItem.transform;
-//            t.tx = 0;
-//            t.ty = 0;
             [self transformNoteItem: noteItem];
-//            [noteItem setTransform:CGAffineTransformTranslate(t, self.pan.x, self.pan.y)];
         }
     }
 }
 
-
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NSArray *)Notes
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-//        float relativeScale = gestureRecognizer.scale;
-//        self._relativeScale = relativeScale;
-//        NSLog(@"0. relativeScale %f", relativeScale);
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         NSLog(@"1. gestureRecognizer.scale %f", gestureRecognizer.scale);
         NSLog(@"2. self.zoom %f", self.zoom);
-        float zoom = gestureRecognizer.scale;
-//        float zoom = self.zoom * (gestureRecognizer.scale - self._relativeScale) / self._relativeScale;
+        float zoom = self.zoom * gestureRecognizer.scale;
         NSLog(@"--> zoom %f", zoom);
         CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
         float deltaX = gesturePoint.x - gesturePoint.x / self.zoom * zoom;
@@ -73,7 +64,7 @@
         for (NoteItem *noteItem in Notes) {
             [self transformNoteItem:noteItem];
         }
-
+        [gestureRecognizer setScale:1.0];
     }
 }
 
@@ -93,36 +84,4 @@
 }
 
 @end
-
-
-//-(void) handlePinchBackground_OLD: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NSArray *)Notes
-//{
-//    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-//        self.scale = gestureRecognizer.scale;
-//        NSLog(@"0. UIGestureRecognizerStateBegan");
-//    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-//        CGFloat scale = gestureRecognizer.scale;
-//        CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
-//        NSLog(@"1. scale: %f", scale);
-//        NSLog(@"2. self.scale: %f", self.scale);
-//        for (UITextField *hw in Notes) {
-//            float x = hw.center.x;
-//            float y = hw.center.y;
-//            float deltaX = x - gesturePoint.x;
-//            float deltaY = y - gesturePoint.y;
-//            float newX = gesturePoint.x + deltaX / self.scale * scale;
-//            float newY = gesturePoint.y + deltaY / self.scale * scale;
-//            [hw setTransform:CGAffineTransformScale(hw.transform, scale / self.scale, scale / self.scale)];
-////            NSLog(@"OLD: %f, %f", x, y);
-////            NSLog(@"scale: %f", scale);
-////            NSLog(@"NEW: %f, %f", newX, newY);
-//            hw.center = CGPointMake(newX, newY);
-//        }
-////        gestureRecognizer setScale:<#(CGFloat)#>
-//        self.scale = scale;
-//        NSLog(@"3. scale: %f", scale);
-//        NSLog(@"4. self.scale: %f", self.scale);
-//
-//    }
-//}
 

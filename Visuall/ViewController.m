@@ -20,6 +20,7 @@
 @property UIView *currentGroupView;
 @property NSMutableArray *groupViews;
 @property CGPoint currentGroupViewStart;
+@property UIGestureRecognizer *panBackground;
 @end
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor clearColor]
@@ -35,9 +36,7 @@
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                   initWithTarget:self
                                   action:@selector(handlePanBackground:)];
-    
-//    panBackground.cancelsTouchesInView = NO;
-    
+    self.panBackground = panBackground;
     [self.Background addGestureRecognizer: panBackground];
     
     
@@ -63,6 +62,12 @@
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes];
+    
+    if ([[TransformUtil sharedManager] zoom] > 1.0){
+        [self.Background removeGestureRecognizer: self.panBackground];
+    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
+        [self.Background addGestureRecognizer: self.panBackground];
+    }
 }
 
 
