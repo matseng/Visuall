@@ -12,7 +12,6 @@
 #import "NoteItem.h"
 #import "TransformUtil.h"
 #import "GroupItem.h"
-#import "AppDelegate.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIView *Background;
@@ -37,8 +36,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    self.moc = appDelegate.managedObjectContext;
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                   initWithTarget:self
