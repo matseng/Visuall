@@ -11,6 +11,7 @@
 #import "NotesCollection.h"
 #import "NoteItem.h"
 #import "TransformUtil.h"
+#import "GroupItem.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIView *Background;
@@ -118,24 +119,23 @@
             self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
             
             // Make a copy of the current group view and add it to our list of group views
-            id copyOfView = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:self.currentGroupView]];
-            [self.groupViews addObject:copyOfView];
+            GroupItem *currentGroupItem = [[GroupItem alloc] initWithPoint:self.currentGroupView.frame.origin
+                                                                  andWidth:self.currentGroupView.frame.size.width
+                                                                 andHeight:self.currentGroupView.frame.size.height];
+            [self.groupViews addObject:currentGroupItem];
             
             // Sort by area of group view
             NSArray *sortedArray;
-            sortedArray = [self.groupViews sortedArrayUsingComparator:^NSComparisonResult(UIView *first, UIView *second) {
+
+            sortedArray = [self.groupViews sortedArrayUsingComparator:^NSComparisonResult(GroupItem *first, GroupItem *second) {
                 float firstArea = first.frame.size.height * first.frame.size.width;
                 float secondArea = second.frame.size.height * second.frame.size.width;
                 return firstArea < secondArea;
             }];
-            
+
             // Render all the group views
-            for (UIView *groupView in sortedArray) {
-                groupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
-                groupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
-                groupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
-                
-                [self.GroupsView addSubview:groupView];
+            for (GroupItem *groupItem in sortedArray) {
+                [self.GroupsView addSubview:groupItem];
             }
         }
     }
