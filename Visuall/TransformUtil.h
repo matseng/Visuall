@@ -33,6 +33,8 @@
 
 -(void) transformNoteItem: (NoteItem *) noteItem;
 
+-(CGPoint) getGlobalCoordinate: (CGPoint) point;
+
 @end
 
 

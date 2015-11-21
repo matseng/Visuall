@@ -80,7 +80,13 @@
     NSLog(@"zoom %f", self.zoom);
 
     [noteItem setTransform: matrix];
-    
+}
+
+-(CGPoint) getGlobalCoordinate: (CGPoint) point
+{
+    float x = (point.x - self.pan.x) / self.zoom;
+    float y = (point.y - self.pan.y) / self.zoom;
+    return (CGPoint){x,y};
 }
 
 @end

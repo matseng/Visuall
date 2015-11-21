@@ -199,7 +199,8 @@
                 UITextField *titleTextField = [[alertController textFields] firstObject];
                 UITextField *paragraphTextField = [[alertController textFields] lastObject];
                 //create a new note
-                NoteItem *newNote = [[NoteItem alloc] initNote:titleTextField.text andPoint:gesturePoint];
+                CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
+                NoteItem *newNote = [[NoteItem alloc] initNote:titleTextField.text andPoint:point];
                 //stick it with the other notes
                 [self.NotesCollection addNote:newNote];
                 [self addNoteToViewWithHandlers:newNote];
