@@ -13,12 +13,10 @@
 #import "TransformUtil.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *helloWorld;
-@property (weak, nonatomic) IBOutlet UITextField *helloWorldTwo;
-@property (weak, nonatomic) IBOutlet UITextField *helloWorldThree;
 @property (strong, nonatomic) IBOutlet UIView *Background;
 @property (strong, nonatomic) NSMutableArray *helloWorlds;
 @property (strong, nonatomic) NotesCollection *NotesCollection;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
 
 @end
 
@@ -77,6 +75,24 @@
     [textField resignFirstResponder];
     return YES;
 }
+
+- (IBAction)handeTap:(UITapGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        CGPoint gesturePoint = [sender locationInView:sender.view];
+        if (self.modeControl.selectedSegmentIndex == 0) {
+            NSLog(@"we in note mode beeeetches %f %f", gesturePoint.x, gesturePoint.y);
+        }
+        if (self.modeControl.selectedSegmentIndex == 1) {
+            NSLog(@"we in arrow mode beeeetches %f %f", gesturePoint.x, gesturePoint.y);
+        }
+        if (self.modeControl.selectedSegmentIndex == 2) {
+            NSLog(@"we in group mode beeeetches %f %f", gesturePoint.x, gesturePoint.y);
+        }
+    }
+}
+
 
 //- (void)didReceiveMemoryWarning {
 //    [super didReceiveMemoryWarning];
