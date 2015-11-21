@@ -122,6 +122,7 @@
             [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
                 textField.placeholder = @"Paragraph";
             }];
+            
             //define add note action
             UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"add" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 
@@ -135,7 +136,13 @@
                 [self addNoteToViewWithHandlers:newNote];
             }];
             
+            //define cancel action
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                // noop
+            }];
+            
             [alertController addAction:alertAction];
+            [alertController addAction:cancelAction];
             [self presentViewController:alertController animated:YES completion:nil];
            
 
