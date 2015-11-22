@@ -8,6 +8,7 @@
 
 #import "TransformUtil.h"
 #import "NoteItem.h"
+#import "GroupItem.h"
 
 @implementation TransformUtil
 
@@ -26,7 +27,9 @@
     return sharedMyManager;
 }
 
--(void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer withNotes:(NSArray *)Notes
+-(void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
+                 withNotes:(NSArray *)Notes
+                 withGroups: (NSArray *) groupItems
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
@@ -38,6 +41,9 @@
 
         for (NoteItem *noteItem in Notes) {
             [self transformNoteItem: noteItem];
+        }
+        for (GroupItem *groupItem in groupItems) {
+            [self transformGroupItem: groupItem];
         }
     }
 }
@@ -82,11 +88,31 @@
     [noteItem setTransform: matrix];
 }
 
+-(void) transformGroupItem: (GroupItem *) groupItem
+{
+    CGAffineTransform matrix = groupItem.transform;
+    matrix.a = self.zoom;
+    matrix.d = self.zoom;
+    matrix.tx = (groupItem.group.coordinate.x * self.zoom) + self.pan.x;
+    matrix.ty = (groupItem.group.coordinate.y * self.zoom) + self.pan.y;
+    NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
+    NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
+    NSLog(@"zoom %f", self.zoom);
+    
+    [groupItem setTransform: matrix];
+}
+
+
 -(CGPoint) getGlobalCoordinate: (CGPoint) point
 {
     float x = (point.x - self.pan.x) / self.zoom;
     float y = (point.y - self.pan.y) / self.zoom;
     return (CGPoint){x,y};
+}
+
+-(float) getGlobalDistance: (float) distance
+{
+    return (distance / self.zoom);
 }
 
 @end

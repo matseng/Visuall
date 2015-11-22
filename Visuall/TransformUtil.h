@@ -12,6 +12,7 @@
 #import "Note.h"
 #import "NoteItem.h"
 #import "NotesCollection.h"
+#import "GroupItem.h"
 
 @interface TransformUtil : NSObject
 
@@ -27,11 +28,13 @@
 
 +(id)sharedManager;
 
--(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NSArray *) Notes;
+-(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NSArray *) Notes withGroups: (NSArray *) GroupItems;
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NSArray *) Notes;
 
 -(void) transformNoteItem: (NoteItem *) noteItem;
+
+-(void) transformGroupItem: (GroupItem *) groupItem;
 
 -(CGPoint) getGlobalCoordinate: (CGPoint) point;
 
