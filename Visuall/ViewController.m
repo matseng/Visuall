@@ -12,6 +12,7 @@
 #import "NoteItem.h"
 #import "TransformUtil.h"
 #import "GroupItem.h"
+#import "AppDelegate.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIView *Background;
@@ -23,6 +24,7 @@
 @property UIView *currentGroupView;
 @property NSMutableArray *groupViews;
 @property CGPoint currentGroupViewStart;
+@property UIView *lastSelectedObject;
 @property UIGestureRecognizer *panBackground;
 @property NSManagedObjectContext *moc;
 @end
@@ -36,6 +38,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    self.moc = appDelegate.managedObjectContext;
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                   initWithTarget:self
@@ -153,6 +158,8 @@
             
             [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
             [self.currentGroupView removeFromSuperview];
+            // set currentGroupItem as lastSelectedObject
+            self.lastSelectedObject = currentGroupItem;
         }
     }
     else
@@ -166,6 +173,7 @@
     if ( [gestureRecognizer.view respondsToSelector:@selector(handlePan2:)] ) {
         NoteItem *nv = (NoteItem *)gestureRecognizer.view;
         [nv handlePan2:gestureRecognizer];
+        self.lastSelectedObject = nv;
     }
 }
 
@@ -175,6 +183,7 @@
     if ( [gestureRecognizer.view respondsToSelector:@selector(handlePanGroup2:)] ) {
         GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
         [groupItem handlePanGroup2:gestureRecognizer];
+        self.lastSelectedObject = groupItem;
     }
 }
 
@@ -204,6 +213,7 @@
                                    action:@selector(handlePan:)];
     [note addGestureRecognizer: pan];
     [self.NotesView addSubview:note];
+    self.lastSelectedObject = note;
 }
 
 - (IBAction) handeTap:(UITapGestureRecognizer *)sender
@@ -236,7 +246,7 @@
                 UITextField *paragraphTextField = [[alertController textFields] lastObject];
                 //create a new note
                 CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
-                NoteItem *newNote = [[NoteItem alloc] initNote:titleTextField.text andPoint:point];
+                NoteItem *newNote = [[NoteItem alloc] initNote:titleTextField.text andPoint:point andText:paragraphTextField.text];
                 //stick it with the other notes
                 [self.NotesCollection addNote:newNote];
                 [self addNoteToViewWithHandlers:newNote];
@@ -257,8 +267,24 @@
 }
 
 - (IBAction)onDeletePressed:(UIBarButtonItem *)sender {
-    
-    
+    NSLog(@"Kill all humans");
+    if (self.lastSelectedObject) {
+        if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
+            NSLog(@"puplet");
+            NoteItem *noteToDelete = (NoteItem *)self.lastSelectedObject;
+            NSManagedObject *objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
+            [self.moc deleteObject:objectToDelete];
+        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
+            NSLog(@"woofarf");
+            GroupItem *groupToDelete = (GroupItem *)self.lastSelectedObject;
+            NSManagedObject *objectToDelete = [self.moc existingObjectWithID:groupToDelete.group.objectID error:nil];
+            [self.moc deleteObject:objectToDelete];
+
+        }
+        //remove view from the view
+        [self.lastSelectedObject removeFromSuperview];
+        self.lastSelectedObject = nil;
+    }
 }
 
 
