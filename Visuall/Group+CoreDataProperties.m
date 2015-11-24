@@ -1,5 +1,5 @@
 //
-//  Note+CoreDataProperties.m
+//  Group+CoreDataProperties.m
 //  Visuall
 //
 //  Created by John Mai on 11/23/15.
@@ -9,17 +9,15 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "Note+CoreDataProperties.h"
+#import "Group+CoreDataProperties.h"
 
-@implementation Note (CoreDataProperties)
+@implementation Group (CoreDataProperties)
 
-@dynamic centerX;
-@dynamic centerY;
+@dynamic topX;
+@dynamic topY;
 @dynamic height;
-@dynamic imageName;
-@dynamic imagePath;
-@dynamic paragraph;
 @dynamic title;
 @dynamic width;
+@dynamic note;
 
 @end

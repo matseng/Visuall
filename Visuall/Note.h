@@ -15,8 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Note : NSManagedObject
 //- (instancetype) initWithString: (NSString *)text;
 //- (instancetype) initWithString: (NSString *)text andCenterX: (float)pointX andCenterY: (float)pointY;
-//- (void) centerPoint:(CGPoint) point;
-//- (void) setCenterX:(float)pointX CenterY:(float)pointY;
+- (void) setCenterPoint:(CGPoint) point;
+- (void) setCenterX:(float)pointX andCenterY:(float)pointY;
+- (void) setHeight:(float)height andWidth:(float)width;
 + (NSManagedObjectContext *) getMOC;
 @end
 
