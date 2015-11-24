@@ -23,7 +23,8 @@
     {
         self.group = [[Group alloc] initWithPoint:coordinate andWidth:width andHeight:height];
 //        [self setFrame:CGRectMake(coordinate.x, coordinate.y, width, height)];
-        [self setFrame:CGRectMake(0, 0, width, height)];
+//        [self setFrame:CGRectMake(0, 0, width, height)];
+        [self setFrame:CGRectMake(-width/2, -height/2, width, height)];
         [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
         [self.layer setBorderColor:GROUP_VIEW_BORDER_COLOR];
         [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
@@ -46,15 +47,15 @@
     }
 }
 
-- (BOOL) isNoteInGroup: (NoteItem *) noteItem andGroup: (GroupItem*) groupItem
-{
-    CGRect groupRect = CGRectMake(groupItem.group.coordinate.x, groupItem.group.coordinate.y, groupItem.group.width, groupItem.group.height);
-    if (CGRectContainsPoint(groupRect, noteItem.note.centerPoint))
-    {
-        return YES;
-    }
-    return NO;
-}
+//- (BOOL) isNoteInGroup: (NoteItem *) noteItem andGroup: (GroupItem*) groupItem
+//{
+//    CGRect groupRect = CGRectMake(groupItem.group.coordinate.x, groupItem.group.coordinate.y, groupItem.group.width, groupItem.group.height);
+//    if (CGRectContainsPoint(groupRect, noteItem.note.centerPoint))
+//    {
+//        return YES;
+//    }
+//    return NO;
+//}
 
 /*
 // Only override drawRect: if you perform custom drawing.

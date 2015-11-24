@@ -48,7 +48,7 @@
     }
 }
 
--(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NSArray *)Notes
+-(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NSArray *)Notes andGroups: (NSArray *) Groups
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
@@ -70,6 +70,11 @@
         for (NoteItem *noteItem in Notes) {
             [self transformNoteItem:noteItem];
         }
+        
+        for (GroupItem *groupItem in Groups) {
+            [self transformGroupItem: groupItem];
+        }
+        
         [gestureRecognizer setScale:1.0];
     }
 }
@@ -93,8 +98,8 @@
     CGAffineTransform matrix = groupItem.transform;
     matrix.a = self.zoom;
     matrix.d = self.zoom;
-    matrix.tx = (groupItem.group.coordinate.x * self.zoom) + self.pan.x;
-    matrix.ty = (groupItem.group.coordinate.y * self.zoom) + self.pan.y;
+    matrix.tx = (groupItem.group.coordinate.x + groupItem.group.width / 2) * self.zoom + self.pan.x;
+    matrix.ty = (groupItem.group.coordinate.y + groupItem.group.height / 2) * self.zoom + self.pan.y;
     NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
     NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
     NSLog(@"zoom %f", self.zoom);

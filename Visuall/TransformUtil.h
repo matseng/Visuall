@@ -30,7 +30,7 @@
 
 -(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NSArray *) Notes withGroups: (NSArray *) GroupItems;
 
--(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NSArray *) Notes;
+-(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NSArray *) Notes andGroups: (NSArray *) Groups;
 
 -(void) transformNoteItem: (NoteItem *) noteItem;
 
