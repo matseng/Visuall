@@ -180,6 +180,17 @@
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
     // TODO: at start of pan, find all children. Then during pan update the child coordinates
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
+        NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
+        for (NoteItem *ni in self.NotesCollection.Notes) {
+            if ([groupItem isNoteInGroup:ni]) {
+                NSLog(@"Note name in group: %@", ni.note.title);
+                [notesInGroup addObject:ni];
+            }
+        }
+        [groupItem setNotesInGroup: notesInGroup];
+    }
     if ( [gestureRecognizer.view respondsToSelector:@selector(handlePanGroup2:)] ) {
         GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
         [groupItem handlePanGroup2:gestureRecognizer];
@@ -197,12 +208,13 @@
 
 - (void) attachAllNotes
 {
-    for (UIView *view in self.NotesCollection.Notes) {
+    for (NoteItem *ni in self.NotesCollection.Notes) {
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                        initWithTarget:self
                                        action:@selector(handlePan:)];
-        [view addGestureRecognizer: pan];
-        [self.NotesView addSubview:view];
+        [ni addGestureRecognizer: pan];
+        [self.NotesView addSubview:ni];
+        ni.delegate = self;
     }
 }
 

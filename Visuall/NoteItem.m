@@ -55,28 +55,25 @@
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-//        float zoom = [[TransformUtil sharedManager] zoom];
-
-        NSLog(@"translation.x,y %f, %f", translation.x, translation.y);
-        
-//        float xCenter = self.note.centerPoint.x + translation.x / zoom;
-//        float yCenter = self.note.centerPoint.y + translation.y / zoom;
-        float xCenter = self.note.centerX.floatValue + translation.x;
-        float yCenter = self.note.centerY.floatValue + translation.y;
-        [self.note setCenterX:xCenter andCenterY:yCenter];
-//        self.note.centerX = [NSNumber numberWithFloat:xCenter];
-//        self.note.centerY = [NSNumber numberWithFloat:yCenter];
-        
-        [[TransformUtil sharedManager] transformNoteItem: self];
-        
-        NSLog(@"New note %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
-
+        [self translateTx:translation.x andTy:translation.y];
     }
 }
 
 - (void) saveToCoreData
 {
     [self.moc save:nil];
+}
+
+- (void) translateTx: (float) tx andTy: (float) ty
+{
+    float xCenter = self.note.centerX.floatValue + tx;
+    float yCenter = self.note.centerY.floatValue + ty;
+    self.note.centerX = [NSNumber numberWithFloat:xCenter];
+    self.note.centerY = [NSNumber numberWithFloat:yCenter];
+    
+    [[TransformUtil sharedManager] transformNoteItem: self];
+    
+    NSLog(@"New note %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
 }
 
 @end

@@ -53,6 +53,9 @@
         float y = self.group.topY.floatValue + translation.y;
         [self.group setTopPoint: CGPointMake(x, y)];
         [[TransformUtil sharedManager] transformGroupItem: self];
+        for (NoteItem *ni in self.notesInGroup) {
+            [ni translateTx: translation.x andTy:translation.y];
+        }
     }
 }
 
@@ -61,15 +64,15 @@
     [self.moc save:nil];
 }
 
-//- (BOOL) isNoteInGroup: (NoteItem *) noteItem andGroup: (GroupItem*) groupItem
-//{
-//    CGRect groupRect = CGRectMake(groupItem.group.coordinate.x, groupItem.group.coordinate.y, groupItem.group.width, groupItem.group.height);
-//    if (CGRectContainsPoint(groupRect, noteItem.note.centerPoint))
-//    {
-//        return YES;
-//    }
-//    return NO;
-//}
+- (BOOL) isNoteInGroup: (NoteItem *) noteItem
+{
+    CGRect groupRect = CGRectMake([self.group.topX floatValue], [self.group.topY floatValue], [self.group.width floatValue], [self.group.height floatValue]);
+    if ( CGRectContainsPoint(groupRect, (CGPoint){[noteItem.note.centerX floatValue], [noteItem.note.centerY floatValue]} ) )
+    {
+        return YES;
+    }
+    return NO;
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.
