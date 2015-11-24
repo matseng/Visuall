@@ -22,4 +22,6 @@
 
 - (BOOL) isNoteInGroup: (NoteItem *) noteItem;
 
+- (void) saveToCoreData;
+
 @end
