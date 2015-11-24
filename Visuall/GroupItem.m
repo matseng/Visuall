@@ -21,10 +21,11 @@
     
     if (self)
     {
-        self.group = [[Group alloc] initWithPoint:coordinate andWidth:width andHeight:height];
-//        [self setFrame:CGRectMake(coordinate.x, coordinate.y, width, height)];
-//        [self setFrame:CGRectMake(0, 0, width, height)];
-        [self setFrame:CGRectMake(-width/2, -height/2, width, height)];
+        self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:[Group getMOC]];
+        [self.group setTopPoint:coordinate];
+        [self.group setHeight:height andWidth:width];
+        
+        [self setFrame:CGRectMake(coordinate.x, coordinate.y, width, height)];
         [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
         [self.layer setBorderColor:GROUP_VIEW_BORDER_COLOR];
         [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
@@ -40,9 +41,9 @@
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-        float x = self.group.coordinate.x + translation.x;
-        float y = self.group.coordinate.y + translation.y;
-        self.group.coordinate = CGPointMake(x, y);
+        float x = self.group.topX.floatValue + translation.x;
+        float y = self.group.topY.floatValue + translation.y;
+        [self.group setTopPoint: CGPointMake(x, y)];
         [[TransformUtil sharedManager] transformGroupItem: self];
     }
 }

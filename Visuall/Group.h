@@ -2,20 +2,27 @@
 //  Group.h
 //  Visuall
 //
-//  Created by Lawrence May on 11/21/15.
+//  Created by John Mai on 11/23/15.
 //  Copyright © 2015 Visuall. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import <UIKit/UIKit.h>
 
-@import UIKit;
+@class Note;
 
-@interface Group : NSObject
-@property CGPoint coordinate;
-@property float width;
-@property float height;
-@property NSMutableArray *NoteItems;
+NS_ASSUME_NONNULL_BEGIN
 
-- (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float)width andHeight:(float)height;
+@interface Group : NSManagedObject
+
+- (void) setTopPoint:(CGPoint) point;
+- (void) setTopX:(float)pointX andTopY:(float)pointY;
+- (void) setHeight:(float)height andWidth:(float)width;
++ (NSManagedObjectContext *) getMOC;
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "Group+CoreDataProperties.h"

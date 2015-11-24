@@ -25,9 +25,10 @@
     if (self) {
         Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:[Note getMOC]];
         note.title = title;
-        note.centerX = [NSNumber numberWithFloat:point.x];
-        note.centerY = [NSNumber numberWithFloat:point.y];
-//        [note setCenterX:point.x CenterY:point.y];
+//        note.centerX = [NSNumber numberWithFloat:point.x];
+//        note.centerY = [NSNumber numberWithFloat:point.y];
+        [note setCenterPoint:point];
+        [note setHeight:NOTE_HEIGHT andWidth:NOTE_WIDTH];
         [self setNote: note];
         [self setFrame: CGRectMake(- NOTE_WIDTH / 2,
                                    - NOTE_HEIGHT / 2,
@@ -56,9 +57,9 @@
 //        float yCenter = self.note.centerPoint.y + translation.y / zoom;
         float xCenter = self.note.centerX.floatValue + translation.x;
         float yCenter = self.note.centerY.floatValue + translation.y;
-//        [self.note setCenterX:xCenter CenterY:yCenter];
-        self.note.centerX = [NSNumber numberWithFloat:xCenter];
-        self.note.centerY = [NSNumber numberWithFloat:yCenter];
+        [self.note setCenterX:xCenter andCenterY:yCenter];
+//        self.note.centerX = [NSNumber numberWithFloat:xCenter];
+//        self.note.centerY = [NSNumber numberWithFloat:yCenter];
         
         [[TransformUtil sharedManager] transformNoteItem: self];
         

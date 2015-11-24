@@ -8,7 +8,6 @@
 
 #import "Note.h"
 #import "AppDelegate.h"
-#import <UIKit/UIKit.h>
 
 @implementation Note
 
@@ -29,20 +28,27 @@
 //    return self;
 //}
 
-//- (void) centerPoint: (CGPoint)point
-//{
-//    self.centerX = [NSNumber numberWithFloat:point.x];
-//    self.centerY = [NSNumber numberWithFloat:point.y];
-//}
-//    
-//- (void) setCenterX:(float)pointX CenterY:(float)pointY
-//{
-//    self.centerX = [NSNumber numberWithFloat:pointX];
-//    self.centerY = [NSNumber numberWithFloat:pointY];
-//}
+- (void) setCenterPoint: (CGPoint)point
+{
+    self.centerX = [NSNumber numberWithFloat:point.x];
+    self.centerY = [NSNumber numberWithFloat:point.y];
+}
+    
+- (void) setCenterX:(float)pointX andCenterY:(float)pointY
+{
+    self.centerX = [NSNumber numberWithFloat:pointX];
+    self.centerY = [NSNumber numberWithFloat:pointY];
+}
+
+- (void) setHeight:(float)height andWidth:(float)width
+{
+    self.height = [NSNumber numberWithFloat:height];
+    self.width = [NSNumber numberWithFloat:width];
+}
 
 + (NSManagedObjectContext *) getMOC {
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     return appDelegate.managedObjectContext;
 }
+
 @end
