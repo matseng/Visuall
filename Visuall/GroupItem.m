@@ -8,10 +8,16 @@
 
 #import "GroupItem.h"
 #import "TransformUtil.h"
+#import "AppDelegate.h"
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
+
+@interface GroupItem ()
+@property NSManagedObjectContext *moc;
+@end
+
 
 @implementation GroupItem
 
@@ -21,7 +27,10 @@
     
     if (self)
     {
-        self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:[Group getMOC]];
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        self.moc = appDelegate.managedObjectContext;
+        
+        self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:self.moc];
         [self.group setTopPoint:coordinate];
         [self.group setHeight:height andWidth:width];
         
@@ -46,6 +55,11 @@
         [self.group setTopPoint: CGPointMake(x, y)];
         [[TransformUtil sharedManager] transformGroupItem: self];
     }
+}
+
+- (void) saveToCoreData
+{
+    [self.moc save:nil];
 }
 
 //- (BOOL) isNoteInGroup: (NoteItem *) noteItem andGroup: (GroupItem*) groupItem

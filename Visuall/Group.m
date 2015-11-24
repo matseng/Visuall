@@ -30,9 +30,4 @@
     self.width = [NSNumber numberWithFloat:width];
 }
 
-+ (NSManagedObjectContext *) getMOC {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    return appDelegate.managedObjectContext;
-}
-
 @end

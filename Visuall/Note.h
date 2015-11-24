@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) setCenterPoint:(CGPoint) point;
 - (void) setCenterX:(float)pointX andCenterY:(float)pointY;
 - (void) setHeight:(float)height andWidth:(float)width;
-+ (NSManagedObjectContext *) getMOC;
 @end
 
 NS_ASSUME_NONNULL_END
