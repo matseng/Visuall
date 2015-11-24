@@ -8,7 +8,6 @@
 
 #import "Group.h"
 #import "Note.h"
-#import "AppDelegate.h"
 
 @implementation Group
 
