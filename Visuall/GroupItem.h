@@ -10,6 +10,11 @@
 #import "Group.h"
 
 @interface GroupItem : UIView
+
 @property Group *group;
+
 - (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float)width andHeight:(float)height;
+
+- (void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer;
+
 @end

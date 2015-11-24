@@ -52,6 +52,11 @@
     self.NotesCollection = [[NotesCollection alloc] init];
     [self.NotesCollection initializeNotes];
     [self attachAllNotes];
+//    UIPanGestureRecognizer *panNotesView = [[UIPanGestureRecognizer alloc]
+//                                             initWithTarget:self
+//                                             action:@selector(handlePanNotesView:)];
+//    [panNotesView setCancelsTouchesInView:NO];
+    
     
     // Initialize the rectangle group selection view
     self.currentGroupView = [[UIView alloc] init];
@@ -68,13 +73,13 @@
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
-    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes];
+    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes andGroups: self.groupViews];
     
-    if ([[TransformUtil sharedManager] zoom] > 1.0){
-        [self.Background removeGestureRecognizer: self.panBackground];
-    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
-        [self.Background addGestureRecognizer: self.panBackground];
-    }
+//    if ([[TransformUtil sharedManager] zoom] > 1.0){
+//        [self.Background removeGestureRecognizer: self.panBackground];
+//    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
+//        [self.Background addGestureRecognizer: self.panBackground];
+//    }
 }
 
 
@@ -120,9 +125,12 @@
             self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
             
             // Make a copy of the current group view and add it to our list of group views
-            GroupItem *currentGroupItem = [[GroupItem alloc] initWithPoint:self.currentGroupView.frame.origin
-                                                                  andWidth:self.currentGroupView.frame.size.width
-                                                                 andHeight:self.currentGroupView.frame.size.height];
+            float zoom = [[TransformUtil sharedManager] zoom];
+            GroupItem *currentGroupItem = [[GroupItem alloc]
+                                           initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.currentGroupView.frame.origin]
+                                            andWidth:self.currentGroupView.frame.size.width / zoom
+                                            andHeight:self.currentGroupView.frame.size.height / zoom];
+            
             [self.groupViews addObject:currentGroupItem];
             
             // Sort by area of group view
@@ -136,13 +144,20 @@
 
             // Render all the group views
             for (GroupItem *groupItem in sortedArray) {
+                UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+                                               initWithTarget:self
+                                               action:@selector(handlePanGroup:)];
+                [groupItem addGestureRecognizer: pan];
                 [self.GroupsView addSubview:groupItem];
             }
+            
+            [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
+            [self.currentGroupView removeFromSuperview];
         }
     }
     else
     {
-        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes];
+        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes withGroups: self.groupViews];
     }
 }
 
@@ -151,6 +166,15 @@
     if ( [gestureRecognizer.view respondsToSelector:@selector(handlePan2:)] ) {
         NoteItem *nv = (NoteItem *)gestureRecognizer.view;
         [nv handlePan2:gestureRecognizer];
+    }
+}
+
+- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer
+{
+    // TODO: at start of pan, find all children. Then during pan update the child coordinates
+    if ( [gestureRecognizer.view respondsToSelector:@selector(handlePanGroup2:)] ) {
+        GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
+        [groupItem handlePanGroup2:gestureRecognizer];
     }
 }
 
