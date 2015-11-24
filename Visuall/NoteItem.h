@@ -21,4 +21,6 @@
 
 - (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer;
 
+- (void) translateTx: (float) tx andTy: (float) ty;
+
 @end
