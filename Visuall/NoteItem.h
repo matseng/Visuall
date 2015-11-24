@@ -23,4 +23,6 @@
 
 - (void) translateTx: (float) tx andTy: (float) ty;
 
+- (void) saveToCoreData;
+
 @end

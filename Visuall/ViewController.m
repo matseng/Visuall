@@ -105,7 +105,7 @@
 {
     if (self.modeControl.selectedSegmentIndex == 1)
     {
-        NSLog(@"sucka");
+        //noop
     }
     else if (self.modeControl.selectedSegmentIndex == 2)
     {
@@ -159,7 +159,7 @@
             [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
             [self.currentGroupView removeFromSuperview];
             // set currentGroupItem as lastSelectedObject
-            self.lastSelectedObject = currentGroupItem;
+            [self setSelectedObject:currentGroupItem];
         }
     }
     else
@@ -173,7 +173,7 @@
     if ( [gestureRecognizer.view respondsToSelector:@selector(handlePan2:)] ) {
         NoteItem *nv = (NoteItem *)gestureRecognizer.view;
         [nv handlePan2:gestureRecognizer];
-        self.lastSelectedObject = nv;
+        [self setSelectedObject:nv];
     }
 }
 
@@ -194,7 +194,7 @@
     if ( [gestureRecognizer.view respondsToSelector:@selector(handlePanGroup2:)] ) {
         GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
         [groupItem handlePanGroup2:gestureRecognizer];
-        self.lastSelectedObject = groupItem;
+        [self setSelectedObject:groupItem];
     }
 }
 
@@ -281,24 +281,39 @@
 - (IBAction)onDeletePressed:(UIBarButtonItem *)sender {
     NSLog(@"Kill all humans");
     if (self.lastSelectedObject) {
+        NSLog(@"%@", self.lastSelectedObject);
+        NSManagedObject *objectToDelete;
         if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
             NSLog(@"puplet");
             NoteItem *noteToDelete = (NoteItem *)self.lastSelectedObject;
-            NSManagedObject *objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
-            [self.moc deleteObject:objectToDelete];
+            objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
             NSLog(@"woofarf");
             GroupItem *groupToDelete = (GroupItem *)self.lastSelectedObject;
-            NSManagedObject *objectToDelete = [self.moc existingObjectWithID:groupToDelete.group.objectID error:nil];
-            [self.moc deleteObject:objectToDelete];
-
+            objectToDelete = [self.moc existingObjectWithID:groupToDelete.group.objectID error:nil];
         }
         //remove view from the view
+        [self.moc deleteObject:objectToDelete];
         [self.lastSelectedObject removeFromSuperview];
         self.lastSelectedObject = nil;
     }
 }
 
+
+- (void)setSelectedObject:(UIView *)object
+{
+    if ([object isKindOfClass:[NoteItem class]]) {
+        NoteItem *noteToSet = (NoteItem *)object;
+        [noteToSet saveToCoreData];
+        self.lastSelectedObject = noteToSet;
+    } else if ([object isKindOfClass:[GroupItem class]]) {
+        NSLog(@"schnickelfritz");
+        GroupItem *groupToSet = (GroupItem *)object;
+        [groupToSet saveToCoreData];
+        self.lastSelectedObject = groupToSet;
+        [self.groupViews removeObjectIdenticalTo:groupToSet];
+    }
+}
 
 //- (void)didReceiveMemoryWarning {
 //    [super didReceiveMemoryWarning];
