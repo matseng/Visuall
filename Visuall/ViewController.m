@@ -80,11 +80,11 @@
 {
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes andGroups: self.groupViews];
     
-//    if ([[TransformUtil sharedManager] zoom] > 1.0){
-//        [self.Background removeGestureRecognizer: self.panBackground];
-//    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
-//        [self.Background addGestureRecognizer: self.panBackground];
-//    }
+    if ([[TransformUtil sharedManager] zoom] > 1.0){
+        [self.Background removeGestureRecognizer: self.panBackground];
+    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
+        [self.Background addGestureRecognizer: self.panBackground];
+    }
 }
 
 
