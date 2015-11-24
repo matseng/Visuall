@@ -215,6 +215,11 @@
         [ni addGestureRecognizer: pan];
         [self.NotesView addSubview:ni];
         ni.delegate = self;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self                                                 selector:@selector(textFieldDidEndEditing:)
+                                                     name:@"UITextFieldTextDidEndEditingNotification"
+                                                   object:nil];
+
     }
 }
 
@@ -226,7 +231,23 @@
     [note addGestureRecognizer: pan];
     [self.NotesView addSubview:note];
     self.lastSelectedObject = note;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidEndEditing:)
+                                                 name:@"UITextFieldTextDidEndEditingNotification"
+                                               object:nil];
+
 }
+
+- (void)textFieldDidEndEditing:(NSNotification *)notification
+{
+    if ([notification.self isKindOfClass:[NoteItem class]]) {
+        NoteItem *editedNote = (NoteItem *)notification.self;
+        editedNote.note.title = editedNote.text;
+        [self setSelectedObject:editedNote];
+    }
+}
+
 
 - (IBAction) handeTap:(UITapGestureRecognizer *)sender
 {

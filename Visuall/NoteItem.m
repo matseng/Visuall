@@ -40,11 +40,12 @@
                                    - NOTE_HEIGHT / 2,
                                    NOTE_WIDTH,
                                    NOTE_HEIGHT)];
-        self.text = [NSString stringWithFormat: @"%@\n\n%@", self.note.title, self.note.paragraph];
+        self.text = [NSString stringWithFormat: @"%@ %@", self.note.title, self.note.paragraph];
         [self setBorderStyle:UITextBorderStyleRoundedRect];
         [[TransformUtil sharedManager] transformNoteItem: self];
         NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     }
+    
     return self;
     
 }
