@@ -8,7 +8,6 @@
 
 #import "Group.h"
 #import "Note.h"
-#import "AppDelegate.h"
 
 @implementation Group
 
@@ -28,11 +27,6 @@
 {
     self.height = [NSNumber numberWithFloat:height];
     self.width = [NSNumber numberWithFloat:width];
-}
-
-+ (NSManagedObjectContext *) getMOC {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    return appDelegate.managedObjectContext;
 }
 
 @end

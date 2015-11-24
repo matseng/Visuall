@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 
 @interface NoteItem()
-
+@property NSManagedObjectContext *moc;
 @end
 
 #define NOTE_WIDTH 150.0f
@@ -25,7 +25,10 @@
 {
     self = [super init];
     if (self) {
-        Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:[Note getMOC]];
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        self.moc = appDelegate.managedObjectContext;
+        
+        Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:self.moc];
         note.title = title;
 	note.paragraph = paragraph;
 //        note.centerX = [NSNumber numberWithFloat:point.x];
@@ -69,6 +72,11 @@
         NSLog(@"New note %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
 
     }
+}
+
+- (void) saveToCoreData
+{
+    [self.moc save:nil];
 }
 
 @end
