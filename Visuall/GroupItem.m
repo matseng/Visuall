@@ -24,8 +24,7 @@
         self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:[Group getMOC]];
         [self.group setTopPoint:coordinate];
         [self.group setHeight:height andWidth:width];
-        
-        [self setFrame:CGRectMake(coordinate.x, coordinate.y, width, height)];
+        [ self setFrame: CGRectMake(-width/2, -height / 2, width, height)];
         [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
         [self.layer setBorderColor:GROUP_VIEW_BORDER_COLOR];
         [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
