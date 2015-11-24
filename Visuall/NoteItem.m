@@ -68,8 +68,7 @@
 {
     float xCenter = self.note.centerX.floatValue + tx;
     float yCenter = self.note.centerY.floatValue + ty;
-    self.note.centerX = [NSNumber numberWithFloat:xCenter];
-    self.note.centerY = [NSNumber numberWithFloat:yCenter];
+    [self.note setCenterX:xCenter andCenterY:yCenter];
     
     [[TransformUtil sharedManager] transformNoteItem: self];
     

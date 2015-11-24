@@ -49,9 +49,11 @@
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+        
         float x = self.group.topX.floatValue + translation.x;
         float y = self.group.topY.floatValue + translation.y;
-        [self.group setTopPoint: CGPointMake(x, y)];
+        [self.group setTopX:x andTopY:y];
+        
         [[TransformUtil sharedManager] transformGroupItem: self];
         for (NoteItem *ni in self.notesInGroup) {
             [ni translateTx: translation.x andTy:translation.y];
