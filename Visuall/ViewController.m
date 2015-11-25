@@ -328,7 +328,7 @@
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self.moc deleteObject:objectToDelete];
                 [self.lastSelectedObject removeFromSuperview];
-                [self.groupViews removeObjectIdenticalTo:objectToDelete];
+                [self.groupViews removeObjectIdenticalTo:self.lastSelectedObject];
                 self.lastSelectedObject = nil;
         }];
         
