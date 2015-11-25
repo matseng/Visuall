@@ -155,6 +155,10 @@
                                                initWithTarget:self
                                                action:@selector(handlePanGroup:)];
                 [groupItem addGestureRecognizer: pan];
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                               initWithTarget:self
+                                               action:@selector(handleTapGroup:)];
+                [groupItem addGestureRecognizer: tap];
                 [self.GroupsView addSubview:groupItem];
             }
             
@@ -197,6 +201,13 @@
         GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
         [groupItem handlePanGroup2:gestureRecognizer];
         [self setSelectedObject:groupItem];
+    }
+}
+
+- (void) handleTapGroup: (UITapGestureRecognizer *) gestureRecognizer
+{
+    if (self.modeControl.selectedSegmentIndex == 2 || self.modeControl.selectedSegmentIndex == 3) {
+        [self setSelectedObject:gestureRecognizer.view];
     }
 }
 
@@ -254,8 +265,8 @@
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
-        
-        if (self.modeControl.selectedSegmentIndex == 0) {
+    
+     if (self.modeControl.selectedSegmentIndex == 0) {
             
             // grab coordinates
             CGPoint gesturePoint = [sender locationInView:sender.view];
