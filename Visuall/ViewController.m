@@ -221,8 +221,8 @@
         [self.NotesView addSubview:ni];
         ni.delegate = self;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self                                                 selector:@selector(textFieldDidEndEditing:)
-                                                     name:@"UITextFieldTextDidEndEditingNotification"
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textFieldDidEndEditing:)name:@"UITextFieldTextDidEndEditingNotification"
                                                    object:nil];
 
     }
@@ -235,11 +235,10 @@
                                    action:@selector(handlePan:)];
     [note addGestureRecognizer: pan];
     [self.NotesView addSubview:note];
-    self.lastSelectedObject = note;
+    note.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textFieldDidEndEditing:)
-                                                 name:@"UITextFieldTextDidEndEditingNotification"
+                                             selector:@selector(textFieldDidEndEditing:)name:@"UITextFieldTextDidEndEditingNotification"
                                                object:nil];
 
 }
@@ -289,6 +288,7 @@
                 //stick it with the other notes
                 [self.NotesCollection addNote:newNote];
                 [self addNoteToViewWithHandlers:newNote];
+                [self setSelectedObject:newNote];
             }];
             
             //define cancel action
@@ -306,24 +306,51 @@
 }
 
 - (IBAction)onDeletePressed:(UIBarButtonItem *)sender {
+    
+    
+    
+//    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
+    
+    
+    //define cancel action
+//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//        // noop
+//    }];
+
     NSLog(@"Kill all humans");
     if (self.lastSelectedObject) {
         NSLog(@"%@", self.lastSelectedObject);
         NSManagedObject *objectToDelete;
+        NSString *modalText;
         if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
             NSLog(@"puplet");
             NoteItem *noteToDelete = (NoteItem *)self.lastSelectedObject;
             objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
+            modalText = @"this note";
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
             NSLog(@"woofarf");
             GroupItem *groupToDelete = (GroupItem *)self.lastSelectedObject;
-            [self.groupViews removeObjectIdenticalTo:groupToDelete];
             objectToDelete = [self.moc existingObjectWithID:groupToDelete.group.objectID error:nil];
+            modalText = @"this group";
         }
-        //remove view from the view
-        [self.moc deleteObject:objectToDelete];
-        [self.lastSelectedObject removeFromSuperview];
-        self.lastSelectedObject = nil;
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Delete" message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", modalText] preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self.moc deleteObject:objectToDelete];
+                [self.lastSelectedObject removeFromSuperview];
+                [self.groupViews removeObjectIdenticalTo:objectToDelete];
+                self.lastSelectedObject = nil;
+        }];
+        
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                // noop
+        }];
+        
+        [alertController addAction:alertAction];
+        [alertController addAction:cancelAction];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -332,7 +359,6 @@
 {
     if (self.lastSelectedObject) {
         if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
-//            self.lastSelectedObject.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
             self.lastSelectedObject.layer.borderWidth = 0;
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
             self.lastSelectedObject.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
