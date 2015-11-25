@@ -2,7 +2,7 @@
 //  Note+CoreDataProperties.h
 //  Visuall
 //
-//  Created by John Mai on 11/23/15.
+//  Created by John Mai on 11/25/15.
 //  Copyright © 2015 Visuall. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *paragraph;
 @property (nullable, nonatomic, retain) NSString *title;
 @property (nullable, nonatomic, retain) NSNumber *width;
+@property (nullable, nonatomic, retain) id color;
 
 @end
 

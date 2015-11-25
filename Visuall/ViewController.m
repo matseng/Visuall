@@ -12,18 +12,18 @@
 #import "NoteItem.h"
 #import "TransformUtil.h"
 #import "GroupItem.h"
+#import "GroupsCollection.h"
 #import "AppDelegate.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIView *Background;
 @property (weak, nonatomic) IBOutlet UIView *GroupsView;
 @property (weak, nonatomic) IBOutlet UIView *NotesView;
-@property (strong, nonatomic) NSMutableArray *helloWorlds;
-@property (strong, nonatomic) NotesCollection *NotesCollection;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
 @property UIView *currentGroupView;
-@property NSMutableArray *groupViews;
+@property GroupsCollection *groupsCollection;
 @property CGPoint currentGroupViewStart;
+@property NotesCollection *NotesCollection;
 @property UIView *lastSelectedObject;
 @property UIGestureRecognizer *panBackground;
 @property NSManagedObjectContext *moc;
@@ -56,7 +56,7 @@
                                                  action:@selector(handlePinchBackground:)];
     [self.Background addGestureRecognizer:pinchBackground];
     
-    self.NotesCollection = [[NotesCollection alloc] init];
+    self.NotesCollection = [NotesCollection new];
     [self.NotesCollection initializeNotes];
     [self attachAllNotes];
 //    UIPanGestureRecognizer *panNotesView = [[UIPanGestureRecognizer alloc]
@@ -72,8 +72,9 @@
     self.currentGroupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
     
     // Initlialize the mutable array that holds our group UIViews
-    self.groupViews = [[NSMutableArray alloc] init];
-    [self loadGroupsFromCoreData];
+    self.groupsCollection = [GroupsCollection new];
+    [self.groupsCollection initializeGroups];
+//    [self loadGroupsFromCoreData];
     [self refreshGroupView];
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
@@ -81,7 +82,7 @@
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
-    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes andGroups: self.groupViews];
+    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes andGroups: self.groupsCollection.groups];
     
     if ([[TransformUtil sharedManager] zoom] > 1.0){
         [self.Background removeGestureRecognizer: self.panBackground];
@@ -141,7 +142,7 @@
             
             [currentGroupItem saveToCoreData];
             
-            [self.groupViews addObject:currentGroupItem];
+            [self.groupsCollection addGroup:currentGroupItem];
             
             [self refreshGroupView];
 
@@ -151,7 +152,7 @@
     }
     else
     {
-        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes withGroups: self.groupViews];
+        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes withGroups: self.groupsCollection.groups];
     }
 }
 
@@ -328,7 +329,12 @@
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self.moc deleteObject:objectToDelete];
                 [self.lastSelectedObject removeFromSuperview];
-                [self.groupViews removeObjectIdenticalTo:self.lastSelectedObject];
+            
+                if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
+                    [self.NotesCollection.Notes removeObjectIdenticalTo:self.lastSelectedObject];
+                } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
+                    [self.groupsCollection.groups removeObjectIdenticalTo:self.lastSelectedObject];
+                }
                 self.lastSelectedObject = nil;
         }];
         
@@ -374,7 +380,7 @@
     // Sort by area of group view
     NSArray *sortedArray;
     
-    sortedArray = [self.groupViews sortedArrayUsingComparator:^NSComparisonResult(GroupItem *first, GroupItem *second) {
+    sortedArray = [self.groupsCollection.groups sortedArrayUsingComparator:^NSComparisonResult(GroupItem *first, GroupItem *second) {
         float firstArea = first.frame.size.height * first.frame.size.width;
         float secondArea = second.frame.size.height * second.frame.size.width;
         return firstArea < secondArea;
@@ -398,26 +404,20 @@
 
 }
 
-- (void)loadGroupsFromCoreData
-{
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Group"];
-    
-    NSArray *groupsCD = [self.moc executeFetchRequest:request error:nil];
-    NSLog(@"Fetching Groups from Core Data...found %d groups", groupsCD.count);
-    
-    for (Group *group in groupsCD)
-    {
-        [self.groupViews addObject:[[GroupItem alloc] initGroup: group]];
-    }
-        
-        
-    //    NoteItem *ni = [[NoteItem alloc] initNote:@"Hello World 0" andPoint:(CGPoint){ 150, 150 } andText:@""];
-    //    NoteItem *ni2 = [[NoteItem alloc] initNote:@"Hello World 1" andPoint:(CGPoint){ 200, 300 } andText:@""];
-    //    [self.Notes addObject:ni];
-    //    [self.Notes addObject:ni2];
-    
-}
-    
+//- (void)loadGroupsFromCoreData
+//{
+//    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Group"];
+//    
+//    NSArray *groupsCD = [self.moc executeFetchRequest:request error:nil];
+//    NSLog(@"Fetching Groups from Core Data...found %d groups", groupsCD.count);
+//    
+//    for (Group *group in groupsCD)
+//    {
+//        [self.groupsCollection.groups addObject:[[GroupItem alloc] initGroup: group]];
+//    }
+//    
+//}
+
 //- (void)didReceiveMemoryWarning {
 //    [super didReceiveMemoryWarning];
 //    // Dispose of any resources that can be recreated.

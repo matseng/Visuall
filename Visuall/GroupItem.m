@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
-#define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
+#define GROUP_VIEW_BORDER_COLOR [UIColor blackColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
 
 @interface GroupItem ()
@@ -29,11 +29,10 @@
     {
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         self.moc = appDelegate.managedObjectContext;
-        
         self.group = group;
         [self setFrame: CGRectMake(-group.width.floatValue/2, -group.height.floatValue / 2, group.width.floatValue, group.height.floatValue)];
         [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
-        [self.layer setBorderColor:GROUP_VIEW_BORDER_COLOR];
+        [self.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
         [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
         [[TransformUtil sharedManager] transformGroupItem: self];
  
@@ -54,9 +53,14 @@
         self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:self.moc];
         [self.group setTopPoint:coordinate];
         [self.group setHeight:height andWidth:width];
+        self.group.bgcolor = GROUP_VIEW_BACKGROUND_COLOR;
+        self.group.bordercolor = GROUP_VIEW_BORDER_COLOR;
+        self.group.borderwidth = [NSNumber numberWithFloat:GROUP_VIEW_BORDER_WIDTH];
+        self.group.alpha = [NSNumber numberWithFloat:0.0];
+        
         [ self setFrame: CGRectMake(-width/2, -height / 2, width, height)];
         [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
-        [self.layer setBorderColor:GROUP_VIEW_BORDER_COLOR];
+        [self.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
         [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
         [[TransformUtil sharedManager] transformGroupItem: self];
     }
