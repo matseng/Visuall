@@ -18,6 +18,7 @@
                  andPoint:(CGPoint) point
                   andText:(NSString *) paragraph;
 
+- (instancetype) initNote:(Note *)note;
 
 - (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer;
 

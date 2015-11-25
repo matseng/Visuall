@@ -29,6 +29,7 @@
 		88ED06191C04057D00C0486D /* Note+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED06181C04057D00C0486D /* Note+CoreDataProperties.m */; };
 		88ED061E1C040AC100C0486D /* Group+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED061B1C040AC100C0486D /* Group+CoreDataProperties.m */; };
 		88ED061F1C040AC100C0486D /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED061D1C040AC100C0486D /* Group.m */; };
+		88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED06211C05567E00C0486D /* GroupsCollection.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,8 @@
 		88ED061B1C040AC100C0486D /* Group+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Group+CoreDataProperties.m"; sourceTree = "<group>"; };
 		88ED061C1C040AC100C0486D /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		88ED061D1C040AC100C0486D /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
+		88ED06201C05567E00C0486D /* GroupsCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsCollection.h; sourceTree = "<group>"; };
+		88ED06211C05567E00C0486D /* GroupsCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsCollection.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +137,8 @@
 				71E354F81BF5953600B5EA99 /* NoteItem.m */,
 				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
 				71FC72131BF2E881003B7F14 /* NotesCollection.m */,
+				88ED06201C05567E00C0486D /* GroupsCollection.h */,
+				88ED06211C05567E00C0486D /* GroupsCollection.m */,
 				712EC9611BEAF21500ED6803 /* Main.storyboard */,
 				885AFD781C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld */,
 				712EC9641BEAF21500ED6803 /* Images.xcassets */,
@@ -297,6 +302,7 @@
 			files = (
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
+				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				88ED06191C04057D00C0486D /* Note+CoreDataProperties.m in Sources */,
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,
 				885AFD621C00215300F89DE5 /* Note.m in Sources */,

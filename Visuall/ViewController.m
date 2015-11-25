@@ -73,6 +73,7 @@
     
     // Initlialize the mutable array that holds our group UIViews
     self.groupViews = [[NSMutableArray alloc] init];
+    [self loadGroupsFromCoreData];
     
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
@@ -137,6 +138,8 @@
                                            initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.currentGroupView.frame.origin]
                                             andWidth:self.currentGroupView.frame.size.width / zoom
                                             andHeight:self.currentGroupView.frame.size.height / zoom];
+            
+            [currentGroupItem saveToCoreData];
             
             [self.groupViews addObject:currentGroupItem];
             
@@ -351,6 +354,26 @@
     self.lastSelectedObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
 }
 
+- (void)loadGroupsFromCoreData
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Group"];
+        
+    NSArray *groupsCD = [self.moc executeFetchRequest:request error:nil];
+    NSLog(@"Fetching Groups from Core Data...found %d groups", groupsCD.count);
+    
+    for (Group *group in groupsCD)
+    {
+        [self.groupViews addObject:[[GroupItem alloc] initGroup: group]];
+    }
+        
+        
+    //    NoteItem *ni = [[NoteItem alloc] initNote:@"Hello World 0" andPoint:(CGPoint){ 150, 150 } andText:@""];
+    //    NoteItem *ni2 = [[NoteItem alloc] initNote:@"Hello World 1" andPoint:(CGPoint){ 200, 300 } andText:@""];
+    //    [self.Notes addObject:ni];
+    //    [self.Notes addObject:ni2];
+    
+}
+    
 //- (void)didReceiveMemoryWarning {
 //    [super didReceiveMemoryWarning];
 //    // Dispose of any resources that can be recreated.

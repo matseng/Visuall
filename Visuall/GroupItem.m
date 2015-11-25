@@ -21,6 +21,27 @@
 
 @implementation GroupItem
 
+- (instancetype) initGroup:(Group *)group
+{
+    self = [super init];
+    
+    if (self)
+    {
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        self.moc = appDelegate.managedObjectContext;
+        
+        self.group = group;
+        [self setFrame: CGRectMake(-group.width.floatValue/2, -group.height.floatValue / 2, group.width.floatValue, group.height.floatValue)];
+        [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
+        [self.layer setBorderColor:GROUP_VIEW_BORDER_COLOR];
+        [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+        [[TransformUtil sharedManager] transformGroupItem: self];
+ 
+    }
+    
+    return self;
+}
+
 - (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float)width andHeight:(float)height
 {
     self = [super init];
