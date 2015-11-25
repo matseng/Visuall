@@ -16,6 +16,8 @@
 
 @property (strong) NSMutableArray *notesInGroup;
 
+@property (strong) NSMutableArray *groupsInGroup;
+
 - (instancetype) initGroup:(Group *)group;
 
 - (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float)width andHeight:(float)height;
@@ -25,5 +27,6 @@
 - (BOOL) isNoteInGroup: (NoteItem *) noteItem;
 
 - (void) saveToCoreData;
+- (BOOL) isGroupInGroup: (GroupItem *) gi;
 
 @end
