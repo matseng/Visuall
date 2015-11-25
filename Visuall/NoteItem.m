@@ -19,6 +19,27 @@
 
 @implementation NoteItem
 
+- (instancetype) initNote:(Note *)note
+{
+    self = [super init];
+    if (self) {
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        self.moc = appDelegate.managedObjectContext;
+        
+        [self setNote: note];
+        [self setFrame: CGRectMake(- NOTE_WIDTH / 2,
+                                   - NOTE_HEIGHT / 2,
+                                   NOTE_WIDTH,
+                                   NOTE_HEIGHT)];
+        self.text = [NSString stringWithFormat: @"%@ %@", self.note.title, self.note.paragraph];
+        [self setBorderStyle:UITextBorderStyleRoundedRect];
+        [[TransformUtil sharedManager] transformNoteItem: self];
+        NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
+    }
+    
+    return self;
+}
+
 - (instancetype) initNote:(NSString *) title
                  andPoint:(CGPoint) point
                   andText:(NSString *) paragraph
@@ -30,9 +51,8 @@
         
         Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:self.moc];
         note.title = title;
-	note.paragraph = paragraph;
-//        note.centerX = [NSNumber numberWithFloat:point.x];
-//        note.centerY = [NSNumber numberWithFloat:point.y];
+        note.paragraph = paragraph;
+
         [note setCenterPoint:point];
         [note setHeight:NOTE_HEIGHT andWidth:NOTE_WIDTH];
         [self setNote: note];

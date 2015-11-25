@@ -9,6 +9,7 @@
 #import "NotesCollection.h"
 #import "Note+CoreDataProperties.h"
 #import "NoteItem.h"
+#import "AppDelegate.h"
 
 @interface NotesCollection () <UIGestureRecognizerDelegate>
 @end
@@ -20,10 +21,23 @@
 - (void) initializeNotes
 {
     self.Notes = [[NSMutableArray alloc] init];
-    NoteItem *ni = [[NoteItem alloc] initNote:@"Hello World 0" andPoint:(CGPoint){ 150, 150 } andText:@""];
-    NoteItem *ni2 = [[NoteItem alloc] initNote:@"Hello World 1" andPoint:(CGPoint){ 200, 300 } andText:@""];
-    [self.Notes addObject:ni];
-    [self.Notes addObject:ni2];
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *moc = appDelegate.managedObjectContext;
+
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Note"];
+    
+    NSArray *notesCD = [moc executeFetchRequest:request error:nil];
+    NSLog(@"Fetching Notes from Core Data...found %d notes", notesCD.count);
+    for (Note *note in notesCD) {
+        [self.Notes addObject:[[NoteItem alloc] initNote:note]];
+    }
+
+    
+//    NoteItem *ni = [[NoteItem alloc] initNote:@"Hello World 0" andPoint:(CGPoint){ 150, 150 } andText:@""];
+//    NoteItem *ni2 = [[NoteItem alloc] initNote:@"Hello World 1" andPoint:(CGPoint){ 200, 300 } andText:@""];
+//    [self.Notes addObject:ni];
+//    [self.Notes addObject:ni2];
 }
 
 //method to add single note dynamically from main view
@@ -31,7 +45,5 @@
 {
     [self.Notes addObject:newNote];
 }
-
-
 
 @end
