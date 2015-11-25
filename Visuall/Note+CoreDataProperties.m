@@ -2,7 +2,7 @@
 //  Note+CoreDataProperties.m
 //  Visuall
 //
-//  Created by John Mai on 11/23/15.
+//  Created by John Mai on 11/25/15.
 //  Copyright © 2015 Visuall. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -21,5 +21,6 @@
 @dynamic paragraph;
 @dynamic title;
 @dynamic width;
+@dynamic color;
 
 @end

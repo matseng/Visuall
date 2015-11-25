@@ -26,10 +26,10 @@
 		77E13DAC1C01211E00105BB5 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DAB1C01211E00105BB5 /* delete.png */; };
 		885AFD621C00215300F89DE5 /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 885AFD5C1C00215300F89DE5 /* Note.m */; };
 		885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 885AFD781C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld */; };
-		88ED06191C04057D00C0486D /* Note+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED06181C04057D00C0486D /* Note+CoreDataProperties.m */; };
-		88ED061E1C040AC100C0486D /* Group+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED061B1C040AC100C0486D /* Group+CoreDataProperties.m */; };
 		88ED061F1C040AC100C0486D /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED061D1C040AC100C0486D /* Group.m */; };
 		88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED06211C05567E00C0486D /* GroupsCollection.m */; };
+		88ED06281C06237300C0486D /* Group+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED06271C06237300C0486D /* Group+CoreDataProperties.m */; };
+		88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ED062A1C0627B100C0486D /* Note+CoreDataProperties.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,14 +73,14 @@
 		885AFD5B1C00215300F89DE5 /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note.h; sourceTree = "<group>"; };
 		885AFD5C1C00215300F89DE5 /* Note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note.m; sourceTree = "<group>"; };
 		885AFD791C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Visuall_CoreData.xcdatamodel; sourceTree = "<group>"; };
-		88ED06171C04057D00C0486D /* Note+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Note+CoreDataProperties.h"; sourceTree = "<group>"; };
-		88ED06181C04057D00C0486D /* Note+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Note+CoreDataProperties.m"; sourceTree = "<group>"; };
-		88ED061A1C040AC100C0486D /* Group+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Group+CoreDataProperties.h"; sourceTree = "<group>"; };
-		88ED061B1C040AC100C0486D /* Group+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Group+CoreDataProperties.m"; sourceTree = "<group>"; };
 		88ED061C1C040AC100C0486D /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		88ED061D1C040AC100C0486D /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
 		88ED06201C05567E00C0486D /* GroupsCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsCollection.h; sourceTree = "<group>"; };
 		88ED06211C05567E00C0486D /* GroupsCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsCollection.m; sourceTree = "<group>"; };
+		88ED06261C06237300C0486D /* Group+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Group+CoreDataProperties.h"; sourceTree = "<group>"; };
+		88ED06271C06237300C0486D /* Group+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Group+CoreDataProperties.m"; sourceTree = "<group>"; };
+		88ED06291C0627B100C0486D /* Note+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Note+CoreDataProperties.h"; sourceTree = "<group>"; };
+		88ED062A1C0627B100C0486D /* Note+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Note+CoreDataProperties.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,12 +182,12 @@
 		885AFD651C00217800F89DE5 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				88ED061A1C040AC100C0486D /* Group+CoreDataProperties.h */,
-				88ED061B1C040AC100C0486D /* Group+CoreDataProperties.m */,
+				88ED06261C06237300C0486D /* Group+CoreDataProperties.h */,
+				88ED06271C06237300C0486D /* Group+CoreDataProperties.m */,
 				88ED061C1C040AC100C0486D /* Group.h */,
 				88ED061D1C040AC100C0486D /* Group.m */,
-				88ED06171C04057D00C0486D /* Note+CoreDataProperties.h */,
-				88ED06181C04057D00C0486D /* Note+CoreDataProperties.m */,
+				88ED06291C0627B100C0486D /* Note+CoreDataProperties.h */,
+				88ED062A1C0627B100C0486D /* Note+CoreDataProperties.m */,
 				885AFD5B1C00215300F89DE5 /* Note.h */,
 				885AFD5C1C00215300F89DE5 /* Note.m */,
 			);
@@ -300,13 +300,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
-				88ED06191C04057D00C0486D /* Note+CoreDataProperties.m in Sources */,
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,
 				885AFD621C00215300F89DE5 /* Note.m in Sources */,
-				88ED061E1C040AC100C0486D /* Group+CoreDataProperties.m in Sources */,
+				88ED06281C06237300C0486D /* Group+CoreDataProperties.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,

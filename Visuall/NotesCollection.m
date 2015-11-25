@@ -20,7 +20,7 @@
 
 - (void) initializeNotes
 {
-    self.Notes = [[NSMutableArray alloc] init];
+    self.Notes = [NSMutableArray new];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *moc = appDelegate.managedObjectContext;
@@ -32,12 +32,6 @@
     for (Note *note in notesCD) {
         [self.Notes addObject:[[NoteItem alloc] initNote:note]];
     }
-
-    
-//    NoteItem *ni = [[NoteItem alloc] initNote:@"Hello World 0" andPoint:(CGPoint){ 150, 150 } andText:@""];
-//    NoteItem *ni2 = [[NoteItem alloc] initNote:@"Hello World 1" andPoint:(CGPoint){ 200, 300 } andText:@""];
-//    [self.Notes addObject:ni];
-//    [self.Notes addObject:ni2];
 }
 
 //method to add single note dynamically from main view

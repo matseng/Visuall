@@ -10,23 +10,6 @@
 
 @implementation Note
 
-//- (instancetype) initWithString: (NSString *)text {
-//    return [self initWithString:text centerX:0 centerY:0];
-//}
-//
-//- (instancetype) initWithString: (NSString *)text centerX: (float)pointX centerY: (float)pointY
-//{
-//    if (self = [super initWithEntity:[NSEntityDescription entityForName:@"Note" inManagedObjectContext: [Note getMOC]]  insertIntoManagedObjectContext: [Note getMOC]]) {
-//        [NSEntityDescription ]
-//        
-//        self.paragraph = text;
-//        self.centerX = [NSNumber numberWithFloat: pointX];
-//        self.centerY = [NSNumber numberWithFloat: pointY];
-//    }
-//    
-//    return self;
-//}
-
 - (void) setCenterPoint: (CGPoint)point
 {
     self.centerX = [NSNumber numberWithFloat:point.x];

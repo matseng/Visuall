@@ -5,6 +5,10 @@
         <relationship name="toNote" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Group" syncable="YES"/>
     </entity>
     <entity name="Group" representedClassName="Group" syncable="YES">
+        <attribute name="alpha" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bgcolor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="bordercolor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="borderwidth" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="topX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -15,6 +19,7 @@
     <entity name="Note" representedClassName="Note" syncable="YES">
         <attribute name="centerX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="centerY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imagePath" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,7 +29,7 @@
     </entity>
     <elements>
         <element name="Arrow" positionX="-18" positionY="99" width="128" height="75"/>
-        <element name="Group" positionX="-36" positionY="72" width="128" height="135"/>
-        <element name="Note" positionX="-36" positionY="9" width="128" height="165"/>
+        <element name="Group" positionX="-36" positionY="72" width="128" height="195"/>
+        <element name="Note" positionX="-36" positionY="9" width="128" height="180"/>
     </elements>
 </model>

@@ -2,7 +2,7 @@
 //  Group+CoreDataProperties.h
 //  Visuall
 //
-//  Created by John Mai on 11/23/15.
+//  Created by John Mai on 11/25/15.
 //  Copyright © 2015 Visuall. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -15,11 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Group (CoreDataProperties)
 
-@property (nullable, nonatomic, retain) NSNumber *topX;
-@property (nullable, nonatomic, retain) NSNumber *topY;
 @property (nullable, nonatomic, retain) NSNumber *height;
 @property (nullable, nonatomic, retain) NSString *title;
+@property (nullable, nonatomic, retain) NSNumber *topX;
+@property (nullable, nonatomic, retain) NSNumber *topY;
 @property (nullable, nonatomic, retain) NSNumber *width;
+@property (nullable, nonatomic, retain) id bgcolor;
+@property (nullable, nonatomic, retain) NSNumber *alpha;
+@property (nullable, nonatomic, retain) id bordercolor;
+@property (nullable, nonatomic, retain) NSNumber *borderwidth;
 @property (nullable, nonatomic, retain) NSSet<Note *> *note;
 
 @end
