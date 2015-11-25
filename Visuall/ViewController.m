@@ -193,10 +193,12 @@
     }
 }
 
-- (BOOL) textFieldShouldReturn:(UITextField *)textField
+- (BOOL) textFieldShouldReturn:(NoteItem *)ni
 {
     NSLog(@"Should remove keyboard here again");
-    [textField resignFirstResponder];
+    [ni resignFirstResponder];
+    [[TransformUtil sharedManager] transformNoteItem:ni];
+    
     return YES;
 }
 
@@ -204,6 +206,7 @@
 - (void) attachAllNotes
 {
     for (NoteItem *ni in self.NotesCollection.Notes) {
+<<<<<<< HEAD
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                        initWithTarget:self
                                        action:@selector(handlePan:)];
@@ -215,6 +218,9 @@
                                                  selector:@selector(textFieldDidEndEditing:)name:@"UITextFieldTextDidEndEditingNotification"
                                                    object:nil];
 
+=======
+        [self addNoteToViewWithHandlers:ni];
+>>>>>>> improved editting of notes - width increases as you type
     }
 }
 
@@ -225,12 +231,25 @@
                                    action:@selector(handlePan:)];
     [note addGestureRecognizer: pan];
     [self.NotesView addSubview:note];
+<<<<<<< HEAD
     note.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(textFieldDidEndEditing:)name:@"UITextFieldTextDidEndEditingNotification"
                                                object:nil];
 
+=======
+    self.lastSelectedObject = note;
+    note.delegate = self;
+    [note addTarget:self
+             action:@selector(textFieldDidChangeHandler:)
+            forControlEvents:UIControlEventEditingChanged];
+}
+
+-(void) textFieldDidChangeHandler:(NoteItem *)textField
+{
+    [textField sizeToFit];
+>>>>>>> improved editting of notes - width increases as you type
 }
 
 - (void)textFieldDidEndEditing:(NSNotification *)notification
@@ -289,8 +308,6 @@
             [alertController addAction:alertAction];
             [alertController addAction:cancelAction];
             [self presentViewController:alertController animated:YES completion:nil];
-           
-
         }
     }
 }

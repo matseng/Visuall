@@ -52,16 +52,19 @@
         Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:self.moc];
         note.title = title;
         note.paragraph = paragraph;
-
         [note setCenterPoint:point];
-        [note setHeight:NOTE_HEIGHT andWidth:NOTE_WIDTH];
+        
         [self setNote: note];
-        [self setFrame: CGRectMake(- NOTE_WIDTH / 2,
-                                   - NOTE_HEIGHT / 2,
-                                   NOTE_WIDTH,
-                                   NOTE_HEIGHT)];
-        self.text = [NSString stringWithFormat: @"%@ %@", self.note.title, self.note.paragraph];
+        self.text = [NSString stringWithFormat: @"%@\n\n%@", self.note.title, self.note.paragraph];
+        self.textAlignment = UITextAlignmentCenter;
         [self setBorderStyle:UITextBorderStyleRoundedRect];
+        [self sizeToFit];
+        CGRect frame = self.frame;
+        frame.size.width = frame.size.width * 1.05;
+        frame.size.height = frame.size.height;
+        frame.origin.x = - frame.size.width / 2;
+        frame.origin.y = - frame.size.height / 2;
+        self.frame = frame;
         [[TransformUtil sharedManager] transformNoteItem: self];
         NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     }
