@@ -32,6 +32,8 @@
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
+#define SELECTED_VIEW_BORDER_COLOR [[UIColor blueColor] CGColor]
+#define SELECTED_VIEW_BORDER_WIDTH 2.0
 
 @implementation ViewController
 
@@ -280,6 +282,7 @@
                 //create a new note
                 CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
                 NoteItem *newNote = [[NoteItem alloc] initNote:titleTextField.text andPoint:point andText:paragraphTextField.text];
+                [newNote saveToCoreData];
                 //stick it with the other notes
                 [self.NotesCollection addNote:newNote];
                 [self addNoteToViewWithHandlers:newNote];
@@ -311,6 +314,7 @@
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
             NSLog(@"woofarf");
             GroupItem *groupToDelete = (GroupItem *)self.lastSelectedObject;
+            [self.groupViews removeObjectIdenticalTo:groupToDelete];
             objectToDelete = [self.moc existingObjectWithID:groupToDelete.group.objectID error:nil];
         }
         //remove view from the view
@@ -323,6 +327,16 @@
 
 - (void)setSelectedObject:(UIView *)object
 {
+    if (self.lastSelectedObject) {
+        if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
+//            self.lastSelectedObject.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
+            self.lastSelectedObject.layer.borderWidth = 0;
+        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
+            self.lastSelectedObject.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
+            self.lastSelectedObject.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+        }
+
+    }
     if ([object isKindOfClass:[NoteItem class]]) {
         NoteItem *noteToSet = (NoteItem *)object;
         [noteToSet saveToCoreData];
@@ -332,8 +346,9 @@
         GroupItem *groupToSet = (GroupItem *)object;
         [groupToSet saveToCoreData];
         self.lastSelectedObject = groupToSet;
-        [self.groupViews removeObjectIdenticalTo:groupToSet];
     }
+    self.lastSelectedObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
+    self.lastSelectedObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
 }
 
 //- (void)didReceiveMemoryWarning {
