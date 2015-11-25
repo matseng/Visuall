@@ -74,7 +74,7 @@
     // Initlialize the mutable array that holds our group UIViews
     self.groupViews = [[NSMutableArray alloc] init];
     [self loadGroupsFromCoreData];
-    
+    [self refreshGroupView];
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
 }
@@ -143,30 +143,8 @@
             
             [self.groupViews addObject:currentGroupItem];
             
-            // Sort by area of group view
-            NSArray *sortedArray;
+            [self refreshGroupView];
 
-            sortedArray = [self.groupViews sortedArrayUsingComparator:^NSComparisonResult(GroupItem *first, GroupItem *second) {
-                float firstArea = first.frame.size.height * first.frame.size.width;
-                float secondArea = second.frame.size.height * second.frame.size.width;
-                return firstArea < secondArea;
-            }];
-
-            // Render all the group views
-            for (GroupItem *groupItem in sortedArray) {
-                UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-                                               initWithTarget:self
-                                               action:@selector(handlePanGroup:)];
-                [groupItem addGestureRecognizer: pan];
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                               initWithTarget:self
-                                               action:@selector(handleTapGroup:)];
-                [groupItem addGestureRecognizer: tap];
-                [self.GroupsView addSubview:groupItem];
-            }
-            
-            [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
-            [self.currentGroupView removeFromSuperview];
             // set currentGroupItem as lastSelectedObject
             [self setSelectedObject:currentGroupItem];
         }
@@ -350,7 +328,7 @@
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self.moc deleteObject:objectToDelete];
                 [self.lastSelectedObject removeFromSuperview];
-                [self.groupViews removeObjectIdenticalTo:objectToDelete];
+                [self.groupViews removeObjectIdenticalTo:self.lastSelectedObject];
                 self.lastSelectedObject = nil;
         }];
         
@@ -391,10 +369,39 @@
     self.lastSelectedObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
 }
 
+- (void)refreshGroupView
+{
+    // Sort by area of group view
+    NSArray *sortedArray;
+    
+    sortedArray = [self.groupViews sortedArrayUsingComparator:^NSComparisonResult(GroupItem *first, GroupItem *second) {
+        float firstArea = first.frame.size.height * first.frame.size.width;
+        float secondArea = second.frame.size.height * second.frame.size.width;
+        return firstArea < secondArea;
+    }];
+    
+    // Render all the group views
+    for (GroupItem *groupItem in sortedArray) {
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+                                       initWithTarget:self
+                                       action:@selector(handlePanGroup:)];
+        [groupItem addGestureRecognizer: pan];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                       initWithTarget:self
+                                       action:@selector(handleTapGroup:)];
+        [groupItem addGestureRecognizer: tap];
+        [self.GroupsView addSubview:groupItem];
+    }
+    
+    [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
+    [self.currentGroupView removeFromSuperview];
+
+}
+
 - (void)loadGroupsFromCoreData
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Group"];
-        
+    
     NSArray *groupsCD = [self.moc executeFetchRequest:request error:nil];
     NSLog(@"Fetching Groups from Core Data...found %d groups", groupsCD.count);
     
