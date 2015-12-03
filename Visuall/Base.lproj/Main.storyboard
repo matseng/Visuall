@@ -68,7 +68,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="S4Z-tg-fOV">
                     <connections>
-                        <action selector="handeTap:" destination="BYZ-38-t0r" id="meo-1e-jTf"/>
+                        <action selector="handleTap:" destination="BYZ-38-t0r" id="hpY-18-GCb"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

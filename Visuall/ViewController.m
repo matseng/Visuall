@@ -269,7 +269,7 @@
 }
 
 
-- (IBAction) handeTap:(UITapGestureRecognizer *)sender
+- (IBAction) handleTap:(UITapGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
