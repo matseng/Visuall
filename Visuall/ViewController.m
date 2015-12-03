@@ -167,7 +167,6 @@
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    // TODO: at start of pan, find all children. Then during pan update the child coordinates
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
@@ -213,21 +212,7 @@
 - (void) attachAllNotes
 {
     for (NoteItem *ni in self.NotesCollection.Notes) {
-//<<<<<<< HEAD
-//        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-//                                       initWithTarget:self
-//                                       action:@selector(handlePan:)];
-//        [ni addGestureRecognizer: pan];
-//        [self.NotesView addSubview:ni];
-//        ni.delegate = self;
-//        
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(textFieldDidEndEditing:)name:@"UITextFieldTextDidEndEditingNotification"
-//                                                   object:nil];
-//
-//=======
         [self addNoteToViewWithHandlers:ni];
-//>>>>>>> improved editting of notes - width increases as you type
     }
 }
 
@@ -238,14 +223,6 @@
                                    action:@selector(handlePan:)];
     [note addGestureRecognizer: pan];
     [self.NotesView addSubview:note];
-//<<<<<<< HEAD
-//    note.delegate = self;
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(textFieldDidEndEditing:)name:@"UITextFieldTextDidEndEditingNotification"
-//                                               object:nil];
-//
-//=======
     self.lastSelectedObject = note;
     note.delegate = self;
     [note addTarget:self
@@ -256,7 +233,6 @@
 -(void) textFieldDidChangeHandler:(NoteItem *)textField
 {
     [textField sizeToFit];
-//>>>>>>> improved editting of notes - width increases as you type
 }
 
 - (void)textFieldDidEndEditing:(NSNotification *)notification

@@ -27,10 +27,13 @@
         self.moc = appDelegate.managedObjectContext;
         
         [self setNote: note];
-        [self setFrame: CGRectMake(- NOTE_WIDTH / 2,
-                                   - NOTE_HEIGHT / 2,
-                                   NOTE_WIDTH,
-                                   NOTE_HEIGHT)];
+        NSLog(@"Init %f, %f", note.centerX.floatValue, note.centerY.floatValue);
+        NSLog(@"Init %f, %f", note.width.floatValue, note.height.floatValue);
+
+        [self setFrame: CGRectMake(- note.width.floatValue / 2,
+                                   - note.height.floatValue / 2,
+                                   note.width.floatValue,
+                                   note.height.floatValue)];
         self.text = [NSString stringWithFormat: @"%@ %@", self.note.title, self.note.paragraph];
         [self setBorderStyle:UITextBorderStyleRoundedRect];
         [[TransformUtil sharedManager] transformNoteItem: self];
@@ -56,7 +59,7 @@
         
         [self setNote: note];
         self.text = [NSString stringWithFormat: @"%@\n\n%@", self.note.title, self.note.paragraph];
-        self.textAlignment = UITextAlignmentCenter;
+        self.textAlignment = NSTextAlignmentCenter;
         [self setBorderStyle:UITextBorderStyleRoundedRect];
         [self sizeToFit];
         CGRect frame = self.frame;
@@ -65,6 +68,7 @@
         frame.origin.x = - frame.size.width / 2;
         frame.origin.y = - frame.size.height / 2;
         self.frame = frame;
+        [note setHeight:frame.size.height andWidth:frame.size.width];
         [[TransformUtil sharedManager] transformNoteItem: self];
         NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     }
