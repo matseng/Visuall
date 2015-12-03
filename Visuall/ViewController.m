@@ -178,13 +178,13 @@
                 [notesInGroup addObject:ni];
             }
         }
-//        for (GroupItem *gi in self.groupsCollection) {
-//            if ([groupItem isGroupInGroup:gi]) {
-//                [groupsInGroup addObject:gi];
-//            }
-//        }
+        for (GroupItem *gi in self.groupsCollection.groups) {
+            if ([groupItem isGroupInGroup:gi]) {
+                [groupsInGroup addObject:gi];
+            }
+        }
         [groupItem setNotesInGroup: notesInGroup];
-//        [groupItem setGroupsInGroup:groupsInGroup];
+        [groupItem setGroupsInGroup:groupsInGroup];
     }
     if ( [gestureRecognizer.view respondsToSelector:@selector(handlePanGroup2:)] ) {
         GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
