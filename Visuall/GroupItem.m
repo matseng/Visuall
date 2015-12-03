@@ -83,6 +83,12 @@
         for (NoteItem *ni in self.notesInGroup) {
             [ni translateTx: translation.x andTy:translation.y];
         }
+        for (GroupItem *gi in self.groupsInGroup) {
+            x = gi.group.topX.floatValue + translation.x;
+            y = gi.group.topY.floatValue + translation.y;
+            [gi.group setTopPoint: CGPointMake(x, y)];
+            [[TransformUtil sharedManager] transformGroupItem: gi];
+        }
     }
 }
 
@@ -98,6 +104,26 @@
     {
         return YES;
     }
+    return NO;
+}
+
+- (BOOL) isGroupInGroup: (GroupItem *) gi
+{
+    
+    float firstArea = self.group.height.floatValue * self.group.width.floatValue;
+    float secondArea = gi.group.height.floatValue * gi.group.width.floatValue;
+    if (self == gi || secondArea > firstArea){
+        return NO;
+    }
+    
+    CGRect groupRect = CGRectMake([self.group.topX floatValue], [self.group.topY floatValue], [self.group.width floatValue], [self.group.height floatValue]);
+    float centerX = gi.group.topX.floatValue + gi.group.width.floatValue / 2;
+    float centerY = gi.group.topY.floatValue + gi.group.height.floatValue / 2;
+    if ( CGRectContainsPoint(groupRect, (CGPoint){centerX, centerY} ) )
+    {
+        return YES;
+    }
+    
     return NO;
 }
 
