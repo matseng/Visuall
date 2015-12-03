@@ -233,7 +233,18 @@
 -(void) textFieldDidChangeHandler:(NoteItem *)textField
 {
     [textField sizeToFit];
+    
+//    [self sizeToFit];
+//    CGRect frame = self.frame;
+//    frame.size.width = frame.size.width * 1.05;
+//    frame.size.height = frame.size.height;
+//    frame.origin.x = - frame.size.width / 2;
+//    frame.origin.y = - frame.size.height / 2;
+//    self.frame = frame;
+//    [note setHeight:frame.size.height andWidth:frame.size.width];
+//    [[TransformUtil sharedManager] transformNoteItem: self];
 }
+
 
 - (void)textFieldDidEndEditing:(NSNotification *)notification
 {
@@ -241,6 +252,18 @@
         NoteItem *editedNote = (NoteItem *)notification.self;
         editedNote.note.title = editedNote.text;
         [self setSelectedObject:editedNote];
+        
+        [editedNote sizeToFit];
+        CGRect frame = editedNote.frame;
+//WHY IS THIS NOT WORKING WHEN COMMENTED BACK IN
+//        frame.size.width = frame.size.width * 1.05;
+//        frame.size.height = frame.size.height;
+//        frame.origin.x = - frame.size.width / 2;
+//        frame.origin.y = - frame.size.height / 2;
+        editedNote.frame = frame;
+        [editedNote.note setHeight:frame.size.height andWidth:frame.size.width];
+        [[TransformUtil sharedManager] transformNoteItem: editedNote];
+
     }
 }
 
