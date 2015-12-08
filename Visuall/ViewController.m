@@ -352,6 +352,7 @@
         
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self.moc deleteObject:objectToDelete];
+                [self.moc save:nil];
                 [self.lastSelectedObject removeFromSuperview];
             
                 if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
