@@ -29,13 +29,14 @@
         [self setNote: note];
         NSLog(@"Init %f, %f", note.centerX.floatValue, note.centerY.floatValue);
         NSLog(@"Init %f, %f", note.width.floatValue, note.height.floatValue);
-
-        [self setFrame: CGRectMake(- note.width.floatValue / 2,
-                                   - note.height.floatValue / 2,
-                                   note.width.floatValue,
-                                   note.height.floatValue)];
         self.text = [NSString stringWithFormat: @"%@ %@", self.note.title, self.note.paragraph];
         [self setBorderStyle:UITextBorderStyleRoundedRect];
+        CGRect frame = self.frame;
+        frame.size.width = note.width.floatValue;
+        frame.size.height = note.height.floatValue;
+        frame.origin.x = - note.width.floatValue / 2;
+        frame.origin.y = - note.height.floatValue / 2;
+        self.frame = frame;
         [[TransformUtil sharedManager] transformNoteItem: self];
         NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     }
@@ -61,19 +62,25 @@
         self.text = [NSString stringWithFormat: @"%@\n\n%@", self.note.title, self.note.paragraph];
         self.textAlignment = NSTextAlignmentCenter;
         [self setBorderStyle:UITextBorderStyleRoundedRect];
-        [self sizeToFit];
-        CGRect frame = self.frame;
-        frame.size.width = frame.size.width * 1.05;
-        frame.size.height = frame.size.height;
-        frame.origin.x = - frame.size.width / 2;
-        frame.origin.y = - frame.size.height / 2;
-        self.frame = frame;
-        [note setHeight:frame.size.height andWidth:frame.size.width];
-        [[TransformUtil sharedManager] transformNoteItem: self];
-        NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
+        [self renderToFitText];
     }
     
     return self;
+    
+}
+
+- (void) renderToFitText
+{
+    [self sizeToFit];
+    CGRect frame = self.frame;
+    frame.size.width = frame.size.width * 1.05;
+    frame.size.height = frame.size.height;
+    frame.origin.x = - frame.size.width / 2;
+    frame.origin.y = - frame.size.height / 2;
+    self.frame = frame;
+    [self.note setHeight:frame.size.height andWidth:frame.size.width];
+    [[TransformUtil sharedManager] transformNoteItem: self];
+    NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     
 }
 
