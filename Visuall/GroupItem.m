@@ -72,7 +72,7 @@
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
+        CGPoint translation = [gestureRecognizer translationInView:self];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         
         float x = self.group.topX.floatValue + translation.x;

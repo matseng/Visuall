@@ -84,11 +84,11 @@
 {
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes andGroups: self.groupsCollection.groups];
     
-    if ([[TransformUtil sharedManager] zoom] > 1.0){
-        [self.Background removeGestureRecognizer: self.panBackground];
-    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
-        [self.Background addGestureRecognizer: self.panBackground];
-    }
+//    if ([[TransformUtil sharedManager] zoom] > 1.0){
+//        [self.Background removeGestureRecognizer: self.panBackground];
+//    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
+//        [self.Background addGestureRecognizer: self.panBackground];
+//    }
 }
 
 
@@ -107,6 +107,23 @@
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
+    // HACKS
+    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+    UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    NSLog(@"viewHit %@", [viewHit class]);
+    NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
+    if ( [viewHit respondsToSelector:@selector(handlePan2:)] ) {
+        NoteItem *nv = (NoteItem *) viewHit;
+        [nv handlePan2:gestureRecognizer];
+        [self setSelectedObject:nv];
+        return;
+    } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
+        GroupItem  *gi = (GroupItem *) viewHit;
+        [self handlePanGroup:gestureRecognizer andGroupItem:gi];
+        return;
+    }
+    // END HACKS
+    
     if (self.modeControl.selectedSegmentIndex == 1)
     {
         //noop
@@ -165,10 +182,13 @@
     }
 }
 
-- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer
+- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
+    if (!groupItem) {
+        groupItem = (GroupItem *)gestureRecognizer.view;
+    }
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
+
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
         NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
         for (NoteItem *ni in self.NotesCollection.Notes) {
@@ -185,8 +205,8 @@
         [groupItem setNotesInGroup: notesInGroup];
         [groupItem setGroupsInGroup:groupsInGroup];
     }
-    if ( [gestureRecognizer.view respondsToSelector:@selector(handlePanGroup2:)] ) {
-        GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
+    if ( [groupItem respondsToSelector:@selector(handlePanGroup2:)] ) {
+//        GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
         [groupItem handlePanGroup2:gestureRecognizer];
         [self setSelectedObject:groupItem];
     }
@@ -254,7 +274,7 @@
      if (self.modeControl.selectedSegmentIndex == 0) {
             
             // grab coordinates
-            CGPoint gesturePoint = [sender locationInView:sender.view];
+            CGPoint gesturePoint = [sender locationInView: self.Background];
             NSLog(@"we in note mode beeeetches %f %f", gesturePoint.x, gesturePoint.y);
             
             //instantiate alert controller
@@ -393,7 +413,7 @@
     for (GroupItem *groupItem in sortedArray) {
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                        initWithTarget:self
-                                       action:@selector(handlePanGroup:)];
+                                       action:@selector(myWrapper:)];
         [groupItem addGestureRecognizer: pan];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                        initWithTarget:self
@@ -405,6 +425,12 @@
     [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
     [self.currentGroupView removeFromSuperview];
 
+}
+
+
+-(void)myWrapper:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    [self handlePanGroup:gestureRecognizer andGroupItem:nil];
 }
 
 //- (void)loadGroupsFromCoreData

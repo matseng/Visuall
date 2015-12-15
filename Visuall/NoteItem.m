@@ -113,7 +113,7 @@
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
+        CGPoint translation = [gestureRecognizer translationInView:self];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         [self translateTx:translation.x andTy:translation.y];
     }
