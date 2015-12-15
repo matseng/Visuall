@@ -30,6 +30,7 @@
         NSLog(@"Init %f, %f", note.centerX.floatValue, note.centerY.floatValue);
         NSLog(@"Init %f, %f", note.width.floatValue, note.height.floatValue);
         self.text = [NSString stringWithFormat: @"%@ %@", self.note.title, self.note.paragraph];
+        self.textAlignment = NSTextAlignmentCenter;
         [self setBorderStyle:UITextBorderStyleRoundedRect];
         CGRect frame = self.frame;
         frame.size.width = note.width.floatValue;
@@ -38,6 +39,7 @@
         frame.origin.y = - note.height.floatValue / 2;
         self.frame = frame;
         [[TransformUtil sharedManager] transformNoteItem: self];
+//        CGRect frame2 = self.frame;
         NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     }
     
@@ -62,26 +64,49 @@
         self.text = [NSString stringWithFormat: @"%@\n\n%@", self.note.title, self.note.paragraph];
         self.textAlignment = NSTextAlignmentCenter;
         [self setBorderStyle:UITextBorderStyleRoundedRect];
-        [self renderToFitText];
+        [self renderToAutosizeWidth2];
     }
     
     return self;
     
 }
 
-- (void) renderToFitText
+- (void) renderToAutosizeWidth
 {
+//    CGRect frame0 = self.frame;
+//    CGAffineTransform matrix = self.transform;
     [self sizeToFit];
     CGRect frame = self.frame;
-    frame.size.width = frame.size.width * 1.05;
+    NSLog(@"Check frame %f, %f", self.frame.origin.x, self.frame.origin.y);
+//    frame.size.width = frame.size.width * 1.05;
+    frame.size.width = frame.size.width * 1.0;
+    frame.size.height = frame.size.height;
+    
+//    frame.origin.x = - frame.size.width / 2;
+//    frame.origin.y = - frame.size.height / 2;
+//    self.frame = frame;  // BUG?
+    [self setFrame:frame];
+//    [self setNeedsDisplay];
+    [self.note setHeight:frame.size.height andWidth:frame.size.width];
+    [[TransformUtil sharedManager] transformNoteItem: self];
+}
+
+- (void) renderToAutosizeWidth2
+{
+    //    CGRect frame0 = self.frame;
+    //    CGAffineTransform matrix = self.transform;
+    [self sizeToFit];
+    CGRect frame = self.frame;
+    NSLog(@"Check frame %f, %f", self.frame.origin.x, self.frame.origin.y);
+    frame.size.width = frame.size.width * 1.0;
     frame.size.height = frame.size.height;
     frame.origin.x = - frame.size.width / 2;
     frame.origin.y = - frame.size.height / 2;
-    self.frame = frame;
+    //    self.frame = frame;  // BUG?
+    [self setFrame:frame];
+    //    [self setNeedsDisplay];
     [self.note setHeight:frame.size.height andWidth:frame.size.width];
     [[TransformUtil sharedManager] transformNoteItem: self];
-    NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
-    
 }
 
 - (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LOH-1e-ScV">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
         <!--Visuall-->
@@ -74,6 +74,71 @@
             </objects>
             <point key="canvasLocation" x="1121" y="354"/>
         </scene>
+        <!--Home-->
+        <scene sceneID="XdE-Fo-vno">
+            <objects>
+                <viewController id="apS-yr-KYH" customClass="HomeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ufO-Gj-Rzq"/>
+                        <viewControllerLayoutGuide type="bottom" id="q5Z-WG-2Cq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="CB3-dx-d90">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k0l-xU-woS">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                                <connections>
+                                    <outlet property="delegate" destination="apS-yr-KYH" id="i8c-By-cqb"/>
+                                </connections>
+                            </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Chn-gY-lvu" userLabel="BannerView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="gEL-PA-trL"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Chn-gY-lvu" secondAttribute="trailing" id="PWb-6d-dl4"/>
+                            <constraint firstItem="k0l-xU-woS" firstAttribute="top" secondItem="CB3-dx-d90" secondAttribute="top" id="XLM-yi-O0M"/>
+                            <constraint firstItem="Chn-gY-lvu" firstAttribute="top" secondItem="CB3-dx-d90" secondAttribute="top" id="aiw-ii-Nsn"/>
+                            <constraint firstAttribute="trailing" secondItem="k0l-xU-woS" secondAttribute="trailing" id="dYU-Gp-iPl"/>
+                            <constraint firstItem="q5Z-WG-2Cq" firstAttribute="top" secondItem="k0l-xU-woS" secondAttribute="bottom" id="ldO-zM-XQ1"/>
+                            <constraint firstItem="k0l-xU-woS" firstAttribute="leading" secondItem="CB3-dx-d90" secondAttribute="leading" id="nW3-H0-sCt"/>
+                            <constraint firstItem="Chn-gY-lvu" firstAttribute="leading" secondItem="CB3-dx-d90" secondAttribute="leading" id="xCE-IP-fju"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Home" id="aDi-vm-Qdo"/>
+                    <connections>
+                        <outlet property="scrollView" destination="k0l-xU-woS" id="Elf-3O-Ose"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ndf-hb-U9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2004" y="774"/>
+        </scene>
+        <!--New-->
+        <scene sceneID="Zte-Wm-gSU">
+            <objects>
+                <viewController id="uBz-8h-vDP" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aZ9-ax-c2d"/>
+                        <viewControllerLayoutGuide type="bottom" id="aXF-mT-tqJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eJC-5b-G76">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="New" id="epl-js-1o3"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rBE-sb-QTG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2004" y="1633"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="8bv-ua-UwU">
             <objects>
@@ -92,6 +157,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ph5-eD-gZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="370" y="425"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Vqq-Bm-7fx">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="wFT-nZ-ukS" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="Ur0-A3-3UL">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="apS-yr-KYH" kind="relationship" relationship="viewControllers" id="3Do-09-Fh2"/>
+                        <segue destination="uBz-8h-vDP" kind="relationship" relationship="viewControllers" id="s69-Ki-ZlF"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3sN-ap-FQp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1132" y="1062"/>
         </scene>
     </scenes>
     <resources>

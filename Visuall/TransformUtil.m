@@ -89,8 +89,11 @@
     NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
     NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
     NSLog(@"zoom %f", self.zoom);
-
+    NSLog(@"Check frame %f, %f", noteItem.frame.origin.x, noteItem.frame.origin.y);
+//    noteItem.transform = matrix;
     [noteItem setTransform: matrix];
+//    CGRectApplyAffineTransform(noteItem.frame , matrix);
+    NSLog(@"Check frame %f, %f", noteItem.frame.origin.x, noteItem.frame.origin.y);
 }
 
 -(void) transformGroupItem: (GroupItem *) groupItem

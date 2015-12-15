@@ -26,4 +26,6 @@
 
 - (void) saveToCoreData;
 
+- (void) renderToAutosizeWidth;
+
 @end

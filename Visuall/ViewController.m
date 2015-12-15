@@ -197,13 +197,15 @@
     if (self.modeControl.selectedSegmentIndex == 2 || self.modeControl.selectedSegmentIndex == 3) {
         [self setSelectedObject:gestureRecognizer.view];
     }
+    
+    [self handleTap: gestureRecognizer];  // tap group --> check to see if we should add a note
 }
 
 - (BOOL) textFieldShouldReturn:(NoteItem *)ni
 {
     NSLog(@"Should remove keyboard here again");
     [ni resignFirstResponder];
-    [[TransformUtil sharedManager] transformNoteItem:ni];
+//    [[TransformUtil sharedManager] transformNoteItem:ni];
     
     return YES;
 }
@@ -230,41 +232,17 @@
             forControlEvents:UIControlEventEditingChanged];
 }
 
--(void) textFieldDidChangeHandler:(NoteItem *)textField
+-(void) textFieldDidBeginEditing:(UITextField *)textField
 {
-    [textField sizeToFit];
-    
-//    [self sizeToFit];
-//    CGRect frame = self.frame;
-//    frame.size.width = frame.size.width * 1.05;
-//    frame.size.height = frame.size.height;
-//    frame.origin.x = - frame.size.width / 2;
-//    frame.origin.y = - frame.size.height / 2;
-//    self.frame = frame;
-//    [note setHeight:frame.size.height andWidth:frame.size.width];
-//    [[TransformUtil sharedManager] transformNoteItem: self];
+    [self setSelectedObject:textField];
 }
 
-
-- (void)textFieldDidEndEditing:(NSNotification *)notification
+-(void) textFieldDidChangeHandler:(NoteItem *)textField
 {
-    if ([notification.self isKindOfClass:[NoteItem class]]) {
-        NoteItem *editedNote = (NoteItem *)notification.self;
-        editedNote.note.title = editedNote.text;
-        [self setSelectedObject:editedNote];
-        
-        [editedNote sizeToFit];
-        CGRect frame = editedNote.frame;
-//WHY IS THIS NOT WORKING WHEN COMMENTED BACK IN
-//        frame.size.width = frame.size.width * 1.05;
-//        frame.size.height = frame.size.height;
-//        frame.origin.x = - frame.size.width / 2;
-//        frame.origin.y = - frame.size.height / 2;
-        editedNote.frame = frame;
-        [editedNote.note setHeight:frame.size.height andWidth:frame.size.width];
-        [[TransformUtil sharedManager] transformNoteItem: editedNote];
-
-    }
+//    [textField sizeToFit];
+    textField.note.title = textField.text;
+    [textField renderToAutosizeWidth];
+    [self setSelectedObject:textField];
 }
 
 
@@ -387,6 +365,7 @@
     if ([object isKindOfClass:[NoteItem class]]) {
         NoteItem *noteToSet = (NoteItem *)object;
         [noteToSet saveToCoreData];
+        [noteToSet setBorderStyle:UITextBorderStyleRoundedRect];
         self.lastSelectedObject = noteToSet;
     } else if ([object isKindOfClass:[GroupItem class]]) {
         NSLog(@"schnickelfritz");
@@ -396,6 +375,7 @@
     }
     self.lastSelectedObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
     self.lastSelectedObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
+
 }
 
 - (void)refreshGroupView
