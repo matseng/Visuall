@@ -13,6 +13,7 @@
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [UIColor blackColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
+#define RADIUS 100.0
 
 @interface GroupItem ()
 @property NSManagedObjectContext *moc;
@@ -30,10 +31,22 @@
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         self.moc = appDelegate.managedObjectContext;
         self.group = group;
-        [self setFrame: CGRectMake(-group.width.floatValue/2, -group.height.floatValue / 2, group.width.floatValue, group.height.floatValue)];
-        [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
-        [self.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
-        [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+        CGRect rect = CGRectMake(-group.width.floatValue/2, -group.height.floatValue / 2, group.width.floatValue, group.height.floatValue);
+        [self setFrame: rect];
+//        [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
+//        [self.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
+//        [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+//        
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        shapeLayer.frame = CGRectMake(0, 0, group.width.floatValue, group.height.floatValue);
+        [shapeLayer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
+        [shapeLayer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+        [shapeLayer setBackgroundColor: [GROUP_VIEW_BACKGROUND_COLOR CGColor]];
+        [self.layer addSublayer:shapeLayer];
+        [self drawCircleOnGroup:CGRectMake(group.width.floatValue - RADIUS / 2,
+                                           group.height.floatValue - RADIUS / 2,
+                                           RADIUS,
+                                           RADIUS)];
         [[TransformUtil sharedManager] transformGroupItem: self];
  
     }
@@ -53,19 +66,42 @@
         self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:self.moc];
         [self.group setTopPoint:coordinate];
         [self.group setHeight:height andWidth:width];
-        self.group.bgcolor = GROUP_VIEW_BACKGROUND_COLOR;
+//        self.group.bgcolor = GROUP_VIEW_BACKGROUND_COLOR;
         self.group.bordercolor = GROUP_VIEW_BORDER_COLOR;
         self.group.borderwidth = [NSNumber numberWithFloat:GROUP_VIEW_BORDER_WIDTH];
         self.group.alpha = [NSNumber numberWithFloat:0.0];
         
-        [ self setFrame: CGRectMake(-width/2, -height / 2, width, height)];
-        [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
-        [self.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
-        [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+        CGRect rect = CGRectMake(-width/2, -height / 2, width, height);
+        [self setFrame: rect];
+
+        
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        shapeLayer.frame = CGRectMake(0, 0, width, height);
+        [shapeLayer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
+        [shapeLayer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+        [shapeLayer setBackgroundColor:[GROUP_VIEW_BACKGROUND_COLOR CGColor]];
+        [self.layer addSublayer:shapeLayer];
+        [self drawCircleOnGroup:CGRectMake(width - RADIUS / 2,
+                                           height - RADIUS / 2,
+                                           RADIUS,
+                                           RADIUS)];
+        
         [[TransformUtil sharedManager] transformGroupItem: self];
     }
 
     return self;
+}
+
+-(void) onFocusHandler
+{
+    
+}
+
+-(void) drawCircleOnGroup: (CGRect) rect
+{
+    CAShapeLayer *circleLayer = [CAShapeLayer layer];
+    [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:rect] CGPath]];
+    [[self layer] insertSublayer:circleLayer atIndex:0];
 }
 
 -(void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer
