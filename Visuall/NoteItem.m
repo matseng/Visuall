@@ -37,6 +37,8 @@
         frame.size.height = note.height.floatValue;
         frame.origin.x = - note.width.floatValue / 2;
         frame.origin.y = - note.height.floatValue / 2;
+//        self.center = CGPointMake(0, 0);
+//        self.center.y = 0.0;
         self.frame = frame;
         [[TransformUtil sharedManager] transformNoteItem: self];
 //        CGRect frame2 = self.frame;
@@ -100,8 +102,9 @@
     NSLog(@"Check frame %f, %f", self.frame.origin.x, self.frame.origin.y);
     frame.size.width = frame.size.width * 1.0;
     frame.size.height = frame.size.height;
-    frame.origin.x = - frame.size.width / 2;
+    frame.origin.x = - frame.size.width / 2;  // TODO: TRY view.center = (0,0) instead
     frame.origin.y = - frame.size.height / 2;
+    
     //    self.frame = frame;  // BUG?
     [self setFrame:frame];
     //    [self setNeedsDisplay];

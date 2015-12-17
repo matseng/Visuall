@@ -31,7 +31,7 @@
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         self.moc = appDelegate.managedObjectContext;
         self.group = group;
-        CGRect rect = CGRectMake(-group.width.floatValue/2, -group.height.floatValue / 2, group.width.floatValue, group.height.floatValue);
+        CGRect rect = CGRectMake(-group.width.floatValue/2 - RADIUS/4, -group.height.floatValue / 2 - RADIUS/4, group.width.floatValue + RADIUS/2, group.height.floatValue + RADIUS/2);
         [self setFrame: rect];
 //        [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
 //        [self.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
