@@ -86,14 +86,14 @@
     matrix.d = self.zoom;
     matrix.tx = (noteItem.note.centerX.floatValue * self.zoom) + self.pan.x;
     matrix.ty = (noteItem.note.centerY.floatValue * self.zoom) + self.pan.y;
-    NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
-    NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
-    NSLog(@"zoom %f", self.zoom);
-    NSLog(@"Check frame %f, %f", noteItem.frame.origin.x, noteItem.frame.origin.y);
+//    NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
+//    NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
+//    NSLog(@"zoom %f", self.zoom);
+//    NSLog(@"Check frame %f, %f", noteItem.frame.origin.x, noteItem.frame.origin.y);
 //    noteItem.transform = matrix;
     [noteItem setTransform: matrix];
 //    CGRectApplyAffineTransform(noteItem.frame , matrix);
-    NSLog(@"Check frame %f, %f", noteItem.frame.origin.x, noteItem.frame.origin.y);
+//    NSLog(@"Check frame %f, %f", noteItem.frame.origin.x, noteItem.frame.origin.y);
 }
 
 -(void) transformGroupItem: (GroupItem *) groupItem
@@ -103,9 +103,9 @@
     matrix.d = self.zoom;
     matrix.tx = (groupItem.group.topX.floatValue + groupItem.group.width.floatValue / 2) * self.zoom + self.pan.x;
     matrix.ty = (groupItem.group.topY.floatValue + groupItem.group.height.floatValue / 2) * self.zoom + self.pan.y;
-    NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
-    NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
-    NSLog(@"zoom %f", self.zoom);
+//    NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
+//    NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
+//    NSLog(@"zoom %f", self.zoom);
     
     [groupItem setTransform: matrix];
 }

@@ -27,6 +27,8 @@
 @property UIView *lastSelectedObject;
 @property UIGestureRecognizer *panBackground;
 @property NSManagedObjectContext *moc;
+@property (strong, nonatomic) IBOutlet UIView *GestureView;
+@property CGPoint panBeginPoint;
 @end
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
@@ -44,11 +46,13 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     self.moc = appDelegate.managedObjectContext;
     
+    [self addGestureRecognizers];
+    
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                   initWithTarget:self
                                   action:@selector(handlePanBackground:)];
     self.panBackground = panBackground;
-    [self.Background addGestureRecognizer: panBackground];
+//    [self.Background addGestureRecognizer: panBackground];
     
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
@@ -80,6 +84,48 @@
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
 }
 
+- (void) addGestureRecognizers
+{
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+                                             initWithTarget:self
+                                             action:@selector(handlePanGestureView:)];
+    [self.GestureView addGestureRecognizer: pan];
+    
+}
+
+- (void) handlePanGestureView:(UIPanGestureRecognizer *) gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+        UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
+        NSLog(@"viewHit %@", [viewHit class]);
+        NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
+        if ( [viewHit isKindOfClass: [NoteItem class]] ) {
+            NoteItem *nv = (NoteItem *) viewHit;
+//            [nv handlePan2:gestureRecognizer];
+            self.panBeginPoint = CGPointMake(nv.note.centerX.floatValue, nv.note.centerY.floatValue);
+            [self setSelectedObject:nv];
+        }
+//      else if ( [viewHit isKindOfClass: [GroupItem class]]) {
+//            GroupItem  *gi = (GroupItem *) viewHit;
+//            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
+//        }
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
+//        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+//        [self translateTx:translation.x andTy:translation.y];
+        NSLog(@"tx & ty: {%f, %f}", translation.x, translation.y);
+        NoteItem *ni = (NoteItem*) self.lastSelectedObject;
+        float xCenter = self.panBeginPoint.x + translation.x;
+        float yCenter = self.panBeginPoint.y + translation.y;
+        [ni.note setCenterX:xCenter andCenterY:yCenter];
+        
+        [[TransformUtil sharedManager] transformNoteItem: ni];
+    }
+}
+
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes andGroups: self.groupsCollection.groups];
@@ -108,20 +154,20 @@
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
     // HACKS
-    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
-    UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
-    NSLog(@"viewHit %@", [viewHit class]);
-    NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
-    if ( [viewHit respondsToSelector:@selector(handlePan2:)] ) {
-        NoteItem *nv = (NoteItem *) viewHit;
-        [nv handlePan2:gestureRecognizer];
-        [self setSelectedObject:nv];
-        return;
-    } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
-        GroupItem  *gi = (GroupItem *) viewHit;
-        [self handlePanGroup:gestureRecognizer andGroupItem:gi];
-        return;
-    }
+//    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+//    UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
+//    NSLog(@"viewHit %@", [viewHit class]);
+//    NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
+//    if ( [viewHit respondsToSelector:@selector(handlePan2:)] ) {
+//        NoteItem *nv = (NoteItem *) viewHit;
+//        [nv handlePan2:gestureRecognizer];
+//        [self setSelectedObject:nv];
+//        return;
+//    } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
+//        GroupItem  *gi = (GroupItem *) viewHit;
+//        [self handlePanGroup:gestureRecognizer andGroupItem:gi];
+//        return;
+//    }
     // END HACKS
     
     if (self.modeControl.selectedSegmentIndex == 1)
