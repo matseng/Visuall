@@ -48,10 +48,10 @@
     
     [self addGestureRecognizers];
     
-    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
-                                  initWithTarget:self
-                                  action:@selector(handlePanBackground:)];
-    self.panBackground = panBackground;
+//    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
+//                                  initWithTarget:self
+//                                  action:@selector(handlePanBackground:)];
+//    self.panBackground = panBackground;
 //    [self.Background addGestureRecognizer: panBackground];
     
     
@@ -106,27 +106,46 @@
 //            [nv handlePan2:gestureRecognizer];
             self.panBeginPoint = CGPointMake(nv.note.centerX.floatValue, nv.note.centerY.floatValue);
             [self setSelectedObject:nv];
+        } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
+            GroupItem  *gi = (GroupItem *) viewHit;
+            self.panBeginPoint = CGPointMake(gi.group.topX.floatValue, gi.group.topY.floatValue);
+            [self setSelectedObject:gi];
+        } else {
+            [self setSelectedObject:nil];
         }
-//      else if ( [viewHit isKindOfClass: [GroupItem class]]) {
-//            GroupItem  *gi = (GroupItem *) viewHit;
-//            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
-//        }
-    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged && self.lastSelectedObject != nil)
     {
-        CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
+        float zoom = [[TransformUtil sharedManager] zoom];
+        if ([self.lastSelectedObject isKindOfClass:[ NoteItem class]])
+        {
+            CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
 //        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
 //        [self translateTx:translation.x andTy:translation.y];
-        NSLog(@"tx & ty: {%f, %f}", translation.x, translation.y);
-        NoteItem *ni = (NoteItem*) self.lastSelectedObject;
-        float xCenter = self.panBeginPoint.x + translation.x;
-        float yCenter = self.panBeginPoint.y + translation.y;
-        [ni.note setCenterX:xCenter andCenterY:yCenter];
-        
-        [[TransformUtil sharedManager] transformNoteItem: ni];
+//            NSLog(@"tx & ty: {%f, %f}", translation.x, translation.y);
+            NoteItem *ni = (NoteItem*) self.lastSelectedObject;
+            float xCenter = self.panBeginPoint.x + translation.x / zoom;
+            float yCenter = self.panBeginPoint.y + translation.y / zoom;
+            [ni.note setCenterX:xCenter andCenterY:yCenter];
+            [[TransformUtil sharedManager] transformNoteItem: ni];
+            [ni saveToCoreData];
+        } else if ( [self.lastSelectedObject isKindOfClass: [GroupItem class]])
+        {
+            CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
+            GroupItem *gi = (GroupItem*) self.lastSelectedObject;
+            float topX = self.panBeginPoint.x + translation.x / zoom;
+            float topY = self.panBeginPoint.y + translation.y / zoom;
+            [gi.group setTopX:topX andTopY:topY];
+            [[TransformUtil sharedManager] transformGroupItem:gi];
+            [gi saveToCoreData];
+        }
+//    } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    } else
+    {
+//        [self setSelectedObject:nil];
     }
 }
 
--(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
+- (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes andGroups: self.groupsCollection.groups];
     
@@ -286,10 +305,10 @@
 
 - (void) addNoteToViewWithHandlers:(NoteItem *)note
 {
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(handlePan:)];
-    [note addGestureRecognizer: pan];
+//    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+//                                   initWithTarget:self
+//                                   action:@selector(handlePan:)];
+//    [note addGestureRecognizer: pan];
     [self.NotesView addSubview:note];
     self.lastSelectedObject = note;
     note.delegate = self;
@@ -428,6 +447,12 @@
         }
 
     }
+    
+    if (object == nil) {
+        self.lastSelectedObject = nil;
+        return;
+    }
+
     if ([object isKindOfClass:[NoteItem class]]) {
         NoteItem *noteToSet = (NoteItem *)object;
         [noteToSet saveToCoreData];
