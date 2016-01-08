@@ -111,9 +111,11 @@
             self.panBeginPoint = CGPointMake(gi.group.topX.floatValue, gi.group.topY.floatValue);
             [self setSelectedObject:gi];
         } else {
+            [self handlePanBackground:gestureRecognizer];
             [self setSelectedObject:nil];
         }
-    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged && self.lastSelectedObject != nil)
+//    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged && self.lastSelectedObject != nil)
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
         float zoom = [[TransformUtil sharedManager] zoom];
         if ([self.lastSelectedObject isKindOfClass:[ NoteItem class]])
@@ -137,8 +139,9 @@
             [gi.group setTopX:topX andTopY:topY];
             [[TransformUtil sharedManager] transformGroupItem:gi];
             [gi saveToCoreData];
+        } else {
+            [self handlePanBackground:gestureRecognizer];
         }
-//    } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     } else
     {
 //        [self setSelectedObject:nil];
