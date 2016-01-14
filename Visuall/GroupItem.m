@@ -13,6 +13,7 @@
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [UIColor blackColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
+#define HANDLE_RADIUS 40.0
 
 @interface GroupItem ()
 @property NSManagedObjectContext *moc;
@@ -60,6 +61,9 @@
 - (void) renderGroup
 {
     [self setFrame: CGRectMake(-self.group.width.floatValue/2, -self.group.height.floatValue / 2, self.group.width.floatValue, self.group.height.floatValue)];
+    
+//    UIView *innerGroup = [[[UIView] alloc] init];
+    
     [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
     [self.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
     [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
@@ -68,10 +72,12 @@
 
 - (void) renderHandles
 {
-    float radius = 40;
-    CAShapeLayer *circleLayer = [CAShapeLayer layer];
-    [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(self.group.width.floatValue - radius / 2, self.group.height.floatValue - radius / 2, radius, radius)] CGPath]];
-    [[self layer] addSublayer:circleLayer];
+    float radius = HANDLE_RADIUS;    
+    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(self.group.width.floatValue - radius / 2, self.group.height.floatValue - radius / 2, radius, radius)];
+    circleView.alpha = 0.5;
+    circleView.layer.cornerRadius = radius / 2;
+    circleView.backgroundColor = [UIColor blueColor];
+    [self addSubview:circleView];
 }
 
 -(void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer
