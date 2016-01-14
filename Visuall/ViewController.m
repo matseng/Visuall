@@ -103,13 +103,16 @@
         NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
         if ( [viewHit isKindOfClass: [NoteItem class]] ) {
             NoteItem *nv = (NoteItem *) viewHit;
-//            [nv handlePan2:gestureRecognizer];
-            self.panBeginPoint = CGPointMake(nv.note.centerX.floatValue, nv.note.centerY.floatValue);
             [self setSelectedObject:nv];
+            [nv handlePan2:gestureRecognizer];
+//            self.panBeginPoint = CGPointMake(nv.note.centerX.floatValue, nv.note.centerY.floatValue);
+            
         } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
             GroupItem  *gi = (GroupItem *) viewHit;
-            self.panBeginPoint = CGPointMake(gi.group.topX.floatValue, gi.group.topY.floatValue);
+//            self.panBeginPoint = CGPointMake(gi.group.topX.floatValue, gi.group.topY.floatValue);
             [self setSelectedObject:gi];
+//            [gi handlePanGroup2: gestureRecognizer];
+            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
         } else {
             [self handlePanBackground:gestureRecognizer];
             [self setSelectedObject:nil];
@@ -117,31 +120,39 @@
 //    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged && self.lastSelectedObject != nil)
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        float zoom = [[TransformUtil sharedManager] zoom];
+//        float zoom = [[TransformUtil sharedManager] zoom];
         if ([self.lastSelectedObject isKindOfClass:[ NoteItem class]])
         {
-            CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
-//        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-//        [self translateTx:translation.x andTy:translation.y];
-//            NSLog(@"tx & ty: {%f, %f}", translation.x, translation.y);
+//            CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
+////        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+////        [self translateTx:translation.x andTy:translation.y];
+////            NSLog(@"tx & ty: {%f, %f}", translation.x, translation.y);
             NoteItem *ni = (NoteItem*) self.lastSelectedObject;
-            float xCenter = self.panBeginPoint.x + translation.x / zoom;
-            float yCenter = self.panBeginPoint.y + translation.y / zoom;
-            [ni.note setCenterX:xCenter andCenterY:yCenter];
-            [[TransformUtil sharedManager] transformNoteItem: ni];
+//            float xCenter = self.panBeginPoint.x + translation.x / zoom;
+//            float yCenter = self.panBeginPoint.y + translation.y / zoom;
+//            [ni.note setCenterX:xCenter andCenterY:yCenter];
+//            [[TransformUtil sharedManager] transformNoteItem: ni];
+//            [ni saveToCoreData];
+            
+            [ni handlePan2:gestureRecognizer];
             [ni saveToCoreData];
+            
         } else if ( [self.lastSelectedObject isKindOfClass: [GroupItem class]])
         {
-            CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
+//            CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
             GroupItem *gi = (GroupItem*) self.lastSelectedObject;
-            float topX = self.panBeginPoint.x + translation.x / zoom;
-            float topY = self.panBeginPoint.y + translation.y / zoom;
-            [gi.group setTopX:topX andTopY:topY];
-            [[TransformUtil sharedManager] transformGroupItem:gi];
-            [gi saveToCoreData];
+//            float topX = self.panBeginPoint.x + translation.x / zoom;
+//            float topY = self.panBeginPoint.y + translation.y / zoom;
+//            [gi.group setTopX:topX andTopY:topY];
+//            [[TransformUtil sharedManager] transformGroupItem:gi];
+//            [gi saveToCoreData];
+            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
         } else {
             [self handlePanBackground:gestureRecognizer];
         }
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [self handlePanBackground:gestureRecognizer];
     } else
     {
 //        [self setSelectedObject:nil];
@@ -485,14 +496,16 @@
     
     // Render all the group views
     for (GroupItem *groupItem in sortedArray) {
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-                                       initWithTarget:self
-                                       action:@selector(myWrapper:)];
-        [groupItem addGestureRecognizer: pan];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                       initWithTarget:self
-                                       action:@selector(handleTapGroup:)];
-        [groupItem addGestureRecognizer: tap];
+        
+//        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+//                                       initWithTarget:self
+//                                       action:@selector(myWrapper:)];
+//        [groupItem addGestureRecognizer: pan];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+//                                       initWithTarget:self
+//                                       action:@selector(handleTapGroup:)];
+//        [groupItem addGestureRecognizer: tap];
+        
         [self.GroupsView addSubview:groupItem];
     }
     
