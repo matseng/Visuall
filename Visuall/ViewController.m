@@ -87,18 +87,43 @@
 - (void) addGestureRecognizers
 {
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-                                             initWithTarget:self
-                                             action:@selector(handlePanGestureView:)];
+                                    initWithTarget:self
+                                    action:@selector(handlePanGestureView:)];
     [self.GestureView addGestureRecognizer: pan];
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                    initWithTarget:self
+                                    action: @selector(handleTapGestureView:)];
+    [self.GestureView addGestureRecognizer: tap];
+}
+
+- (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer
+{
+    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+    UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    return viewHit;
+}
+
+- (void) handleTapGestureView: (UITapGestureRecognizer *) gestureRecognizer
+{
+    NSLog(@"Tapped man!");
+    UIView *viewHit = [self getViewHit:gestureRecognizer];
+    if ([viewHit isKindOfClass: [NoteItem class]] || [viewHit isKindOfClass: [GroupItem class]])
+    {
+        [self setSelectedObject: viewHit];
+    } else
+    {
+        [self setSelectedObject:nil];
+    }
 }
 
 - (void) handlePanGestureView:(UIPanGestureRecognizer *) gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
-        UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
+//        CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+//        UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
+        UIView *viewHit = [self getViewHit:gestureRecognizer];
         NSLog(@"viewHit %@", [viewHit class]);
         NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
         if ( [viewHit isKindOfClass: [NoteItem class]] ) {
@@ -147,6 +172,7 @@
 //            [[TransformUtil sharedManager] transformGroupItem:gi];
 //            [gi saveToCoreData];
             [self handlePanGroup:gestureRecognizer andGroupItem:gi];
+            [gi saveToCoreData];
         } else {
             [self handlePanBackground:gestureRecognizer];
         }
