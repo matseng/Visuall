@@ -93,7 +93,8 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                     initWithTarget:self
-                                    action: @selector(handleTapGestureView:)];
+                                   action: @selector(handleTap:)];
+    
     [self.GestureView addGestureRecognizer: tap];
 }
 
@@ -104,25 +105,10 @@
     return viewHit;
 }
 
-- (void) handleTapGestureView: (UITapGestureRecognizer *) gestureRecognizer
-{
-    NSLog(@"Tapped man!");
-    UIView *viewHit = [self getViewHit:gestureRecognizer];
-    if ([viewHit isKindOfClass: [NoteItem class]] || [viewHit isKindOfClass: [GroupItem class]])
-    {
-        [self setSelectedObject: viewHit];
-    } else
-    {
-        [self setSelectedObject:nil];
-    }
-}
-
 - (void) handlePanGestureView:(UIPanGestureRecognizer *) gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-//        CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
-//        UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
         UIView *viewHit = [self getViewHit:gestureRecognizer];
         NSLog(@"viewHit %@", [viewHit class]);
         NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
@@ -130,13 +116,10 @@
             NoteItem *nv = (NoteItem *) viewHit;
             [self setSelectedObject:nv];
             [nv handlePan2:gestureRecognizer];
-//            self.panBeginPoint = CGPointMake(nv.note.centerX.floatValue, nv.note.centerY.floatValue);
             
         } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
             GroupItem  *gi = (GroupItem *) viewHit;
-//            self.panBeginPoint = CGPointMake(gi.group.topX.floatValue, gi.group.topY.floatValue);
             [self setSelectedObject:gi];
-//            [gi handlePanGroup2: gestureRecognizer];
             [self handlePanGroup:gestureRecognizer andGroupItem:gi];
         } else {
             [self handlePanBackground:gestureRecognizer];

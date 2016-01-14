@@ -68,8 +68,9 @@
 
 - (void) renderHandles
 {
+    float radius = 40;
     CAShapeLayer *circleLayer = [CAShapeLayer layer];
-    [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(50, 50, 100, 100)] CGPath]];
+    [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(self.group.width.floatValue - radius / 2, self.group.height.floatValue - radius / 2, radius, radius)] CGPath]];
     [[self layer] addSublayer:circleLayer];
 }
 
