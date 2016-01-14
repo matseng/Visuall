@@ -111,6 +111,7 @@
     {
         UIView *viewHit = [self getViewHit:gestureRecognizer];
         NSLog(@"viewHit %@", [viewHit class]);
+        NSLog(@"tag %ld", (long)viewHit.tag);
         NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
         if ( [viewHit isKindOfClass: [NoteItem class]] ) {
             NoteItem *nv = (NoteItem *) viewHit;

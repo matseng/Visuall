@@ -60,23 +60,27 @@
 
 - (void) renderGroup
 {
-    [self setFrame: CGRectMake(-self.group.width.floatValue/2, -self.group.height.floatValue / 2, self.group.width.floatValue, self.group.height.floatValue)];
+    [self setFrame: CGRectMake(-self.group.width.floatValue/2 - HANDLE_RADIUS / 2, -self.group.height.floatValue / 2 - HANDLE_RADIUS / 2, self.group.width.floatValue + HANDLE_RADIUS, self.group.height.floatValue + HANDLE_RADIUS)];
     
-//    UIView *innerGroup = [[[UIView] alloc] init];
+    UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width.floatValue, self.group.height.floatValue)];
     
-    [self setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
-    [self.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
-    [self.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+    
+    [innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
+    [innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
+    [innerGroupView.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+    innerGroupView.tag = 100;
+    [self addSubview: innerGroupView];
     [self renderHandles];
 }
 
 - (void) renderHandles
 {
-    float radius = HANDLE_RADIUS;    
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(self.group.width.floatValue - radius / 2, self.group.height.floatValue - radius / 2, radius, radius)];
+    float radius = HANDLE_RADIUS;
+    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(self.group.width.floatValue, self.group.height.floatValue, radius, radius)];
     circleView.alpha = 0.5;
     circleView.layer.cornerRadius = radius / 2;
     circleView.backgroundColor = [UIColor blueColor];
+    circleView.tag = 777;
     [self addSubview:circleView];
 }
 
