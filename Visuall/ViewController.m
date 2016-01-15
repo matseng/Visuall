@@ -111,6 +111,7 @@
     {
         UIView *viewHit = [self getViewHit:gestureRecognizer];
         NSLog(@"viewHit %@", [viewHit class]);
+//        NSLog(@"superview %@", [viewHit superview]);
         NSLog(@"tag %ld", (long)viewHit.tag);
         NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
         if ( [viewHit isKindOfClass: [NoteItem class]] ) {
@@ -118,8 +119,9 @@
             [self setSelectedObject:nv];
             [nv handlePan2:gestureRecognizer];
             
-        } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
-            GroupItem  *gi = (GroupItem *) viewHit;
+//        } else if ( [ [viewHit superview] isKindOfClass: [GroupItem class]]) {
+        } else if ( [[viewHit superview] isKindOfClass: [GroupItem class]]) {
+            GroupItem  *gi = (GroupItem *) [viewHit superview];
             [self setSelectedObject:gi];
             [self handlePanGroup:gestureRecognizer andGroupItem:gi];
         } else {
