@@ -111,16 +111,14 @@
     {
         UIView *viewHit = [self getViewHit:gestureRecognizer];
         NSLog(@"viewHit %@", [viewHit class]);
-//        NSLog(@"superview %@", [viewHit superview]);
         NSLog(@"tag %ld", (long)viewHit.tag);
         NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
         if ( [viewHit isKindOfClass: [NoteItem class]] ) {
             NoteItem *nv = (NoteItem *) viewHit;
             [self setSelectedObject:nv];
             [nv handlePan2:gestureRecognizer];
-            
-//        } else if ( [ [viewHit superview] isKindOfClass: [GroupItem class]]) {
-        } else if ( [[viewHit superview] isKindOfClass: [GroupItem class]]) {
+        } else if ( [[viewHit superview] isKindOfClass: [GroupItem class]] &&
+                   self.modeControl.selectedSegmentIndex != 2) {
             GroupItem  *gi = (GroupItem *) [viewHit superview];
             [self setSelectedObject:gi];
             [self handlePanGroup:gestureRecognizer andGroupItem:gi];
@@ -128,35 +126,18 @@
             [self handlePanBackground:gestureRecognizer];
             [self setSelectedObject:nil];
         }
-//    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged && self.lastSelectedObject != nil)
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-//        float zoom = [[TransformUtil sharedManager] zoom];
         if ([self.lastSelectedObject isKindOfClass:[ NoteItem class]])
         {
-//            CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
-////        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-////        [self translateTx:translation.x andTy:translation.y];
-////            NSLog(@"tx & ty: {%f, %f}", translation.x, translation.y);
             NoteItem *ni = (NoteItem*) self.lastSelectedObject;
-//            float xCenter = self.panBeginPoint.x + translation.x / zoom;
-//            float yCenter = self.panBeginPoint.y + translation.y / zoom;
-//            [ni.note setCenterX:xCenter andCenterY:yCenter];
-//            [[TransformUtil sharedManager] transformNoteItem: ni];
-//            [ni saveToCoreData];
-            
             [ni handlePan2:gestureRecognizer];
             [ni saveToCoreData];
             
-        } else if ( [self.lastSelectedObject isKindOfClass: [GroupItem class]])
+        } else if ( [self.lastSelectedObject isKindOfClass: [GroupItem class]] &&
+                   self.modeControl.selectedSegmentIndex != 2)
         {
-//            CGPoint translation = [gestureRecognizer translationInView:self.NotesView];
             GroupItem *gi = (GroupItem*) self.lastSelectedObject;
-//            float topX = self.panBeginPoint.x + translation.x / zoom;
-//            float topY = self.panBeginPoint.y + translation.y / zoom;
-//            [gi.group setTopX:topX andTopY:topY];
-//            [[TransformUtil sharedManager] transformGroupItem:gi];
-//            [gi saveToCoreData];
             [self handlePanGroup:gestureRecognizer andGroupItem:gi];
             [gi saveToCoreData];
         } else {
@@ -165,6 +146,7 @@
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
         [self handlePanBackground:gestureRecognizer];
+        
     } else
     {
 //        [self setSelectedObject:nil];
@@ -236,7 +218,9 @@
         }
         
         // State ended
-        if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        if (gestureRecognizer.state == UIGestureRecognizerStateEnded &&
+            ![self.lastSelectedObject isKindOfClass:[ NoteItem class]]
+            ) {
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
             
             self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
