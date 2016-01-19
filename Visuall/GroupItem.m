@@ -60,17 +60,38 @@
 
 - (void) renderGroup
 {
-    [self setFrame: CGRectMake(-self.group.width.floatValue/2 - HANDLE_RADIUS / 2, -self.group.height.floatValue / 2 - HANDLE_RADIUS / 2, self.group.width.floatValue + HANDLE_RADIUS, self.group.height.floatValue + HANDLE_RADIUS)];
+    float scale = [[TransformUtil sharedManager] zoom];
+    
+    [self setFrame: CGRectMake(
+                               (-self.group.width.floatValue/2 - HANDLE_RADIUS / 2) * scale,
+                               (-self.group.height.floatValue / 2 - HANDLE_RADIUS / 2) * scale,
+                               (self.group.width.floatValue + HANDLE_RADIUS) * scale,
+                               (self.group.height.floatValue + HANDLE_RADIUS) * scale)];
     
     UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width.floatValue, self.group.height.floatValue)];
-    
     
     [innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
     [innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
     [innerGroupView.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
     innerGroupView.tag = 100;
-    [self addSubview: innerGroupView];
-    [self renderHandles];
+        [self addSubview: innerGroupView];
+        [self renderHandles];
+}
+
+- (void) updateGroupDimensions
+{
+    float scale = [[TransformUtil sharedManager] zoom];
+    
+    [self setFrame: CGRectMake(
+                               (-self.group.width.floatValue/2 - HANDLE_RADIUS / 2) * scale,
+                               (-self.group.height.floatValue / 2 - HANDLE_RADIUS / 2) * scale,
+                               (self.group.width.floatValue + HANDLE_RADIUS) * scale,
+                               (self.group.height.floatValue + HANDLE_RADIUS) * scale)];
+    
+    [[self viewWithTag:100] setFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width.floatValue, self.group.height.floatValue)];
+    
+    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width.floatValue, self.group.height.floatValue, HANDLE_RADIUS, HANDLE_RADIUS)];
+    
 }
 
 - (void) renderHandles
@@ -87,7 +108,8 @@
 -(void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
-        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
         CGPoint translation = [gestureRecognizer translationInView:self];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         
@@ -105,6 +127,21 @@
             [gi.group setTopPoint: CGPointMake(x, y)];
             [[TransformUtil sharedManager] transformGroupItem: gi];
         }
+    }
+}
+
+- (void) resizeGroup: (UIPanGestureRecognizer *) gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
+        gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CGPoint translation = [gestureRecognizer translationInView:self];
+        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+        float width = self.group.width.floatValue + translation.x;
+        float height = self.group.height.floatValue + translation.y;
+        [self.group setHeight:height andWidth:width];
+        [self updateGroupDimensions];
+        [[TransformUtil sharedManager] transformGroupItem: self];
     }
 }
 

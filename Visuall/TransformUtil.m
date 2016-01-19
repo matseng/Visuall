@@ -101,13 +101,20 @@
     CGAffineTransform matrix = groupItem.transform;
     matrix.a = self.zoom;
     matrix.d = self.zoom;
-    matrix.tx = (groupItem.group.topX.floatValue + groupItem.group.width.floatValue / 2) * self.zoom + self.pan.x;
-    matrix.ty = (groupItem.group.topY.floatValue + groupItem.group.height.floatValue / 2) * self.zoom + self.pan.y;
+//    float tx = (groupItem.group.topX.floatValue + groupItem.group.width.floatValue / 2) * self.zoom + self.pan.x;
+//    float ty = (groupItem.group.topY.floatValue + groupItem.group.height.floatValue / 2) * self.zoom + self.pan.y;
 //    NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
 //    NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
 //    NSLog(@"zoom %f", self.zoom);
     
     [groupItem setTransform: matrix];
+
+    float tx = (groupItem.group.topX.floatValue) * self.zoom + self.pan.x;
+    float ty = (groupItem.group.topY.floatValue) * self.zoom + self.pan.y;
+    CGRect frame = groupItem.frame;
+    frame.origin.x = tx;
+    frame.origin.y = ty;
+    groupItem.frame = frame;
 }
 
 

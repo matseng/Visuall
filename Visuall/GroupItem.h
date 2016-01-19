@@ -27,6 +27,9 @@
 - (BOOL) isNoteInGroup: (NoteItem *) noteItem;
 
 - (void) saveToCoreData;
+
 - (BOOL) isGroupInGroup: (GroupItem *) gi;
+
+- (void) resizeGroup: (UIPanGestureRecognizer *) gestureRecognizer;
 
 @end

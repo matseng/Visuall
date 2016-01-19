@@ -117,11 +117,17 @@
             NoteItem *nv = (NoteItem *) viewHit;
             [self setSelectedObject:nv];
             [nv handlePan2:gestureRecognizer];
-        } else if ( [[viewHit superview] isKindOfClass: [GroupItem class]] &&
+//        } else if ( [[viewHit superview] isKindOfClass: [GroupItem class]] &&
+        } else if ( viewHit.tag == 100 &&
                    self.modeControl.selectedSegmentIndex != 2) {
             GroupItem  *gi = (GroupItem *) [viewHit superview];
             [self setSelectedObject:gi];
             [self handlePanGroup:gestureRecognizer andGroupItem:gi];
+        } else if ( viewHit.tag == 777 &&
+                  self.modeControl.selectedSegmentIndex != 2) {
+//            GroupItem  *gi = (GroupItem *) [viewHit superview];
+            
+            [self setSelectedObject:viewHit];  // TODO, still should highlight current group
         } else {
             [self handlePanBackground:gestureRecognizer];
             [self setSelectedObject:nil];
@@ -140,13 +146,17 @@
             GroupItem *gi = (GroupItem*) self.lastSelectedObject;
             [self handlePanGroup:gestureRecognizer andGroupItem:gi];
             [gi saveToCoreData];
-        } else {
+        } else if (self.lastSelectedObject.tag == 777)
+        {
+            GroupItem  *gi = (GroupItem *) [self.lastSelectedObject superview];
+            [gi resizeGroup: gestureRecognizer];
+        }
+        else {
             [self handlePanBackground:gestureRecognizer];
         }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
         [self handlePanBackground:gestureRecognizer];
-        
     } else
     {
 //        [self setSelectedObject:nil];
@@ -473,6 +483,8 @@
         GroupItem *groupToSet = (GroupItem *)object;
         [groupToSet saveToCoreData];
         self.lastSelectedObject = groupToSet;
+    } else if (object.tag == 777) {
+        self.lastSelectedObject = object;
     }
     self.lastSelectedObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
     self.lastSelectedObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
