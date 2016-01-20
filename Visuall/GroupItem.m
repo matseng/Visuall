@@ -65,8 +65,8 @@
     [self setFrame: CGRectMake(
                                (-self.group.width.floatValue/2 - HANDLE_RADIUS / 2) * scale,
                                (-self.group.height.floatValue / 2 - HANDLE_RADIUS / 2) * scale,
-                               (self.group.width.floatValue + HANDLE_RADIUS) * scale,
-                               (self.group.height.floatValue + HANDLE_RADIUS) * scale)];
+                               (self.group.width.floatValue + HANDLE_RADIUS),
+                               (self.group.height.floatValue + HANDLE_RADIUS) )];
     
     UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width.floatValue, self.group.height.floatValue)];
     
@@ -178,6 +178,11 @@
     }
     
     return NO;
+}
+
+- (float) getRadius
+{
+    return HANDLE_RADIUS;
 }
 
 /*

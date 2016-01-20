@@ -32,4 +32,6 @@
 
 - (void) resizeGroup: (UIPanGestureRecognizer *) gestureRecognizer;
 
+- (float) getRadius;
+
 @end

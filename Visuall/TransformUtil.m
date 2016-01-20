@@ -109,8 +109,9 @@
     
     [groupItem setTransform: matrix];
 
-    float tx = (groupItem.group.topX.floatValue) * self.zoom + self.pan.x;
-    float ty = (groupItem.group.topY.floatValue) * self.zoom + self.pan.y;
+    float radiusOffset = [groupItem getRadius] / 2;
+    float tx = (groupItem.group.topX.floatValue - radiusOffset) * self.zoom + self.pan.x;
+    float ty = (groupItem.group.topY.floatValue - radiusOffset) * self.zoom + self.pan.y;
     CGRect frame = groupItem.frame;
     frame.origin.x = tx;
     frame.origin.y = ty;
