@@ -29,6 +29,7 @@
 @property NSManagedObjectContext *moc;
 @property (strong, nonatomic) IBOutlet UIView *GestureView;
 @property CGPoint panBeginPoint;
+@property (strong, nonatomic) IBOutlet UITextField *fontSize;
 @end
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
@@ -82,6 +83,16 @@
     [self refreshGroupView];
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
+    
+    self.fontSize.delegate = self;
+    [self.fontSize addTarget:self
+                      action:@selector(fontSizeEditingDidEnd:)
+            forControlEvents:UIControlEventEditingDidEnd];
+}
+
+- (void) fontSizeEditingDidEnd: (UITextField *) textField
+{
+    NSLog(@"Font size: %@", self.fontSize.text);
 }
 
 - (void) addGestureRecognizers
@@ -306,12 +317,10 @@
     [self handleTap: gestureRecognizer];  // tap group --> check to see if we should add a note
 }
 
-- (BOOL) textFieldShouldReturn:(NoteItem *)ni
+- (BOOL) textFieldShouldReturn:(UITextField *) textField
 {
     NSLog(@"Should remove keyboard here again");
-    [ni resignFirstResponder];
-//    [[TransformUtil sharedManager] transformNoteItem:ni];
-    
+    [textField resignFirstResponder];
     return YES;
 }
 
@@ -342,7 +351,7 @@
     [self setSelectedObject:textField];
 }
 
--(void) textFieldDidChangeHandler:(NoteItem *)textField
+- (void) textFieldDidChangeHandler:(NoteItem *)textField
 {
 //    [textField sizeToFit];
     textField.note.title = textField.text;
