@@ -88,11 +88,19 @@
     [self.fontSize addTarget:self
                       action:@selector(fontSizeEditingDidEnd:)
             forControlEvents:UIControlEventEditingDidEnd];
+    self.modeControl.selectedSegmentIndex = 3;
 }
 
 - (void) fontSizeEditingDidEnd: (UITextField *) textField
 {
     NSLog(@"Font size: %@", self.fontSize.text);
+    if (self.fontSize.text.floatValue && [self.lastSelectedObject isKindOfClass: [NoteItem class]])
+    {
+        NoteItem *ni = (NoteItem *) self.lastSelectedObject;
+        [ni setFont: [UIFont systemFontOfSize:self.fontSize.text.floatValue]];
+        [ni renderToAutosizeWidth];
+        [[TransformUtil sharedManager] transformNoteItem:ni];
+    }
 }
 
 - (void) addGestureRecognizers
@@ -334,12 +342,16 @@
 
 - (void) addNoteToViewWithHandlers:(NoteItem *)note
 {
-//    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-//                                   initWithTarget:self
-//                                   action:@selector(handlePan:)];
-//    [note addGestureRecognizer: pan];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(handleTap:)];
+    [note addGestureRecognizer: tap];
+    
+    
+    
     [self.NotesView addSubview:note];
     self.lastSelectedObject = note;
+//    note.userInteractionEnabled = YES;
     note.delegate = self;
     [note addTarget:self
              action:@selector(textFieldDidChangeHandler:)
@@ -349,6 +361,10 @@
 -(void) textFieldDidBeginEditing:(UITextField *)textField
 {
     [self setSelectedObject:textField];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    return YES;
 }
 
 - (void) textFieldDidChangeHandler:(NoteItem *)textField
@@ -364,7 +380,18 @@
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
-    
+        
+        UIView *viewHit = [self getViewHit:sender];
+        NSLog(@"viewHit %@", [viewHit class]);
+        NSLog(@"tag %ld", (long)viewHit.tag);
+        NSLog(@"gestureRecognizer %@", [sender.view class]);
+        if ( [viewHit isKindOfClass: [NoteItem class]] )
+        {
+            NoteItem *nv = (NoteItem *) viewHit;
+            [self setSelectedObject:nv];
+//            [nv send];
+        }
+        
      if (self.modeControl.selectedSegmentIndex == 0) {
             
             // grab coordinates

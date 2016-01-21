@@ -30,6 +30,7 @@
         NSLog(@"Init %f, %f", note.centerX.floatValue, note.centerY.floatValue);
         NSLog(@"Init %f, %f", note.width.floatValue, note.height.floatValue);
         self.text = [NSString stringWithFormat: @"%@ %@", self.note.title, self.note.paragraph];
+        self.userInteractionEnabled = true;
         self.textAlignment = NSTextAlignmentCenter;
         [self setBorderStyle:UITextBorderStyleRoundedRect];
         CGRect frame = self.frame;

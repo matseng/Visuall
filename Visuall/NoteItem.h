@@ -28,4 +28,6 @@
 
 - (void) renderToAutosizeWidth;
 
+- (void) renderToAutosizeWidth2;
+
 @end
