@@ -49,11 +49,11 @@
     
     [self addGestureRecognizers];
     
-//    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
-//                                  initWithTarget:self
-//                                  action:@selector(handlePanBackground:)];
-//    self.panBackground = panBackground;
-//    [self.Background addGestureRecognizer: panBackground];
+    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
+                                  initWithTarget:self
+                                  action:@selector(handlePanBackground:)];
+    self.panBackground = panBackground;
+    [self.Background addGestureRecognizer: panBackground];
     
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
@@ -80,6 +80,11 @@
     self.groupsCollection = [GroupsCollection new];
     [self.groupsCollection initializeGroups];
 //    [self loadGroupsFromCoreData];
+    
+    for ( GroupItem *gi in self.groupsCollection.groups){
+        [self addGestureRecognizersToGroup: gi];
+    }
+
     [self refreshGroupView];
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
@@ -210,20 +215,20 @@
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
     // HACKS
-//    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
-//    UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
-//    NSLog(@"viewHit %@", [viewHit class]);
-//    NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
-//    if ( [viewHit respondsToSelector:@selector(handlePan2:)] ) {
-//        NoteItem *nv = (NoteItem *) viewHit;
-//        [nv handlePan2:gestureRecognizer];
-//        [self setSelectedObject:nv];
-//        return;
-//    } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
-//        GroupItem  *gi = (GroupItem *) viewHit;
-//        [self handlePanGroup:gestureRecognizer andGroupItem:gi];
-//        return;
-//    }
+    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+    UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    NSLog(@"viewHit %@", [viewHit class]);
+    NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
+    if ( [viewHit respondsToSelector:@selector(handlePan2:)] ) {
+        NoteItem *nv = (NoteItem *) viewHit;
+        [nv handlePan2:gestureRecognizer];
+        [self setSelectedObject:nv];
+        return;
+    } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
+        GroupItem  *gi = (GroupItem *) viewHit;
+        [self handlePanGroup:gestureRecognizer andGroupItem:gi];
+        return;
+    }
     // END HACKS
     
     if (self.modeControl.selectedSegmentIndex == 1)
@@ -262,6 +267,7 @@
                                             andHeight:self.currentGroupView.frame.size.height / zoom];
             
             [currentGroupItem saveToCoreData];
+            [self addGestureRecognizersToGroup: currentGroupItem];
             
             [self.groupsCollection addGroup:currentGroupItem];
             
@@ -287,10 +293,13 @@
 }
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
+//- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
     if (!groupItem) {
         groupItem = (GroupItem *)gestureRecognizer.view;
     }
+//    GroupItem *groupItem = (GroupItem *) gestureRecognizer.view;
+    
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
 
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
@@ -347,7 +356,10 @@
                                    action:@selector(handleTap:)];
     [note addGestureRecognizer: tap];
     
-    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(handlePan:)];
+    [note addGestureRecognizer: pan];
     
     [self.NotesView addSubview:note];
     self.lastSelectedObject = note;
@@ -527,7 +539,23 @@
 
 }
 
-- (void)refreshGroupView
+- (void) addGestureRecognizersToGroup: (GroupItem *) gi
+{
+    //        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+    //                                       initWithTarget:self
+    //                                       action:@selector(myWrapper:)];
+    //        [groupItem addGestureRecognizer: pan];
+    //        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+    //                                       initWithTarget:self
+    //                                       action:@selector(handleTapGroup:)];
+    //        [groupItem addGestureRecognizer: tap];
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(myWrapper:)];
+    [gi addGestureRecognizer: pan];
+}
+
+- (void) refreshGroupView
 {
     // Sort by area of group view
     NSArray *sortedArray;
@@ -540,16 +568,6 @@
     
     // Render all the group views
     for (GroupItem *groupItem in sortedArray) {
-        
-//        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-//                                       initWithTarget:self
-//                                       action:@selector(myWrapper:)];
-//        [groupItem addGestureRecognizer: pan];
-//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-//                                       initWithTarget:self
-//                                       action:@selector(handleTapGroup:)];
-//        [groupItem addGestureRecognizer: tap];
-        
         [self.GroupsView addSubview:groupItem];
     }
     
