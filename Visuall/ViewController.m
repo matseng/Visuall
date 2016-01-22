@@ -215,16 +215,24 @@
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
     // HACKS
-    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
-    UIView * viewHit = [self.NotesView hitTest:location withEvent:NULL];
+//    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+    CGPoint location = [gestureRecognizer locationInView: self.GestureView];
+    UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    
     NSLog(@"viewHit %@", [viewHit class]);
     NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
+    
+    if ( [viewHit.superview isKindOfClass: [GroupItem class]] )
+    {
+        viewHit = viewHit.superview;
+    }
+    
     if ( [viewHit respondsToSelector:@selector(handlePan2:)] ) {
         NoteItem *nv = (NoteItem *) viewHit;
         [nv handlePan2:gestureRecognizer];
         [self setSelectedObject:nv];
         return;
-    } else if ( [viewHit isKindOfClass: [GroupItem class]]) {
+    } else if ( [viewHit isKindOfClass: [GroupItem class]] ) {
         GroupItem  *gi = (GroupItem *) viewHit;
         [self handlePanGroup:gestureRecognizer andGroupItem:gi];
         return;
@@ -295,13 +303,39 @@
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 //- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
+    if (self.modeControl.selectedSegmentIndex == 2)
+    {
+        return;
+    }
+    
     if (!groupItem) {
         groupItem = (GroupItem *)gestureRecognizer.view;
     }
+
+//    UIView *viewHit = [self getViewHit:gestureRecognizer];
+    CGPoint location = [gestureRecognizer locationInView: self.Background];
+    UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    NSLog(@"viewHit tag %li", viewHit.tag);
+    
+//    if (viewHit.tag == 777)
+//    {
+//
+//        [groupItem resizeGroup: gestureRecognizer];
+//    }
+    
+ 
 //    GroupItem *groupItem = (GroupItem *) gestureRecognizer.view;
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
 
+        if (viewHit.tag == 777)
+        {
+//            self.lastSelectedObject = viewHit;
+            [self setLastSelectedObject:viewHit];
+            return;
+        }
+
+        [self setSelectedObject:groupItem];
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
         NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
         for (NoteItem *ni in self.NotesCollection.Notes) {
@@ -318,10 +352,16 @@
         [groupItem setNotesInGroup: notesInGroup];
         [groupItem setGroupsInGroup:groupsInGroup];
     }
-    if ( [groupItem respondsToSelector:@selector(handlePanGroup2:)] ) {
+    
+    if (self.lastSelectedObject.tag == 777)
+    {
+        GroupItem *gi = (id) self.lastSelectedObject.superview;
+        [gi resizeGroup:gestureRecognizer];
+    } else if ( [groupItem respondsToSelector:@selector(handlePanGroup2:)] )
+    {
 //        GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
         [groupItem handlePanGroup2:gestureRecognizer];
-        [self setSelectedObject:groupItem];
+//        [self setSelectedObject:groupItem];
     }
 }
 
