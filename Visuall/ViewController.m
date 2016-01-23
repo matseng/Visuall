@@ -16,7 +16,7 @@
 #import "AppDelegate.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate> {
-    UIGestureRecognizer *pinchGestureRecognizer;
+    UIPinchGestureRecognizer *pinchGestureRecognizer;
 }
 @property (strong, nonatomic) IBOutlet UIView *Background;
 @property (weak, nonatomic) IBOutlet UIView *GroupsView;
@@ -49,19 +49,22 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     self.moc = appDelegate.managedObjectContext;
     
-    [self addGestureRecognizers];
+//    [self addGestureRecognizers];
+    self.GestureView.userInteractionEnabled = NO;
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                   initWithTarget:self
                                   action:@selector(handlePanBackground:)];
     self.panBackground = panBackground;
     [self.Background addGestureRecognizer: panBackground];
+//    panBackground.delegate = self;
     
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
                                                  initWithTarget:self
                                                  action:@selector(handlePinchBackground:)];
     [self.Background addGestureRecognizer:pinchBackground];
+//    pinchBackground.delegate = self;
     
     self.NotesCollection = [NotesCollection new];
     [self.NotesCollection initializeNotes];
@@ -91,11 +94,12 @@
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
     
-    self.fontSize.delegate = self;
+//    self.fontSize.delegate = self;
     [self.fontSize addTarget:self
                       action:@selector(fontSizeEditingDidEnd:)
             forControlEvents:UIControlEventEditingDidEnd];
     self.modeControl.selectedSegmentIndex = 3;
+    
 
 }
 
@@ -113,31 +117,85 @@
 
 - (void) addGestureRecognizers
 {
+    self.GestureView.userInteractionEnabled = YES;
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                     initWithTarget:self
                                     action:@selector(handlePanGestureView:)];
     [self.GestureView addGestureRecognizer: pan];
+    pan.delegate = self;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                     initWithTarget:self
                                    action: @selector(handleTap:)];
     
     [self.GestureView addGestureRecognizer: tap];
+    tap.delegate = self;
+    
+//    [self.GestureView addGestureRecognizer: [UITapGestureRecognizer alloc] init:];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+//    [self.GestureView addGestureRecognizer: tap];
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
+                                       initWithTarget:self action:@selector(handlePinchBackground:)];
+    [self.GestureView addGestureRecognizer: pinch];
+    pinch.delegate = self;
 }
 
-- (BOOL) gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+       shouldReceiveTouch:(UITouch *)touch
 {
-    if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
-       pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
-    {
-        return NO;
-    }
-    else
+//    NSLog(@"1. pinch state %li", pinchGestureRecognizer.state);
+    NSLog(@"My gesture class %@", [gestureRecognizer class]);
+    if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]])
     {
         return YES;
     }
+    
+    
+    return NO;
 }
 
+//- (BOOL) gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+//{
+////    NSLog(@"pinch state %li", pinchGestureRecognizer.state);
+////    if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
+////       pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+////    {
+////        return NO;
+////    }
+////    else
+////    {
+////        return YES;
+////    }
+//    if (gestureRecognizer.view == self.GestureView)
+//    {
+//        NSLog(@"");
+//    }
+//    NSLog(@"1. pinch state %li", pinchGestureRecognizer.state);
+//    NSLog(@"2. gesture state %@", [gestureRecognizer class]);
+//    return YES;
+//}
+
+//
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+
+    if (pinchGestureRecognizer.state != 0 )
+    {
+        NSLog(@"1. pinch state %li", pinchGestureRecognizer.state);
+    }
+    NSLog(@"1. pinch state %li", pinchGestureRecognizer.state);
+    NSLog(@"2. gesture state %@", [gestureRecognizer class]);
+    NSLog(@"3. other gesture state %@", [otherGestureRecognizer class]);
+//
+//    if ( [gestureRecognizer isKindOfClass: [UIPinchGestureRecognizer class]] ||
+//          [otherGestureRecognizer isKindOfClass: [UIPinchGestureRecognizer class]] )
+//    {
+//        return YES;
+//    }
+    
+    return NO;
+}
 
 - (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer
 {
@@ -151,9 +209,9 @@
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
         UIView *viewHit = [self getViewHit:gestureRecognizer];
-        NSLog(@"viewHit %@", [viewHit class]);
-        NSLog(@"tag %ld", (long)viewHit.tag);
-        NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
+//        NSLog(@"viewHit %@", [viewHit class]);
+//        NSLog(@"tag %ld", (long)viewHit.tag);
+//        NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
         if ( [viewHit isKindOfClass: [NoteItem class]] ) {
             NoteItem *nv = (NoteItem *) viewHit;
             [self setSelectedObject:nv];
@@ -321,11 +379,8 @@
 }
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
-//- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    if ( [gestureRecognizer isMemberOfClass: [UIPinchGestureRecognizer class]]) {
-        return;
-    }
+    
     
     if (self.modeControl.selectedSegmentIndex == 2)
     {
@@ -336,20 +391,10 @@
         groupItem = (GroupItem *)gestureRecognizer.view;
     }
 
-//    UIView *viewHit = [self getViewHit:gestureRecognizer];
+
     CGPoint location = [gestureRecognizer locationInView: self.Background];
     UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
-    NSLog(@"viewHit tag %li", viewHit.tag);
-    
-//    if (viewHit.tag == 777)
-//    {
-//
-//        [groupItem resizeGroup: gestureRecognizer];
-//    }
-    
- 
-//    GroupItem *groupItem = (GroupItem *) gestureRecognizer.view;
-    
+//    NSLog(@"viewHit tag %li", viewHit.tag);
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
 
         if (viewHit.tag == 777)
@@ -364,7 +409,7 @@
         NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
         for (NoteItem *ni in self.NotesCollection.Notes) {
             if ([groupItem isNoteInGroup:ni]) {
-                NSLog(@"Note name in group: %@", ni.note.title);
+//                NSLog(@"Note name in group: %@", ni.note.title);
                 [notesInGroup addObject:ni];
             }
         }
@@ -428,7 +473,7 @@
     [self.NotesView addSubview:note];
     self.lastSelectedObject = note;
 //    note.userInteractionEnabled = YES;
-    note.delegate = self;
+//    note.delegate = self;
     [note addTarget:self
              action:@selector(textFieldDidChangeHandler:)
             forControlEvents:UIControlEventEditingChanged];
@@ -591,7 +636,6 @@
         [noteToSet setBorderStyle:UITextBorderStyleRoundedRect];
         self.lastSelectedObject = noteToSet;
     } else if ([object isKindOfClass:[GroupItem class]]) {
-        NSLog(@"schnickelfritz");
         GroupItem *groupToSet = (GroupItem *)object;
         [groupToSet saveToCoreData];
         self.lastSelectedObject = groupToSet;
@@ -617,11 +661,12 @@
                                    initWithTarget:self
                                    action:@selector(myWrapper:)];
     [gi addGestureRecognizer: pan];
-    
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
-                                       initWithTarget:self
-                                       action:@selector(testPinch:)];
-    [gi addGestureRecognizer:pinch];
+
+    pan.delegate = self;
+ //    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
+//                                       initWithTarget:self
+//                                       action:@selector(testPinch:)];
+//    [gi addGestureRecognizer:pinch];
     
 }
 

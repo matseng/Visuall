@@ -52,10 +52,10 @@
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        NSLog(@"1. gestureRecognizer.scale %f", gestureRecognizer.scale);
-        NSLog(@"2. self.zoom %f", self.zoom);
+//        NSLog(@"1. gestureRecognizer.scale %f", gestureRecognizer.scale);
+//        NSLog(@"2. self.zoom %f", self.zoom);
         float zoom = self.zoom * gestureRecognizer.scale;
-        NSLog(@"--> zoom %f", zoom);
+//        NSLog(@"--> zoom %f", zoom);
         CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
         float deltaX = gesturePoint.x - gesturePoint.x / self.zoom * zoom;
         float deltaY = gesturePoint.y - gesturePoint.y / self.zoom * zoom;

@@ -133,7 +133,7 @@
     
     [[TransformUtil sharedManager] transformNoteItem: self];
     
-    NSLog(@"New note %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
+//    NSLog(@"New note %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
 }
 
 @end
