@@ -15,7 +15,9 @@
 #import "GroupsCollection.h"
 #import "AppDelegate.h"
 
-@interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
+@interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate> {
+    UIGestureRecognizer *pinchGestureRecognizer;
+}
 @property (strong, nonatomic) IBOutlet UIView *Background;
 @property (weak, nonatomic) IBOutlet UIView *GroupsView;
 @property (weak, nonatomic) IBOutlet UIView *NotesView;
@@ -94,6 +96,7 @@
                       action:@selector(fontSizeEditingDidEnd:)
             forControlEvents:UIControlEventEditingDidEnd];
     self.modeControl.selectedSegmentIndex = 3;
+
 }
 
 - (void) fontSizeEditingDidEnd: (UITextField *) textField
@@ -121,6 +124,20 @@
     
     [self.GestureView addGestureRecognizer: tap];
 }
+
+- (BOOL) gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
+       pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
+
 
 - (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer
 {
@@ -214,6 +231,8 @@
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
+    
+    
     // HACKS
 //    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
     CGPoint location = [gestureRecognizer locationInView: self.GestureView];
@@ -232,7 +251,7 @@
         [nv handlePan2:gestureRecognizer];
         [self setSelectedObject:nv];
         return;
-    } else if ( [viewHit isKindOfClass: [GroupItem class]] ) {
+    } else if ( [viewHit isKindOfClass: [GroupItem class]] &&  self.modeControl.selectedSegmentIndex != 2) {
         GroupItem  *gi = (GroupItem *) viewHit;
         [self handlePanGroup:gestureRecognizer andGroupItem:gi];
         return;
@@ -260,9 +279,10 @@
         }
         
         // State ended
-        if (gestureRecognizer.state == UIGestureRecognizerStateEnded &&
-            ![self.lastSelectedObject isKindOfClass:[ NoteItem class]]
-            ) {
+//        else if (gestureRecognizer.state == UIGestureRecognizerStateEnded &&
+//            ![self.lastSelectedObject isKindOfClass:[ NoteItem class]]
+//            ) {
+         if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
             
             self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
@@ -303,6 +323,10 @@
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 //- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
+    if ( [gestureRecognizer isMemberOfClass: [UIPinchGestureRecognizer class]]) {
+        return;
+    }
+    
     if (self.modeControl.selectedSegmentIndex == 2)
     {
         return;
@@ -593,6 +617,17 @@
                                    initWithTarget:self
                                    action:@selector(myWrapper:)];
     [gi addGestureRecognizer: pan];
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
+                                       initWithTarget:self
+                                       action:@selector(testPinch:)];
+    [gi addGestureRecognizer:pinch];
+    
+}
+
+- (void) testPinch: (UIPinchGestureRecognizer *) gestureRecognizer
+{
+    NSLog(@"Group(s) being pinched");
 }
 
 - (void) refreshGroupView
