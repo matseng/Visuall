@@ -76,6 +76,7 @@
 {
 //    CGRect frame0 = self.frame;
 //    CGAffineTransform matrix = self.transform;
+//    float fontSize = self.font.pointSize;
     [self sizeToFit];
     
     CGRect frame = self.frame;
@@ -90,6 +91,8 @@
     [self setFrame:frame];
 //    [self setNeedsDisplay];
     
+    [self adjustHeight];
+    
     [self.note setHeight:frame.size.height andWidth:frame.size.width];
     [[TransformUtil sharedManager] transformNoteItem: self];
 }
@@ -103,13 +106,31 @@
     NSLog(@"Check frame %f, %f", self.frame.origin.x, self.frame.origin.y);
     frame.size.width = frame.size.width * 1.0;
     frame.size.height = frame.size.height;
-    frame.origin.x = - frame.size.width / 2;
-    frame.origin.y = - frame.size.height / 2;
+
+    //    frame.origin.x = - frame.size.width / 2;
+//    frame.origin.y = - frame.size.height / 2;
     //    self.frame = frame;  // BUG?
     [self setFrame:frame];
     //    [self setNeedsDisplay];
     [self.note setHeight:frame.size.height andWidth:frame.size.width];
     [[TransformUtil sharedManager] transformNoteItem: self];
+}
+
+
+- (void)adjustHeight {
+    
+    if (self.text == nil) {
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, 0);
+        return;
+    }
+    
+    CGSize aSize = self.bounds.size;
+    CGSize tmpSize = CGRectInfinite.size;
+    tmpSize.width = aSize.width;
+    
+    tmpSize = [self.text sizeWithFont:self.font constrainedToSize:tmpSize];
+    
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, aSize.width, tmpSize.height);
 }
 
 - (void) handlePan2: (UIPanGestureRecognizer *) gestureRecognizer
