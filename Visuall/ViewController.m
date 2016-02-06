@@ -94,16 +94,17 @@
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
     
-//    self.fontSize.delegate = self;
+    self.fontSize.delegate = self;
     [self.fontSize addTarget:self
-                      action:@selector(fontSizeEditingDidEnd:)
-            forControlEvents:UIControlEventEditingDidEnd];
+                    action:@selector(fontSizeEditingChangedHandler:)
+//            forControlEvents:UIControlEventEditingDidEnd];
+                    forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 3;
     
 
 }
 
-- (void) fontSizeEditingDidEnd: (UITextField *) textField
+- (void) fontSizeEditingChangedHandler: (UITextField *) textField
 {
     NSLog(@"Font size: %@", self.fontSize.text);
     if (self.fontSize.text.floatValue && [self.lastSelectedObject isKindOfClass: [NoteItem class]])

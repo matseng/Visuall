@@ -77,17 +77,19 @@
 //    CGRect frame0 = self.frame;
 //    CGAffineTransform matrix = self.transform;
     [self sizeToFit];
+    
     CGRect frame = self.frame;
     NSLog(@"Check frame %f, %f", self.frame.origin.x, self.frame.origin.y);
 //    frame.size.width = frame.size.width * 1.05;
     frame.size.width = frame.size.width * 1.0;
-    frame.size.height = frame.size.height;
+    frame.size.height = frame.size.height * 1.0;
     
 //    frame.origin.x = - frame.size.width / 2;
 //    frame.origin.y = - frame.size.height / 2;
 //    self.frame = frame;  // BUG?
     [self setFrame:frame];
 //    [self setNeedsDisplay];
+    
     [self.note setHeight:frame.size.height andWidth:frame.size.width];
     [[TransformUtil sharedManager] transformNoteItem: self];
 }
