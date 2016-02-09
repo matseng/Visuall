@@ -112,7 +112,7 @@
         NoteItem *ni = (NoteItem *) self.lastSelectedObject;
         [ni setFont: [UIFont systemFontOfSize:self.fontSize.text.floatValue]];
         [ni renderToAutosizeWidth];
-        [[TransformUtil sharedManager] transformNoteItem:ni];
+//        [[TransformUtil sharedManager] transformNoteItem:ni];
     }
 }
 
@@ -478,9 +478,12 @@
     [note addTarget:self
              action:@selector(textFieldDidChangeHandler:)
             forControlEvents:UIControlEventEditingChanged];
+    [note addTarget:self
+             action:@selector(textFieldDidBeginEditingHandler:)
+            forControlEvents:UIControlEventEditingDidBegin];
 }
 
--(void) textFieldDidBeginEditing:(UITextField *)textField
+-(void) textFieldDidBeginEditingHandler:(UITextField *)textField
 {
     [self setSelectedObject:textField];
 }
