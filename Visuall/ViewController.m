@@ -14,6 +14,7 @@
 #import "GroupItem.h"
 #import "GroupsCollection.h"
 #import "AppDelegate.h"
+#import "TouchDownGestureRecognizer.h"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer;
@@ -64,7 +65,7 @@
                                                  initWithTarget:self
                                                  action:@selector(handlePinchBackground:)];
     [self.Background addGestureRecognizer:pinchBackground];
-//    pinchBackground.delegate = self;
+    
     
     self.NotesCollection = [NotesCollection new];
     [self.NotesCollection initializeNotes];
@@ -145,8 +146,18 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
        shouldReceiveTouch:(UITouch *)touch
 {
-//    NSLog(@"1. pinch state %li", pinchGestureRecognizer.state);
-    NSLog(@"My gesture class %@", [gestureRecognizer class]);
+//    if (gestureRecognizer.state == UIGestureRecognizerStatePossible) {
+//        NSLog(@"My gesture.state Possible");
+//    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+//        NSLog(@"My gesture.state Changed");
+//    }
+    
+    if (gestureRecognizer.state == 0) {
+        NSLog(@"My gesture.state Possible");
+    } else if (gestureRecognizer.state != 0) {
+        NSLog(@"My gesture.state imPossible");
+    }
+
     if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]])
     {
         return YES;
@@ -297,7 +308,7 @@
     CGPoint location = [gestureRecognizer locationInView: self.GestureView];
     UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
     
-    NSLog(@"viewHit %@", [viewHit class]);
+    NSLog(@"handlePanBackground viewHit %@", [viewHit class]);
     NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
     
     if ( [viewHit.superview isKindOfClass: [GroupItem class]] )
@@ -316,6 +327,11 @@
         return;
     }
     // END HACKS
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        NSLog(@"Handle pan background began");
+    }
+    
     
     if (self.modeControl.selectedSegmentIndex == 1)
     {
@@ -381,7 +397,26 @@
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        NSLog(@"Handle pan group began");
+    }
     
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        NSLog(@"Handle pan group ended");
+    }
+    
+    if (gestureRecognizer.state == 0)
+    {
+        NSLog(@"Pan possible");
+    } else if (gestureRecognizer.state == 1)
+    {
+        NSLog(@"Pan began");
+    } else if (gestureRecognizer.state == 2)
+    {
+        NSLog(@"Pan ended or canceled I think");
+    }
     
     if (self.modeControl.selectedSegmentIndex == 2)
     {
@@ -433,6 +468,20 @@
         [groupItem handlePanGroup2:gestureRecognizer];
 //        [self setSelectedObject:groupItem];
     }
+}
+
+- (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer {
+    
+//    if (gestureRecognizer.state == 0)
+//    {
+//        NSLog(@"Tap possible");
+//    } else if (gestureRecognizer.state == 1)
+//    {
+//        NSLog(@"Tap began");
+//    } else if (gestureRecognizer.state == 2)
+//    {
+//        NSLog(@"Tap ended or canceled I think");
+//    }
 }
 
 - (void) handleTapGroup: (UITapGestureRecognizer *) gestureRecognizer
@@ -657,10 +706,11 @@
     //                                       initWithTarget:self
     //                                       action:@selector(myWrapper:)];
     //        [groupItem addGestureRecognizer: pan];
-    //        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-    //                                       initWithTarget:self
-    //                                       action:@selector(handleTapGroup:)];
-    //        [groupItem addGestureRecognizer: tap];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+//                                   initWithTarget:self
+//                                   action:@selector(tapHandler:)];
+//    [gi addGestureRecognizer: tap];
+    
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(myWrapper:)];
@@ -671,7 +721,14 @@
 //                                       initWithTarget:self
 //                                       action:@selector(testPinch:)];
 //    [gi addGestureRecognizer:pinch];
+
+//    TouchDownGestureRecognizer *touchDown = [[TouchDownGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchDown:)];
+//    [gi addGestureRecognizer:touchDown];
     
+}
+
+-(void)handleTouchDown:(TouchDownGestureRecognizer *)touchDown{
+    NSLog(@"Down");
 }
 
 - (void) testPinch: (UIPinchGestureRecognizer *) gestureRecognizer
@@ -703,6 +760,8 @@
 
 -(void)myWrapper:(UIPanGestureRecognizer *)gestureRecognizer
 {
+    NSLog(@"gestureRecognizer state: %ld", (long)gestureRecognizer.state);
+    
     [self handlePanGroup:gestureRecognizer andGroupItem:nil];
 }
 

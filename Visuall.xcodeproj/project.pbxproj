@@ -16,6 +16,7 @@
 		712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9641BEAF21500ED6803 /* Images.xcassets */; };
 		712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9661BEAF21500ED6803 /* LaunchScreen.xib */; };
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
+		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
 		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
@@ -60,6 +61,8 @@
 		712EC96D1BEAF21500ED6803 /* VisuallTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VisuallTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		712EC9721BEAF21500ED6803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		712EC9731BEAF21500ED6803 /* VisuallTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VisuallTests.m; sourceTree = "<group>"; };
+		71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDownGestureRecognizer.h; sourceTree = "<group>"; };
+		71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDownGestureRecognizer.m; sourceTree = "<group>"; };
 		716B04681BFC210300DA9451 /* TransformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformUtil.h; sourceTree = "<group>"; };
 		716B04691BFC210300DA9451 /* TransformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformUtil.m; sourceTree = "<group>"; };
 		71B37E771C1924800048851A /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = Visuall/HomeViewController.h; sourceTree = "<group>"; };
@@ -132,6 +135,8 @@
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
 				712EC95E1BEAF21500ED6803 /* ViewController.h */,
 				712EC95F1BEAF21500ED6803 /* ViewController.m */,
+				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
+				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
 				716B04681BFC210300DA9451 /* TransformUtil.h */,
 				716B04691BFC210300DA9451 /* TransformUtil.m */,
 				210833161C0127AB00BA059F /* GroupItem.h */,
@@ -325,6 +330,7 @@
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,
+				71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */,
 				716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */,
 				712EC95A1BEAF21500ED6803 /* main.m in Sources */,
 				71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */,
