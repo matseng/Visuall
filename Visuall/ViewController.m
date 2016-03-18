@@ -416,7 +416,7 @@
         NSLog(@"Pan began");
     } else if (gestureRecognizer.state == 2)
     {
-        NSLog(@"Pan ended or canceled I think");
+        NSLog(@"Pan changed I think");
     }
     
     if (self.modeControl.selectedSegmentIndex == 2)
@@ -594,7 +594,7 @@
     [self.NotesView addSubview:note];
     self.lastSelectedObject = note;
 //    note.userInteractionEnabled = YES;
-//    note.delegate = self;
+    note.delegate = self;  // Enables delagte method textFieldShouldReturn
     [note addTarget:self
              action:@selector(textFieldDidChangeHandler:)
             forControlEvents:UIControlEventEditingChanged];
@@ -660,7 +660,7 @@
                 //grab text fields out of controller
                 UITextField *titleTextField = [[alertController textFields] firstObject];
                 UITextField *paragraphTextField = [[alertController textFields] lastObject];
-                //create a new note
+                //create a new note  //TODO: Add note directly as a text field (skip modal)
                 CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
                 NoteItem *newNote = [[NoteItem alloc] initNote:titleTextField.text andPoint:point andText:paragraphTextField.text];
                 [newNote saveToCoreData];
