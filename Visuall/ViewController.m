@@ -471,6 +471,25 @@
     }
 }
 
+- (void) setItemsInGroup: (GroupItem *) groupItem
+{
+    NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
+    NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
+    for (NoteItem *ni in self.NotesCollection.Notes) {
+        if ([groupItem isNoteInGroup:ni]) {
+            //                NSLog(@"Note name in group: %@", ni.note.title);
+            [notesInGroup addObject:ni];
+        }
+    }
+    for (GroupItem *gi in self.groupsCollection.groups) {
+        if ([groupItem isGroupInGroup:gi]) {
+            [groupsInGroup addObject:gi];
+        }
+    }
+    [groupItem setNotesInGroup: notesInGroup];
+    [groupItem setGroupsInGroup:groupsInGroup];
+}
+
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer {
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -494,6 +513,7 @@
         {
             GroupItem  *gi = (GroupItem *) [viewHit superview];
             [self setSelectedObject:gi];
+            [self setItemsInGroup:gi];
 //            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
         } else if ( viewHit.tag == 777 && self.modeControl.selectedSegmentIndex != 2)
         {
@@ -514,7 +534,12 @@
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
             [self handlePanGroup: gestureRecognizer andGroupItem:gi];
-        } else {
+        } else if ( self.lastSelectedObject.tag == 777)
+        {
+            GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
+            [gi resizeGroup:gestureRecognizer];
+        } else
+        {
 //            [self handlePanBackground:gestureRecognizer];
             [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes withGroups: self.groupsCollection.groups];
         }
