@@ -487,28 +487,36 @@
             NoteItem *nv = (NoteItem *) viewHit;
             [self setSelectedObject:nv];
             [nv handlePan2:gestureRecognizer];
-            //        } else if ( [[viewHit superview] isKindOfClass: [GroupItem class]] &&
+            return;
         }
-//        else if ( viewHit.tag == 100 &&
-//                   self.modeControl.selectedSegmentIndex != 2) {
-//            GroupItem  *gi = (GroupItem *) [viewHit superview];
-//            [self setSelectedObject:gi];
+        viewHit = [self getViewHit:gestureRecognizer];
+        if ( viewHit.tag == 100 && self.modeControl.selectedSegmentIndex != 2)
+        {
+            GroupItem  *gi = (GroupItem *) [viewHit superview];
+            [self setSelectedObject:gi];
 //            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
-//        } else if ( viewHit.tag == 777 &&
-//                   self.modeControl.selectedSegmentIndex != 2) {
-//            //            GroupItem  *gi = (GroupItem *) [viewHit superview];
-//            
-//            [self setSelectedObject:viewHit];  // TODO, still should highlight current group
-//        } else {
-//            [self handlePanBackground:gestureRecognizer];
-//            [self setSelectedObject:nil];
-//        }
+        } else if ( viewHit.tag == 777 && self.modeControl.selectedSegmentIndex != 2)
+        {
+            //            GroupItem  *gi = (GroupItem *) [viewHit superview];
+            
+            [self setSelectedObject:viewHit];  // TODO, still should highlight current group
+        } else
+        {
+            [self setSelectedObject:nil];
+        }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
         if ([self.lastSelectedObject isKindOfClass: [NoteItem class]])
         {
             NoteItem *ni = (NoteItem *) self.lastSelectedObject;
             [ni handlePan2:gestureRecognizer];
+        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
+        {
+            GroupItem *gi = (GroupItem *) self.lastSelectedObject;
+            [self handlePanGroup: gestureRecognizer andGroupItem:gi];
+        } else {
+//            [self handlePanBackground:gestureRecognizer];
+            [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes withGroups: self.groupsCollection.groups];
         }
     }
     
