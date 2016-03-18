@@ -54,8 +54,9 @@
     self.GestureView.userInteractionEnabled = NO;
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
-                                  initWithTarget:self
-                                  action:@selector(handlePanBackground:)];
+                                             initWithTarget:self
+//                                  action:@selector(handlePanBackground:)];
+                                             action:@selector(panHandler:)];
     self.panBackground = panBackground;
     [self.Background addGestureRecognizer: panBackground];
 //    panBackground.delegate = self;
@@ -472,10 +473,46 @@
 
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer {
     
-//    if (gestureRecognizer.state == 0)
-//    {
-//        NSLog(@"Tap possible");
-//    } else if (gestureRecognizer.state == 1)
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+
+//        UIView *viewHit = [self getViewHit:gestureRecognizer];
+        UIView *viewHit = gestureRecognizer.view;
+        
+        //        NSLog(@"viewHit %@", [viewHit class]);
+        //        NSLog(@"tag %ld", (long)viewHit.tag);
+        //        NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
+        NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
+        if ( [viewHit isKindOfClass: [NoteItem class]] ) {
+            NoteItem *nv = (NoteItem *) viewHit;
+            [self setSelectedObject:nv];
+            [nv handlePan2:gestureRecognizer];
+            //        } else if ( [[viewHit superview] isKindOfClass: [GroupItem class]] &&
+        }
+//        else if ( viewHit.tag == 100 &&
+//                   self.modeControl.selectedSegmentIndex != 2) {
+//            GroupItem  *gi = (GroupItem *) [viewHit superview];
+//            [self setSelectedObject:gi];
+//            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
+//        } else if ( viewHit.tag == 777 &&
+//                   self.modeControl.selectedSegmentIndex != 2) {
+//            //            GroupItem  *gi = (GroupItem *) [viewHit superview];
+//            
+//            [self setSelectedObject:viewHit];  // TODO, still should highlight current group
+//        } else {
+//            [self handlePanBackground:gestureRecognizer];
+//            [self setSelectedObject:nil];
+//        }
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        if ([self.lastSelectedObject isKindOfClass: [NoteItem class]])
+        {
+            NoteItem *ni = (NoteItem *) self.lastSelectedObject;
+            [ni handlePan2:gestureRecognizer];
+        }
+    }
+    
+//    else if (gestureRecognizer.state == 1)
 //    {
 //        NSLog(@"Tap began");
 //    } else if (gestureRecognizer.state == 2)
@@ -517,7 +554,8 @@
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
-                                   action:@selector(handlePan:)];
+//                                   action:@selector(handlePan:)];
+                                   action:@selector(panHandler:)];
     [note addGestureRecognizer: pan];
     
     [self.NotesView addSubview:note];
@@ -713,7 +751,8 @@
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
-                                   action:@selector(myWrapper:)];
+//                                   action:@selector(myWrapper:)];
+                                   action:@selector(panHandler:)];
     [gi addGestureRecognizer: pan];
 
     pan.delegate = self;
