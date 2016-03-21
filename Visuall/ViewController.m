@@ -490,7 +490,58 @@
     [groupItem setGroupsInGroup:groupsInGroup];
 }
 
+- (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer
+{
+    {
+        // State began
+        if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+        {
+            self.currentGroupViewStart = [gestureRecognizer locationInView:gestureRecognizer.view];
+            
+            [self.GroupsView addSubview:self.currentGroupView];
+        }
+        
+        // State changed
+        if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
+            self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
+        }
+        
+        // State ended
+        //        else if (gestureRecognizer.state == UIGestureRecognizerStateEnded &&
+        //            ![self.lastSelectedObject isKindOfClass:[ NoteItem class]]
+        //            ) {
+        if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
+            
+            self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
+            
+            // Make a copy of the current group view and add it to our list of group views
+            float zoom = [[TransformUtil sharedManager] zoom];
+            GroupItem *currentGroupItem = [[GroupItem alloc]
+                                           initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.currentGroupView.frame.origin]
+                                           andWidth:self.currentGroupView.frame.size.width / zoom
+                                           andHeight:self.currentGroupView.frame.size.height / zoom];
+            
+            [currentGroupItem saveToCoreData];
+            [self addGestureRecognizersToGroup: currentGroupItem];
+            
+            [self.groupsCollection addGroup:currentGroupItem];
+            
+            [self refreshGroupView];
+            
+            // set currentGroupItem as lastSelectedObject
+            [self setSelectedObject:currentGroupItem];
+        }
+    }
+}
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer {
+    
+    if (self.modeControl.selectedSegmentIndex == 2)
+    {
+        [self drawGroup: gestureRecognizer];
+        return;
+    }
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
@@ -538,6 +589,7 @@
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup:gestureRecognizer];
+            [self refreshGroupView];
         } else
         {
 //            [self handlePanBackground:gestureRecognizer];
