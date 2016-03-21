@@ -101,7 +101,7 @@
                     action:@selector(fontSizeEditingChangedHandler:)
 //            forControlEvents:UIControlEventEditingDidEnd];
                     forControlEvents:UIControlEventEditingChanged];
-    self.modeControl.selectedSegmentIndex = 3;
+    self.modeControl.selectedSegmentIndex = 0;
     
 
 }
@@ -674,10 +674,24 @@
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 // noop
             }];
-            
-            [alertController addAction:alertAction];
-            [alertController addAction:cancelAction];
-            [self presentViewController:alertController animated:YES completion:nil];
+         
+         
+//            [alertController addAction:alertAction];
+//            [alertController addAction:cancelAction];
+//            [self presentViewController:alertController animated:YES completion:nil];
+         
+         CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
+         NoteItem *newNote = [[NoteItem alloc] initNote:@"text..." andPoint:point andText:@""];
+         [newNote saveToCoreData];
+         //stick it with the other notes
+         [self.NotesCollection addNote:newNote];
+         [self addNoteToViewWithHandlers:newNote];
+         [self setSelectedObject:newNote];
+         
+         [newNote becomeFirstResponder]; //puts cursor on text field
+         [newNote selectAll:nil];        //highlights text
+//         [newNote selectAll:self];
+
         }
     }
 }
