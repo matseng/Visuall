@@ -212,8 +212,13 @@
 
 - (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer
 {
+    UIView *viewHit = gestureRecognizer.view;
+    if ( [viewHit isKindOfClass: [NoteItem class]] )
+    {
+        return viewHit;
+    }
     CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
-    UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    viewHit = [self.NotesView hitTest:location withEvent:NULL];
     return viewHit;
 }
 
@@ -535,7 +540,10 @@
         }
     }
 }
+
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer {
+    
+   
     
     if (self.modeControl.selectedSegmentIndex == 2)
     {
@@ -546,30 +554,25 @@
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
 
-//        UIView *viewHit = [self getViewHit:gestureRecognizer];
-        UIView *viewHit = gestureRecognizer.view;
+//        [self.fontSize resignFirstResponder];
+//        [self.lastSelectedObject resignFirstResponder];
+//        [[self.view window] endEditing:YES];
         
-        //        NSLog(@"viewHit %@", [viewHit class]);
-        //        NSLog(@"tag %ld", (long)viewHit.tag);
-        //        NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
+        UIView *viewHit = [self getViewHit:gestureRecognizer];
         NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
         if ( [viewHit isKindOfClass: [NoteItem class]] ) {
             NoteItem *nv = (NoteItem *) viewHit;
             [self setSelectedObject:nv];
             [nv handlePan2:gestureRecognizer];
+            [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
             return;
-        }
-        viewHit = [self getViewHit:gestureRecognizer];
-        if ( viewHit.tag == 100 && self.modeControl.selectedSegmentIndex != 2)
+        } else if ( viewHit.tag == 100 && self.modeControl.selectedSegmentIndex != 2)
         {
             GroupItem  *gi = (GroupItem *) [viewHit superview];
             [self setSelectedObject:gi];
             [self setItemsInGroup:gi];
-//            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
         } else if ( viewHit.tag == 777 && self.modeControl.selectedSegmentIndex != 2)
         {
-            //            GroupItem  *gi = (GroupItem *) [viewHit superview];
-            
             [self setSelectedObject:viewHit];  // TODO, still should highlight current group
         } else
         {
@@ -686,10 +689,10 @@
         {
             NoteItem *nv = (NoteItem *) viewHit;
             [self setSelectedObject:nv];
-//            [nv send];
+            return;
         }
         
-     if (self.modeControl.selectedSegmentIndex == 0) {
+        if (self.modeControl.selectedSegmentIndex == 0) {  // new note button
             
             // grab coordinates
             CGPoint gesturePoint = [sender locationInView: self.Background];
@@ -744,6 +747,10 @@
          [newNote selectAll:nil];        //highlights text
 //         [newNote selectAll:self];
 
+        } else
+        {
+//            [[self.view window] endEditing:YES];
+            [self setSelectedObject: viewHit];
         }
     }
 }
@@ -803,38 +810,63 @@
 }
 
 
-- (void)setSelectedObject:(UIView *)object
+- (BOOL)setSelectedObject:(UIView *)object
 {
     if (self.lastSelectedObject) {
-        if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
+        if ([self.lastSelectedObject isKindOfClass:[NoteItem class]])
+        {
             self.lastSelectedObject.layer.borderWidth = 0;
-        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
+        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
+        {
+            self.lastSelectedObject.layer.borderWidth = 0;
             self.lastSelectedObject.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
-            self.lastSelectedObject.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+//            self.lastSelectedObject.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+        } else if (self.lastSelectedObject.tag == 777)
+        {
+            [self.lastSelectedObject superview].layer.borderWidth = 0;
         }
 
     }
     
-    if (object == nil) {
-        self.lastSelectedObject = nil;
-        return;
-    }
+//    if (object == nil || object == self.Background) {
+//        self.lastSelectedObject = nil;
+//        [[self.view window] endEditing:YES];
+//        return NO;
+//    }
+    UIView *visualObject = [[UIView alloc] init];
 
     if ([object isKindOfClass:[NoteItem class]]) {
         NoteItem *noteToSet = (NoteItem *)object;
         [noteToSet saveToCoreData];
         [noteToSet setBorderStyle:UITextBorderStyleRoundedRect];
         self.lastSelectedObject = noteToSet;
+        visualObject = noteToSet;
     } else if ([object isKindOfClass:[GroupItem class]]) {
         GroupItem *groupToSet = (GroupItem *)object;
         [groupToSet saveToCoreData];
         self.lastSelectedObject = groupToSet;
-    } else if (object.tag == 777) {
+        visualObject = groupToSet;
+        [[self.view window] endEditing:YES];
+    } else if (object.tag == 100)
+    {
+        self.lastSelectedObject = [object superview];
+        visualObject = (GroupItem *) [object superview];
+        [[self.view window] endEditing:YES];
+        
+    } else if (object.tag == 777)
+    {
         self.lastSelectedObject = object;
+        visualObject = (GroupItem *) [object superview];
+        [[self.view window] endEditing:YES];
+    } else
+    {
+        self.lastSelectedObject = nil;
+        [[self.view window] endEditing:YES];
     }
-    self.lastSelectedObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
-    self.lastSelectedObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
-
+    
+    visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
+    visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
+    return YES;
 }
 
 - (void) addGestureRecognizersToGroup: (GroupItem *) gi
