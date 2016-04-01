@@ -103,7 +103,28 @@
                     forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 0;
     
+//    [self loadFirebase];
 
+}
+
+- (void) loadFirebase
+{
+    // Get a reference to our posts
+//    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://docs-examples.firebaseio.com/web/saving-data/fireblog/posts"];
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
+    
+    // Attach a block to read the data at our posts reference
+//    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+//        NSLog(@"%@", snapshot.value);
+//    } withCancelBlock:^(NSError *error) {
+//        NSLog(@"%@", error.description);
+//    }];
+    
+    // Read data and react to changes
+    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
+    }];
+    
 }
 
 - (void) fontSizeEditingChangedHandler: (UITextField *) textField
