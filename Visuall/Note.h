@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) setCenterPoint:(CGPoint) point;
 - (void) setCenterX:(float)pointX andCenterY:(float)pointY;
 - (void) setHeight:(float)height andWidth:(float)width;
+- (void) setWidth:(float)height andHeight:(float)width;
 
 @end
 

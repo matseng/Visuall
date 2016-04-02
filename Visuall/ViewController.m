@@ -16,7 +16,7 @@
 #import "AppDelegate.h"
 #import "TouchDownGestureRecognizer.h"
 
-@interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate> {
+@interface ViewController () <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer;
 }
 @property (strong, nonatomic) IBOutlet UIView *Background;
@@ -605,6 +605,7 @@
         {
             NoteItem *ni = (NoteItem *) self.lastSelectedObject;
             [ni handlePan2:gestureRecognizer];
+            [ni saveToCoreData];
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
@@ -670,14 +671,50 @@
     [self.NotesView addSubview:note];
     self.lastSelectedObject = note;
 //    note.userInteractionEnabled = YES;
+    
     note.delegate = self;  // Enables delagte method textFieldShouldReturn
-    [note addTarget:self
-             action:@selector(textFieldDidChangeHandler:)
-            forControlEvents:UIControlEventEditingChanged];
-    [note addTarget:self
-             action:@selector(textFieldDidBeginEditingHandler:)
-            forControlEvents:UIControlEventEditingDidBegin];
+    
+//    [note addTarget:self
+//             action:@selector(textFieldDidChangeHandler:)
+//            forControlEvents:UIControlEventEditingChanged];
+//    [note addTarget:self
+//             action:@selector(textFieldDidBeginEditingHandler:)
+//            forControlEvents:UIControlEventEditingDidBegin];
+
 }
+
+- (void) textViewDidChange:(NoteItem *)textView
+{
+
+//    textView.frame = CGRectZero;
+    CGRect frame = textView.frame;
+    
+    CGSize tempSize = textView.bounds.size;
+    tempSize.width = CGRectInfinite.size.width;
+    
+    frame.size = tempSize;
+    [textView setFrame: frame];  //TODO: getting error here when zoomed out
+    
+    [textView setScrollEnabled:YES];
+    NSLog(@"New text: %@", textView.text);
+    [textView setText: textView.text];
+    textView.note.title = textView.text;
+
+    NSLog(@"Before resize: %f, %f", frame.size.width, frame.size.height);
+    [textView sizeToFit];
+
+    [textView setScrollEnabled:NO];
+    frame = textView.frame;
+    [textView.note setWidth:frame.size.width andHeight:frame.size.height];
+    
+//    frame = [[textView layoutManager] usedRectForTextContainer:[textView textContainer]];
+    NSLog(@"After resize: %f, %f", frame.size.width, frame.size.height);
+    
+    [[TransformUtil sharedManager] transformNoteItem:textView];
+    [textView saveToCoreData];
+}
+
+
 
 -(void) textFieldDidBeginEditingHandler:(UITextField *)textField
 {
@@ -859,7 +896,7 @@
     if ([object isKindOfClass:[NoteItem class]]) {
         NoteItem *noteToSet = (NoteItem *)object;
         [noteToSet saveToCoreData];
-        [noteToSet setBorderStyle:UITextBorderStyleRoundedRect];
+//        [noteToSet setBorderStyle:UITextBorderStyleRoundedRect];
         self.lastSelectedObject = noteToSet;
         visualObject = noteToSet;
     } else if ([object isKindOfClass:[GroupItem class]]) {

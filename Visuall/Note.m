@@ -28,4 +28,10 @@
     self.width = [NSNumber numberWithFloat:width];
 }
 
+- (void) setWidth:(float)width andHeight:(float)height
+{
+    self.height = [NSNumber numberWithFloat:height];
+    self.width = [NSNumber numberWithFloat:width];
+}
+
 @end

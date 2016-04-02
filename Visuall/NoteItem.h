@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "Note+CoreDataProperties.h"
 
-@interface NoteItem : UITextField
+//@interface NoteItem : UITextField
+@interface NoteItem : UITextView
 
 //@property (weak, nonatomic) IBOutlet UITextField *tfield;
 @property Note *note;

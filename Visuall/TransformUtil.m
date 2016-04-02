@@ -99,9 +99,12 @@
     CGRect frame = noteItem.frame;
     frame.origin.x = (-noteItem.note.width.floatValue/2 + noteItem.note.centerX.floatValue ) * self.zoom + self.pan.x;;
     frame.origin.y = (-noteItem.note.height.floatValue/2 + noteItem.note.centerY.floatValue ) * self.zoom + self.pan.y;
-    frame.size.width = noteItem.note.width.floatValue * self.zoom;
-    frame.size.height = noteItem.note.height.floatValue * self.zoom;
-    noteItem.frame = frame;
+
+    NSLog(@"Transformed %f, %f", noteItem.note.width.floatValue, noteItem.note.height.floatValue);
+    frame.size.width = noteItem.note.width.floatValue * self.zoom;  // Why do I do this?
+    frame.size.height = noteItem.note.height.floatValue * self.zoom;  // Why do I do this?
+//    noteItem.frame = frame;
+    [noteItem setFrame: frame];
 
 }
 

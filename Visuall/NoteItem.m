@@ -27,11 +27,24 @@
         self.moc = appDelegate.managedObjectContext;
         
         [self setNote: note];
-        NSLog(@"Init %f, %f", note.centerX.floatValue, note.centerY.floatValue);
-        NSLog(@"Init %f, %f", note.width.floatValue, note.height.floatValue);
-        self.text = [NSString stringWithFormat: @"%@ %@", self.note.title, self.note.paragraph];
-        self.userInteractionEnabled = true;
-        self.textAlignment = NSTextAlignmentCenter;
+//        NSLog(@"Init %f, %f", note.centerX.floatValue, note.centerY.floatValue);
+//        NSLog(@"Init %f, %f", note.width.floatValue, note.height.floatValue);
+        
+        [self setScrollEnabled:YES];
+        [self setText:self.note.title];
+        CGRect frame = self.frame;
+        NSLog(@"Init %f, %f", frame.size.width, frame.size.height);
+        [self sizeToFit];
+        [self setScrollEnabled:NO];
+        frame = self.frame;        
+        NSLog(@"Adjusted %f, %f", frame.size.width, frame.size.height);
+        [self.note setWidth:frame.size.width andHeight:frame.size.height];
+        
+//        self.userInteractionEnabled = true;
+//        self.textAlignment = NSTextAlignmentCenter;
+//        self.editable = YES;
+        
+        /*
         [self setBorderStyle:UITextBorderStyleRoundedRect];
         CGRect frame = self.frame;
         frame.size.width = note.width.floatValue;
@@ -39,9 +52,11 @@
         frame.origin.x = - note.width.floatValue / 2;
         frame.origin.y = - note.height.floatValue / 2;
         self.frame = frame;
+        */
+        
         [[TransformUtil sharedManager] transformNoteItem: self];
 //        CGRect frame2 = self.frame;
-        NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
+//        NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     }
     
     return self;
@@ -64,7 +79,8 @@
         [self setNote: note];
         self.text = [NSString stringWithFormat: @"%@\n\n%@", self.note.title, self.note.paragraph];
         self.textAlignment = NSTextAlignmentCenter;
-        [self setBorderStyle:UITextBorderStyleRoundedRect];
+//        [self setBorderStyle:UITextBorderStyleRoundedRect];
+        self.editable = YES;
         [self renderToAutosizeWidth2];
     }
     
