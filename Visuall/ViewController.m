@@ -243,8 +243,17 @@
     {
         return [viewHit superview];
     }
+    
     CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
     viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    
+    if ( [viewHit isKindOfClass: [NoteItem2 class]])  // Hack to detect notes when zoomed in 
+    {
+        return viewHit;
+    } else if ( [[viewHit superview] isKindOfClass: [NoteItem2 class]] )
+    {
+        return [viewHit superview];
+    }
     return viewHit;
 }
 
@@ -337,8 +346,11 @@
     
     // HACKS
 //    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
-    CGPoint location = [gestureRecognizer locationInView: self.GestureView];
-    UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    
+//    CGPoint location = [gestureRecognizer locationInView: self.GestureView];
+//    UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    
+    UIView *viewHit = [self getViewHit:gestureRecognizer];
     
     NSLog(@"handlePanBackground viewHit %@", [viewHit class]);
     NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
@@ -348,9 +360,10 @@
         viewHit = viewHit.superview;
     }
     
-    if ( [viewHit respondsToSelector:@selector(handlePan2:)] ) {
-        NoteItem *nv = (NoteItem *) viewHit;
-        [nv handlePan2:gestureRecognizer];
+//    if ( [viewHit respondsToSelector:@selector(handlePan2:)] ) {
+    if ( [viewHit isKindOfClass:[ NoteItem2 class]] ) {
+        NoteItem2 *nv = (NoteItem2 *) viewHit;
+        [nv handlePan:gestureRecognizer];
         [self setSelectedObject:nv];
         return;
     } else if ( [viewHit isKindOfClass: [GroupItem class]] &&  self.modeControl.selectedSegmentIndex != 2) {
@@ -586,10 +599,10 @@
         
         UIView *viewHit = [self getViewHit:gestureRecognizer];
         NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
-        if ( [viewHit isKindOfClass: [NoteItem class]] ) {
-            NoteItem *nv = (NoteItem *) viewHit;
+        if ( [viewHit isKindOfClass: [NoteItem2 class]] ) {
+            NoteItem2 *nv = (NoteItem2 *) viewHit;
             [self setSelectedObject:nv];
-            [nv handlePan2:gestureRecognizer];
+            [nv handlePan:gestureRecognizer];
             [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
             return;
         } else if ( viewHit.tag == 100 && self.modeControl.selectedSegmentIndex != 2)
@@ -606,11 +619,11 @@
         }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        if ([self.lastSelectedObject isKindOfClass: [NoteItem class]])
+        if ([self.lastSelectedObject isKindOfClass: [NoteItem2 class]])
         {
-            NoteItem *ni = (NoteItem *) self.lastSelectedObject;
-            [ni handlePan2:gestureRecognizer];
-            [ni saveToCoreData];
+            NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
+            [ni handlePan:gestureRecognizer];
+//            [ni saveToCoreData];
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
@@ -672,7 +685,7 @@
                                    initWithTarget:self
 //                                   action:@selector(handlePan:)];
                                    action:@selector(panHandler:)];
-    [noteItem addGestureRecognizer: pan];
+    [noteItem.noteTextView addGestureRecognizer: pan];
     
     [self.NotesView addSubview:noteItem];
     self.lastSelectedObject = noteItem;

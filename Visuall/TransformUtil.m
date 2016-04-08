@@ -90,9 +90,9 @@
     CGRect frame = visualItem.frame;
     frame.origin.x = visualItem.x * self.zoom + self.pan.x;
     frame.origin.y = visualItem.y * self.zoom + self.pan.y;
-    frame.size.width = visualItem.frame.size.width * self.zoom;
-    frame.size.height = visualItem.frame.size.height * self.zoom;
-    [visualItem setFrame: frame];    
+//    frame.size.width = visualItem.frame.size.width * self.zoom;
+//    frame.size.height = visualItem.frame.size.height * self.zoom;
+    [visualItem setFrame: frame];
 }
 
 -(void) transformNoteItem: (NoteItem *) noteItem

@@ -17,4 +17,10 @@
 
 - (instancetype) initNote:(Note *)note;
 
+- (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer;
+
+- (void) translateTx: (float) tx andTy: (float) ty;
+
+- (void) saveToCoreData;
+
 @end

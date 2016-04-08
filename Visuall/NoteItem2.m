@@ -58,4 +58,30 @@
     return self;
 }
 
+- (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
+        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [gestureRecognizer translationInView:self];
+        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+        [self translateTx:translation.x andTy:translation.y];
+    }
+}
+
+- (void) saveToCoreData
+{
+    [self.moc save:nil];
+}
+
+- (void) translateTx: (float) tx andTy: (float) ty
+{
+    float xCenter = self.note.centerX.floatValue + tx;
+    float yCenter = self.note.centerY.floatValue + ty;
+    [self.note setCenterX:xCenter andCenterY:yCenter];
+    self.x = self.x + tx;
+    self.y = self.y + ty;
+    
+    [[TransformUtil sharedManager] transformVisualItem: self];
+}
+
 @end
