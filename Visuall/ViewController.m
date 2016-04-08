@@ -10,6 +10,7 @@
 #import "Note.h"
 #import "NotesCollection.h"
 #import "NoteItem.h"
+#import "NoteItem2.h"
 #import "TransformUtil.h"
 #import "GroupItem.h"
 #import "GroupsCollection.h"
@@ -101,7 +102,7 @@
                     action:@selector(fontSizeEditingChangedHandler:)
 //            forControlEvents:UIControlEventEditingDidEnd];
                     forControlEvents:UIControlEventEditingChanged];
-    self.modeControl.selectedSegmentIndex = 0;
+    self.modeControl.selectedSegmentIndex = 3;
     
 //    [self loadFirebase];
 
@@ -231,12 +232,16 @@
     return NO;
 }
 
+
 - (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer
 {
     UIView *viewHit = gestureRecognizer.view;
-    if ( [viewHit isKindOfClass: [NoteItem class]] )
+    if ( [viewHit isKindOfClass: [NoteItem2 class]])
     {
         return viewHit;
+    } else if ( [[viewHit superview] isKindOfClass: [NoteItem2 class]] )
+    {
+        return [viewHit superview];
     }
     CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
     viewHit = [self.NotesView hitTest:location withEvent:NULL];
@@ -650,30 +655,30 @@
 
 - (void) attachAllNotes
 {
-    for (NoteItem *ni in self.NotesCollection.Notes) {
-//        [self addNoteToViewWithHandlers:ni]; // TODO: re-enable
-        [self.NotesView addSubview:ni];  // TODO: delete this line
+    for (NoteItem2 *ni in self.NotesCollection.Notes) {
+        [self addNoteToViewWithHandlers:ni]; // TODO: re-enable
+//        [self.NotesView addSubview:ni];  // TODO: delete this line
     }
 }
 
-- (void) addNoteToViewWithHandlers:(NoteItem *)note
+- (void) addNoteToViewWithHandlers:(NoteItem2 *) noteItem
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(handleTap:)];
-    [note addGestureRecognizer: tap];
+    [noteItem.noteTextView addGestureRecognizer: tap];
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
 //                                   action:@selector(handlePan:)];
                                    action:@selector(panHandler:)];
-    [note addGestureRecognizer: pan];
+    [noteItem addGestureRecognizer: pan];
     
-    [self.NotesView addSubview:note];
-    self.lastSelectedObject = note;
+    [self.NotesView addSubview:noteItem];
+    self.lastSelectedObject = noteItem;
 //    note.userInteractionEnabled = YES;
     
-    note.delegate = self;  // Enables delagte method textFieldShouldReturn
+    noteItem.noteTextView.delegate = self;  // Enables delagte method textFieldShouldReturn
     
 //    [note addTarget:self
 //             action:@selector(textFieldDidChangeHandler:)
@@ -741,12 +746,12 @@
     {
         
         UIView *viewHit = [self getViewHit:sender];
-        NSLog(@"viewHit %@", [viewHit class]);
+        NSLog(@"My viewHit %@", [viewHit class]);
         NSLog(@"tag %ld", (long)viewHit.tag);
         NSLog(@"gestureRecognizer %@", [sender.view class]);
-        if ( [viewHit isKindOfClass: [NoteItem class]] )
+        if ( [viewHit isKindOfClass: [NoteItem2 class]])
         {
-            NoteItem *nv = (NoteItem *) viewHit;
+            NoteItem2 *nv = (NoteItem2 *) viewHit;
             [self setSelectedObject:nv];
             return;
         }
@@ -872,7 +877,7 @@
 - (BOOL)setSelectedObject:(UIView *)object
 {
     if (self.lastSelectedObject) {
-        if ([self.lastSelectedObject isKindOfClass:[NoteItem class]])
+        if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]])
         {
             self.lastSelectedObject.layer.borderWidth = 0;
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
@@ -887,16 +892,11 @@
 
     }
     
-//    if (object == nil || object == self.Background) {
-//        self.lastSelectedObject = nil;
-//        [[self.view window] endEditing:YES];
-//        return NO;
-//    }
     UIView *visualObject = [[UIView alloc] init];
 
-    if ([object isKindOfClass:[NoteItem class]]) {
-        NoteItem *noteToSet = (NoteItem *)object;
-        [noteToSet saveToCoreData];
+    if ([object isKindOfClass:[NoteItem2 class]]) {
+        NoteItem2 *noteToSet = (NoteItem2 *)object;
+//        [noteToSet saveToCoreData];  // TODO
 //        [noteToSet setBorderStyle:UITextBorderStyleRoundedRect];
         self.lastSelectedObject = noteToSet;
         visualObject = noteToSet;
