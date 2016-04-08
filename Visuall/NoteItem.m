@@ -26,7 +26,7 @@
         AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         self.moc = appDelegate.managedObjectContext;
         
-        [self setNote: note];
+        [self setNote: note];  // built-in setter
 //        NSLog(@"Init %f, %f", note.centerX.floatValue, note.centerY.floatValue);
 //        NSLog(@"Init %f, %f", note.width.floatValue, note.height.floatValue);
         
@@ -39,7 +39,7 @@
         frame = self.frame;        
         NSLog(@"Adjusted %f, %f", frame.size.width, frame.size.height);
         [self.note setWidth:frame.size.width andHeight:frame.size.height];
-        
+
 //        self.userInteractionEnabled = true;
 //        self.textAlignment = NSTextAlignmentCenter;
 //        self.editable = YES;

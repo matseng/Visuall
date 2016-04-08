@@ -13,6 +13,7 @@
 #import "NoteItem.h"
 #import "NotesCollection.h"
 #import "GroupItem.h"
+#import "VisualItem.h"
 
 @interface TransformUtil : NSObject
 
@@ -35,6 +36,8 @@
 -(void) transformNoteItem: (NoteItem *) noteItem;
 
 -(void) transformGroupItem: (GroupItem *) groupItem;
+
+-(void) transformVisualItem: (VisualItem *) visualItem;
 
 -(CGPoint) getGlobalCoordinate: (CGPoint) point;
 

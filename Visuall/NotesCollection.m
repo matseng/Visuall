@@ -9,6 +9,7 @@
 #import "NotesCollection.h"
 #import "Note+CoreDataProperties.h"
 #import "NoteItem.h"
+#import "NoteItem2.h"
 #import "AppDelegate.h"
 
 @interface NotesCollection () <UIGestureRecognizerDelegate>
@@ -30,7 +31,8 @@
     NSArray *notesCD = [moc executeFetchRequest:request error:nil];
     NSLog(@"Fetching Notes from Core Data...found %lu notes", (unsigned long)notesCD.count);
     for (Note *note in notesCD) {
-        [self.Notes addObject:[[NoteItem alloc] initNote:note]];
+//        [self.Notes addObject:[[NoteItem alloc] initNote:note]];
+        [self.Notes addObject:[[NoteItem2 alloc] initNote:note]];
     }
 }
 

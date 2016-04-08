@@ -651,7 +651,8 @@
 - (void) attachAllNotes
 {
     for (NoteItem *ni in self.NotesCollection.Notes) {
-        [self addNoteToViewWithHandlers:ni];
+//        [self addNoteToViewWithHandlers:ni]; // TODO: re-enable
+        [self.NotesView addSubview:ni];  // TODO: delete this line
     }
 }
 

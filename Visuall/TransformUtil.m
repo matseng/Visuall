@@ -9,6 +9,7 @@
 #import "TransformUtil.h"
 #import "NoteItem.h"
 #import "GroupItem.h"
+#import "VisualItem.h"
 
 @implementation TransformUtil
 
@@ -79,6 +80,22 @@
     }
 }
 
+-(void) transformVisualItem: (VisualItem *) visualItem
+{
+    CGAffineTransform matrix = visualItem.transform;
+    matrix.a = self.zoom;
+    matrix.d = self.zoom;
+    [visualItem setTransform: matrix];
+    
+    CGRect frame = visualItem.frame;
+    frame.origin.x = visualItem.x * self.zoom + self.pan.x;
+    frame.origin.y = visualItem.y * self.zoom + self.pan.y;
+    frame.size.width = visualItem.frame.size.width * self.zoom;
+    frame.size.height = visualItem.frame.size.height * self.zoom;
+    [visualItem setFrame: frame];
+    
+}
+
 -(void) transformNoteItem: (NoteItem *) noteItem
 {
     CGAffineTransform matrix = noteItem.transform;
@@ -97,7 +114,7 @@
     [noteItem setTransform: matrix];
     
     CGRect frame = noteItem.frame;
-    frame.origin.x = (-noteItem.note.width.floatValue/2 + noteItem.note.centerX.floatValue ) * self.zoom + self.pan.x;;
+    frame.origin.x = (-noteItem.note.width.floatValue/2 + noteItem.note.centerX.floatValue ) * self.zoom + self.pan.x;
     frame.origin.y = (-noteItem.note.height.floatValue/2 + noteItem.note.centerY.floatValue ) * self.zoom + self.pan.y;
 
     NSLog(@"Transformed %f, %f", noteItem.note.width.floatValue, noteItem.note.height.floatValue);

@@ -18,6 +18,8 @@
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
 		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
+		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
+		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
@@ -68,6 +70,10 @@
 		71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDownGestureRecognizer.m; sourceTree = "<group>"; };
 		716B04681BFC210300DA9451 /* TransformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformUtil.h; sourceTree = "<group>"; };
 		716B04691BFC210300DA9451 /* TransformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformUtil.m; sourceTree = "<group>"; };
+		71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualItem.h; sourceTree = "<group>"; };
+		71B0EF001CB83CCE009D8F5C /* VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualItem.m; sourceTree = "<group>"; };
+		71B0EF021CB83E6D009D8F5C /* NoteItem2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem2.h; sourceTree = "<group>"; };
+		71B0EF031CB83E6D009D8F5C /* NoteItem2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem2.m; sourceTree = "<group>"; };
 		71B37E771C1924800048851A /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = Visuall/HomeViewController.h; sourceTree = "<group>"; };
 		71B37E781C1924800048851A /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Visuall/HomeViewController.m; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
@@ -165,8 +171,12 @@
 				716B04691BFC210300DA9451 /* TransformUtil.m */,
 				210833161C0127AB00BA059F /* GroupItem.h */,
 				210833171C0127AB00BA059F /* GroupItem.m */,
+				71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */,
+				71B0EF001CB83CCE009D8F5C /* VisualItem.m */,
 				71E354F71BF5953600B5EA99 /* NoteItem.h */,
 				71E354F81BF5953600B5EA99 /* NoteItem.m */,
+				71B0EF021CB83E6D009D8F5C /* NoteItem2.h */,
+				71B0EF031CB83E6D009D8F5C /* NoteItem2.m */,
 				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
 				71FC72131BF2E881003B7F14 /* NotesCollection.m */,
 				88ED06201C05567E00C0486D /* GroupsCollection.h */,
@@ -398,12 +408,14 @@
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
+				71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */,
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,
 				71B37E791C1924800048851A /* HomeViewController.m in Sources */,
 				885AFD621C00215300F89DE5 /* Note.m in Sources */,
 				88ED06281C06237300C0486D /* Group+CoreDataProperties.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
+				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,
 				71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */,
 				716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */,
