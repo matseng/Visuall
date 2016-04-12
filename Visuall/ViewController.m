@@ -707,6 +707,7 @@
 {
     NoteItem2 *ni = (NoteItem2 *) [textView superview];
     [ni resizeToFit: textView.text];
+    ni.note.title = textView.text;
     [[TransformUtil sharedManager] transformVisualItem: ni];
     [ni saveToCoreData];
 }

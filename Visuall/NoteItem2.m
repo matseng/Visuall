@@ -71,12 +71,11 @@
 
 - (void) resizeToFit: (NSString *) text;
 {
-    float zoom = [[TransformUtil sharedManager] zoom];
+//    float zoom = [[TransformUtil sharedManager] zoom];
     CGRect frame = self.noteTextView.frame;
-    
+//    CGRect frame = CGRectMake(0, 0, 0, 0);
     CGSize tempSize = self.noteTextView.bounds.size;
     tempSize.width = CGRectInfinite.size.width;
-
     frame.size = tempSize;
     [self.noteTextView setFrame: frame];
     
@@ -84,16 +83,14 @@
     [self.noteTextView setText: text];
     [self.noteTextView sizeToFit];
     [self.noteTextView setScrollEnabled: NO];
-    frame = self.noteTextView.frame;
-    [self.note setWidth:frame.size.width andHeight:frame.size.height];
-    
-    self.frame = self.noteTextView.frame;
-    
-    float x = -self.frame.size.width/2 + self.note.centerX.floatValue;
-    float y = -self.frame.size.height/2 + self.note.centerY.floatValue;
-    
-    [self setX: x andY: y andWidth: self.frame.size.width andHeight:self.frame.size.height];
 
+    frame = self.noteTextView.frame;
+    float x = -frame.size.width/2 + self.note.centerX.floatValue;
+    float y = -frame.size.height/2 + self.note.centerY.floatValue;
+    [self setX: x andY: y andWidth: frame.size.width andHeight: frame.size.height];
+    [self.note setCenterX: x + frame.size.width/2 andCenterY: y + frame.size.height/2];
+    [self.note setWidth:frame.size.width andHeight:frame.size.height];
+//    [self setFrame: self.noteTextView.frame];
 }
 
 - (void) saveToCoreData

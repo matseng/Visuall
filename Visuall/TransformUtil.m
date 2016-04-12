@@ -10,6 +10,7 @@
 #import "NoteItem.h"
 #import "GroupItem.h"
 #import "VisualItem.h"
+#import "NoteItem2.h"
 
 @implementation TransformUtil
 
@@ -40,8 +41,8 @@
         float panY = self.pan.y + translation.y;
         self.pan = CGPointMake(panX, panY);
 
-        for (NoteItem *noteItem in Notes) {
-            [self transformNoteItem: noteItem];
+        for (NoteItem2 *noteItem in Notes) {
+            [self transformVisualItem: noteItem];
         }
         for (GroupItem *groupItem in groupItems) {
             [self transformGroupItem: groupItem];
@@ -68,8 +69,8 @@
         self.zoom = zoom;
         
         
-        for (NoteItem *noteItem in Notes) {
-            [self transformNoteItem:noteItem];
+        for (NoteItem2 *noteItem in Notes) {
+            [self transformVisualItem:noteItem];
         }
         
         for (GroupItem *groupItem in Groups) {
@@ -82,6 +83,8 @@
 
 -(void) transformVisualItem: (VisualItem *) visualItem
 {
+    
+    
     CGAffineTransform matrix = visualItem.transform;
     matrix.a = self.zoom;
     matrix.d = self.zoom;
@@ -90,8 +93,8 @@
     CGRect frame = visualItem.frame;
     frame.origin.x = visualItem.x * self.zoom + self.pan.x;
     frame.origin.y = visualItem.y * self.zoom + self.pan.y;
-//    frame.size.width = visualItem.width * self.zoom;
-//    frame.size.height = visualItem.height * self.zoom;
+    frame.size.width = visualItem.width * self.zoom;
+    frame.size.height = visualItem.height * self.zoom;
     
     [visualItem setFrame: frame];
 }
