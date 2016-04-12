@@ -247,7 +247,7 @@
     CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
     viewHit = [self.NotesView hitTest:location withEvent:NULL];
     
-    if ( [viewHit isKindOfClass: [NoteItem2 class]])  // Hack to detect notes when zoomed in 
+    if ( [viewHit isKindOfClass: [NoteItem2 class]])  // Hack to detect notes when zoomed in
     {
         return viewHit;
     } else if ( [[viewHit superview] isKindOfClass: [NoteItem2 class]] )
@@ -702,7 +702,16 @@
 
 }
 
-- (void) textViewDidChange:(NoteItem *)textView
+
+- (void) textViewDidChange:(UITextView *) textView
+{
+    NoteItem2 *ni = (NoteItem2 *) [textView superview];
+    [ni resizeToFit: textView.text];
+    [[TransformUtil sharedManager] transformVisualItem: ni];
+    [ni saveToCoreData];
+}
+
+- (void) textViewDidChange_ARCHIVE:(NoteItem *)textView
 {
 
 //    textView.frame = CGRectZero;
@@ -734,17 +743,16 @@
 }
 
 
-
--(void) textFieldDidBeginEditingHandler:(UITextField *)textField
+-(void) textViewDidBeginEditingHandler:(UITextView *)textField
 {
     [self setSelectedObject:textField];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textField{
     return YES;
 }
 
-- (void) textFieldDidChangeHandler:(NoteItem *)textField
+- (void) textViewDidChangeHandler:(NoteItem *)textField
 {
 //    [textField sizeToFit];
     textField.note.title = textField.text;

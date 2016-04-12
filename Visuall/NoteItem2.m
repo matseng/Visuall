@@ -36,21 +36,22 @@
         
         [self setNote: note];  // built-in setter
         self.noteTextView = [[UITextView alloc] init];
-        [self.noteTextView setScrollEnabled: YES];
-        [self.noteTextView setText: note.title];
-        [self.noteTextView sizeToFit];
-        [self.noteTextView setScrollEnabled: NO];
-        CGRect frame = self.noteTextView.frame;
-        [self.note setWidth:frame.size.width andHeight:frame.size.height];
-        
-        self.frame = self.noteTextView.frame;
+//        [self.noteTextView setScrollEnabled: YES];
+//        [self.noteTextView setText: note.title];
+//        [self.noteTextView sizeToFit];
+//        [self.noteTextView setScrollEnabled: NO];
+//        CGRect frame = self.noteTextView.frame;
+//        [self.note setWidth:frame.size.width andHeight:frame.size.height];
+//        
+//        self.frame = self.noteTextView.frame;
+//        [self addSubview: self.noteTextView];
+//        
+//        float x = -self.frame.size.width/2 + note.centerX.floatValue;
+//        float y = -self.frame.size.height/2 + note.centerY.floatValue;
+//        
+//        [self setX: x andY: y andWidth: self.frame.size.width andHeight:self.frame.size.height];
+        [self resizeToFit: note.title];
         [self addSubview: self.noteTextView];
-        
-        float x = -self.frame.size.width/2 + note.centerX.floatValue;
-        float y = -self.frame.size.height/2 + note.centerY.floatValue;
-        
-        [self setX: x andY: y andWidth: self.frame.size.width andHeight:self.frame.size.height];
-        
         [[TransformUtil sharedManager] transformVisualItem: self];  //TODO change to
         
     }
@@ -66,6 +67,33 @@
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         [self translateTx:translation.x andTy:translation.y];
     }
+}
+
+- (void) resizeToFit: (NSString *) text;
+{
+    float zoom = [[TransformUtil sharedManager] zoom];
+    CGRect frame = self.noteTextView.frame;
+    
+    CGSize tempSize = self.noteTextView.bounds.size;
+    tempSize.width = CGRectInfinite.size.width;
+
+    frame.size = tempSize;
+    [self.noteTextView setFrame: frame];
+    
+    [self.noteTextView setScrollEnabled: YES];
+    [self.noteTextView setText: text];
+    [self.noteTextView sizeToFit];
+    [self.noteTextView setScrollEnabled: NO];
+    frame = self.noteTextView.frame;
+    [self.note setWidth:frame.size.width andHeight:frame.size.height];
+    
+    self.frame = self.noteTextView.frame;
+    
+    float x = -self.frame.size.width/2 + self.note.centerX.floatValue;
+    float y = -self.frame.size.height/2 + self.note.centerY.floatValue;
+    
+    [self setX: x andY: y andWidth: self.frame.size.width andHeight:self.frame.size.height];
+
 }
 
 - (void) saveToCoreData

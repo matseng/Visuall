@@ -15,12 +15,14 @@
 @property Note *note;
 @property UITextView *noteTextView;
 
-- (instancetype) initNote:(Note *)note;
+- (instancetype) initNote:(Note *) note;
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer;
 
 - (void) translateTx: (float) tx andTy: (float) ty;
 
 - (void) saveToCoreData;
+
+- (void) resizeToFit: (NSString *) text;
 
 @end
