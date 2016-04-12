@@ -434,9 +434,10 @@
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
 {
     if ( [gestureRecognizer.view respondsToSelector:@selector(handlePan2:)] ) {
-        NoteItem *nv = (NoteItem *)gestureRecognizer.view;
-        [nv handlePan2:gestureRecognizer];
-        [self setSelectedObject:nv];
+        NoteItem *ni = (NoteItem *)gestureRecognizer.view;
+        [ni handlePan2:gestureRecognizer];
+        [self setSelectedObject:ni];
+//        [ni saveToCoreData];
     }
 }
 
@@ -623,7 +624,7 @@
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];
-//            [ni saveToCoreData];
+            [ni saveToCoreData];
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
@@ -858,9 +859,9 @@
         NSLog(@"%@", self.lastSelectedObject);
         NSManagedObject *objectToDelete;
         NSString *modalText;
-        if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
+        if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]]) {
             NSLog(@"puplet");
-            NoteItem *noteToDelete = (NoteItem *)self.lastSelectedObject;
+            NoteItem2 *noteToDelete = (NoteItem2 *)self.lastSelectedObject;
             objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
             modalText = @"this note";
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
