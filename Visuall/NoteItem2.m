@@ -36,26 +36,31 @@
         
         [self setNote: note];  // built-in setter
         self.noteTextView = [[UITextView alloc] init];
-//        [self.noteTextView setScrollEnabled: YES];
-//        [self.noteTextView setText: note.title];
-//        [self.noteTextView sizeToFit];
-//        [self.noteTextView setScrollEnabled: NO];
-//        CGRect frame = self.noteTextView.frame;
-//        [self.note setWidth:frame.size.width andHeight:frame.size.height];
-//        
-//        self.frame = self.noteTextView.frame;
-//        [self addSubview: self.noteTextView];
-//        
-//        float x = -self.frame.size.width/2 + note.centerX.floatValue;
-//        float y = -self.frame.size.height/2 + note.centerY.floatValue;
-//        
-//        [self setX: x andY: y andWidth: self.frame.size.width andHeight:self.frame.size.height];
         [self resizeToFit: note.title];
         [self addSubview: self.noteTextView];
-        [[TransformUtil sharedManager] transformVisualItem: self];  //TODO change to
-        
     }
     
+    return self;
+}
+
+- (instancetype) initNote:(NSString *) title
+                 andPoint:(CGPoint) point
+                  andText:(NSString *) paragraph
+{
+    self = [super init];
+    if (self) {
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        self.moc = appDelegate.managedObjectContext;
+        
+        Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:self.moc];
+        note.title = title;
+        note.paragraph = paragraph;
+        [note setCenterPoint:point];
+        [self setNote: note];
+        self.noteTextView = [[UITextView alloc] init];
+        [self resizeToFit: note.title];
+        [self addSubview: self.noteTextView];
+    }
     return self;
 }
 
@@ -85,8 +90,10 @@
     [self.noteTextView setScrollEnabled: NO];
 
     frame = self.noteTextView.frame;
-    float x = -frame.size.width/2 + self.note.centerX.floatValue;
-    float y = -frame.size.height/2 + self.note.centerY.floatValue;
+//    float x = -frame.size.width/2 + self.note.centerX.floatValue;
+//    float y = -frame.size.height/2 + self.note.centerY.floatValue;
+    float x = self.note.centerX.floatValue;
+    float y = self.note.centerY.floatValue;
     [self setX: x andY: y andWidth: frame.size.width andHeight: frame.size.height];
     [self.note setCenterX: x + frame.size.width/2 andCenterY: y + frame.size.height/2];
     [self.note setWidth:frame.size.width andHeight:frame.size.height];

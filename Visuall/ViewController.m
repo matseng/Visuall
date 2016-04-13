@@ -104,28 +104,70 @@
                     forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 3;
     
-//    [self loadFirebase];
+    [self loadFirebase];
 
 }
 
 - (void) loadFirebase
 {
-    // Get a reference to our posts
-//    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://docs-examples.firebaseio.com/web/saving-data/fireblog/posts"];
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
+    Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
     
-    // Attach a block to read the data at our posts reference
-//    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-//        NSLog(@"%@", snapshot.value);
-//    } withCancelBlock:^(NSError *error) {
-//        NSLog(@"%@", error.description);
-//    }];
-    
-    // Read data and react to changes
-    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
+    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
+    {
+//        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
+        for (NSString *key in snapshot.value)
+        {
+//            NSLog(@"Text: %@", snapshot.value[key][@"data"][@"text"]);
+//            NSLog(@"Key: %@", key);
+            CGFloat x = [snapshot.value[key][@"data"][@"x"] floatValue];
+            CGFloat y = [snapshot.value[key][@"data"][@"y"] floatValue];
+            CGPoint point = CGPointMake(x, y);
+            NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.value[key][@"data"][@"text"]
+                                                    andPoint:point
+                                                     andText:@""];
+            
+            //                [newNote saveToCoreData];
+            [self.NotesCollection addNote:newNote];
+            [self addNoteToViewWithHandlers:newNote];
+            [self setSelectedObject:newNote];
+            [newNote becomeFirstResponder];  // puts cursor on text field
+            [newNote.noteTextView selectAll:nil];  // highlights text
+            
+        }
+    } withCancelBlock:^(NSError *error)
+    {
+        NSLog(@"%@", error.description);
     }];
     
+    [refGroups observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
+     {
+         for (NSString *key in snapshot.value)
+         {
+
+             CGFloat x = [snapshot.value[key][@"style"][@"left"] floatValue];
+             CGFloat y = [snapshot.value[key][@"style"][@"top"] floatValue];
+             CGFloat width = [snapshot.value[key][@"style"][@"width"] floatValue];
+             CGFloat height = [snapshot.value[key][@"style"][@"height"] floatValue];
+             CGPoint point = CGPointMake(x, y);
+             
+             float zoom = [[TransformUtil sharedManager] zoom];
+             GroupItem *currentGroupItem = [[GroupItem alloc]
+                                            initWithPoint:point
+                                            andWidth: width / zoom
+                                            andHeight: height / zoom];
+             
+
+             [self addGestureRecognizersToGroup: currentGroupItem];
+             [self.groupsCollection addGroup:currentGroupItem];
+             [self refreshGroupView];
+//             [self setSelectedObject:currentGroupItem];
+         }
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"%@", error.description);
+     }];
+
 }
 
 - (void) fontSizeEditingChangedHandler: (UITextField *) textField
@@ -671,7 +713,6 @@
 {
     for (NoteItem2 *ni in self.NotesCollection.Notes) {
         [self addNoteToViewWithHandlers:ni]; // TODO: re-enable
-//        [self.NotesView addSubview:ni];  // TODO: delete this line
     }
 }
 
@@ -684,23 +725,14 @@
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
-//                                   action:@selector(handlePan:)];
                                    action:@selector(panHandler:)];
     [noteItem.noteTextView addGestureRecognizer: pan];
     
     [self.NotesView addSubview:noteItem];
+    [[TransformUtil sharedManager] transformVisualItem: noteItem];
     self.lastSelectedObject = noteItem;
-//    note.userInteractionEnabled = YES;
     
     noteItem.noteTextView.delegate = self;  // Enables delagte method textFieldShouldReturn
-    
-//    [note addTarget:self
-//             action:@selector(textFieldDidChangeHandler:)
-//            forControlEvents:UIControlEventEditingChanged];
-//    [note addTarget:self
-//             action:@selector(textFieldDidBeginEditingHandler:)
-//            forControlEvents:UIControlEventEditingDidBegin];
-
 }
 
 
@@ -769,9 +801,10 @@
     {
         
         UIView *viewHit = [self getViewHit:sender];
-        NSLog(@"My viewHit %@", [viewHit class]);
-        NSLog(@"tag %ld", (long)viewHit.tag);
-        NSLog(@"gestureRecognizer %@", [sender.view class]);
+//        NSLog(@"My viewHit %@", [viewHit class]);
+//        NSLog(@"tag %ld", (long)viewHit.tag);
+//        NSLog(@"gestureRecognizer %@", [sender.view class]);
+        
         if ( [viewHit isKindOfClass: [NoteItem2 class]])
         {
             NoteItem2 *nv = (NoteItem2 *) viewHit;
@@ -780,63 +813,17 @@
         }
         
         if (self.modeControl.selectedSegmentIndex == 0) {  // new note button
-            
-            // grab coordinates
             CGPoint gesturePoint = [sender locationInView: self.Background];
-            NSLog(@"we in note mode beeeetches %f %f", gesturePoint.x, gesturePoint.y);
-            
-            //instantiate alert controller
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"New Note" message:nil preferredStyle:UIAlertControllerStyleAlert];
-
-            //add text fields for title and paragraph
-            [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                textField.placeholder = @"Title";
-            }];
-            [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-                textField.placeholder = @"Paragraph";
-            }];
-            
-            //define add note action
-            UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"add" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                //grab text fields out of controller
-                UITextField *titleTextField = [[alertController textFields] firstObject];
-                UITextField *paragraphTextField = [[alertController textFields] lastObject];
-                //create a new note  //TODO: Add note directly as a text field (skip modal)
-                CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
-                NoteItem *newNote = [[NoteItem alloc] initNote:titleTextField.text andPoint:point andText:paragraphTextField.text];
-                [newNote saveToCoreData];
-                //stick it with the other notes
-                [self.NotesCollection addNote:newNote];
-                [self addNoteToViewWithHandlers:newNote];
-                [self setSelectedObject:newNote];
-            }];
-            
-            //define cancel action
-            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                // noop
-            }];
-         
-         
-//            [alertController addAction:alertAction];
-//            [alertController addAction:cancelAction];
-//            [self presentViewController:alertController animated:YES completion:nil];
-         
-         CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
-         NoteItem *newNote = [[NoteItem alloc] initNote:@"text..." andPoint:point andText:@""];
-         [newNote saveToCoreData];
-         //stick it with the other notes
-         [self.NotesCollection addNote:newNote];
-         [self addNoteToViewWithHandlers:newNote];
-         [self setSelectedObject:newNote];
-         
-         [newNote becomeFirstResponder]; //puts cursor on text field
-         [newNote selectAll:nil];        //highlights text
-//         [newNote selectAll:self];
-
+            CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
+            NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." andPoint:point andText:@""];
+            [newNote saveToCoreData];
+            [self.NotesCollection addNote:newNote];
+            [self addNoteToViewWithHandlers:newNote];
+            [self setSelectedObject:newNote];
+            [newNote becomeFirstResponder];  // puts cursor on text field
+            [newNote.noteTextView selectAll:nil];  // highlights text
         } else
         {
-//            [[self.view window] endEditing:YES];
             [self setSelectedObject: viewHit];
         }
     }

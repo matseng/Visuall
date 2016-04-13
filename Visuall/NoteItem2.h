@@ -17,6 +17,11 @@
 
 - (instancetype) initNote:(Note *) note;
 
+
+- (instancetype) initNote:(NSString *) title
+                 andPoint:(CGPoint) point
+                  andText:(NSString *) paragraph;
+
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer;
 
 - (void) translateTx: (float) tx andTy: (float) ty;
