@@ -50,7 +50,7 @@
     }
 }
 
--(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NSArray *)Notes andGroups: (NSArray *) Groups
+-(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NotesCollection *) Notes andGroups: (NSArray *) Groups
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
@@ -68,9 +68,8 @@
         
         self.zoom = zoom;
         
-        
-        for (NoteItem2 *noteItem in Notes) {
-            [self transformVisualItem:noteItem];
+        for (NSString *key in Notes.Notes2) {
+            [self transformVisualItem: Notes.Notes2[key]];
         }
         
         for (GroupItem *groupItem in Groups) {

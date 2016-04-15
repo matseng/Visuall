@@ -43,23 +43,52 @@
     return self;
 }
 
-- (instancetype) initNote:(NSString *) title
-                 andPoint:(CGPoint) point
-                  andText:(NSString *) paragraph
+//- (instancetype) initNote:(NSString *) title
+//                 andPoint:(CGPoint) point
+//                  andText:(NSString *) paragraph
+//{
+//    self = [super init];
+//    if (self) {
+//        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//        self.moc = appDelegate.managedObjectContext;
+//        
+//        Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:self.moc];
+//        note.title = title;
+//        note.paragraph = paragraph;
+//        [note setCenterPoint:point];
+//        [self setNote: note];
+//        self.noteTextView = [[UITextView alloc] init];
+//        [self resizeToFit: note.title];
+//        [self addSubview: self.noteTextView];
+//    }
+//    return self;
+//}
+
+//CGFloat x = [snapshot.value[key][@"data"][@"x"] floatValue];
+//CGFloat y = [snapshot.value[key][@"data"][@"y"] floatValue];
+//CGFloat fontSize = [snapshot.value[key][@"style"][@"font-size"] floatValue];
+//CGPoint point = CGPointMake(x, y);
+//NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.value[key][@"data"][@"text"]
+//                                        andPoint:point
+//                                         andText:@""];
+
+
+- (instancetype) initNote: (NSString *) key andValue: (NSDictionary *) value
 {
     self = [super init];
     if (self) {
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        self.moc = appDelegate.managedObjectContext;
-        
-        Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:self.moc];
-        note.title = title;
-        note.paragraph = paragraph;
-        [note setCenterPoint:point];
+
+        Note2 *note = [[Note2 alloc] init];
+        note.key = key;
+        note.title = value[@"data"][@"text"];
+        note.x = [value[@"data"][@"x"] floatValue];
+        note.y = [value[@"data"][@"y"] floatValue];
+        note.fontSize = [value[@"style"][@"font-size"] floatValue];
         [self setNote: note];
+        
         self.noteTextView = [[UITextView alloc] init];
         [self resizeToFit: note.title];
-        [self addSubview: self.noteTextView];
+        [self addSubview: self.noteTextView];  // adds the text view to this note's super view
     }
     return self;
 }
@@ -92,13 +121,17 @@
     [self.noteTextView setScrollEnabled: NO];
 
     frame = self.noteTextView.frame;
-    float x = -frame.size.width/2 + self.note.centerX.floatValue;
-    float y = -frame.size.height/2 + self.note.centerY.floatValue;
+    float x = -frame.size.width/2 + self.note.x;
+    float y = -frame.size.height/2 + self.note.y;
 //    float x = self.note.centerX.floatValue;
 //    float y = self.note.centerY.floatValue;
     [self setX: x andY: y andWidth: frame.size.width andHeight: frame.size.height];
-    [self.note setCenterX: x + frame.size.width/2 andCenterY: y + frame.size.height/2];
-    [self.note setWidth:frame.size.width andHeight:frame.size.height];
+//    [self.note setCenterX: x + frame.size.width/2 andCenterY: y + frame.size.height/2];
+//    [self.note setWidth:frame.size.width andHeight:frame.size.height];
+    [self.note setX: x];
+    [self.note setY: y];
+    [self.note setWidth: frame.size.width];
+    [self.note setHeight: frame.size.height];
 }
 
 - (void) saveToCoreData
@@ -108,18 +141,23 @@
 
 - (void) translateTx: (float) tx andTy: (float) ty
 {
-    float xCenter = self.note.centerX.floatValue + tx;
-    float yCenter = self.note.centerY.floatValue + ty;
-    [self.note setCenterX:xCenter andCenterY:yCenter];
-    self.x = self.x + tx;
-    self.y = self.y + ty;
+//    float xCenter = self.note.centerX.floatValue + tx;
+//    float yCenter = self.note.centerY.floatValue + ty;
+//    [self.note setCenterX:xCenter andCenterY:yCenter];
+    float x = [self.note x] + tx;
+    float y = [self.note y] + ty;
+    
+    [self.note setX: x];
+    [self.note setY: y];
+    [self setX: x];
+    [self setY: y];
     
     [[TransformUtil sharedManager] transformVisualItem: self];
 }
 
 - (void) setFontSize: (float) fontSize
 {
-    self.note.fontSize = fontSize;
+    [self.note setFontSize: fontSize];
     [self.noteTextView setFont: [UIFont systemFontOfSize:fontSize]];
     [self resizeToFit:nil];
 }

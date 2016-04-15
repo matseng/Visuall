@@ -14,8 +14,13 @@
 
 @property NSMutableArray *Notes;
 
-- (void) initializeNotes;
-- (void) addNote:(NoteItem2 *)newNote;
+@property NSMutableDictionary *Notes2;
+
+//- (void) initializeNotes;
+
+//- (void) addNote:(NoteItem2 *) newNote;
+
+- (void) addNote:(NoteItem2 *)newNote withKey: (NSString *) key;
 
 
 //- (NSMutableArray *) getNoteViews;

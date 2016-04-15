@@ -16,6 +16,7 @@
 		712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9641BEAF21500ED6803 /* Images.xcassets */; };
 		712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9661BEAF21500ED6803 /* LaunchScreen.xib */; };
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
+		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
 		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
@@ -66,6 +67,8 @@
 		712EC96D1BEAF21500ED6803 /* VisuallTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VisuallTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		712EC9721BEAF21500ED6803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		712EC9731BEAF21500ED6803 /* VisuallTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VisuallTests.m; sourceTree = "<group>"; };
+		713D0D5B1CC18CAB00878EAE /* Note2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note2.h; sourceTree = "<group>"; };
+		713D0D5C1CC18CAB00878EAE /* Note2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note2.m; sourceTree = "<group>"; };
 		71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDownGestureRecognizer.h; sourceTree = "<group>"; };
 		71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDownGestureRecognizer.m; sourceTree = "<group>"; };
 		716B04681BFC210300DA9451 /* TransformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformUtil.h; sourceTree = "<group>"; };
@@ -175,6 +178,8 @@
 				71B0EF001CB83CCE009D8F5C /* VisualItem.m */,
 				71E354F71BF5953600B5EA99 /* NoteItem.h */,
 				71E354F81BF5953600B5EA99 /* NoteItem.m */,
+				713D0D5B1CC18CAB00878EAE /* Note2.h */,
+				713D0D5C1CC18CAB00878EAE /* Note2.m */,
 				71B0EF021CB83E6D009D8F5C /* NoteItem2.h */,
 				71B0EF031CB83E6D009D8F5C /* NoteItem2.m */,
 				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
@@ -410,6 +415,7 @@
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */,
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,
+				713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */,
 				71B37E791C1924800048851A /* HomeViewController.m in Sources */,
 				885AFD621C00215300F89DE5 /* Note.m in Sources */,
 				88ED06281C06237300C0486D /* Group+CoreDataProperties.m in Sources */,

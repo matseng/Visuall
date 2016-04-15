@@ -19,26 +19,14 @@
 @implementation NotesCollection
 
 
-- (void) initializeNotes
-{
-    self.Notes = [NSMutableArray new];
-    
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *moc = appDelegate.managedObjectContext;
-
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Note"];
-    
-    NSArray *notesCD = [moc executeFetchRequest:request error:nil];
-    NSLog(@"Fetching Notes from Core Data...found %lu notes", (unsigned long)notesCD.count);
-    for (Note *note in notesCD) {
-        [self.Notes addObject:[[NoteItem2 alloc] initNote:note]];
-    }
-}
-
 //method to add single note dynamically from main view
-- (void) addNote:(NoteItem2 *)newNote
+- (void) addNote:(NoteItem2 *)newNote withKey: (NSString *) key
 {
-    [self.Notes addObject:newNote];
+    if ( !self.Notes2) {
+        self.Notes2 = [[NSMutableDictionary alloc] init];
+    }
+    
+    self.Notes2[key] = newNote;
 }
 
 @end

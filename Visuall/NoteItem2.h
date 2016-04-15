@@ -9,18 +9,22 @@
 #import "VisualItem.h"
 #import <UIKit/UIKit.h>
 #import "Note+CoreDataProperties.h"
+#import "Note2.h"
+
 
 @interface NoteItem2 : VisualItem
 
-@property Note *note;
+@property Note2 *note;
 @property UITextView *noteTextView;
 
-- (instancetype) initNote:(Note *) note;
+//- (instancetype) initNote:(Note *) note;
 
 
 - (instancetype) initNote:(NSString *) title
                  andPoint:(CGPoint) point
                   andText:(NSString *) paragraph;
+
+- (instancetype) initNote: (NSString *) key andValue: (NSDictionary *) data;
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer;
 

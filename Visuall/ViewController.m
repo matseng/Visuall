@@ -68,10 +68,12 @@
                                                  action:@selector(handlePinchBackground:)];
     [self.Background addGestureRecognizer:pinchBackground];
     
-    
+    /*
     self.NotesCollection = [NotesCollection new];
     [self.NotesCollection initializeNotes];
     [self attachAllNotes];
+     */
+    
 //    UIPanGestureRecognizer *panNotesView = [[UIPanGestureRecognizer alloc]
 //                                             initWithTarget:self
 //                                             action:@selector(handlePanNotesView:)];
@@ -83,17 +85,20 @@
     self.currentGroupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
     self.currentGroupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
     self.currentGroupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
-    
+  /*
     // Initlialize the mutable array that holds our group UIViews
     self.groupsCollection = [GroupsCollection new];
     [self.groupsCollection initializeGroups];
-//    [self loadGroupsFromCoreData];
+    [self loadGroupsFromCoreData];
+   
     
     for ( GroupItem *gi in self.groupsCollection.groups){
         [self addGestureRecognizersToGroup: gi];
     }
 
     [self refreshGroupView];
+    */
+    
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
     
@@ -113,37 +118,40 @@
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
     Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
     
-    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
+    self.NotesCollection = [NotesCollection new];
+    [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
     {
-//        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
-        for (NSString *key in snapshot.value)
-        {
-//            NSLog(@"Text: %@", snapshot.value[key][@"data"][@"text"]);
-//            NSLog(@"Key: %@", key);
-            CGFloat x = [snapshot.value[key][@"data"][@"x"] floatValue];
-            CGFloat y = [snapshot.value[key][@"data"][@"y"] floatValue];
-            CGFloat fontSize = [snapshot.value[key][@"style"][@"font-size"] floatValue];
-            CGPoint point = CGPointMake(x, y);
-            NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.value[key][@"data"][@"text"]
-                                                    andPoint:point
-                                                     andText:@""];
-            
-//            [newNote setFontSize: fontSize];
-            [self.NotesCollection addNote:newNote];
-            [self addNoteToViewWithHandlers:newNote];
-            [self setSelectedObject:newNote];
-            [newNote becomeFirstResponder];  // puts cursor on text field
-            [newNote.noteTextView selectAll:nil];  // highlights text
-//            for (GroupItem* gi in self.groupsCollection.groups) {
-//                [gi isNoteInGroup: newNote];
-//            }
-            
-        }
+        //        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
+        
+        //            NSLog(@"Text: %@", snapshot.value[key][@"data"][@"text"]);
+        //            NSLog(@"Key: %@", key);
+        //            CGFloat x = [snapshot.value[key][@"data"][@"x"] floatValue];
+        //            CGFloat y = [snapshot.value[key][@"data"][@"y"] floatValue];
+        //            CGFloat fontSize = [snapshot.value[key][@"style"][@"font-size"] floatValue];
+        //            CGPoint point = CGPointMake(x, y);
+        NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.key andValue:snapshot.value];
+        
+        //            [newNote setFontSize: fontSize];
+        [self.NotesCollection addNote:newNote withKey:snapshot.key];
+        [self addNoteToViewWithHandlers:newNote];
+        [self setSelectedObject:newNote];
+
+        /*
+        [newNote becomeFirstResponder];  // puts cursor on text field
+        [newNote.noteTextView selectAll:nil];  // highlights text
+        
+                    for (GroupItem* gi in self.groupsCollection.groups) {
+                        [gi isNoteInGroup: newNote];
+                    }
+         */
+        
+
     } withCancelBlock:^(NSError *error)
     {
         NSLog(@"%@", error.description);
     }];
     
+    /*
     [refGroups observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
      {
          for (NSString *key in snapshot.value)
@@ -170,6 +178,7 @@
      {
          NSLog(@"%@", error.description);
      }];
+     */
 
 }
 
@@ -362,7 +371,7 @@
 
 - (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
-    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection.Notes andGroups: self.groupsCollection.groups];
+    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection andGroups: self.groupsCollection.groups];
     
 //    if ([[TransformUtil sharedManager] zoom] > 1.0){
 //        [self.Background removeGestureRecognizer: self.panBackground];
@@ -820,7 +829,7 @@
             CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
             NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." andPoint:point andText:@""];
             [newNote saveToCoreData];
-            [self.NotesCollection addNote:newNote];
+            [self.NotesCollection addNote:newNote withKey:nil];
             [self addNoteToViewWithHandlers:newNote];
             [self setSelectedObject:newNote];
             [newNote becomeFirstResponder];  // puts cursor on text field
@@ -852,7 +861,7 @@
         if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]]) {
             NSLog(@"puplet");
             NoteItem2 *noteToDelete = (NoteItem2 *)self.lastSelectedObject;
-            objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
+//            objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
             modalText = @"this note";
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
             NSLog(@"woofarf");
