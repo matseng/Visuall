@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Group.h"
 #import "NoteItem.h"
+#import "NoteItem2.h"
 
 @interface GroupItem : UIView
 
@@ -24,7 +25,7 @@
 
 - (void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer;
 
-- (BOOL) isNoteInGroup: (NoteItem *) noteItem;
+- (BOOL) isNoteInGroup: (NoteItem2 *) noteItem;
 
 - (void) saveToCoreData;
 

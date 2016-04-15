@@ -14,10 +14,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Note : NSManagedObject
 
+@property float fontSize;
+@property float x;
+@property float y;
+
 - (void) setCenterPoint:(CGPoint) point;
 - (void) setCenterX:(float)pointX andCenterY:(float)pointY;
 - (void) setHeight:(float)height andWidth:(float)width;
 - (void) setWidth:(float)height andHeight:(float)width;
+- (float) getX;
+- (float) getY;
 
 @end
 

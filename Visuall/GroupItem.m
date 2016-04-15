@@ -150,12 +150,31 @@
     [self.moc save:nil];
 }
 
-- (BOOL) isNoteInGroup: (NoteItem *) noteItem
+- (BOOL) isNoteInGroup: (NoteItem2 *) noteItem
 {
     CGRect groupRect = CGRectMake([self.group.topX floatValue], [self.group.topY floatValue], [self.group.width floatValue], [self.group.height floatValue]);
     if ( CGRectContainsPoint(groupRect, (CGPoint){[noteItem.note.centerX floatValue], [noteItem.note.centerY floatValue]} ) )
     {
         return YES;
+    }
+    return NO;
+}
+
+- (BOOL) isTitleNote: (NoteItem2 *) ni
+{
+    if ( [self isNoteInGroup: ni] )
+    {
+        if ( !self.group.titleNote )
+        {
+            self.group.titleNote = ni.note;
+        } else if (ni.note.fontSize > self.group.titleNote.fontSize)
+        {
+            self.group.titleNote = ni.note;
+        } else if (ni.note.fontSize == self.group.titleNote.fontSize &&
+                   [ni.note getY] > [self.group.titleNote getY])
+        {
+            self.group.titleNote = ni.note;
+        }
     }
     return NO;
 }

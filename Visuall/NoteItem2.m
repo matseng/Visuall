@@ -76,9 +76,11 @@
 
 - (void) resizeToFit: (NSString *) text;
 {
-//    float zoom = [[TransformUtil sharedManager] zoom];
+    if (!text) {
+        text = self.noteTextView.text;
+    }
+    
     CGRect frame = self.noteTextView.frame;
-//    CGRect frame = CGRectMake(0, 0, 0, 0);
     CGSize tempSize = self.noteTextView.bounds.size;
     tempSize.width = CGRectInfinite.size.width;
     frame.size = tempSize;
@@ -90,14 +92,13 @@
     [self.noteTextView setScrollEnabled: NO];
 
     frame = self.noteTextView.frame;
-//    float x = -frame.size.width/2 + self.note.centerX.floatValue;
-//    float y = -frame.size.height/2 + self.note.centerY.floatValue;
-    float x = self.note.centerX.floatValue;
-    float y = self.note.centerY.floatValue;
+    float x = -frame.size.width/2 + self.note.centerX.floatValue;
+    float y = -frame.size.height/2 + self.note.centerY.floatValue;
+//    float x = self.note.centerX.floatValue;
+//    float y = self.note.centerY.floatValue;
     [self setX: x andY: y andWidth: frame.size.width andHeight: frame.size.height];
     [self.note setCenterX: x + frame.size.width/2 andCenterY: y + frame.size.height/2];
     [self.note setWidth:frame.size.width andHeight:frame.size.height];
-//    [self setFrame: self.noteTextView.frame];
 }
 
 - (void) saveToCoreData
@@ -114,6 +115,13 @@
     self.y = self.y + ty;
     
     [[TransformUtil sharedManager] transformVisualItem: self];
+}
+
+- (void) setFontSize: (float) fontSize
+{
+    self.note.fontSize = fontSize;
+    [self.noteTextView setFont: [UIFont systemFontOfSize:fontSize]];
+    [self resizeToFit:nil];
 }
 
 @end

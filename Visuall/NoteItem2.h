@@ -30,4 +30,6 @@
 
 - (void) resizeToFit: (NSString *) text;
 
+- (void) setFontSize: (float) fontSize;
+
 @end

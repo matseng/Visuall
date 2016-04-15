@@ -34,4 +34,26 @@
     self.width = [NSNumber numberWithFloat:width];
 }
 
+- (float) getX
+{
+    if (self.x) {
+        return self.x;
+    } else if (self.centerX)
+    {
+        return self.centerX.floatValue - 0.5 * self.width.floatValue;
+    }
+    return NO;
+}
+
+- (float) getY
+{
+    if (self.y) {
+        return self.y;
+    } else if (self.centerY)
+    {
+        return self.centerX.floatValue - 0.5 * self.width.floatValue;
+    }
+    return NO;
+}
+
 @end

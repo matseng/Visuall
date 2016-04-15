@@ -122,17 +122,21 @@
 //            NSLog(@"Key: %@", key);
             CGFloat x = [snapshot.value[key][@"data"][@"x"] floatValue];
             CGFloat y = [snapshot.value[key][@"data"][@"y"] floatValue];
+            CGFloat fontSize = [snapshot.value[key][@"style"][@"font-size"] floatValue];
             CGPoint point = CGPointMake(x, y);
             NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.value[key][@"data"][@"text"]
                                                     andPoint:point
                                                      andText:@""];
             
-            //                [newNote saveToCoreData];
+//            [newNote setFontSize: fontSize];
             [self.NotesCollection addNote:newNote];
             [self addNoteToViewWithHandlers:newNote];
             [self setSelectedObject:newNote];
             [newNote becomeFirstResponder];  // puts cursor on text field
             [newNote.noteTextView selectAll:nil];  // highlights text
+//            for (GroupItem* gi in self.groupsCollection.groups) {
+//                [gi isNoteInGroup: newNote];
+//            }
             
         }
     } withCancelBlock:^(NSError *error)
@@ -161,7 +165,6 @@
              [self addGestureRecognizersToGroup: currentGroupItem];
              [self.groupsCollection addGroup:currentGroupItem];
              [self refreshGroupView];
-//             [self setSelectedObject:currentGroupItem];
          }
      } withCancelBlock:^(NSError *error)
      {
@@ -173,12 +176,12 @@
 - (void) fontSizeEditingChangedHandler: (UITextField *) textField
 {
     NSLog(@"Font size: %@", self.fontSize.text);
-    if (self.fontSize.text.floatValue && [self.lastSelectedObject isKindOfClass: [NoteItem class]])
+    float fontSize = self.fontSize.text.floatValue;
+    if (fontSize && [self.lastSelectedObject isKindOfClass: [NoteItem2 class]])
     {
-        NoteItem *ni = (NoteItem *) self.lastSelectedObject;
-        [ni setFont: [UIFont systemFontOfSize:self.fontSize.text.floatValue]];
-        [ni renderToAutosizeWidth];
-//        [[TransformUtil sharedManager] transformNoteItem:ni];
+        NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
+        [ni setFontSize:fontSize];
+        [[TransformUtil sharedManager] transformVisualItem: ni];
     }
 }
 
