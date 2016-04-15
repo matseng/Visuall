@@ -30,7 +30,7 @@
 }
 
 -(void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
-                 withNotes:(NSArray *)Notes
+                 withNotes:(NotesCollection *) Notes
                  withGroups: (NSArray *) groupItems
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
@@ -41,9 +41,10 @@
         float panY = self.pan.y + translation.y;
         self.pan = CGPointMake(panX, panY);
 
-        for (NoteItem2 *noteItem in Notes) {
-            [self transformVisualItem: noteItem];
+        for (NSString *key in Notes.Notes2) {
+            [self transformVisualItem: Notes.Notes2[key]];
         }
+        
         for (GroupItem *groupItem in groupItems) {
             [self transformGroupItem: groupItem];
         }

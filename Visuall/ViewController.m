@@ -481,7 +481,7 @@
     }
     else
     {
-        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes withGroups: self.groupsCollection.groups];
+        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection.groups];
     }
 }
 
@@ -691,7 +691,7 @@
         } else
         {
 //            [self handlePanBackground:gestureRecognizer];
-            [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection.Notes withGroups: self.groupsCollection.groups];
+            [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection.groups];
         }
     }
     

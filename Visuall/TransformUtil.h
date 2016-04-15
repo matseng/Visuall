@@ -29,7 +29,7 @@
 
 +(id)sharedManager;
 
--(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NSArray *) Notes withGroups: (NSArray *) GroupItems;
+-(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (NSArray *) GroupItems;
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NotesCollection *) Notes andGroups: (NSArray *) Groups;
 
