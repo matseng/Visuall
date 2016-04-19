@@ -22,20 +22,38 @@
 
 @implementation GroupItem
 
-- (instancetype) initGroup:(Group *)group
+//- (instancetype) initGroup:(Group *)group
+//{
+//    self = [super init];
+//    
+//    if (self)
+//    {
+//        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//        self.moc = appDelegate.managedObjectContext;
+//        self.group = group;
+//        [self renderGroup];
+//        [[TransformUtil sharedManager] transformGroupItem: self];
+// 
+//    }
+//    
+//    return self;
+//}
+
+- (instancetype) initGroup: (NSString *) key andValue: (NSDictionary *) value
 {
     self = [super init];
-    
-    if (self)
-    {
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        self.moc = appDelegate.managedObjectContext;
-        self.group = group;
+    if (self) {
+        
+        Group2 *group = [[Group2 alloc] init];
+        group.key = key;
+        group.x = [value[@"data"][@"x"] floatValue];
+        group.y = [value[@"data"][@"y"] floatValue];
+        group.width = [value[@"style"][@"width"] floatValue];
+        group.height = [value[@"style"][@"width"] floatValue];
+        [self setGroup: group];
         [self renderGroup];
         [[TransformUtil sharedManager] transformGroupItem: self];
- 
     }
-    
     return self;
 }
 
@@ -45,12 +63,14 @@
     
     if (self)
     {
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        self.moc = appDelegate.managedObjectContext;
-        
-        self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:self.moc];
-        [self.group setTopPoint:coordinate];
-        [self.group setHeight:height andWidth:width];
+//        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//        self.moc = appDelegate.managedObjectContext;
+//        
+//        self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:self.moc];
+//        [self.group setTopPoint:coordinate];
+//        [self.group setHeight:height andWidth:width];
+        [self.group setX:coordinate.x andY:coordinate.y];
+        [self.group setWidth:width andHeight:height];
         [self renderGroup];
         [[TransformUtil sharedManager] transformGroupItem: self];
     }
@@ -63,12 +83,12 @@
     float scale = [[TransformUtil sharedManager] zoom];
     
     [self setFrame: CGRectMake(
-                               (-self.group.width.floatValue/2 - HANDLE_RADIUS / 2) * scale,
-                               (-self.group.height.floatValue / 2 - HANDLE_RADIUS / 2) * scale,
-                               (self.group.width.floatValue + HANDLE_RADIUS),
-                               (self.group.height.floatValue + HANDLE_RADIUS) )];
+                               (-self.group.width/2 - HANDLE_RADIUS / 2) * scale,
+                               (-self.group.height / 2 - HANDLE_RADIUS / 2) * scale,
+                               (self.group.width + HANDLE_RADIUS),
+                               (self.group.height + HANDLE_RADIUS) )];
     
-    UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width.floatValue, self.group.height.floatValue)];
+    UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width, self.group.height)];
     
     [innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
     [innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
@@ -83,21 +103,21 @@
     float scale = [[TransformUtil sharedManager] zoom];
     
     [self setFrame: CGRectMake(
-                               (-self.group.width.floatValue/2 - HANDLE_RADIUS / 2) * scale,
-                               (-self.group.height.floatValue / 2 - HANDLE_RADIUS / 2) * scale,
-                               (self.group.width.floatValue + HANDLE_RADIUS) * scale,
-                               (self.group.height.floatValue + HANDLE_RADIUS) * scale)];
+                               (-self.group.width/2 - HANDLE_RADIUS / 2) * scale,
+                               (-self.group.height / 2 - HANDLE_RADIUS / 2) * scale,
+                               (self.group.width + HANDLE_RADIUS) * scale,
+                               (self.group.height + HANDLE_RADIUS) * scale)];
     
-    [[self viewWithTag:100] setFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width.floatValue, self.group.height.floatValue)];
+    [[self viewWithTag:100] setFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width, self.group.height)];
     
-    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width.floatValue, self.group.height.floatValue, HANDLE_RADIUS, HANDLE_RADIUS)];
+    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS)];
     
 }
 
 - (void) renderHandles
 {
     float radius = HANDLE_RADIUS;
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(self.group.width.floatValue, self.group.height.floatValue, radius, radius)];
+    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(self.group.width, self.group.height, radius, radius)];
     circleView.alpha = 0.5;
     circleView.layer.cornerRadius = radius / 2;
     circleView.backgroundColor = [UIColor blueColor];
@@ -113,18 +133,22 @@
         CGPoint translation = [gestureRecognizer translationInView:self];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         
-        float x = self.group.topX.floatValue + translation.x;
-        float y = self.group.topY.floatValue + translation.y;
-        [self.group setTopX:x andTopY:y];
+        float x = self.group.x + translation.x;
+        float y = self.group.x + translation.y;
+//        [self.group setTopX:x andTopY:y];
+        [self.group setX: x];
+        [self.group setY: y];
         
         [[TransformUtil sharedManager] transformGroupItem: self];
         for (NoteItem *ni in self.notesInGroup) {
             [ni translateTx: translation.x andTy:translation.y];
         }
         for (GroupItem *gi in self.groupsInGroup) {
-            x = gi.group.topX.floatValue + translation.x;
-            y = gi.group.topY.floatValue + translation.y;
-            [gi.group setTopPoint: CGPointMake(x, y)];
+            x = gi.group.x + translation.x;
+            y = gi.group.y + translation.y;
+//            [gi.group setTopPoint: CGPointMake(x, y)];
+            [gi.group setX: x];
+            [gi.group setY: y];
             [[TransformUtil sharedManager] transformGroupItem: gi];
         }
     }
@@ -137,9 +161,11 @@
     {
         CGPoint translation = [gestureRecognizer translationInView:self];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-        float width = self.group.width.floatValue + translation.x;
-        float height = self.group.height.floatValue + translation.y;
-        [self.group setHeight:height andWidth:width];
+        float width = self.group.width + translation.x;
+        float height = self.group.height + translation.y;
+//        [self.group setHeight:height andWidth:width];
+        [self.group setWidth: width];
+        [self.group setHeight: height];
         [self updateGroupDimensions];
         [[TransformUtil sharedManager] transformGroupItem: self];
     }
@@ -182,15 +208,16 @@
 - (BOOL) isGroupInGroup: (GroupItem *) gi
 {
     
-    float firstArea = self.group.height.floatValue * self.group.width.floatValue;
-    float secondArea = gi.group.height.floatValue * gi.group.width.floatValue;
+    float firstArea = self.group.height * self.group.width;
+    float secondArea = gi.group.height * gi.group.width;
     if (self == gi || secondArea > firstArea){
         return NO;
     }
     
-    CGRect groupRect = CGRectMake([self.group.topX floatValue], [self.group.topY floatValue], [self.group.width floatValue], [self.group.height floatValue]);
-    float centerX = gi.group.topX.floatValue + gi.group.width.floatValue / 2;
-    float centerY = gi.group.topY.floatValue + gi.group.height.floatValue / 2;
+//    CGRect groupRect = CGRectMake([self.group.topX floatValue], [self.group.topY floatValue], [self.group.width floatValue], [self.group.height floatValue]);
+    CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
+    float centerX = gi.group.x + gi.group.width / 2;
+    float centerY = gi.group.y + gi.group.height / 2;
     if ( CGRectContainsPoint(groupRect, (CGPoint){centerX, centerY} ) )
     {
         return YES;

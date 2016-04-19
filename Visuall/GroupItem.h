@@ -10,16 +10,20 @@
 #import "Group.h"
 #import "NoteItem.h"
 #import "NoteItem2.h"
+#import "Group2.h"
 
 @interface GroupItem : UIView
 
-@property Group *group;
+@property Group2 *group;
+//@property Group *group2;
 
 @property (strong) NSMutableArray *notesInGroup;
 
 @property (strong) NSMutableArray *groupsInGroup;
 
-- (instancetype) initGroup:(Group *)group;
+//- (instancetype) initGroup:(Group *)group;
+
+- (instancetype) initGroup: (NSString *) key andValue: (NSDictionary *) value;
 
 - (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float)width andHeight:(float)height;
 

@@ -10,8 +10,12 @@
 #import "GroupItem.h"
 
 @interface GroupsCollection : NSObject
+
 @property NSMutableArray *groups;
-- (void) initializeGroups;
+
+@property NSMutableDictionary *groups2;
+
+//- (void) initializeGroups;
 - (void) addGroup:(GroupItem *)newGroup;
 
 @end

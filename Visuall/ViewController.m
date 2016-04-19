@@ -109,14 +109,36 @@
                     forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 3;
     
-    [self loadFirebase];
+//    [self loadFirebase];
+    [self loadFirebaseGroups];
 
+}
+
+- (void) loadFirebaseGroups
+{
+    Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
+    self.groupsCollection = [GroupsCollection new];
+    [refGroups observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
+     {
+//         NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.key andValue:snapshot.value];
+//         [self.NotesCollection addNote:newNote withKey:snapshot.key];
+//         [self addNoteToViewWithHandlers:newNote];
+         GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
+         [self addGestureRecognizersToGroup: newGroup];
+         [self.groupsCollection addGroup:newGroup];
+         [self.GroupsView addSubview:newGroup];
+        
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"%@", error.description);
+     }];
+    
 }
 
 - (void) loadFirebase
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
-    Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
+//    Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
     
     self.NotesCollection = [NotesCollection new];
     [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
@@ -134,7 +156,7 @@
         //            [newNote setFontSize: fontSize];
         [self.NotesCollection addNote:newNote withKey:snapshot.key];
         [self addNoteToViewWithHandlers:newNote];
-        [self setSelectedObject:newNote];
+//        [self setSelectedObject:newNote];
 
         /*
         [newNote becomeFirstResponder];  // puts cursor on text field
@@ -866,7 +888,9 @@
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
             NSLog(@"woofarf");
             GroupItem *groupToDelete = (GroupItem *)self.lastSelectedObject;
-            objectToDelete = [self.moc existingObjectWithID:groupToDelete.group.objectID error:nil];
+            
+//            objectToDelete = [self.moc existingObjectWithID:groupToDelete.group.objectID error:nil];
+            
             modalText = @"this group";
         }
         
@@ -992,16 +1016,37 @@
     // Sort by area of group view
     NSArray *sortedArray;
     
-    sortedArray = [self.groupsCollection.groups sortedArrayUsingComparator:^NSComparisonResult(GroupItem *first, GroupItem *second) {
-        float firstArea = first.frame.size.height * first.frame.size.width;
-        float secondArea = second.frame.size.height * second.frame.size.width;
-        return firstArea < secondArea;
+//    sortedArray = [self.groupsCollection.groups sortedArrayUsingComparator:^NSComparisonResult(GroupItem *first, GroupItem *second) {
+//        float firstArea = first.frame.size.height * first.frame.size.width;
+//        float secondArea = second.frame.size.height * second.frame.size.width;
+//        return firstArea < secondArea;
+//    }];
+//    
+//    // Render all the group views
+//    for (GroupItem *groupItem in sortedArray) {
+//        [self.GroupsView addSubview:groupItem];
+//    }
+
+    sortedArray = [self.groupsCollection.groups2 keysSortedByValueUsingComparator: ^(GroupItem *group1, GroupItem *group2) {
+
+        float firstArea = group1.group.width * group1.group.height;
+        float secondArea = group2.group.width * group2.group.height;
+        
+        if ( firstArea > secondArea ) {
+            
+            return (NSComparisonResult)NSOrderedDescending;
+        }
+        if ( firstArea > secondArea ) {
+            
+            return (NSComparisonResult)NSOrderedAscending;
+        }
+        
+        return (NSComparisonResult)NSOrderedSame;
     }];
     
-    // Render all the group views
-    for (GroupItem *groupItem in sortedArray) {
-        [self.GroupsView addSubview:groupItem];
-    }
+        for (GroupItem *groupItem in sortedArray) {
+            [self.GroupsView addSubview:groupItem];
+        }
     
     [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
     [self.currentGroupView removeFromSuperview];

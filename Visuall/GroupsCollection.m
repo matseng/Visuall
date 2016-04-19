@@ -12,29 +12,36 @@
 
 @implementation GroupsCollection
 
-- (void) initializeGroups {
-    
-    self.groups = [NSMutableArray new];
-    
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *moc = appDelegate.managedObjectContext;
-    
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Group"];
-    
-    NSArray *groupsCD = [moc executeFetchRequest:request error:nil];
-    NSLog(@"Fetching Groups from Core Data...found %d groups", groupsCD.count);
-    
-    for (Group *group in groupsCD)
-    {
-        [self.groups addObject:[[GroupItem alloc] initGroup: group]];
+//- (void) initializeGroups {
+//    
+//    self.groups = [NSMutableArray new];
+//    
+//    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    NSManagedObjectContext *moc = appDelegate.managedObjectContext;
+//    
+//    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Group"];
+//    
+//    NSArray *groupsCD = [moc executeFetchRequest:request error:nil];
+//    NSLog(@"Fetching Groups from Core Data...found %d groups", groupsCD.count);
+//    
+//    for (Group *group in groupsCD)
+//    {
+//        [self.groups addObject:[[GroupItem alloc] initGroup: group]];
+//    }
+//}
+
+
+- (void) addGroup:(GroupItem *) newGroup {
+    [self.groups addObject: newGroup];
+}
+
+- (void) addNote:(GroupItem *) newGroup withKey: (NSString *) key
+{
+    if ( !self.groups2) {
+        self.groups2 = [[NSMutableDictionary alloc] init];
     }
+    
+    self.groups2[key] = newGroup;
 }
-
-
-- (void) addGroup:(GroupItem *)newGroup {
-    [self.groups addObject:newGroup];
-}
-
-
 
 @end
