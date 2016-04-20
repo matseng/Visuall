@@ -20,4 +20,7 @@
 
 - (void) addGroup:(GroupItem *) newGroup withKey: (NSString *) key;
 
+- (void) myForIn: (void (^)(GroupItem *gi)) myFunction;
+//[refGroups observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
+
 @end

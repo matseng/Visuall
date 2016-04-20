@@ -44,4 +44,12 @@
     self.groups2[key] = newGroup;
 }
 
+- (void) myForIn: (void (^)(GroupItem *gi)) myFunction
+{
+    for (NSString *key in self.groups2) {
+        GroupItem *gi = self.groups2[key];
+        myFunction(gi);
+    }
+}
+
 @end

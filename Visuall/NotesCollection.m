@@ -20,13 +20,21 @@
 
 
 //method to add single note dynamically from main view
-- (void) addNote:(NoteItem2 *)newNote withKey: (NSString *) key
+- (void) addNote:(NoteItem2 *) newNote withKey: (NSString *) key
 {
     if ( !self.Notes2) {
         self.Notes2 = [[NSMutableDictionary alloc] init];
     }
     
     self.Notes2[key] = newNote;
+}
+
+- (void) myForIn: (void (^)(NoteItem2 *ni)) myFunction
+{
+    for (NSString *key in self.Notes2) {
+        NoteItem2 *ni = self.Notes2[key];
+        myFunction(ni);
+    }
 }
 
 @end

@@ -596,17 +596,31 @@
 {
     NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
     NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
-    for (NoteItem *ni in self.NotesCollection.Notes) {
+
+    //    for (NoteItem *ni in self.NotesCollection.Notes) {
+//        if ([groupItem isNoteInGroup:ni]) {
+//            //                NSLog(@"Note name in group: %@", ni.note.title);
+//            [notesInGroup addObject:ni];
+//        }
+//    }
+//    for (GroupItem *gi in self.groupsCollection.groups) {
+//        if ([groupItem isGroupInGroup:gi]) {
+//            [groupsInGroup addObject:gi];
+//        }
+//    }
+    [self.NotesCollection myForIn:^(NoteItem2 *ni)
+    {
         if ([groupItem isNoteInGroup:ni]) {
-            //                NSLog(@"Note name in group: %@", ni.note.title);
-            [notesInGroup addObject:ni];
+          [notesInGroup addObject:ni];
         }
-    }
-    for (GroupItem *gi in self.groupsCollection.groups) {
+    }];
+    
+    [self.groupsCollection myForIn:^(GroupItem *gi){
         if ([groupItem isGroupInGroup:gi]) {
             [groupsInGroup addObject:gi];
         }
-    }
+    }];
+    
     [groupItem setNotesInGroup: notesInGroup];
     [groupItem setGroupsInGroup:groupsInGroup];
 }
@@ -1044,9 +1058,13 @@
         return (NSComparisonResult)NSOrderedSame;
     }];
     
-        for (GroupItem *groupItem in sortedArray) {
-            [self.GroupsView addSubview:groupItem];
-        }
+//        for (GroupItem *groupItem in sortedArray) {
+//            [self.GroupsView addSubview:groupItem];
+//        }
+
+    for (NSString *key in sortedArray) {
+        [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
+    }
     
     [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
     [self.currentGroupView removeFromSuperview];

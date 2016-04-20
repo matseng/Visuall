@@ -17,6 +17,7 @@
 
 @interface GroupItem ()
 @property NSManagedObjectContext *moc;
+@property UIView *innerGroupView;
 @end
 
 
@@ -94,8 +95,9 @@
     [innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
     [innerGroupView.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
     innerGroupView.tag = 100;
-        [self addSubview: innerGroupView];
-        [self renderHandles];
+    self.innerGroupView = innerGroupView;
+    [self addSubview: innerGroupView];
+    [self renderHandles];
 }
 
 - (void) updateGroupDimensions
@@ -134,23 +136,26 @@
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         
         float x = self.group.x + translation.x;
-        float y = self.group.x + translation.y;
-//        [self.group setTopX:x andTopY:y];
+        float y = self.group.y + translation.y;
         [self.group setX: x];
         [self.group setY: y];
         
         [[TransformUtil sharedManager] transformGroupItem: self];
+        
+        
         for (NoteItem *ni in self.notesInGroup) {
             [ni translateTx: translation.x andTy:translation.y];
         }
         for (GroupItem *gi in self.groupsInGroup) {
             x = gi.group.x + translation.x;
             y = gi.group.y + translation.y;
-//            [gi.group setTopPoint: CGPointMake(x, y)];
+            [gi.group setX: x andY: y];
             [gi.group setX: x];
             [gi.group setY: y];
             [[TransformUtil sharedManager] transformGroupItem: gi];
         }
+        
+        
     }
 }
 
@@ -176,13 +181,15 @@
     [self.moc save:nil];
 }
 
-- (BOOL) isNoteInGroup: (NoteItem2 *) noteItem
+- (BOOL) isNoteInGroup: (NoteItem2 *) ni
 {
-//    CGRect groupRect = CGRectMake([self.group.topX floatValue], [self.group.topY floatValue], [self.group.width floatValue], [self.group.height floatValue]);
-//    if ( CGRectContainsPoint(groupRect, (CGPoint){[noteItem.note.centerX floatValue], [noteItem.note.centerY floatValue]} ) )
-//    {
-//        return YES;
-//    }
+    CGRect groupRect = self.innerGroupView.frame;
+    CGPoint noteCenterPoint = CGPointMake(ni.note.x + ni.note.width/2, ni.note.y + ni.note.height/2);
+                                  
+    if ( CGRectContainsPoint(groupRect, noteCenterPoint))
+    {
+        return YES;
+    }
     return NO;
 }
 

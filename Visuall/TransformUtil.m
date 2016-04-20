@@ -144,10 +144,11 @@
     float radiusOffset = [groupItem getRadius] / 2;
     float tx = (groupItem.group.x - radiusOffset) * self.zoom + self.pan.x;
     float ty = (groupItem.group.y - radiusOffset) * self.zoom + self.pan.y;
+    
     CGRect frame = groupItem.frame;
     frame.origin.x = tx;
     frame.origin.y = ty;
-    groupItem.frame = frame;
+    [groupItem setFrame: frame];
 }
 
 
