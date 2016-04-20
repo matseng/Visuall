@@ -109,7 +109,7 @@
                     forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 3;
     
-//    [self loadFirebase];
+    [self loadFirebase];
     [self loadFirebaseGroups];
 
 }

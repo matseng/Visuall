@@ -183,7 +183,7 @@
 
 - (BOOL) isNoteInGroup: (NoteItem2 *) ni
 {
-    CGRect groupRect = self.innerGroupView.frame;
+    CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
     CGPoint noteCenterPoint = CGPointMake(ni.note.x + ni.note.width/2, ni.note.y + ni.note.height/2);
                                   
     if ( CGRectContainsPoint(groupRect, noteCenterPoint))
