@@ -14,6 +14,7 @@
 #import "NotesCollection.h"
 #import "GroupItem.h"
 #import "VisualItem.h"
+#import "GroupsCollection.h"
 
 @interface TransformUtil : NSObject
 
@@ -29,9 +30,9 @@
 
 +(id)sharedManager;
 
--(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (NSArray *) GroupItems;
+-(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
 
--(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NotesCollection *) Notes andGroups: (NSArray *) Groups;
+-(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NotesCollection *) Notes andGroups: (GroupsCollection *) Groups;
 
 -(void) transformNoteItem: (NoteItem *) noteItem;
 

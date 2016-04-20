@@ -31,7 +31,7 @@
 
 -(void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
                  withNotes:(NotesCollection *) Notes
-                 withGroups: (NSArray *) groupItems
+                 withGroups: (GroupsCollection *) groupsCollection
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
@@ -45,13 +45,13 @@
             [self transformVisualItem: Notes.Notes2[key]];
         }
         
-        for (GroupItem *groupItem in groupItems) {
-            [self transformGroupItem: groupItem];
+        for (NSString *key in groupsCollection.groups2) {
+            [self transformGroupItem: groupsCollection.groups2[key] ];
         }
     }
 }
 
--(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NotesCollection *) Notes andGroups: (NSArray *) Groups
+-(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NotesCollection *) Notes andGroups: (GroupsCollection *) groupsCollection
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
@@ -73,8 +73,8 @@
             [self transformVisualItem: Notes.Notes2[key]];
         }
         
-        for (GroupItem *groupItem in Groups) {
-            [self transformGroupItem: groupItem];
+        for (NSString *key in groupsCollection.groups2) {
+            [self transformGroupItem: groupsCollection.groups2[key] ];
         }
         
         [gestureRecognizer setScale:1.0];

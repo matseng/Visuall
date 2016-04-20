@@ -31,11 +31,11 @@
 //}
 
 
-- (void) addGroup:(GroupItem *) newGroup {
-    [self.groups addObject: newGroup];
-}
+//- (void) addGroup:(GroupItem *) newGroup {
+//    [self.groups addObject: newGroup];
+//}
 
-- (void) addNote:(GroupItem *) newGroup withKey: (NSString *) key
+- (void) addGroup:(GroupItem *) newGroup withKey: (NSString *) key
 {
     if ( !self.groups2) {
         self.groups2 = [[NSMutableDictionary alloc] init];

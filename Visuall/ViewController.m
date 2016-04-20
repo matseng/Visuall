@@ -125,7 +125,7 @@
 //         [self addNoteToViewWithHandlers:newNote];
          GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
          [self addGestureRecognizersToGroup: newGroup];
-         [self.groupsCollection addGroup:newGroup];
+         [self.groupsCollection addGroup: newGroup withKey: snapshot.key];
          [self.GroupsView addSubview:newGroup];
         
      } withCancelBlock:^(NSError *error)
@@ -393,7 +393,7 @@
 
 - (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
-    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection andGroups: self.groupsCollection.groups];
+    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection andGroups: self.groupsCollection];
     
 //    if ([[TransformUtil sharedManager] zoom] > 1.0){
 //        [self.Background removeGestureRecognizer: self.panBackground];
@@ -493,7 +493,7 @@
             [currentGroupItem saveToCoreData];
             [self addGestureRecognizersToGroup: currentGroupItem];
             
-            [self.groupsCollection addGroup:currentGroupItem];
+//            [self.groupsCollection addGroup:currentGroupItem];
             
             [self refreshGroupView];
 
@@ -503,7 +503,7 @@
     }
     else
     {
-        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection.groups];
+        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
     }
 }
 
@@ -565,7 +565,7 @@
         [self setSelectedObject:groupItem];
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
         NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
-        for (NoteItem *ni in self.NotesCollection.Notes) {
+        for (NoteItem2 *ni in self.NotesCollection.Notes) {
             if ([groupItem isNoteInGroup:ni]) {
 //                NSLog(@"Note name in group: %@", ni.note.title);
                 [notesInGroup addObject:ni];
@@ -647,7 +647,7 @@
             [currentGroupItem saveToCoreData];
             [self addGestureRecognizersToGroup: currentGroupItem];
             
-            [self.groupsCollection addGroup:currentGroupItem];
+            [self.groupsCollection addGroup:currentGroupItem withKey:nil];
             
             [self refreshGroupView];
             
@@ -713,7 +713,7 @@
         } else
         {
 //            [self handlePanBackground:gestureRecognizer];
-            [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection.groups];
+            [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
         }
     }
     

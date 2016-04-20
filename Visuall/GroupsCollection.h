@@ -16,6 +16,8 @@
 @property NSMutableDictionary *groups2;
 
 //- (void) initializeGroups;
-- (void) addGroup:(GroupItem *)newGroup;
+//- (void) addGroup:(GroupItem *)newGroup;
+
+- (void) addGroup:(GroupItem *) newGroup withKey: (NSString *) key;
 
 @end
