@@ -87,6 +87,7 @@
         [self setNote: note];
         
         self.noteTextView = [[UITextView alloc] init];
+        [self.noteTextView setFont:[UIFont fontWithName: @"Arial" size:note.fontSize]];
         [self resizeToFit: note.title];
         [self addSubview: self.noteTextView];  // adds the text view to this note's super view
     }
@@ -121,13 +122,10 @@
     [self.noteTextView setScrollEnabled: NO];
 
     frame = self.noteTextView.frame;
-    float x = -frame.size.width/2 + self.note.x;
-    float y = -frame.size.height/2 + self.note.y;
-//    float x = self.note.centerX.floatValue;
-//    float y = self.note.centerY.floatValue;
+    float x = self.note.x - (frame.size.width - self.note.width)/2;
+    float y = self.note.y - (frame.size.height - self.note.height)/2;
+    
     [self setX: x andY: y andWidth: frame.size.width andHeight: frame.size.height];
-//    [self.note setCenterX: x + frame.size.width/2 andCenterY: y + frame.size.height/2];
-//    [self.note setWidth:frame.size.width andHeight:frame.size.height];
     [self.note setX: x];
     [self.note setY: y];
     [self.note setWidth: frame.size.width];
