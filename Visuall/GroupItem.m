@@ -238,6 +238,12 @@
     return HANDLE_RADIUS;
 }
 
+
+- (float) getArea
+{
+    return self.group.width * self.group.height;
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

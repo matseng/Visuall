@@ -22,4 +22,9 @@
     self.height = height;
 }
 
+- (float) getArea
+{
+    return self.width * self.height;
+}
+
 @end

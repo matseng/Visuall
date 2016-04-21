@@ -18,12 +18,12 @@
 
 //- (void) initializeNotes;
 
-//- (void) addNote:(NoteItem2 *) newNote;
-
 - (void) addNote:(NoteItem2 *)newNote withKey: (NSString *) key;
 
 - (void) myForIn: (void (^)(NoteItem2 *ni)) myFunction;
 
-//- (NSMutableArray *) getNoteViews;
+- (float) getNoteFontSizeFromKey: (NSString *) key;
+
+- (NSString *) getNoteTitleFromKey: (NSString *) key;
 
 @end

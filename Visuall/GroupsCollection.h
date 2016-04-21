@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GroupItem.h"
+//#import "Group2.h"
 
 @interface GroupsCollection : NSObject
 
@@ -21,6 +22,9 @@
 - (void) addGroup:(GroupItem *) newGroup withKey: (NSString *) key;
 
 - (void) myForIn: (void (^)(GroupItem *gi)) myFunction;
-//[refGroups observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
+
+- (GroupItem *) getGroupItemFromKey: (NSString *) key;
+
+- (float) getGroupAreaFromKey: (NSString *) key;
 
 @end

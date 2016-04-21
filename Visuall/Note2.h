@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+//#import "Group2.h"
 
 @interface Note2 : NSObject
 
@@ -17,7 +18,8 @@
 @property float width;
 @property float height;
 @property float fontSize;
-@property NSString *parentGroup;
+@property NSString *parentGroupKey;
+//@property Group2 *parentGroup;
 
 @end
 

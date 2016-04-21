@@ -39,4 +39,6 @@
 
 - (float) getRadius;
 
+- (float) getArea;
+
 @end

@@ -37,4 +37,14 @@
     }
 }
 
+- (float) getNoteFontSizeFromKey: (NSString *) key
+{
+    return [[self.Notes2[key] note] fontSize];
+}
+
+- (NSString *) getNoteTitleFromKey: (NSString *) key
+{
+    return [[self.Notes2[key] note] title];
+}
+
 @end

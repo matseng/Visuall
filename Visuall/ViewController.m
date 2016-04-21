@@ -68,6 +68,13 @@
                                                  action:@selector(handlePinchBackground:)];
     [self.Background addGestureRecognizer:pinchBackground];
     
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    tapGesture.numberOfTapsRequired = 2;
+    [self.Background addGestureRecognizer:tapGesture];
+    
+    //TODO: add double tap recognizer and findChildandTitleNotes
+    
     /*
     self.NotesCollection = [NotesCollection new];
     [self.NotesCollection initializeNotes];
@@ -112,6 +119,12 @@
     [self loadFirebase];
     [self loadFirebaseGroups];
 
+}
+
+- (void)handleTapGesture:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateRecognized) {
+        [self findChildandTitleNotes];
+    }
 }
 
 - (void) loadFirebaseGroups
@@ -202,6 +215,33 @@
      }];
      */
 
+}
+
+- (void) findChildandTitleNotes
+{
+
+    [self.NotesCollection myForIn:^(NoteItem2 *ni)
+     {
+         [self.groupsCollection myForIn:^(GroupItem *gi){
+            if( [gi isNoteInGroup:ni] )
+            {
+                if (![ni.note parentGroupKey]) {
+                    [ni.note setParentGroupKey: gi.group.key];
+                } else if ( [gi.group getArea] < [self.groupsCollection getGroupAreaFromKey:[ni.note parentGroupKey]] )  // current group is smaller than previously assign parent
+                {
+                    [ni.note setParentGroupKey: gi.group.key];
+                }
+
+                if ( !gi.group.titleNoteKey )
+                {
+                    [gi.group setTitleNoteKey: ni.note.key];
+                } else if ( ni.note.fontSize > [self.NotesCollection getNoteFontSizeFromKey:gi.group.titleNoteKey])
+                {
+                    gi.group.titleNoteKey = ni.note.key;
+                }
+            }
+         }];
+     }];
 }
 
 - (void) fontSizeEditingChangedHandler: (UITextField *) textField
@@ -842,12 +882,15 @@
     [self setSelectedObject:textField];
 }
 
+/*
+ Handle tap gesture on background AND other objects especially Groups (and Notes?)
+ TODO: refactor as hard coded gesture recognizers
+ */
 
 - (IBAction) handleTap:(UITapGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
-        
         UIView *viewHit = [self getViewHit:sender];
 //        NSLog(@"My viewHit %@", [viewHit class]);
 //        NSLog(@"tag %ld", (long)viewHit.tag);
@@ -873,6 +916,13 @@
         } else
         {
             [self setSelectedObject: viewHit];
+//            if ([viewHit isKindOfClass: [GroupItem class]])
+            if (viewHit.tag == 100)
+            {
+                GroupItem *gi = (GroupItem *) [viewHit superview];
+                NSString *titleNoteString = [self.NotesCollection getNoteTitleFromKey: [gi.group titleNoteKey]];
+                NSLog(@"Group title: %@", titleNoteString);
+            }
         }
     }
 }

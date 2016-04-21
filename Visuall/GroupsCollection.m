@@ -52,4 +52,14 @@
     }
 }
 
+- (GroupItem *) getGroupItemFromKey: (NSString *) key
+{
+    return self.groups2[key];
+}
+
+- (float) getGroupAreaFromKey: (NSString *) key
+{
+    return [[self.groups2[key] group] getArea];
+}
+
 @end

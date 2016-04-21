@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Note2.h"
 
 @interface Group2 : NSObject
 
@@ -15,10 +16,14 @@
 @property float y;
 @property float width;
 @property float height;
+//@property Note2 *titleNote;
+@property NSString *titleNoteKey;
 
 - (void) setX:(float)pointX andY:(float)pointY;
 
 - (void) setWidth:(float)width andHeight:(float)width;
+
+- (float) getArea;
 
 @end
 
