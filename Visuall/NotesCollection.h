@@ -14,7 +14,7 @@
 
 @property NSMutableArray *Notes;
 
-@property NSMutableDictionary *Notes2;
+@property NSMutableDictionary *Notes2;  // hold NoteItem2 instances
 
 //- (void) initializeNotes;
 
@@ -25,5 +25,9 @@
 - (float) getNoteFontSizeFromKey: (NSString *) key;
 
 - (NSString *) getNoteTitleFromKey: (NSString *) key;
+
+- (NoteItem2 *) getNoteItemFromKey: (NSString *) key;
+
+- (Note2 *) getNoteFromKey: (NSString *) key;
 
 @end

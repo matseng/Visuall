@@ -228,7 +228,7 @@
             {
                 if (![ni.note parentGroupKey]) {
                     [ni.note setParentGroupKey: gi.group.key];
-                } else if ( [gi.group getArea] < [self.groupsCollection getGroupAreaFromKey:[ni.note parentGroupKey]] )  // current group is smaller than previously assign parent
+                } else if ( [gi.group getArea] < [self.groupsCollection getGroupAreaFromKey:[ni.note parentGroupKey]] )  // current group is smaller than previously assigned parent
                 {
                     [ni.note setParentGroupKey: gi.group.key];
                 }
@@ -236,9 +236,14 @@
                 if ( !gi.group.titleNoteKey )
                 {
                     [gi.group setTitleNoteKey: ni.note.key];
+                    [ni.note setIsTitleOfParentGroup:YES];
                 } else if ( ni.note.fontSize > [self.NotesCollection getNoteFontSizeFromKey:gi.group.titleNoteKey])
                 {
+                    Note2 *oldTitleNote = [self.NotesCollection getNoteFromKey:gi.group.titleNoteKey];
+                    if (oldTitleNote) [oldTitleNote setIsTitleOfParentGroup:NO];
                     gi.group.titleNoteKey = ni.note.key;
+                    [ni.note setIsTitleOfParentGroup: YES];
+                    
                 }
             }
          }];
@@ -902,7 +907,8 @@
             NoteItem2 *nv = (NoteItem2 *) viewHit;
             [self setSelectedObject:nv];
             NSLog(@"Note key: %@", nv.note.key);
-            NSLog(@"Parent group key: %@", nv.note.parentGroupKey);  // TODO: print and compare note's parent key with group key
+            NSLog(@"Parent group key: %@", nv.note.parentGroupKey);
+            NSLog(@"Is a title note?: %@", nv.note.isTitleOfParentGroup ? @"YES" : @"NO");
             return;
         }
         

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "483653827.212738"
+            timestampString = "483671887.263814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "482"
-            endingLineNumber = "482"
+            startingLineNumber = "487"
+            endingLineNumber = "487"
             landmarkName = "-handlePanBackground:"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "483653827.212738"
+            timestampString = "483671887.263814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "474"
-            endingLineNumber = "474"
+            startingLineNumber = "479"
+            endingLineNumber = "479"
             landmarkName = "-handlePanBackground:"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "483653827.212738"
+            timestampString = "483671887.263814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "471"
-            endingLineNumber = "471"
+            startingLineNumber = "476"
+            endingLineNumber = "476"
             landmarkName = "-handlePanBackground:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "483653827.212738"
+            timestampString = "483671887.263814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "554"
-            endingLineNumber = "554"
+            startingLineNumber = "559"
+            endingLineNumber = "559"
             landmarkName = "-handlePan:"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "483653827.212738"
+            timestampString = "483671887.263814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "737"
-            endingLineNumber = "737"
+            startingLineNumber = "742"
+            endingLineNumber = "742"
             landmarkName = "-panHandler:"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "483653827.212738"
+            timestampString = "483671887.263814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "547"
-            endingLineNumber = "547"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
             landmarkName = "-handlePanBackground:"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "483653827.212738"
+            timestampString = "483671887.263814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "786"
-            endingLineNumber = "786"
+            startingLineNumber = "791"
+            endingLineNumber = "791"
             landmarkName = "-handleTapGroup:"
             landmarkType = "5">
          </BreakpointContent>

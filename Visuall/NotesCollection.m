@@ -47,4 +47,14 @@
     return [[self.Notes2[key] note] title];
 }
 
+- (NoteItem2 *) getNoteItemFromKey: (NSString *) key
+{
+    return self.Notes2[key];
+}
+
+- (Note2 *) getNoteFromKey: (NSString *) key
+{
+    return [self.Notes2[key] note];
+}
+
 @end
