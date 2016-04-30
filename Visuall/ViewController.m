@@ -70,10 +70,9 @@
     
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTapsRequired = 2;  // double-tap
     [self.Background addGestureRecognizer:tapGesture];
     
-    //TODO: add double tap recognizer and findChildandTitleNotes
     
     /*
     self.NotesCollection = [NotesCollection new];
@@ -131,6 +130,7 @@
 {
     Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
     self.groupsCollection = [GroupsCollection new];
+    [[TransformUtil sharedManager] setGroupsCollection: self.groupsCollection];
     [refGroups observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
      {
 //         NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.key andValue:snapshot.value];
@@ -154,6 +154,7 @@
 //    Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
     
     self.NotesCollection = [NotesCollection new];
+    [[TransformUtil sharedManager] setNotesCollection: self.NotesCollection];
     [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
     {
         //        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
@@ -884,7 +885,7 @@
 
 /*
  Handle tap gesture on background AND other objects especially Groups (and Notes?)
- TODO: refactor as hard coded gesture recognizers
+ TODO: refactor as a hard coded gesture recognizer for the background
  */
 
 - (IBAction) handleTap:(UITapGestureRecognizer *)sender
@@ -900,6 +901,8 @@
         {
             NoteItem2 *nv = (NoteItem2 *) viewHit;
             [self setSelectedObject:nv];
+            NSLog(@"Note key: %@", nv.note.key);
+            NSLog(@"Parent group key: %@", nv.note.parentGroupKey);  // TODO: print and compare note's parent key with group key
             return;
         }
         
@@ -922,6 +925,7 @@
                 GroupItem *gi = (GroupItem *) [viewHit superview];
                 NSString *titleNoteString = [self.NotesCollection getNoteTitleFromKey: [gi.group titleNoteKey]];
                 NSLog(@"Group title: %@", titleNoteString);
+                NSLog(@"Group key: %@", [gi.group key]);
             }
         }
     }

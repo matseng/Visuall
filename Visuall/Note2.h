@@ -19,6 +19,7 @@
 @property float height;
 @property float fontSize;
 @property NSString *parentGroupKey;
+
 //@property Group2 *parentGroup;
 
 @end

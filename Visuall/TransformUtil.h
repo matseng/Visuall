@@ -21,11 +21,11 @@
 @property CGPoint translation;
 @property float scale;
 @property float scaleTest;
-
 @property float zoom;
 @property CGPoint pan;
-
 @property float _relativeScale;
+@property NotesCollection *notesCollection;
+@property GroupsCollection *groupsCollection;
 
 
 +(id)sharedManager;
@@ -41,6 +41,8 @@
 -(void) transformVisualItem: (VisualItem *) visualItem;
 
 -(CGPoint) getGlobalCoordinate: (CGPoint) point;
+
+//-(void) setNotesCollection: (NotesCollection *) nc andGroupsCollection: (GroupsCollection *) gc;
 
 @end
 

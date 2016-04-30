@@ -88,6 +88,13 @@
     CGAffineTransform matrix = visualItem.transform;
     matrix.a = self.zoom;
     matrix.d = self.zoom;
+    if ([visualItem isKindOfClass: [NoteItem2 class]]) {
+        if ([self isTitleNote: (NoteItem2 *) visualItem ])
+        {
+            matrix.a = 1;
+            matrix.d = 1;
+        }
+    }
     [visualItem setTransform: matrix];
     
     CGRect frame = visualItem.frame;
@@ -159,9 +166,18 @@
     return (CGPoint){x,y};
 }
 
--(float) getGlobalDistance: (float) distance
+- (float) getGlobalDistance: (float) distance
 {
     return (distance / self.zoom);
+}
+
+- (BOOL) isTitleNote: (NoteItem2 *) ni
+{
+    GroupItem *parentGroup = [self.groupsCollection getGroupItemFromKey: ni.note.key];
+    if ([ni.note.key isEqualToString: parentGroup.group.titleNoteKey]) {
+        return YES;
+    }
+    return NO;
 }
 
 @end
