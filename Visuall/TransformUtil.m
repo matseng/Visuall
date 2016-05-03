@@ -81,20 +81,22 @@
     }
 }
 
--(void) transformVisualItem: (VisualItem *) visualItem
+-(void) transformVisualItem: (id) visualItem0
 {
     
-    
+    VisualItem *visualItem = (VisualItem *) visualItem0;
     CGAffineTransform matrix = visualItem.transform;
     matrix.a = self.zoom;
     matrix.d = self.zoom;
+    
     if ([visualItem isKindOfClass: [NoteItem2 class]]) {
-        if ([self isTitleNote: (NoteItem2 *) visualItem ])
-        {
+        NoteItem2 *ni = (NoteItem2 *) visualItem;
+        if (ni.note.isTitleOfParentGroup) {
             matrix.a = 1;
             matrix.d = 1;
         }
     }
+    
     [visualItem setTransform: matrix];
     
     CGRect frame = visualItem.frame;
