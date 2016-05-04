@@ -909,6 +909,7 @@
             NSLog(@"Note key: %@", nv.note.key);
             NSLog(@"Parent group key: %@", nv.note.parentGroupKey);
             NSLog(@"Is a title note?: %@", nv.note.isTitleOfParentGroup ? @"YES" : @"NO");
+            NSLog(@"Note width: %f", nv.frame.size.width);
             return;
         }
         

@@ -12,6 +12,10 @@
 #import "VisualItem.h"
 #import "NoteItem2.h"
 
+@interface TransformUtil()
+@property float zoomPreviousValue;
+@end
+
 @implementation TransformUtil
 
 +(id)sharedManager {
@@ -67,6 +71,7 @@
         CGFloat ty = self.pan.y / self.zoom * zoom + deltaY;
         self.pan = CGPointMake(tx, ty);
         
+        self.zoomPreviousValue = self.zoom;
         self.zoom = zoom;
         
         for (NSString *key in Notes.Notes2) {
@@ -91,9 +96,19 @@
     
     if ([visualItem isKindOfClass: [NoteItem2 class]]) {
         NoteItem2 *ni = (NoteItem2 *) visualItem;
-        if (ni.note.isTitleOfParentGroup) {
-            matrix.a = 1;
-            matrix.d = 1;
+        if (ni.note.isTitleOfParentGroup && self.zoom < 0.5) {
+            float noteWidth = ni.note.width;
+            GroupItem *gi = [self.groupsCollection getGroupItemFromKey: ni.note.parentGroupKey];
+            float groupWidth = gi.group.width * self.zoom;
+            if (noteWidth < groupWidth)
+            {
+                matrix.a = self.zoom + (0.5 - self.zoom);  // TODO 1 of 2 fix jumpiness
+                matrix.d = self.zoom + (0.5 - self.zoom);
+            } else
+            {
+                matrix.a = groupWidth / noteWidth; // TODO 2 of 2 fix jumpiness
+                matrix.d = groupWidth / noteWidth;
+            }
         }
     }
     
