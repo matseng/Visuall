@@ -13,7 +13,8 @@
 #import "NoteItem2.h"
 
 @interface TransformUtil()
-@property float zoomPreviousValue;
+//@property float zoomPreviousValue;
+@property float noteTitleScale;
 @end
 
 @implementation TransformUtil
@@ -71,7 +72,7 @@
         CGFloat ty = self.pan.y / self.zoom * zoom + deltaY;
         self.pan = CGPointMake(tx, ty);
         
-        self.zoomPreviousValue = self.zoom;
+//        self.zoomPreviousValue = self.zoom;
         self.zoom = zoom;
         
         for (NSString *key in Notes.Notes2) {
@@ -97,17 +98,19 @@
     if ([visualItem isKindOfClass: [NoteItem2 class]]) {
         NoteItem2 *ni = (NoteItem2 *) visualItem;
         if (ni.note.isTitleOfParentGroup && self.zoom < 0.5) {
-            float noteWidth = ni.note.width;
-            GroupItem *gi = [self.groupsCollection getGroupItemFromKey: ni.note.parentGroupKey];
-            float groupWidth = gi.group.width * self.zoom;
-            if (noteWidth < groupWidth)
+            if (!self.noteTitleScale) self.noteTitleScale = self.zoom;
+            float noteWidthScaled = ni.note.width * self.noteTitleScale;
+             GroupItem *gi = [self.groupsCollection getGroupItemFromKey: ni.note.parentGroupKey];
+            float groupWidthScaled = gi.group.width * self.zoom;
+            if (noteWidthScaled < groupWidthScaled)
             {
-                matrix.a = self.zoom + (0.5 - self.zoom);  // TODO 1 of 2 fix jumpiness
-                matrix.d = self.zoom + (0.5 - self.zoom);
+                self.noteTitleScale = .5 + (.5 - self.zoom) / self.zoom;
+                matrix.a = self.noteTitleScale;  // TODO 1 of 2 fix jumpiness
+                matrix.d = self.noteTitleScale;
             } else
             {
-                matrix.a = groupWidth / noteWidth; // TODO 2 of 2 fix jumpiness
-                matrix.d = groupWidth / noteWidth;
+                matrix.a = groupWidthScaled / ni.note.width; // TODO 2 of 2 fix jumpiness
+                matrix.d = groupWidthScaled / ni.note.width;
             }
         }
     }
@@ -119,6 +122,11 @@
     frame.origin.y = visualItem.y * self.zoom + self.pan.y;
     frame.size.width = visualItem.width * self.zoom;
     frame.size.height = visualItem.height * self.zoom;
+
+//    frame.origin.x = visualItem.x * matrix.a + self.pan.x;
+//    frame.origin.y = visualItem.y * matrix.d + self.pan.y;
+//    frame.size.width = visualItem.width * matrix.a;
+//    frame.size.height = visualItem.height * matrix.d;
     
     [visualItem setFrame: frame];
 }

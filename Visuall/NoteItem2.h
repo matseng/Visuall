@@ -36,4 +36,6 @@
 
 - (void) setFontSize: (float) fontSize;
 
+- (void) scaleFontSize: (float) scalar;
+
 @end

@@ -160,4 +160,24 @@
     [self resizeToFit:nil];
 }
 
+- (void) scaleFontSize: (float) scalar
+{
+    float newFontSize = self.note.fontSize * scalar;
+    [self.note setFontSize: newFontSize];
+    [self.noteTextView setFont: [UIFont systemFontOfSize: newFontSize]];
+    
+//    [self resizeToFit:nil];
+    NSString *text = self.noteTextView.text;
+    CGRect frame = self.noteTextView.frame;
+    CGSize tempSize = self.noteTextView.bounds.size;
+    tempSize.width = CGRectInfinite.size.width;
+    frame.size = tempSize;
+    [self.noteTextView setFrame: frame];
+    
+    [self.noteTextView setScrollEnabled: YES];
+    [self.noteTextView setText: text];
+    [self.noteTextView sizeToFit];
+    [self.noteTextView setScrollEnabled: NO];
+}
+
 @end
