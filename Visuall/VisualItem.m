@@ -26,4 +26,9 @@
     self.height = height;
 }
 
+- (BOOL) isNote  // Note: This method is overwritten in NoteItem2.m
+{
+    return NO;
+}
+
 @end

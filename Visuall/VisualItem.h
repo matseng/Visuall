@@ -18,4 +18,6 @@
 
 -(void) setX:(float)x andY:(float)y andWidth: (float) width andHeight:(float) height;
 
+- (BOOL) isNote;
+
 @end

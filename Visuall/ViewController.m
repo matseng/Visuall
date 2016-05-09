@@ -218,6 +218,32 @@
 
 }
 
+- (void) updateChildValues: (id) visualObject andProperty: (NSString *) propertyName
+{
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
+    
+    if ( [visualObject isKindOfClass: [NoteItem2 class]] ) {
+        
+    }
+    
+}
+
+- (void) updateChildValues: (id) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2
+{
+//    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
+    
+    if ( [visualObject isKindOfClass: [NoteItem2 class]] ) {
+        NoteItem2 *ni = (NoteItem2 *) visualObject;
+        NSString *noteUrl = [[@"notes2/" stringByAppendingString: ni.note.key] stringByAppendingString:@"/data/"];
+        [ref updateChildValues: @{
+                                  [noteUrl stringByAppendingString:propertyName1] : [ni.note valueForKey:propertyName1],
+                                  [noteUrl stringByAppendingString:propertyName2] : [ni.note valueForKey:propertyName2],
+                                  }];
+    
+    }
+}
+
 - (void) findChildandTitleNotes
 {
 
@@ -729,11 +755,6 @@
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-
-//        [self.fontSize resignFirstResponder];
-//        [self.lastSelectedObject resignFirstResponder];
-//        [[self.view window] endEditing:YES];
-        
         UIView *viewHit = [self getViewHit:gestureRecognizer];
         NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
         if ( [viewHit isKindOfClass: [NoteItem2 class]] ) {
@@ -760,7 +781,9 @@
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];
-            [ni saveToCoreData];
+//            [ni saveToCoreData];
+            // TODO: save new note location
+            [self updateChildValues:ni Property1:@"x" Property2:@"y"];
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;

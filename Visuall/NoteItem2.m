@@ -122,8 +122,10 @@
     [self.noteTextView setScrollEnabled: NO];
 
     frame = self.noteTextView.frame;
-    float x = self.note.x - (frame.size.width - self.note.width)/2;
-    float y = self.note.y - (frame.size.height - self.note.height)/2;
+//    float x = self.note.x - (frame.size.width - self.note.width)/2;
+//    float y = self.note.y - (frame.size.height - self.note.height)/2;
+    float x = self.note.x;
+    float y = self.note.y;
     
     [self setX: x andY: y andWidth: frame.size.width andHeight: frame.size.height];
     [self.note setX: x];
@@ -178,6 +180,14 @@
     [self.noteTextView setText: text];
     [self.noteTextView sizeToFit];
     [self.noteTextView setScrollEnabled: NO];
+}
+
+- (BOOL) isNote
+{
+    if([self isKindOfClass:[NoteItem2 class]]) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

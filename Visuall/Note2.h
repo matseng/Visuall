@@ -15,6 +15,7 @@
 @property NSString *title;
 @property float x;
 @property float y;
+//@property CGPoint xy;
 @property float width;
 @property float height;
 @property float fontSize;
