@@ -80,7 +80,12 @@
 
         Note2 *note = [[Note2 alloc] init];
         note.key = key;
-        note.title = value[@"data"][@"text"];
+//        if ([value[@"data"] respondsToSelector:NSSelectorFromString(@"title")]) {
+        if (value[@"data"][@"title"]) {
+                note.title = value[@"data"][@"title"];
+        } else {
+            note.title = value[@"data"][@"text"];
+        }
         note.x = [value[@"data"][@"x"] floatValue];
         note.y = [value[@"data"][@"y"] floatValue];
         note.fontSize = [value[@"style"][@"font-size"] floatValue];

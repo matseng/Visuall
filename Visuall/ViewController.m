@@ -220,17 +220,19 @@
 
 - (void) updateChildValues: (id) visualObject andProperty: (NSString *) propertyName
 {
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
     
     if ( [visualObject isKindOfClass: [NoteItem2 class]] ) {
-        
+        NoteItem2 *ni = (NoteItem2 *) visualObject;
+        NSString *noteUrl = [[@"notes2/" stringByAppendingString: ni.note.key] stringByAppendingString:@"/data/"];
+        [ref updateChildValues: @{
+                                  [noteUrl stringByAppendingString:propertyName] : [ni.note valueForKey:propertyName]
+                                  }];
     }
-    
 }
 
 - (void) updateChildValues: (id) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2
 {
-//    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
     
     if ( [visualObject isKindOfClass: [NoteItem2 class]] ) {
@@ -240,7 +242,6 @@
                                   [noteUrl stringByAppendingString:propertyName1] : [ni.note valueForKey:propertyName1],
                                   [noteUrl stringByAppendingString:propertyName2] : [ni.note valueForKey:propertyName2],
                                   }];
-    
     }
 }
 
@@ -859,7 +860,8 @@
     [ni resizeToFit: textView.text];
     ni.note.title = textView.text;
     [[TransformUtil sharedManager] transformVisualItem: ni];
-    [ni saveToCoreData];
+//    [ni saveToCoreData];
+    [self updateChildValues:ni andProperty:@"title"];
 }
 
 - (void) textViewDidChange_ARCHIVE:(NoteItem *)textView
@@ -891,24 +893,6 @@
     
     [[TransformUtil sharedManager] transformNoteItem:textView];
     [textView saveToCoreData];
-}
-
-
--(void) textViewDidBeginEditingHandler:(UITextView *)textField
-{
-    [self setSelectedObject:textField];
-}
-
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textField{
-    return YES;
-}
-
-- (void) textViewDidChangeHandler:(NoteItem *)textField
-{
-//    [textField sizeToFit];
-    textField.note.title = textField.text;
-    [textField renderToAutosizeWidth];
-    [self setSelectedObject:textField];
 }
 
 /*
