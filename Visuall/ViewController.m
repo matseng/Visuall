@@ -151,74 +151,26 @@
 - (void) loadFirebase
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
-//    Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
-    
     self.NotesCollection = [NotesCollection new];
     [[TransformUtil sharedManager] setNotesCollection: self.NotesCollection];
     [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
     {
-        //        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
+        if([self.NotesCollection getNoteFromKey:snapshot.key])  // If the note already exists in the collection
+        {
+            return;  // TODO: update values for multiuser
+        }
         
-        //            NSLog(@"Text: %@", snapshot.value[key][@"data"][@"text"]);
-        //            NSLog(@"Key: %@", key);
-        //            CGFloat x = [snapshot.value[key][@"data"][@"x"] floatValue];
-        //            CGFloat y = [snapshot.value[key][@"data"][@"y"] floatValue];
-        //            CGFloat fontSize = [snapshot.value[key][@"style"][@"font-size"] floatValue];
-        //            CGPoint point = CGPointMake(x, y);
-        NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.key andValue:snapshot.value];
-        
-        //            [newNote setFontSize: fontSize];
+        NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase:snapshot.key andValue:snapshot.value];
         [self.NotesCollection addNote:newNote withKey:snapshot.key];
         [self addNoteToViewWithHandlers:newNote];
-//        [self setSelectedObject:newNote];
-
-        /*
-        [newNote becomeFirstResponder];  // puts cursor on text field
-        [newNote.noteTextView selectAll:nil];  // highlights text
-        
-                    for (GroupItem* gi in self.groupsCollection.groups) {
-                        [gi isNoteInGroup: newNote];
-                    }
-         */
-        
 
     } withCancelBlock:^(NSError *error)
     {
         NSLog(@"%@", error.description);
     }];
-    
-    /*
-    [refGroups observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
-     {
-         for (NSString *key in snapshot.value)
-         {
-
-             CGFloat x = [snapshot.value[key][@"style"][@"left"] floatValue];
-             CGFloat y = [snapshot.value[key][@"style"][@"top"] floatValue];
-             CGFloat width = [snapshot.value[key][@"style"][@"width"] floatValue];
-             CGFloat height = [snapshot.value[key][@"style"][@"height"] floatValue];
-             CGPoint point = CGPointMake(x, y);
-             
-             float zoom = [[TransformUtil sharedManager] zoom];
-             GroupItem *currentGroupItem = [[GroupItem alloc]
-                                            initWithPoint:point
-                                            andWidth: width / zoom
-                                            andHeight: height / zoom];
-             
-
-             [self addGestureRecognizersToGroup: currentGroupItem];
-             [self.groupsCollection addGroup:currentGroupItem];
-             [self refreshGroupView];
-         }
-     } withCancelBlock:^(NSError *error)
-     {
-         NSLog(@"%@", error.description);
-     }];
-     */
-
 }
 
-- (void) updateChildValues: (id) visualObject andProperty: (NSString *) propertyName
+- (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
     
@@ -243,6 +195,21 @@
                                   [noteUrl stringByAppendingString:propertyName2] : [ni.note valueForKey:propertyName2],
                                   }];
     }
+}
+
+- (void) setInitialNote: (NoteItem2 *) ni
+{
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
+    Firebase *notesRef = [ref childByAppendingPath: @"notes2"];
+    Firebase *newNoteRef = [notesRef childByAutoId];
+    NSDictionary *noteDictionary = @{
+                                    @"data/title": ni.note.title,
+                                    @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                    @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+                                    @"style/font-size": [NSString stringWithFormat:@"%.3f", ni.note.fontSize]
+                                  };
+    [newNoteRef updateChildValues: noteDictionary];
+    ni.note.key = newNoteRef.key;
 }
 
 - (void) findChildandTitleNotes
@@ -861,7 +828,7 @@
     ni.note.title = textView.text;
     [[TransformUtil sharedManager] transformVisualItem: ni];
 //    [ni saveToCoreData];
-    [self updateChildValues:ni andProperty:@"title"];
+    [self updateChildValue:ni andProperty:@"title"];
 }
 
 - (void) textViewDidChange_ARCHIVE:(NoteItem *)textView
@@ -923,9 +890,10 @@
         if (self.modeControl.selectedSegmentIndex == 0) {  // new note button
             CGPoint gesturePoint = [sender locationInView: self.Background];
             CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
-            NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." andPoint:point andText:@""];
-            [newNote saveToCoreData];
-            [self.NotesCollection addNote:newNote withKey:nil];
+            NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
+            [self setInitialNote:newNote];
+            [self.NotesCollection addNote:newNote withKey:newNote.note.key];  // TODO: set key after saving to firebase
+            
             [self addNoteToViewWithHandlers:newNote];
             [self setSelectedObject:newNote];
             [newNote becomeFirstResponder];  // puts cursor on text field

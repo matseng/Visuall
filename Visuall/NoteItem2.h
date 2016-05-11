@@ -20,11 +20,9 @@
 //- (instancetype) initNote:(Note *) note;
 
 
-- (instancetype) initNote:(NSString *) title
-                 andPoint:(CGPoint) point
-                  andText:(NSString *) paragraph;
+- (instancetype) initNote:(NSString *) title withPoint:(CGPoint) point;
 
-- (instancetype) initNote: (NSString *) key andValue: (NSDictionary *) data;
+- (instancetype) initNoteFromFirebase: (NSString *) key andValue: (NSDictionary *) data;
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer;
 

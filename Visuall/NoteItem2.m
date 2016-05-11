@@ -16,6 +16,8 @@
 @property NSManagedObjectContext *moc;
 @end
 
+# define DEFAULT_FONTSIZE 12.0;
+
 @implementation NoteItem2
 
 /*
@@ -26,61 +28,37 @@
 }
 */
 
-- (instancetype) initNote:(Note *)note
+
+- (instancetype) initNote:(NSString *) title withPoint:(CGPoint) point
 {
     self = [super init];
-    if (self)
-    {
-        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        self.moc = appDelegate.managedObjectContext;
+    if (self) {
         
-        [self setNote: note];  // built-in setter
+        Note2 *note = [[Note2 alloc] init];
+        NSNumber *myDoubleNumber = [NSNumber numberWithDouble:CFAbsoluteTimeGetCurrent()];
+        note.key = [myDoubleNumber stringValue];  // Placeholder value until get a key from Firebase
+        note.title = title;
+        note.x = point.x;
+        note.y = point.y;
+        note.fontSize = DEFAULT_FONTSIZE;
+        [self setNote: note];
+        
         self.noteTextView = [[UITextView alloc] init];
+        [self.noteTextView setFont:[UIFont fontWithName: @"Arial" size:note.fontSize]];
         [self resizeToFit: note.title];
-        [self addSubview: self.noteTextView];
+        [self addSubview: self.noteTextView];  // adds the text view to this note's super view
     }
-    
     return self;
 }
 
-//- (instancetype) initNote:(NSString *) title
-//                 andPoint:(CGPoint) point
-//                  andText:(NSString *) paragraph
-//{
-//    self = [super init];
-//    if (self) {
-//        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//        self.moc = appDelegate.managedObjectContext;
-//        
-//        Note *note = [NSEntityDescription insertNewObjectForEntityForName:@"Note" inManagedObjectContext:self.moc];
-//        note.title = title;
-//        note.paragraph = paragraph;
-//        [note setCenterPoint:point];
-//        [self setNote: note];
-//        self.noteTextView = [[UITextView alloc] init];
-//        [self resizeToFit: note.title];
-//        [self addSubview: self.noteTextView];
-//    }
-//    return self;
-//}
 
-//CGFloat x = [snapshot.value[key][@"data"][@"x"] floatValue];
-//CGFloat y = [snapshot.value[key][@"data"][@"y"] floatValue];
-//CGFloat fontSize = [snapshot.value[key][@"style"][@"font-size"] floatValue];
-//CGPoint point = CGPointMake(x, y);
-//NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.value[key][@"data"][@"text"]
-//                                        andPoint:point
-//                                         andText:@""];
-
-
-- (instancetype) initNote: (NSString *) key andValue: (NSDictionary *) value
+- (instancetype) initNoteFromFirebase: (NSString *) key andValue: (NSDictionary *) value
 {
     self = [super init];
     if (self) {
 
         Note2 *note = [[Note2 alloc] init];
         note.key = key;
-//        if ([value[@"data"] respondsToSelector:NSSelectorFromString(@"title")]) {
         if (value[@"data"][@"title"]) {
                 note.title = value[@"data"][@"title"];
         } else {
