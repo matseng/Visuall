@@ -54,7 +54,18 @@
 
 - (Note2 *) getNoteFromKey: (NSString *) key
 {
-    return [self.Notes2[key] note];
+    NoteItem2 *ni = self.Notes2[key];
+    return ni.note;
+}
+
+- (BOOL) deleteNoteGivenKey: (NSString *) key
+{
+    if([self.Notes2 objectForKey: key]) {
+        [self.Notes2 removeObjectForKey: key];
+        return YES;
+    }
+    return NO;
+
 }
 
 @end

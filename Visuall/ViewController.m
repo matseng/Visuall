@@ -212,6 +212,23 @@
     ni.note.key = newNoteRef.key;
 }
 
+- (void) removeValue: (id) object
+{
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
+    if([object isKindOfClass: [NoteItem2 class]]) {
+        NoteItem2 *ni = (NoteItem2 *) object;
+        Firebase *notesRef = [ref childByAppendingPath: [@"notes2/" stringByAppendingString:ni.note.key]];
+        [notesRef removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
+            if (error) {
+                NSLog(@"Data could not be removed.");
+            } else {
+                NSLog(@"Data removed successfully.");
+            }
+        }];
+        
+    }
+}
+
 - (void) findChildandTitleNotes
 {
 
@@ -932,7 +949,7 @@
         NSString *modalText;
         if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]]) {
             NSLog(@"puplet");
-            NoteItem2 *noteToDelete = (NoteItem2 *)self.lastSelectedObject;
+//            NoteItem2 *noteToDelete = (NoteItem2 *)self.lastSelectedObject;
 //            objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
             modalText = @"this note";
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
@@ -947,14 +964,14 @@
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Delete" message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", modalText] preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self.moc deleteObject:objectToDelete];
-                [self.lastSelectedObject removeFromSuperview];
-            
-                if ([self.lastSelectedObject isKindOfClass:[NoteItem class]]) {
-                    [self.NotesCollection.Notes removeObjectIdenticalTo:self.lastSelectedObject];
-                } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
-                    [self.groupsCollection.groups removeObjectIdenticalTo:self.lastSelectedObject];
+                if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]]) {
+                    NoteItem2 *ni = (NoteItem2 *)self.lastSelectedObject;
+                    [self removeValue:ni];
+                    [self.NotesCollection deleteNoteGivenKey: ni.note.key];
+                } else {
+                    
                 }
+                [self.lastSelectedObject removeFromSuperview];
                 self.lastSelectedObject = nil;
         }];
         

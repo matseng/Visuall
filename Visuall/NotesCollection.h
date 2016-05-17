@@ -30,4 +30,6 @@
 
 - (Note2 *) getNoteFromKey: (NSString *) key;
 
+- (BOOL) deleteNoteGivenKey: (NSString *) key;
+
 @end
