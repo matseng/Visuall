@@ -48,8 +48,15 @@
         group.key = key;
         group.x = [value[@"data"][@"x"] floatValue];
         group.y = [value[@"data"][@"y"] floatValue];
-        group.width = [value[@"style"][@"width"] floatValue];
-        group.height = [value[@"style"][@"height"] floatValue];
+        
+        if ( value[@"data"][@"width"] && value[@"data"][@"height"]) {
+            group.width = [value[@"data"][@"width"] floatValue];
+            group.height = [value[@"data"][@"height"] floatValue];
+        } else {
+            group.width = [value[@"style"][@"width"] floatValue];
+            group.height = [value[@"style"][@"height"] floatValue];
+        }
+
         [self setGroup: group];
         [self renderGroup];
         [[TransformUtil sharedManager] transformGroupItem: self];

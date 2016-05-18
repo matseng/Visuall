@@ -189,12 +189,19 @@
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
     
-    if ( [visualObject isKindOfClass: [NoteItem2 class]] ) {
+    if ( [visualObject isKindOfClass: [NoteItem2 class]] ) {  // TODO - simple method the check visualObject its a NoteItem2
         NoteItem2 *ni = (NoteItem2 *) visualObject;
         NSString *noteUrl = [[@"notes2/" stringByAppendingString: ni.note.key] stringByAppendingString:@"/data/"];
         [ref updateChildValues: @{
                                   [noteUrl stringByAppendingString:propertyName1] : [ni.note valueForKey:propertyName1],
                                   [noteUrl stringByAppendingString:propertyName2] : [ni.note valueForKey:propertyName2],
+                                  }];
+    } else if ([visualObject isKindOfClass: [GroupItem class]]) {  // TODO - simple method the check if it's a GroupItem
+        GroupItem *gi = (GroupItem *) visualObject;
+        NSString *groupUrl = [[@"groups2/" stringByAppendingString: gi.group.key] stringByAppendingString:@"/data/"];
+        [ref updateChildValues: @{
+                                  [groupUrl stringByAppendingString:propertyName1] : [gi.group valueForKey:propertyName1],
+                                  [groupUrl stringByAppendingString:propertyName2] : [gi.group valueForKey:propertyName2],
                                   }];
     }
 }
@@ -222,8 +229,8 @@
     NSDictionary *groupDictionary = @{
                                      @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
                                      @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
-                                     @"style/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
-                                     @"style/height": [NSString stringWithFormat:@"%.3f", gi.group.height]
+                                     @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                     @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height]
                                      };
     [newGroupRef updateChildValues: groupDictionary];
     gi.group.key = newGroupRef.key;
@@ -794,18 +801,18 @@
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];
-//            [ni saveToCoreData];
-            // TODO: save new note location
             [self updateChildValues:ni Property1:@"x" Property2:@"y"];
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
             [self handlePanGroup: gestureRecognizer andGroupItem:gi];
+            [self updateChildValues:gi Property1:@"x" Property2:@"y"];
         } else if ( self.lastSelectedObject.tag == 777)
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup:gestureRecognizer];
             [self refreshGroupView];
+            [self updateChildValues:gi Property1:@"width" Property2:@"height"];
         } else
         {
 //            [self handlePanBackground:gestureRecognizer];
