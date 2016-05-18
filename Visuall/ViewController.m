@@ -1113,17 +1113,6 @@
     // Sort by area of group view
     NSArray *sortedArray;
     
-//    sortedArray = [self.groupsCollection.groups sortedArrayUsingComparator:^NSComparisonResult(GroupItem *first, GroupItem *second) {
-//        float firstArea = first.frame.size.height * first.frame.size.width;
-//        float secondArea = second.frame.size.height * second.frame.size.width;
-//        return firstArea < secondArea;
-//    }];
-//    
-//    // Render all the group views
-//    for (GroupItem *groupItem in sortedArray) {
-//        [self.GroupsView addSubview:groupItem];
-//    }
-
     sortedArray = [self.groupsCollection.groups2 keysSortedByValueUsingComparator: ^(GroupItem *group1, GroupItem *group2) {
 
         float firstArea = group1.group.width * group1.group.height;
@@ -1131,21 +1120,20 @@
         
         if ( firstArea > secondArea ) {
             
-            return (NSComparisonResult)NSOrderedDescending;
+            return (NSComparisonResult) NSOrderedAscending;
         }
-        if ( firstArea > secondArea ) {
+        if ( firstArea < secondArea ) {
             
-            return (NSComparisonResult)NSOrderedAscending;
+            return (NSComparisonResult) NSOrderedDescending;
         }
         
         return (NSComparisonResult)NSOrderedSame;
     }];
-    
-//        for (GroupItem *groupItem in sortedArray) {
-//            [self.GroupsView addSubview:groupItem];
-//        }
 
     for (NSString *key in sortedArray) {
+        float area = [self.groupsCollection getGroupAreaFromKey:key];
+        NSLog(@"Group area: %f", area);
+        [self.groupsCollection.groups2[key] removeFromSuperview];
         [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
     }
     
