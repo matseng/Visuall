@@ -23,6 +23,7 @@
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
+		71B8586B1CEBD69C00135BE5 /* FirebaseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -82,6 +83,8 @@
 		71B0EF031CB83E6D009D8F5C /* NoteItem2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem2.m; sourceTree = "<group>"; };
 		71B37E771C1924800048851A /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = Visuall/HomeViewController.h; sourceTree = "<group>"; };
 		71B37E781C1924800048851A /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Visuall/HomeViewController.m; sourceTree = "<group>"; };
+		71B858691CEBD69C00135BE5 /* FirebaseHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirebaseHelper.h; sourceTree = "<group>"; };
+		71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirebaseHelper.m; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -171,6 +174,8 @@
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
 				712EC95E1BEAF21500ED6803 /* ViewController.h */,
 				712EC95F1BEAF21500ED6803 /* ViewController.m */,
+				71B858691CEBD69C00135BE5 /* FirebaseHelper.h */,
+				71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */,
 				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
 				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
 				716B04681BFC210300DA9451 /* TransformUtil.h */,
@@ -426,6 +431,7 @@
 				88ED06281C06237300C0486D /* Group+CoreDataProperties.m in Sources */,
 				713D0D601CC6AE4F00878EAE /* Group2.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
+				71B8586B1CEBD69C00135BE5 /* FirebaseHelper.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
 				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,

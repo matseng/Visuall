@@ -44,13 +44,12 @@
 {
     self = [super init];
     if (self) {
-        
         Group2 *group = [[Group2 alloc] init];
         group.key = key;
         group.x = [value[@"data"][@"x"] floatValue];
         group.y = [value[@"data"][@"y"] floatValue];
         group.width = [value[@"style"][@"width"] floatValue];
-        group.height = [value[@"style"][@"width"] floatValue];
+        group.height = [value[@"style"][@"height"] floatValue];
         [self setGroup: group];
         [self renderGroup];
         [[TransformUtil sharedManager] transformGroupItem: self];
@@ -70,8 +69,19 @@
 //        self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:self.moc];
 //        [self.group setTopPoint:coordinate];
 //        [self.group setHeight:height andWidth:width];
-        [self.group setX:coordinate.x andY:coordinate.y];
-        [self.group setWidth:width andHeight:height];
+        
+//        [self.group setX:coordinate.x andY:coordinate.y];
+//        [self.group setWidth:width andHeight:height];
+//        [self renderGroup];
+//        [[TransformUtil sharedManager] transformGroupItem: self];
+        
+        Group2 *group = [[Group2 alloc] init];
+        group.key = nil;
+        group.x = coordinate.x;
+        group.y = coordinate.y;
+        group.width = width;
+        group.height = height;
+        [self setGroup: group];
         [self renderGroup];
         [[TransformUtil sharedManager] transformGroupItem: self];
     }

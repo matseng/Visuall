@@ -24,9 +24,9 @@
 @property (weak, nonatomic) IBOutlet UIView *GroupsView;
 @property (weak, nonatomic) IBOutlet UIView *NotesView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
-@property UIView *currentGroupView;
+@property UIView *drawGroupView;
 @property GroupsCollection *groupsCollection;
-@property CGPoint currentGroupViewStart;
+@property CGPoint drawGroupViewStart;
 @property NotesCollection *NotesCollection;
 @property UIView *lastSelectedObject;
 @property UIGestureRecognizer *panBackground;
@@ -87,10 +87,10 @@
     
     
     // Initialize the rectangle group selection view
-    self.currentGroupView = [[UIView alloc] init];
-    self.currentGroupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
-    self.currentGroupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
-    self.currentGroupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+    self.drawGroupView = [[UIView alloc] init];
+    self.drawGroupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
+    self.drawGroupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
+    self.drawGroupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
   /*
     // Initlialize the mutable array that holds our group UIViews
     self.groupsCollection = [GroupsCollection new];
@@ -133,9 +133,11 @@
     [[TransformUtil sharedManager] setGroupsCollection: self.groupsCollection];
     [refGroups observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
      {
-//         NoteItem2 *newNote = [[NoteItem2 alloc] initNote:snapshot.key andValue:snapshot.value];
-//         [self.NotesCollection addNote:newNote withKey:snapshot.key];
-//         [self addNoteToViewWithHandlers:newNote];
+         if([self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the note already exists in the collection
+         {
+             return;  // TODO: add functionality to update values during multiuser collaboration
+         }
+         
          GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
          [self addGestureRecognizersToGroup: newGroup];
          [self.groupsCollection addGroup: newGroup withKey: snapshot.key];
@@ -157,7 +159,7 @@
     {
         if([self.NotesCollection getNoteFromKey:snapshot.key])  // If the note already exists in the collection
         {
-            return;  // TODO: update values for multiuser
+            return;  // TODO: add functionality to update values during multiuser collaboration
         }
         
         NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase:snapshot.key andValue:snapshot.value];
@@ -212,13 +214,28 @@
     ni.note.key = newNoteRef.key;
 }
 
+- (void) setGroup: (GroupItem *) gi
+{
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
+    Firebase *groupsRef = [ref childByAppendingPath: @"groups2"];
+    Firebase *newGroupRef = [groupsRef childByAutoId];
+    NSDictionary *groupDictionary = @{
+                                     @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                     @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                     @"style/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                     @"style/height": [NSString stringWithFormat:@"%.3f", gi.group.height]
+                                     };
+    [newGroupRef updateChildValues: groupDictionary];
+    gi.group.key = newGroupRef.key;
+}
+
 - (void) removeValue: (id) object
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
     if([object isKindOfClass: [NoteItem2 class]]) {
         NoteItem2 *ni = (NoteItem2 *) object;
-        Firebase *notesRef = [ref childByAppendingPath: [@"notes2/" stringByAppendingString:ni.note.key]];
-        [notesRef removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
+        Firebase *noteRef = [ref childByAppendingPath: [@"notes2/" stringByAppendingString:ni.note.key]];
+        [noteRef removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
             if (error) {
                 NSLog(@"Data could not be removed.");
             } else {
@@ -226,6 +243,16 @@
             }
         }];
         
+    } else if([object isKindOfClass: [GroupItem class]]) {
+        GroupItem *gi = (GroupItem *) object;
+        Firebase *groupRef = [ref childByAppendingPath: [@"groups2/" stringByAppendingString:gi.group.key]];
+        [groupRef removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
+            if (error) {
+                NSLog(@"Group could not be removed.");
+            } else {
+                NSLog(@"Group removed successfully.");
+            }
+        }];
     }
 }
 
@@ -520,15 +547,15 @@
         // State began
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
         {
-            self.currentGroupViewStart = [gestureRecognizer locationInView:gestureRecognizer.view];
+            self.drawGroupViewStart = [gestureRecognizer locationInView:gestureRecognizer.view];
             
-            [self.GroupsView addSubview:self.currentGroupView];
+            [self.GroupsView addSubview:self.drawGroupView];
         }
         
         // State changed
         if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
-            self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
+            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
         }
         
         // State ended
@@ -538,14 +565,14 @@
          if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
             
-            self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
+            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
             
             // Make a copy of the current group view and add it to our list of group views
             float zoom = [[TransformUtil sharedManager] zoom];
             GroupItem *currentGroupItem = [[GroupItem alloc]
-                                           initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.currentGroupView.frame.origin]
-                                            andWidth:self.currentGroupView.frame.size.width / zoom
-                                            andHeight:self.currentGroupView.frame.size.height / zoom];
+                                           initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.drawGroupView.frame.origin]
+                                            andWidth:self.drawGroupView.frame.size.width / zoom
+                                            andHeight:self.drawGroupView.frame.size.height / zoom];
             
             [currentGroupItem saveToCoreData];
             [self addGestureRecognizersToGroup: currentGroupItem];
@@ -688,15 +715,15 @@
         // State began
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
         {
-            self.currentGroupViewStart = [gestureRecognizer locationInView:gestureRecognizer.view];
+            self.drawGroupViewStart = [gestureRecognizer locationInView:gestureRecognizer.view];
             
-            [self.GroupsView addSubview:self.currentGroupView];
+            [self.GroupsView addSubview:self.drawGroupView];
         }
         
         // State changed
         if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
-            self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
+            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
         }
         
         // State ended
@@ -706,19 +733,20 @@
         if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
             
-            self.currentGroupView.frame = [self createGroupViewRect:self.currentGroupViewStart withEnd:currentGroupViewEnd];
+            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
             
             // Make a copy of the current group view and add it to our list of group views
             float zoom = [[TransformUtil sharedManager] zoom];
             GroupItem *currentGroupItem = [[GroupItem alloc]
-                                           initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.currentGroupView.frame.origin]
-                                           andWidth:self.currentGroupView.frame.size.width / zoom
-                                           andHeight:self.currentGroupView.frame.size.height / zoom];
+                                           initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.drawGroupView.frame.origin]
+                                           andWidth:self.drawGroupView.frame.size.width / zoom
+                                           andHeight:self.drawGroupView.frame.size.height / zoom];
             
-            [currentGroupItem saveToCoreData];
+//            [currentGroupItem saveToCoreData];
+            [self setGroup: currentGroupItem];
             [self addGestureRecognizersToGroup: currentGroupItem];
             
-            [self.groupsCollection addGroup:currentGroupItem withKey:nil];
+            [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
             
             [self refreshGroupView];
             
@@ -968,8 +996,10 @@
                     NoteItem2 *ni = (NoteItem2 *)self.lastSelectedObject;
                     [self removeValue:ni];
                     [self.NotesCollection deleteNoteGivenKey: ni.note.key];
-                } else {
-                    
+                } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
+                    GroupItem *gi = (GroupItem *)self.lastSelectedObject;
+                    [self removeValue:gi];
+                    [self.groupsCollection deleteGroupGivenKey: gi.group.key];
                 }
                 [self.lastSelectedObject removeFromSuperview];
                 self.lastSelectedObject = nil;
@@ -1119,8 +1149,8 @@
         [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
     }
     
-    [self.currentGroupView setFrame:(CGRect){0,0,0,0}];
-    [self.currentGroupView removeFromSuperview];
+    [self.drawGroupView setFrame:(CGRect){0,0,0,0}];
+    [self.drawGroupView removeFromSuperview];
 
 }
 

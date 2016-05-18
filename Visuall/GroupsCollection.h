@@ -27,4 +27,6 @@
 
 - (float) getGroupAreaFromKey: (NSString *) key;
 
+- (BOOL) deleteGroupGivenKey: (NSString *) key;
+
 @end

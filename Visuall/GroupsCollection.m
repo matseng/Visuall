@@ -62,4 +62,14 @@
     return [[self.groups2[key] group] getArea];
 }
 
+- (BOOL) deleteGroupGivenKey: (NSString *) key
+{
+    if([self.groups2 objectForKey: key]) {
+        [self.groups2 removeObjectForKey: key];
+        return YES;
+    }
+    return NO;
+    
+}
+
 @end
