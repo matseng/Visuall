@@ -115,8 +115,7 @@
                     forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 3;
     
-    [self loadFirebase];
-    [self loadFirebaseGroups];
+    [self loadFirebaseTransform];
 
 }
 
@@ -142,6 +141,7 @@
          [self addGestureRecognizersToGroup: newGroup];
          [self.groupsCollection addGroup: newGroup withKey: snapshot.key];
          [self.GroupsView addSubview:newGroup];
+         [[TransformUtil sharedManager] transformGroupItem: newGroup];
         
      } withCancelBlock:^(NSError *error)
      {
@@ -170,6 +170,27 @@
     {
         NSLog(@"%@", error.description);
     }];
+}
+
+- (void) loadFirebaseTransform
+{
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/transform"];
+    if (ref)
+    {
+        [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
+         {
+             float zoom = [snapshot.value[@"zoom"] floatValue];
+             float tx = [snapshot.value[@"tx"] floatValue];
+             float ty = [snapshot.value[@"ty"] floatValue];
+             [[TransformUtil sharedManager] setZoom:zoom];
+             [[TransformUtil sharedManager] setPan:(CGPointMake(tx, ty))];
+             [self loadFirebase];
+             [self loadFirebaseGroups];
+         } withCancelBlock:^(NSError *error)
+         {
+             NSLog(@"%@", error.description);
+         }];
+    }
 }
 
 - (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName
