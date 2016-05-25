@@ -177,7 +177,7 @@
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/transform"];
     if (ref)
     {
-        [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
+        [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
          {
              float zoom = [snapshot.value[@"zoom"] floatValue];
              float tx = [snapshot.value[@"tx"] floatValue];
@@ -255,6 +255,18 @@
                                      };
     [newGroupRef updateChildValues: groupDictionary];
     gi.group.key = newGroupRef.key;
+}
+
+- (void) setTransformFirebase
+{
+    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
+    Firebase *transformRef = [ref childByAppendingPath: @"transform"];
+    NSDictionary *transformDictionary = @{
+                                      @"zoom": [NSString stringWithFormat:@"%.3f", [[TransformUtil sharedManager] zoom]],
+                                      @"tx": [NSString stringWithFormat:@"%.3f", [[TransformUtil sharedManager] pan].x],
+                                      @"ty": [NSString stringWithFormat:@"%.3f", [[TransformUtil sharedManager] pan].y]
+                                      };
+    [transformRef updateChildValues: transformDictionary];
 }
 
 - (void) removeValue: (id) object
@@ -506,7 +518,9 @@
 - (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection andGroups: self.groupsCollection];
-    
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        [self setTransformFirebase];
+    }
 //    if ([[TransformUtil sharedManager] zoom] > 1.0){
 //        [self.Background removeGestureRecognizer: self.panBackground];
 //    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
