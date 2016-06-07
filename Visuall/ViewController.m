@@ -115,6 +115,7 @@
                     forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 3;
     
+    [Firebase defaultConfig].persistenceEnabled = YES;
     [self loadFirebaseTransform];
 
 }
@@ -435,7 +436,12 @@
 
 - (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer
 {
+    
     UIView *viewHit = gestureRecognizer.view;
+    
+    NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
+    NSLog(@"viewHit.tag %li", (long) viewHit.tag);
+
     if ( [viewHit isKindOfClass: [NoteItem2 class]])
     {
         return viewHit;
@@ -454,7 +460,8 @@
     {
         return [viewHit superview];
     }
-    return viewHit;
+    
+    return gestureRecognizer.view;
 }
 
 - (void) handlePanGestureView:(UIPanGestureRecognizer *) gestureRecognizer
@@ -808,10 +815,12 @@
         return;
     }
     
+    UIView *viewHit  = [self getViewHit:gestureRecognizer];
+//    NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
+//    NSLog(@"viewHit.tag %li", (long) viewHit.tag);
+    
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        UIView *viewHit = [self getViewHit:gestureRecognizer];
-        NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
         if ( [viewHit isKindOfClass: [NoteItem2 class]] ) {
             NoteItem2 *nv = (NoteItem2 *) viewHit;
             [self setSelectedObject:nv];
@@ -852,6 +861,12 @@
         {
 //            [self handlePanBackground:gestureRecognizer];
             [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
+        }
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        if ([viewHit isEqual:self.Background])
+        {
+            [self setTransformFirebase];
         }
     }
     
