@@ -461,7 +461,8 @@
         return [viewHit superview];
     }
     
-    return gestureRecognizer.view;
+    return viewHit;
+//    return gestureRecognizer.view;
 }
 
 - (void) handlePanGestureView:(UIPanGestureRecognizer *) gestureRecognizer
@@ -650,6 +651,7 @@
     }
 }
 
+
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -719,9 +721,16 @@
         [gi resizeGroup:gestureRecognizer];
     } else if ( [groupItem respondsToSelector:@selector(handlePanGroup2:)] )
     {
-//        GroupItem *groupItem = (GroupItem *)gestureRecognizer.view;
         [groupItem handlePanGroup2:gestureRecognizer];
-//        [self setSelectedObject:groupItem];
+        
+        [self updateChildValues:groupItem Property1:@"x" Property2:@"y"];
+        for (NoteItem2 *ni2 in groupItem.notesInGroup) {
+            [self updateChildValues: ni2 Property1:@"x" Property2:@"y"];
+        }
+        for (GroupItem *gi in groupItem.groupsInGroup) {
+            [self updateChildValues: gi Property1:@"x" Property2:@"y"];
+        }
+
     }
 }
 
@@ -861,10 +870,11 @@
         {
 //            [self handlePanBackground:gestureRecognizer];
             [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
+            
         }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        if ([viewHit isEqual:self.Background])
+        if ([viewHit isEqual:self.Background] || [viewHit isEqual:self.NotesView] || [viewHit isEqual:self.GroupsView])
         {
             [self setTransformFirebase];
         }

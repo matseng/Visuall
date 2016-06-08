@@ -42,27 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "487030950.401721"
+            timestampString = "487032739.039094"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "719"
-            endingLineNumber = "719"
-            landmarkName = "-handlePanGroup:andGroupItem:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Visuall/ViewController.m"
-            timestampString = "487030950.401721"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "639"
-            endingLineNumber = "639"
+            startingLineNumber = "640"
+            endingLineNumber = "640"
             landmarkName = "-handlePanBackground:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,60 +58,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "487030950.401721"
+            timestampString = "487032739.039094"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "837"
-            endingLineNumber = "837"
-            landmarkName = "-panHandler:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Visuall/ViewController.m"
-            timestampString = "487030950.401721"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "832"
-            endingLineNumber = "832"
-            landmarkName = "-panHandler:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Visuall/ViewController.m"
-            timestampString = "487030950.401721"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "828"
-            endingLineNumber = "828"
-            landmarkName = "-panHandler:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Visuall/ViewController.m"
-            timestampString = "487030950.401721"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "469"
-            endingLineNumber = "469"
+            startingLineNumber = "470"
+            endingLineNumber = "470"
             landmarkName = "-handlePanGestureView:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Visuall/ViewController.m"
+            timestampString = "487034451.420531"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "700"
+            endingLineNumber = "700"
+            landmarkName = "-handlePanGroup:andGroupItem:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
