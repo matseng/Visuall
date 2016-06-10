@@ -42,6 +42,8 @@
 
 -(CGPoint) getGlobalCoordinate: (CGPoint) point;
 
+-(void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer;
+
 //-(void) setNotesCollection: (NotesCollection *) nc andGroupsCollection: (GroupsCollection *) gc;
 
 @end

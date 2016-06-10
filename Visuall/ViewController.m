@@ -123,6 +123,7 @@
 - (void)handleTapGesture:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateRecognized) {
         [self findChildandTitleNotes];
+        [[TransformUtil sharedManager] handleDoubleTapToZoom: sender];
     }
 }
 

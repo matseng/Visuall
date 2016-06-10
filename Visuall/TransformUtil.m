@@ -60,10 +60,8 @@
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-//        NSLog(@"1. gestureRecognizer.scale %f", gestureRecognizer.scale);
-//        NSLog(@"2. self.zoom %f", self.zoom);
+
         float zoom = self.zoom * gestureRecognizer.scale;
-//        NSLog(@"--> zoom %f", zoom);
         CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
         float deltaX = gesturePoint.x - gesturePoint.x / self.zoom * zoom;
         float deltaY = gesturePoint.y - gesturePoint.y / self.zoom * zoom;
@@ -85,6 +83,32 @@
         
         [gestureRecognizer setScale:1.0];
     }
+}
+
+/*
+
+*/
+- (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer
+{
+    float zoom = 1.0;
+    CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
+    float deltaX = gesturePoint.x - gesturePoint.x / self.zoom * zoom;
+    float deltaY = gesturePoint.y - gesturePoint.y / self.zoom * zoom;
+    
+    CGFloat tx = self.pan.x / self.zoom * zoom + deltaX;
+    CGFloat ty = self.pan.y / self.zoom * zoom + deltaY;
+    self.pan = CGPointMake(tx, ty);
+    
+    self.zoom = zoom;
+    
+    for (NSString *key in self.notesCollection.Notes2) {
+        [self transformVisualItem: self.notesCollection.Notes2[key]];
+    }
+    
+    for (NSString *key in self.groupsCollection.groups2) {
+        [self transformGroupItem: self.groupsCollection.groups2[key] ];
+    }
+    
 }
 
 -(void) transformVisualItem: (id) visualItem0
