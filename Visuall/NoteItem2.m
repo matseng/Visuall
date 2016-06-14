@@ -81,9 +81,10 @@
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [gestureRecognizer translationInView:self];
+        CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
+        float zoom = [[TransformUtil sharedManager] zoom];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-        [self translateTx:translation.x andTy:translation.y];
+        [self translateTx: translation.x / zoom andTy: translation.y / zoom];  // scale translation
     }
 }
 

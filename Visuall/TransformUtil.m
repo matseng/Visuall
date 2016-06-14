@@ -133,20 +133,9 @@
 */
 - (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer
 {
-    
-//    timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-//                                             target:self
-//                                           selector:@selector(reloadPlotData)
-//                                           userInfo:nil
-//                                            repeats:YES];
-
-//    float zoom = 1.0;
-
-//    NSNumber *zoomInitial = [NSNumber numberWithFloat:self.zoom];
-//    NSNumber *zoomFinal = @1.0;
     self.timeElapsed = 0.0;
     float zoomInitial = self.zoom;
-    float zoomFinal = 1.0;
+    float zoomFinal = zoomInitial * 2.0;
     self.timerThreshold = 1.0;
     float slope = (zoomFinal - zoomInitial) / (self.timerThreshold - 0);
     CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
@@ -169,9 +158,11 @@
 {
     
     VisualItem *visualItem = (VisualItem *) visualItem0;
+    CGRect frame = visualItem.frame;
     CGAffineTransform matrix = visualItem.transform;
     matrix.a = self.zoom;
     matrix.d = self.zoom;
+    
     
     if ([visualItem isKindOfClass: [NoteItem2 class]]) {
         NoteItem2 *ni = (NoteItem2 *) visualItem;
@@ -190,23 +181,24 @@
                 matrix.a = groupWidthScaled / ni.note.width; // TODO 2 of 2 fix jumpiness
                 matrix.d = groupWidthScaled / ni.note.width;
             }
+            [visualItem setTransform: matrix];
+            float centerDeltaX = (visualItem.width * matrix.a - visualItem.width * self.zoom) / 2;
+            frame.origin.x = visualItem.x * self.zoom + self.pan.x - centerDeltaX;
+            frame.origin.y = visualItem.y * self.zoom + self.pan.y;
+            frame.size.width = visualItem.width * matrix.a;
+            frame.size.height = visualItem.height * matrix.d;
+            [visualItem setFrame: frame];
+            return;
         }
     }
     
     [visualItem setTransform: matrix];
-    
-    CGRect frame = visualItem.frame;
     frame.origin.x = visualItem.x * self.zoom + self.pan.x;
     frame.origin.y = visualItem.y * self.zoom + self.pan.y;
     frame.size.width = visualItem.width * self.zoom;
     frame.size.height = visualItem.height * self.zoom;
-
-//    frame.origin.x = visualItem.x * matrix.a + self.pan.x;
-//    frame.origin.y = visualItem.y * matrix.d + self.pan.y;
-//    frame.size.width = visualItem.width * matrix.a;
-//    frame.size.height = visualItem.height * matrix.d;
-    
     [visualItem setFrame: frame];
+    
 }
 
 -(void) transformNoteItem: (NoteItem *) noteItem
