@@ -16,6 +16,7 @@
 //@property float zoomPreviousValue;
 @property float noteTitleScale;
 @property float timeElapsed;
+@property float timerThreshold;
 @end
 
 @implementation TransformUtil
@@ -106,15 +107,24 @@
     }
 }
 
--(void)onTick:(NSTimer *) timer andZoom: (float) zoom {
+-(void)onTick:(NSTimer *) timer {
 
-//    float timerThreshold = 1.0;
-//    if (self.timeElapsed == timerThreshold) {
-//        [timer invalidate];
-//        return;
-//    }
-//    
-//    self.countDown = self.countDown - 0.1;
+
+    if (self.timeElapsed >= self.timerThreshold) {
+        self.timeElapsed = 0.0;
+        [timer invalidate];
+        return;
+    }
+    
+    self.timeElapsed = self.timeElapsed + 0.1;
+    float slope = [timer.userInfo[@"slope"] floatValue];
+    float yIntercept = [timer.userInfo[@"yIntercept"] floatValue];
+    //    NSLog(@"timer on blast, %f", [zoom floatValue]);
+    CGPoint gesturePoint = [timer.userInfo[@"gesturePointValue"] CGPointValue];
+    float zoom = slope * self.timeElapsed + yIntercept;
+    [self zoomToValue:zoom atPoint: gesturePoint];
+    
+    NSLog(@"New zoom value: ,%f", slope * self.timeElapsed + yIntercept);
     
 }
 
@@ -130,16 +140,28 @@
 //                                           userInfo:nil
 //                                            repeats:YES];
 
-    float zoom = 1.0;
+//    float zoom = 1.0;
+
+//    NSNumber *zoomInitial = [NSNumber numberWithFloat:self.zoom];
+//    NSNumber *zoomFinal = @1.0;
+    self.timeElapsed = 0.0;
+    float zoomInitial = self.zoom;
+    float zoomFinal = 1.0;
+    self.timerThreshold = 1.0;
+    float slope = (zoomFinal - zoomInitial) / (self.timerThreshold - 0);
     CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
-    [self zoomToValue: zoom atPoint:gesturePoint];
     
-//    self.countDown = 1.0;
+    NSDictionary *dictionary = @{
+                                 @"slope": [NSNumber numberWithFloat: slope],
+                                 @"yIntercept" : [NSNumber numberWithFloat: self.zoom],
+                                 @"gesturePointValue" : [NSValue valueWithCGPoint: gesturePoint],
+                                 };
+    
     
     NSTimer *t = [NSTimer scheduledTimerWithTimeInterval: 0.1
                                                   target: self
-                                                selector:@selector(onTick:)
-                                                userInfo: nil
+                                                selector: @selector(onTick:)
+                                                userInfo: dictionary
                                                  repeats:YES];
 }
 
