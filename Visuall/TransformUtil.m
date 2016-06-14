@@ -15,6 +15,7 @@
 @interface TransformUtil()
 //@property float zoomPreviousValue;
 @property float noteTitleScale;
+@property float timeElapsed;
 @end
 
 @implementation TransformUtil
@@ -85,15 +86,10 @@
     }
 }
 
-/*
-
-*/
-- (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer
+- (void) zoomToValue: (float) zoom atPoint: (CGPoint) point
 {
-    float zoom = 1.0;
-    CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
-    float deltaX = gesturePoint.x - gesturePoint.x / self.zoom * zoom;
-    float deltaY = gesturePoint.y - gesturePoint.y / self.zoom * zoom;
+    float deltaX = point.x - point.x / self.zoom * zoom;
+    float deltaY = point.y - point.y / self.zoom * zoom;
     
     CGFloat tx = self.pan.x / self.zoom * zoom + deltaX;
     CGFloat ty = self.pan.y / self.zoom * zoom + deltaY;
@@ -108,7 +104,43 @@
     for (NSString *key in self.groupsCollection.groups2) {
         [self transformGroupItem: self.groupsCollection.groups2[key] ];
     }
+}
+
+-(void)onTick:(NSTimer *) timer andZoom: (float) zoom {
+
+//    float timerThreshold = 1.0;
+//    if (self.timeElapsed == timerThreshold) {
+//        [timer invalidate];
+//        return;
+//    }
+//    
+//    self.countDown = self.countDown - 0.1;
     
+}
+
+/*
+
+*/
+- (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer
+{
+    
+//    timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                             target:self
+//                                           selector:@selector(reloadPlotData)
+//                                           userInfo:nil
+//                                            repeats:YES];
+
+    float zoom = 1.0;
+    CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
+    [self zoomToValue: zoom atPoint:gesturePoint];
+    
+//    self.countDown = 1.0;
+    
+    NSTimer *t = [NSTimer scheduledTimerWithTimeInterval: 0.1
+                                                  target: self
+                                                selector:@selector(onTick:)
+                                                userInfo: nil
+                                                 repeats:YES];
 }
 
 -(void) transformVisualItem: (id) visualItem0
