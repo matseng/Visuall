@@ -163,7 +163,7 @@
 */
 - (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView:(UIView *) view
 {
-    
+    CGPoint gesturePoint;
     self.timeElapsed = 0.0;
     float zoomInitial = self.zoom;
     float zoomFinal;
@@ -173,24 +173,20 @@
         GroupItem *gi = (GroupItem *) [view superview];
         UIView *rootView = [self rootView: gi];
         self.rootView = rootView;
-        zoomFinal = rootView.frame.size.width / gi.group.width * 0.5;
+        zoomFinal = rootView.frame.size.width / gi.group.width * 0.9;
         NSLog(@"Group width: %f", gi.group.width);
         CGPoint centerPoint = [gi getCenterPoint];
         [self translateToPoint: centerPoint];
-        return; //TEMP
-
+        gesturePoint = CGPointMake(self.rootView.frame.size.width / 2, self.rootView.frame.size.height / 2);
         
-    } else if (self.zoom < 0.5) {
-//        zoomFinal = (1 - zoomInitial) / 2;
-//        zoomFinal = sqrtf(zoomInitial);
-        zoomFinal = zoomInitial * 2.5;
     } else {
         zoomFinal = zoomInitial * 2.5;
+        gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
     }
     
     self.timerThreshold = 0.66;
     float slope = (zoomFinal - zoomInitial) / (self.timerThreshold - 0);
-    CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
+    
     
     NSDictionary *dictionary = @{
                                  @"slope": [NSNumber numberWithFloat: slope],
