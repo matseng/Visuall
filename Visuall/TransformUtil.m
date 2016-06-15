@@ -17,6 +17,7 @@
 @property float noteTitleScale;
 @property float timeElapsed;
 @property float timerThreshold;
+@property UIView *rootView;
 @end
 
 @implementation TransformUtil
@@ -36,6 +37,17 @@
     return sharedMyManager;
 }
 
+- (void) transfromAllItems
+{
+    for (NSString *key in self.notesCollection.Notes2) {
+        [self transformVisualItem: self.notesCollection.Notes2[key]];
+    }
+    
+    for (NSString *key in self.groupsCollection.groups2) {
+        [self transformGroupItem: self.groupsCollection.groups2[key] ];
+    }
+}
+
 -(void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
                  withNotes:(NotesCollection *) Notes
                  withGroups: (GroupsCollection *) groupsCollection
@@ -46,7 +58,7 @@
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         float panX = self.pan.x + translation.x;
         float panY = self.pan.y + translation.y;
-        self.pan = CGPointMake(panX, panY);
+        self.pan = CGPointMake(panX, panY);  // these coordinates exists in transformed space
 
         for (NSString *key in Notes.Notes2) {
             [self transformVisualItem: Notes.Notes2[key]];
@@ -57,6 +69,7 @@
         }
     }
 }
+
 
 -(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NotesCollection *) Notes andGroups: (GroupsCollection *) groupsCollection
 {
@@ -128,15 +141,54 @@
     
 }
 
+- (UIView *)rootView: (UIView *) view {
+//    UIView *view = self;
+    while (view.superview != Nil) {
+        view = view.superview;
+    }
+    return view;
+}
+
+- (void) translateToPoint: (CGPoint) point
+{
+    
+    float tx = -point.x * self.zoom + self.rootView.frame.size.width/2;
+    float ty = -point.y * self.zoom + self.rootView.frame.size.height/2;
+    CGPoint transformedPoint = CGPointMake(tx, ty);
+    [self setPan: transformedPoint];
+    [self transfromAllItems];
+}
 /*
 
 */
-- (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer
+- (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView:(UIView *) view
 {
+    
     self.timeElapsed = 0.0;
     float zoomInitial = self.zoom;
-    float zoomFinal = zoomInitial * 2.0;
-    self.timerThreshold = 1.0;
+    float zoomFinal;
+
+    if([[view superview] respondsToSelector:@selector(handlePanGroup2:)])
+    {
+        GroupItem *gi = (GroupItem *) [view superview];
+        UIView *rootView = [self rootView: gi];
+        self.rootView = rootView;
+        zoomFinal = rootView.frame.size.width / gi.group.width * 0.5;
+        NSLog(@"Group width: %f", gi.group.width);
+        CGPoint centerPoint = [gi getCenterPoint];
+        [self translateToPoint: centerPoint];
+        return; //TEMP
+
+        
+    } else if (self.zoom < 0.5) {
+//        zoomFinal = (1 - zoomInitial) / 2;
+//        zoomFinal = sqrtf(zoomInitial);
+        zoomFinal = zoomInitial * 2.5;
+    } else {
+        zoomFinal = zoomInitial * 2.5;
+    }
+    
+    self.timerThreshold = 0.66;
     float slope = (zoomFinal - zoomInitial) / (self.timerThreshold - 0);
     CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
     
@@ -147,7 +199,7 @@
                                  };
     
     
-    NSTimer *t = [NSTimer scheduledTimerWithTimeInterval: 0.1
+    NSTimer *t = [NSTimer scheduledTimerWithTimeInterval: 0.05
                                                   target: self
                                                 selector: @selector(onTick:)
                                                 userInfo: dictionary

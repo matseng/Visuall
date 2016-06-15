@@ -261,6 +261,11 @@
     return self.group.width * self.group.height;
 }
 
+- (CGPoint) getCenterPoint
+{
+    return CGPointMake(self.group.x + self.group.width/2, self.group.y + self.group.height/2);
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

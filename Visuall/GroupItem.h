@@ -41,4 +41,6 @@
 
 - (float) getArea;
 
+- (CGPoint) getCenterPoint;
+
 @end

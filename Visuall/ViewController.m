@@ -120,10 +120,11 @@
 
 }
 
-- (void)handleTapGesture:(UITapGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateRecognized) {
-        [self findChildandTitleNotes];
-        [[TransformUtil sharedManager] handleDoubleTapToZoom: sender];
+- (void)handleTapGesture:(UITapGestureRecognizer *) gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateRecognized) {
+        [self findChildandTitleNotes];  // TODO: move this message elsewhere?
+        UIView *view = [self getViewHit: gestureRecognizer];
+        [[TransformUtil sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
     }
 }
 
@@ -434,34 +435,38 @@
     return NO;
 }
 
+- (NoteItem2 *) getNoteItem2FromViewHit: (UIView *) viewHit
+{
+    NoteItem2 *ni;
+    if ( [viewHit isKindOfClass: [NoteItem2 class]])
+    {
+        ni = viewHit;
+    } else if ( [[viewHit superview] isKindOfClass: [NoteItem2 class]] )
+    {
+        ni = (NoteItem2*)[viewHit superview];
+    }
+    return ni;
+}
 
 - (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer
 {
     
     UIView *viewHit = gestureRecognizer.view;
-    
-    NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
-    NSLog(@"viewHit.tag %li", (long) viewHit.tag);
 
-    if ( [viewHit isKindOfClass: [NoteItem2 class]])
-    {
-        return viewHit;
-    } else if ( [[viewHit superview] isKindOfClass: [NoteItem2 class]] )
-    {
-        return [viewHit superview];
+    NoteItem2 *ni = [self getNoteItem2FromViewHit:viewHit];
+    if (ni) {
+        viewHit = ni;
+    } else { // Hack to to double-check if a note is the viewHit
+        CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+        viewHit = [self.NotesView hitTest:location withEvent:NULL];
+        ni = [self getNoteItem2FromViewHit:viewHit];
+        if (ni) {
+            viewHit = ni;
+        }
     }
     
-    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
-    viewHit = [self.NotesView hitTest:location withEvent:NULL];
-    
-    if ( [viewHit isKindOfClass: [NoteItem2 class]])  // Hack to detect notes when zoomed in
-    {
-        return viewHit;
-    } else if ( [[viewHit superview] isKindOfClass: [NoteItem2 class]] )
-    {
-        return [viewHit superview];
-    }
-    
+    NSLog(@"getviewHit class: %@", [viewHit class]);
+    NSLog(@"viewHit.tag %li", (long) viewHit.tag);
     return viewHit;
 //    return gestureRecognizer.view;
 }

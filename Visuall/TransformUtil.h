@@ -42,7 +42,7 @@
 
 -(CGPoint) getGlobalCoordinate: (CGPoint) point;
 
--(void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer;
+-(void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView: (UIView *) view;
 
 //-(void) setNotesCollection: (NotesCollection *) nc andGroupsCollection: (GroupsCollection *) gc;
 
