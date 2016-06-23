@@ -161,6 +161,9 @@
     if (gestureRecognizer.state == UIGestureRecognizerStateRecognized) {
         [self findChildandTitleNotes];  // TODO: move this message elsewhere?
         UIView *view = [self getViewHit: gestureRecognizer];
+        if (!view) {
+            return;   
+        }
         [[TransformUtil sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
     }
 }
@@ -415,10 +418,7 @@
 //        NSLog(@"My gesture.state Changed");
 //    }
     
-    if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
-    {
-        return nil;
-    }
+
     
     if (gestureRecognizer.state == 0) {
         NSLog(@"My gesture.state Possible");
@@ -495,6 +495,11 @@
     
     UIView *viewHit = gestureRecognizer.view;
     CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+    
+    if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
+    {
+        return nil;
+    }
     
     NoteItem2 *ni = [self getNoteItem2FromViewHit:viewHit];
     if (ni) {
@@ -874,6 +879,7 @@
     }
     
     UIView *viewHit  = [self getViewHit:gestureRecognizer];
+    if (!viewHit) return;  // e.g. if viewHit is scrollViewButtonList then return
 //    NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
 //    NSLog(@"viewHit.tag %li", (long) viewHit.tag);
     
