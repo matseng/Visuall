@@ -140,6 +140,9 @@
     
     for (int i = 0; i < n; i++) {
         UIButton *button = [[UIButton alloc] init];
+        [button addTarget:self
+                   action:@selector(buttonTapped:)
+                    forControlEvents:UIControlEventTouchUpInside];
         [button setTitle:[@(i) stringValue] forState:UIControlStateNormal];
         button.frame = CGRectMake(padding * (i + 1) + (i * w), padding, w, h);
         button.backgroundColor = [UIColor greenColor];
@@ -147,14 +150,14 @@
         [scrollView addSubview: button];
         [buttonList addObject: button];
     }
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
-//    [scrollView addGestureRecognizer: tap];
-//    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] init];
-//    [scrollView addGestureRecognizer:pan];
-//    scrollView.delegate = self;
-//    scrollView.becomeFirstResponder = YES;
     [scrollView setDelaysContentTouches:YES];
     [self.Background addSubview: scrollView];
+}
+
+- (void) buttonTapped: (id) sender
+{
+    UIButton *button = (UIButton *) sender;
+    NSLog(@"Button title: %@", [button currentTitle]);
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer *) gestureRecognizer {
@@ -162,7 +165,7 @@
         [self findChildandTitleNotes];  // TODO: move this message elsewhere?
         UIView *view = [self getViewHit: gestureRecognizer];
         if (!view) {
-            return;   
+            return;
         }
         [[TransformUtil sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
     }
