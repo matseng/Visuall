@@ -6,7 +6,7 @@
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
-        <!--Visuall-->
+        <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
@@ -28,7 +28,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3wz-Yy-7Od">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3wz-Yy-7Od">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -45,7 +45,8 @@
                             <outletCollection property="gestureRecognizers" destination="S4Z-tg-fOV" appends="YES" id="pRd-IS-ggU"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" title="Visuall" id="T60-g4-YB5" colorLabel="IBBuiltInLabel-Blue">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="T60-g4-YB5" colorLabel="IBBuiltInLabel-Blue">
                         <leftBarButtonItems>
                             <barButtonItem systemItem="trash" id="sde-xa-jLg">
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -75,6 +76,7 @@
                             </segmentedControl>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="Background" destination="8bC-Xf-vdC" id="zVV-wg-dzI"/>
                         <outlet property="GestureView" destination="3wz-Yy-7Od" id="gkN-2t-yxb"/>

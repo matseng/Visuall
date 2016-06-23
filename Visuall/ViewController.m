@@ -34,6 +34,7 @@
 @property (strong, nonatomic) IBOutlet UIView *GestureView;
 @property CGPoint panBeginPoint;
 @property (strong, nonatomic) IBOutlet UITextField *fontSize;
+@property UIScrollView *scrollViewButtonList;
 @end
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
@@ -117,7 +118,43 @@
     
     [Firebase defaultConfig].persistenceEnabled = YES;
     [self loadFirebaseTransform];
+    [self addHorizontalScrollingButtonList];
+    
 
+}
+
+- (void) addHorizontalScrollingButtonList
+{
+    NSMutableArray *buttonList = [[NSMutableArray alloc] init];
+    float h = 50;
+    float w = 50;
+    float padding = 10;
+    int n = 25;
+    
+    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    scrollView.frame = CGRectMake(0, 500, self.Background.frame.size.width, h + 2 * padding);
+    scrollView.contentSize = CGSizeMake((w + padding) * n, h);
+    scrollView.backgroundColor = [UIColor blueColor];
+    [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
+    self.scrollViewButtonList = scrollView;
+    
+    for (int i = 0; i < n; i++) {
+        UIButton *button = [[UIButton alloc] init];
+        [button setTitle:[@(i) stringValue] forState:UIControlStateNormal];
+        button.frame = CGRectMake(padding * (i + 1) + (i * w), padding, w, h);
+        button.backgroundColor = [UIColor greenColor];
+//        button.exclusiveTouch = YES;
+        [scrollView addSubview: button];
+        [buttonList addObject: button];
+    }
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+//    [scrollView addGestureRecognizer: tap];
+//    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] init];
+//    [scrollView addGestureRecognizer:pan];
+//    scrollView.delegate = self;
+//    scrollView.becomeFirstResponder = YES;
+    [scrollView setDelaysContentTouches:YES];
+    [self.Background addSubview: scrollView];
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer *) gestureRecognizer {
@@ -378,6 +415,11 @@
 //        NSLog(@"My gesture.state Changed");
 //    }
     
+    if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
+    {
+        return nil;
+    }
+    
     if (gestureRecognizer.state == 0) {
         NSLog(@"My gesture.state Possible");
     } else if (gestureRecognizer.state != 0) {
@@ -452,12 +494,13 @@
 {
     
     UIView *viewHit = gestureRecognizer.view;
-
+    CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+    
     NoteItem2 *ni = [self getNoteItem2FromViewHit:viewHit];
     if (ni) {
         viewHit = ni;
     } else { // Hack to to double-check if a note is the viewHit
-        CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
+//        CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
         viewHit = [self.NotesView hitTest:location withEvent:NULL];
         ni = [self getNoteItem2FromViewHit:viewHit];
         if (ni) {
