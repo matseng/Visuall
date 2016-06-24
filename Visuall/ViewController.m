@@ -116,35 +116,61 @@
                     forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 3;
     
+    
     [Firebase defaultConfig].persistenceEnabled = YES;
+    [Firebase goOffline];
+    
+    Firebase *connectedRef = [[Firebase alloc] initWithUrl:@"https://brainspace-biz.firebaseio.com/.info/connected"];
+    [connectedRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        if([snapshot.value boolValue]) {
+            NSLog(@"connected");
+        } else {
+            NSLog(@"not connected");
+        }
+    }];
+    
     [self loadFirebaseTransform];
+    
     [self addHorizontalScrollingButtonList];
     
-
 }
 
 - (void) addHorizontalScrollingButtonList
 {
     NSMutableArray *buttonList = [[NSMutableArray alloc] init];
-    float h = 50;
-    float w = 50;
+    float h = 30;
+    float w = 30;
     float padding = 10;
     int n = 25;
+    int nSegmentControl = 5;
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.frame = CGRectMake(0, 500, self.Background.frame.size.width, h + 2 * padding);
+    scrollView.frame = CGRectMake(0, 100, self.Background.frame.size.width, h + 2 * padding);
     scrollView.contentSize = CGSizeMake((w + padding) * n, h);
     scrollView.backgroundColor = [UIColor blueColor];
     [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
     self.scrollViewButtonList = scrollView;
     
-    for (int i = 0; i < n; i++) {
+//    NSArray *segmentButtonList = @[@"Move", @"Note", @"Group", ];
+    // TODO create array of button model objects (e.g. name, image, tag number, action, visible)
+    UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
+    segmentControl.frame = CGRectMake(padding, padding, w * nSegmentControl, h);
+    segmentControl.backgroundColor = [UIColor lightGrayColor];
+    segmentControl.layer.cornerRadius = 5.0;
+    for (int i = 0; i < nSegmentControl; i++) {
+        [segmentControl insertSegmentWithTitle:[@(i) stringValue] atIndex:i animated:NO];
+    }
+    [segmentControl setSelectedSegmentIndex:0];
+    [scrollView addSubview: segmentControl];
+
+    
+    for (int i = nSegmentControl; i < n; i++) {
         UIButton *button = [[UIButton alloc] init];
         [button addTarget:self
                    action:@selector(buttonTapped:)
                     forControlEvents:UIControlEventTouchUpInside];
         [button setTitle:[@(i) stringValue] forState:UIControlStateNormal];
-        button.frame = CGRectMake(padding * (i + 1) + (i * w), padding, w, h);
+        button.frame = CGRectMake(padding * (i + 0) + ( (i-1) * w), padding, w, h);
         button.backgroundColor = [UIColor greenColor];
 //        button.exclusiveTouch = YES;
         [scrollView addSubview: button];
@@ -174,6 +200,7 @@
 - (void) loadFirebaseGroups
 {
     Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
+    [Firebase goOffline];
     self.groupsCollection = [GroupsCollection new];
     [[TransformUtil sharedManager] setGroupsCollection: self.groupsCollection];
     [refGroups observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
@@ -188,7 +215,6 @@
          [self.groupsCollection addGroup: newGroup withKey: snapshot.key];
          [self.GroupsView addSubview:newGroup];
          [[TransformUtil sharedManager] transformGroupItem: newGroup];
-        
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"%@", error.description);
@@ -199,6 +225,7 @@
 - (void) loadFirebase
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
+    [Firebase goOffline];
     self.NotesCollection = [NotesCollection new];
     [[TransformUtil sharedManager] setNotesCollection: self.NotesCollection];
     [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
@@ -211,7 +238,6 @@
         NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase:snapshot.key andValue:snapshot.value];
         [self.NotesCollection addNote:newNote withKey:snapshot.key];
         [self addNoteToViewWithHandlers:newNote];
-
     } withCancelBlock:^(NSError *error)
     {
         NSLog(@"%@", error.description);
@@ -221,6 +247,7 @@
 - (void) loadFirebaseTransform
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/transform"];
+    [Firebase goOffline];
     if (ref)
     {
         [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
@@ -230,6 +257,7 @@
              float ty = [snapshot.value[@"ty"] floatValue];
              [[TransformUtil sharedManager] setZoom:zoom];
              [[TransformUtil sharedManager] setPan:(CGPointMake(tx, ty))];
+             
              [self loadFirebase];
              [self loadFirebaseGroups];
          } withCancelBlock:^(NSError *error)
