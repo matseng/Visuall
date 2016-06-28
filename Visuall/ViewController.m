@@ -142,7 +142,8 @@
     float w = 30;
     float padding = 10;
     int n = 25;
-    int nSegmentControl = 8;
+    int nLeftButtons = 2;
+    int nSegmentControl = 7;
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.frame = CGRectMake(0, 100, self.Background.frame.size.width, h + 2 * padding);
@@ -150,29 +151,44 @@
     scrollView.backgroundColor = [UIColor blueColor];
     [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
     self.scrollViewButtonList = scrollView;
+
+    //TODO undo and redo buttons
+    UIButton *undoButton = [[UIButton alloc] init];
+    UIImage *undoImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"undo-arrow"] percentPadding: .1];
+    [undoButton setImage:undoImg forState:UIControlStateNormal];
+    [undoButton addTarget:self
+                   action:@selector(buttonTapped:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [undoButton setTitle:@"undo" forState:UIControlStateNormal];
+    int i = 0;
+    undoButton.frame = CGRectMake(padding * (i + 1) + ( (i-0) * w), padding, w, h);
+    undoButton.backgroundColor = [UIColor greenColor];
+    //        button.exclusiveTouch = YES;
+    [scrollView addSubview: undoButton];
+    
+    UIButton *trashButton = [[UIButton alloc] init];
+    UIImage *trashImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"Trash-50"] percentPadding: .1];
+    [trashButton setImage:trashImg forState:UIControlStateNormal];
+    [trashButton addTarget:self
+                   action:@selector(buttonTapped:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [trashButton setTitle:@"trash" forState:UIControlStateNormal];
+    i = 1;
+    trashButton.frame = CGRectMake(padding * (i + 1) + ( (i-0) * w), padding, w, h);
+    trashButton.backgroundColor = [UIColor greenColor];
+    [scrollView addSubview: trashButton];
     
 //    NSArray *segmentButtonList = @[@"Move", @"Note", @"Group", ];
     // TODO create array of button model objects (e.g. name, image, tag number, action, visible)
+    i = 2;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
-    segmentControl.frame = CGRectMake(padding, padding, w * nSegmentControl, h);
+    segmentControl.frame = CGRectMake(padding * (i + 1) + w * (i + 0), padding, w * nSegmentControl, h);
     segmentControl.backgroundColor = [UIColor lightGrayColor];
     segmentControl.layer.cornerRadius = 5.0;
     for (int i = 0; i < nSegmentControl; i++) {
         [segmentControl insertSegmentWithTitle:[@(i) stringValue] atIndex:i animated:NO];
     }
 
-    //TODO undo and redo buttons
-//    UIButton *button = [[UIButton alloc] init];
-//    [button addTarget:self
-//               action:@selector(buttonTapped:)
-//     forControlEvents:UIControlEventTouchUpInside];
-//    [button setTitle:[@(i) stringValue] forState:UIControlStateNormal];
-//    button.frame = CGRectMake(padding * (i + 0) + ( (i-1) * w), padding, w, h);
-//    button.backgroundColor = [UIColor greenColor];
-//    //        button.exclusiveTouch = YES;
-//    [scrollView addSubview: button];
-    
-    
     UIImage *leftRightUpDown = [self imageWithBorderFromImage:[UIImage imageNamed: @"leftRightUpDown.png"] percentPadding: .1];
     [segmentControl setImage: leftRightUpDown forSegmentAtIndex: 0];
     
@@ -197,13 +213,13 @@
     [segmentControl setSelectedSegmentIndex:0];
     [scrollView addSubview: segmentControl];
     
-    for (int i = nSegmentControl; i < n; i++) {
+    for (int i = nLeftButtons + nSegmentControl; i < n; i++) {
         UIButton *button = [[UIButton alloc] init];
         [button addTarget:self
                    action:@selector(buttonTapped:)
                     forControlEvents:UIControlEventTouchUpInside];
         [button setTitle:[@(i) stringValue] forState:UIControlStateNormal];
-        button.frame = CGRectMake(padding * (i + 0) + ( (i-1) * w), padding, w, h);
+        button.frame = CGRectMake((padding * (i - 2) ) + ( (i-1) * w), padding, w, h);
         button.backgroundColor = [UIColor greenColor];
 //        button.exclusiveTouch = YES;
         [scrollView addSubview: button];
@@ -211,6 +227,15 @@
     }
     [scrollView setDelaysContentTouches:YES];
     [self.Background addSubview: scrollView];
+    
+    UIButton *fontSizeButton = buttonList.firstObject;
+    UIImage *fontSizeImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"fontSize"] percentPadding: .1];
+    [fontSizeButton setImage:fontSizeImg forState:UIControlStateNormal];
+    [fontSizeButton setTitle:@"fontSize" forState:UIControlStateNormal];
+    i = nLeftButtons + nSegmentControl;
+//    trashButton.frame = CGRectMake(padding * (i + 1) + ( (i-0) * w), padding, w, h);
+    fontSizeButton.backgroundColor = [UIColor lightGrayColor];
+//    [scrollView addSubview: trashButton];
 }
 
 - (UIImage*)imageWithBorderFromImage:(UIImage*)source percentPadding: (float) percentPadding
