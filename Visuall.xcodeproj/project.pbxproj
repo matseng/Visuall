@@ -24,6 +24,13 @@
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
 		71B8586B1CEBD69C00135BE5 /* FirebaseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */; };
+		71C23F1E1D1E0F3900D53E0C /* leftRightUpDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */; };
+		71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F211D21DF9900D53E0C /* cursorClick.png */; };
+		71C23F281D21EF4800D53E0C /* textLetter.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F271D21EF4800D53E0C /* textLetter.png */; };
+		71C23F2B1D21EFD000D53E0C /* groupRectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F2A1D21EFD000D53E0C /* groupRectangle.png */; };
+		71C23F2D1D21F0FC00D53E0C /* Archers Arrow-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F2C1D21F0FC00D53E0C /* Archers Arrow-50.png */; };
+		71C23F2F1D21F23200D53E0C /* pen.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F2E1D21F23200D53E0C /* pen.png */; };
+		71C23F311D21F41600D53E0C /* conversation-with-text-lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F301D21F41600D53E0C /* conversation-with-text-lines.png */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -85,6 +92,13 @@
 		71B37E781C1924800048851A /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Visuall/HomeViewController.m; sourceTree = "<group>"; };
 		71B858691CEBD69C00135BE5 /* FirebaseHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirebaseHelper.h; sourceTree = "<group>"; };
 		71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirebaseHelper.m; sourceTree = "<group>"; };
+		71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leftRightUpDown.png; sourceTree = "<group>"; };
+		71C23F211D21DF9900D53E0C /* cursorClick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursorClick.png; sourceTree = "<group>"; };
+		71C23F271D21EF4800D53E0C /* textLetter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textLetter.png; sourceTree = "<group>"; };
+		71C23F2A1D21EFD000D53E0C /* groupRectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupRectangle.png; sourceTree = "<group>"; };
+		71C23F2C1D21F0FC00D53E0C /* Archers Arrow-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Archers Arrow-50.png"; sourceTree = "<group>"; };
+		71C23F2E1D21F23200D53E0C /* pen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pen.png; sourceTree = "<group>"; };
+		71C23F301D21F41600D53E0C /* conversation-with-text-lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conversation-with-text-lines.png"; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -200,6 +214,7 @@
 				712EC9611BEAF21500ED6803 /* Main.storyboard */,
 				885AFD781C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld */,
 				712EC9641BEAF21500ED6803 /* Images.xcassets */,
+				71C23F291D21EF9400D53E0C /* Button Icons */,
 				77E13DA71C011D5F00105BB5 /* linkarrow.png */,
 				77E13DA91C011DC100105BB5 /* plane.png */,
 				77E13DAB1C01211E00105BB5 /* delete.png */,
@@ -245,6 +260,20 @@
 			);
 			name = ViewControllers;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		71C23F291D21EF9400D53E0C /* Button Icons */ = {
+			isa = PBXGroup;
+			children = (
+				71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */,
+				71C23F211D21DF9900D53E0C /* cursorClick.png */,
+				71C23F271D21EF4800D53E0C /* textLetter.png */,
+				71C23F2A1D21EFD000D53E0C /* groupRectangle.png */,
+				71C23F2C1D21F0FC00D53E0C /* Archers Arrow-50.png */,
+				71C23F2E1D21F23200D53E0C /* pen.png */,
+				71C23F301D21F41600D53E0C /* conversation-with-text-lines.png */,
+			);
+			name = "Button Icons";
 			sourceTree = "<group>";
 		};
 		885AFD651C00217800F89DE5 /* model */ = {
@@ -346,11 +375,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71C23F2D1D21F0FC00D53E0C /* Archers Arrow-50.png in Resources */,
 				77E13DAC1C01211E00105BB5 /* delete.png in Resources */,
+				71C23F311D21F41600D53E0C /* conversation-with-text-lines.png in Resources */,
 				77E13DA21C011C1700105BB5 /* compass.png in Resources */,
+				71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */,
+				71C23F2B1D21EFD000D53E0C /* groupRectangle.png in Resources */,
+				71C23F1E1D1E0F3900D53E0C /* leftRightUpDown.png in Resources */,
 				77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */,
 				712EC9631BEAF21500ED6803 /* Main.storyboard in Resources */,
 				712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */,
+				71C23F2F1D21F23200D53E0C /* pen.png in Resources */,
+				71C23F281D21EF4800D53E0C /* textLetter.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,
 				77E13DAA1C011DC100105BB5 /* plane.png in Resources */,
 				77E13DA61C011CF200105BB5 /* folder.png in Resources */,

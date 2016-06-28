@@ -142,7 +142,7 @@
     float w = 30;
     float padding = 10;
     int n = 25;
-    int nSegmentControl = 5;
+    int nSegmentControl = 8;
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.frame = CGRectMake(0, 100, self.Background.frame.size.width, h + 2 * padding);
@@ -160,9 +160,42 @@
     for (int i = 0; i < nSegmentControl; i++) {
         [segmentControl insertSegmentWithTitle:[@(i) stringValue] atIndex:i animated:NO];
     }
+
+    //TODO undo and redo buttons
+//    UIButton *button = [[UIButton alloc] init];
+//    [button addTarget:self
+//               action:@selector(buttonTapped:)
+//     forControlEvents:UIControlEventTouchUpInside];
+//    [button setTitle:[@(i) stringValue] forState:UIControlStateNormal];
+//    button.frame = CGRectMake(padding * (i + 0) + ( (i-1) * w), padding, w, h);
+//    button.backgroundColor = [UIColor greenColor];
+//    //        button.exclusiveTouch = YES;
+//    [scrollView addSubview: button];
+    
+    
+    UIImage *leftRightUpDown = [self imageWithBorderFromImage:[UIImage imageNamed: @"leftRightUpDown.png"] percentPadding: .1];
+    [segmentControl setImage: leftRightUpDown forSegmentAtIndex: 0];
+    
+    UIImage *cursorClick = [self imageWithBorderFromImage:[UIImage imageNamed: @"cursorClick.png"] percentPadding: .1];
+    [segmentControl setImage: cursorClick forSegmentAtIndex: 1];
+    
+    UIImage *textLetter = [self imageWithBorderFromImage:[UIImage imageNamed: @"textLetter.png"] percentPadding: 0];
+    [segmentControl setImage: textLetter forSegmentAtIndex: 2];
+    
+    UIImage *groupRectangle = [self imageWithBorderFromImage:[UIImage imageNamed: @"groupRectangle"] percentPadding: .15];
+    [segmentControl setImage: groupRectangle forSegmentAtIndex: 3];
+    
+    UIImage *arrow = [self imageWithBorderFromImage:[UIImage imageNamed: @"Archers Arrow-50"] percentPadding: .15];
+    [segmentControl setImage: arrow forSegmentAtIndex: 4];
+    
+    UIImage *pen = [self imageWithBorderFromImage:[UIImage imageNamed: @"pen"] percentPadding: .15];
+    [segmentControl setImage: pen forSegmentAtIndex: 5];
+    
+    UIImage *conversation = [self imageWithBorderFromImage:[UIImage imageNamed: @"conversation-with-text-lines"] percentPadding: .15];
+    [segmentControl setImage: conversation forSegmentAtIndex: 6];
+    
     [segmentControl setSelectedSegmentIndex:0];
     [scrollView addSubview: segmentControl];
-
     
     for (int i = nSegmentControl; i < n; i++) {
         UIButton *button = [[UIButton alloc] init];
@@ -178,6 +211,23 @@
     }
     [scrollView setDelaysContentTouches:YES];
     [self.Background addSubview: scrollView];
+}
+
+- (UIImage*)imageWithBorderFromImage:(UIImage*)source percentPadding: (float) percentPadding
+{
+    const CGFloat margin = source.size.width * percentPadding;
+    CGSize size = CGSizeMake([source size].width + 2*margin, [source size].height + 2*margin);
+    UIGraphicsBeginImageContext(size);
+    
+    [[UIColor clearColor] setFill];
+    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+    
+    CGRect rect = CGRectMake(margin, margin, size.width-2*margin, size.height-2*margin);
+    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    
+    UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return testImg;
 }
 
 - (void) buttonTapped: (id) sender
