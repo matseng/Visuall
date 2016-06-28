@@ -34,6 +34,7 @@
 		71C23F331D2217BB00D53E0C /* undo-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F321D2217BB00D53E0C /* undo-arrow.png */; };
 		71C23F351D221A7800D53E0C /* Trash-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F341D221A7800D53E0C /* Trash-50.png */; };
 		71C23F371D2220CB00D53E0C /* fontSize.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F361D2220CB00D53E0C /* fontSize.png */; };
+		71C23F391D23081700D53E0C /* fontColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F381D23081700D53E0C /* fontColor.png */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -105,6 +106,7 @@
 		71C23F321D2217BB00D53E0C /* undo-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "undo-arrow.png"; sourceTree = "<group>"; };
 		71C23F341D221A7800D53E0C /* Trash-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Trash-50.png"; sourceTree = "<group>"; };
 		71C23F361D2220CB00D53E0C /* fontSize.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fontSize.png; sourceTree = "<group>"; };
+		71C23F381D23081700D53E0C /* fontColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fontColor.png; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				71C23F2E1D21F23200D53E0C /* pen.png */,
 				71C23F301D21F41600D53E0C /* conversation-with-text-lines.png */,
 				71C23F361D2220CB00D53E0C /* fontSize.png */,
+				71C23F381D23081700D53E0C /* fontColor.png */,
 			);
 			name = "Button Icons";
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				77E13DAA1C011DC100105BB5 /* plane.png in Resources */,
 				71C23F371D2220CB00D53E0C /* fontSize.png in Resources */,
 				77E13DA61C011CF200105BB5 /* folder.png in Resources */,
+				71C23F391D23081700D53E0C /* fontColor.png in Resources */,
 				71C23F331D2217BB00D53E0C /* undo-arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

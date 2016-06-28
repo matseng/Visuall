@@ -138,36 +138,52 @@
 - (void) addHorizontalScrollingButtonList
 {
     NSMutableArray *buttonList = [[NSMutableArray alloc] init];
-    float h = 30;
-    float w = 30;
+    float h = 40;
+    float w = 40;
     float padding = 10;
     int n = 25;
     int nLeftButtons = 2;
     int nSegmentControl = 7;
+    UIColor *backgroundColor = [UIColor lightGrayColor];
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.frame = CGRectMake(0, 100, self.Background.frame.size.width, h + 2 * padding);
     scrollView.contentSize = CGSizeMake((w + padding) * n, h);
-    scrollView.backgroundColor = [UIColor blueColor];
+    scrollView.backgroundColor = backgroundColor;
     [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
     self.scrollViewButtonList = scrollView;
 
     //TODO undo and redo buttons
-    UIButton *undoButton = [[UIButton alloc] init];
-    UIImage *undoImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"undo-arrow"] percentPadding: .1];
+//    UIButton *undoButton = [[UIButton alloc] init];
+    UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *undoImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"undo-arrow"] percentPadding: .15];
+    undoImg = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    UIImage *undoImgTouch = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    undoImgTouch.tint
+    UIImage *undoImgTouch = [self makeImageFromImage: undoImg withBackgroundColor:[UIColor blueColor] andForegroundColor:[UIColor redColor]];
+//    NSArray *animationFrames = [NSArray arrayWithObjects: undoImg, undoImgTouch, nil];
+    
+                                
     [undoButton setImage:undoImg forState:UIControlStateNormal];
+//    [undoButton setImage: [UIImage animatedImageNamed:@"fontSize" duration:1.0] forState:UIControlStateHighlighted];
+//    [undoButton setImage: [UIImage animatedImageWithImages: animationFrames duration:5.0] forState:UIControlStateSelected];
+    [undoButton setImage:undoImgTouch forState:UIControlStateHighlighted];
+
     [undoButton addTarget:self
                    action:@selector(buttonTapped:)
          forControlEvents:UIControlEventTouchUpInside];
+    
     [undoButton setTitle:@"undo" forState:UIControlStateNormal];
     int i = 0;
     undoButton.frame = CGRectMake(padding * (i + 1) + ( (i-0) * w), padding, w, h);
-    undoButton.backgroundColor = [UIColor greenColor];
-    //        button.exclusiveTouch = YES;
+    undoButton.layer.cornerRadius = 5;
+    undoButton.tintColor = [UIColor blueColor];
+    undoButton.layer.borderWidth = 1;
+    [undoButton.layer setBorderColor: [[UIColor blueColor] CGColor]];
     [scrollView addSubview: undoButton];
     
     UIButton *trashButton = [[UIButton alloc] init];
-    UIImage *trashImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"Trash-50"] percentPadding: .1];
+    UIImage *trashImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"Trash-50"] percentPadding: .2];
     [trashButton setImage:trashImg forState:UIControlStateNormal];
     [trashButton addTarget:self
                    action:@selector(buttonTapped:)
@@ -213,7 +229,27 @@
     [segmentControl setSelectedSegmentIndex:0];
     [scrollView addSubview: segmentControl];
     
-    for (int i = nLeftButtons + nSegmentControl; i < n; i++) {
+    
+    i = nLeftButtons + nSegmentControl;
+    UISegmentedControl *segmentControlFont = [[UISegmentedControl alloc] init];
+    segmentControlFont.frame = CGRectMake(padding * (nLeftButtons + 2) + w * (i + 0), padding, w * 2, h);
+    segmentControlFont.backgroundColor = [UIColor lightGrayColor];
+    segmentControlFont.layer.cornerRadius = 5.0;
+    for (int i = 0; i < 2; i++) {
+        [segmentControlFont insertSegmentWithTitle:[@(i) stringValue] atIndex:i animated:NO];
+    }
+    
+    UIImage *fontSize = [self imageWithBorderFromImage:[UIImage imageNamed: @"fontSize"] percentPadding: .1];
+    [segmentControlFont setImage: fontSize forSegmentAtIndex: 0];
+    
+    UIImage *fontColor = [self imageWithBorderFromImage:[UIImage imageNamed: @"fontColor"] percentPadding: .25];
+    [segmentControlFont setImage: fontColor forSegmentAtIndex: 1];
+    
+    [segmentControlFont setSelectedSegmentIndex:-1];
+    [scrollView addSubview: segmentControlFont];
+    
+    
+    for (int i = nLeftButtons + nSegmentControl + 2; i < n; i++) {
         UIButton *button = [[UIButton alloc] init];
         [button addTarget:self
                    action:@selector(buttonTapped:)
@@ -228,15 +264,37 @@
     [scrollView setDelaysContentTouches:YES];
     [self.Background addSubview: scrollView];
     
-    UIButton *fontSizeButton = buttonList.firstObject;
-    UIImage *fontSizeImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"fontSize"] percentPadding: .1];
-    [fontSizeButton setImage:fontSizeImg forState:UIControlStateNormal];
-    [fontSizeButton setTitle:@"fontSize" forState:UIControlStateNormal];
-    i = nLeftButtons + nSegmentControl;
-//    trashButton.frame = CGRectMake(padding * (i + 1) + ( (i-0) * w), padding, w, h);
-    fontSizeButton.backgroundColor = [UIColor lightGrayColor];
-//    [scrollView addSubview: trashButton];
+//    UIButton *fontSizeButton = buttonList.firstObject;
+//    UIImage *fontSizeImg = [self imageWithBorderFromImage:[UIImage imageNamed: @"fontSize"] percentPadding: .1];
+//    [fontSizeButton setImage:fontSizeImg forState:UIControlStateNormal];
+//    [fontSizeButton setTitle:@"fontSize" forState:UIControlStateNormal];
+//    i = nLeftButtons + nSegmentControl;
+////    trashButton.frame = CGRectMake(padding * (i + 1) + ( (i-0) * w), padding, w, h);
+//    fontSizeButton.backgroundColor = [UIColor lightGrayColor];
+////    [scrollView addSubview: trashButton];
+    
 }
+
+- (UIImage*)makeImageFromImage:(UIImage*) source withBackgroundColor: (UIColor *) backgroundColor andForegroundColor: (UIColor *) foregroundColor
+{
+//    const CGFloat margin = source.size.width * percentPadding;
+//    CGSize size = CGSizeMake([source size].width + 2*margin, [source size].height + 2*margin);
+    CGSize size = source.size;
+    UIGraphicsBeginImageContext(size);
+    
+    [backgroundColor setFill];
+    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+    
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+//    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    [foregroundColor setFill];
+    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    
+    UIImage *testImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return testImg;
+}
+
 
 - (UIImage*)imageWithBorderFromImage:(UIImage*)source percentPadding: (float) percentPadding
 {
@@ -250,7 +308,7 @@
     CGRect rect = CGRectMake(margin, margin, size.width-2*margin, size.height-2*margin);
     [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
     
-    UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *testImg = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return testImg;
 }
