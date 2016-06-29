@@ -160,13 +160,9 @@
     undoImg = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 //    UIImage *undoImgTouch = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 //    undoImgTouch.tint
-    UIImage *undoImgTouch = [self makeImageFromImage: undoImg withBackgroundColor:[UIColor blueColor] andForegroundColor:[UIColor redColor]];
-//    NSArray *animationFrames = [NSArray arrayWithObjects: undoImg, undoImgTouch, nil];
-    
+    UIImage *undoImgTouch = [self makeImageFromImage: undoImg withBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
                                 
     [undoButton setImage:undoImg forState:UIControlStateNormal];
-//    [undoButton setImage: [UIImage animatedImageNamed:@"fontSize" duration:1.0] forState:UIControlStateHighlighted];
-//    [undoButton setImage: [UIImage animatedImageWithImages: animationFrames duration:5.0] forState:UIControlStateSelected];
     [undoButton setImage:undoImgTouch forState:UIControlStateHighlighted];
 
     [undoButton addTarget:self
@@ -177,9 +173,10 @@
     int i = 0;
     undoButton.frame = CGRectMake(padding * (i + 1) + ( (i-0) * w), padding, w, h);
     undoButton.layer.cornerRadius = 5;
-    undoButton.tintColor = [UIColor blueColor];
+    undoButton.tintColor = self.view.tintColor;
     undoButton.layer.borderWidth = 1;
-    [undoButton.layer setBorderColor: [[UIColor blueColor] CGColor]];
+    undoButton.layer.masksToBounds = YES;
+    [undoButton.layer setBorderColor: [self.view.tintColor CGColor]];
     [scrollView addSubview: undoButton];
     
     UIButton *trashButton = [[UIButton alloc] init];
@@ -286,9 +283,8 @@
     [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
     
     CGRect rect = CGRectMake(0, 0, size.width, size.height);
-//    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
     [foregroundColor setFill];
-    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1];
     
     UIImage *testImg = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -317,6 +313,18 @@
 {
     UIButton *button = (UIButton *) sender;
     NSLog(@"Button title: %@", [button currentTitle]);
+    UIImage *imageNormal = [button imageForState: UIControlStateNormal];
+    UIImage *imageHighlighted = [button imageForState:UIControlStateHighlighted];
+    if (imageHighlighted) {
+        [button setImage:imageHighlighted forState:UIControlStateNormal];
+        [NSTimer scheduledTimerWithTimeInterval:0.1
+                                        target:[NSBlockOperation blockOperationWithBlock:^{ [button setImage:imageNormal forState:UIControlStateNormal]; }]
+                                       selector:@selector(main)
+                                       userInfo:nil
+                                        repeats:NO
+         ];
+        
+    }
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer *) gestureRecognizer {
