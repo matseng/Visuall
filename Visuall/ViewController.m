@@ -144,10 +144,10 @@
     int n = 25;
     int nLeftButtons = 2;
     int nSegmentControl = 7;
-    UIColor *backgroundColor = [UIColor lightGrayColor];
+    UIColor *backgroundColor= [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.frame = CGRectMake(0, 100, self.Background.frame.size.width, h + 2 * padding);
+    scrollView.frame = CGRectMake(0, 64, self.Background.frame.size.width, h + 2 * padding);
     scrollView.contentSize = CGSizeMake((w + padding) * n, h);
     scrollView.backgroundColor = backgroundColor;
     [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
