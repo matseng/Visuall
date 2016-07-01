@@ -23,6 +23,7 @@
 		716328B51D25F23E009DF56B /* photo-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B41D25F23E009DF56B /* photo-camera.png */; };
 		716328B71D25F244009DF56B /* Attach-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B61D25F244009DF56B /* Attach-50.png */; };
 		716328B91D25F257009DF56B /* Sign Up-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B81D25F257009DF56B /* Sign Up-50.png */; };
+		716328BB1D25F867009DF56B /* picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328BA1D25F867009DF56B /* picture.png */; };
 		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
@@ -94,6 +95,7 @@
 		716328B41D25F23E009DF56B /* photo-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-camera.png"; sourceTree = "<group>"; };
 		716328B61D25F244009DF56B /* Attach-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Attach-50.png"; sourceTree = "<group>"; };
 		716328B81D25F257009DF56B /* Sign Up-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sign Up-50.png"; sourceTree = "<group>"; };
+		716328BA1D25F867009DF56B /* picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picture.png; sourceTree = "<group>"; };
 		716B04681BFC210300DA9451 /* TransformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformUtil.h; sourceTree = "<group>"; };
 		716B04691BFC210300DA9451 /* TransformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformUtil.m; sourceTree = "<group>"; };
 		71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualItem.h; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				71C23F361D2220CB00D53E0C /* fontSize.png */,
 				716328B21D25F215009DF56B /* Paint Bucket-50.png */,
 				71C23F381D23081700D53E0C /* fontColor.png */,
+				716328BA1D25F867009DF56B /* picture.png */,
 				716328B41D25F23E009DF56B /* photo-camera.png */,
 				716328B61D25F244009DF56B /* Attach-50.png */,
 			);
@@ -401,6 +404,7 @@
 			files = (
 				71C23F2D1D21F0FC00D53E0C /* Archers Arrow-50.png in Resources */,
 				716328B91D25F257009DF56B /* Sign Up-50.png in Resources */,
+				716328BB1D25F867009DF56B /* picture.png in Resources */,
 				71C23F351D221A7800D53E0C /* Trash-50.png in Resources */,
 				77E13DAC1C01211E00105BB5 /* delete.png in Resources */,
 				71C23F311D21F41600D53E0C /* conversation-with-text-lines.png in Resources */,
