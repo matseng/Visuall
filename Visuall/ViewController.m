@@ -207,7 +207,7 @@
     UIImage *groupRectangle = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"groupRectangle"] percentPadding: .15];
     [segmentControl setImage: groupRectangle forSegmentAtIndex: 3];
     
-    UIImage *arrow = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Archers Arrow-50"] percentPadding: .15];
+    UIImage *arrow = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Archers-Arrowhead"] percentPadding: .15];
     [segmentControl setImage: arrow forSegmentAtIndex: 4];
     
     UIImage *pen = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Sign Up-50"] percentPadding: .15];
