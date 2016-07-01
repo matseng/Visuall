@@ -19,6 +19,10 @@
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
+		716328B31D25F215009DF56B /* Paint Bucket-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B21D25F215009DF56B /* Paint Bucket-50.png */; };
+		716328B51D25F23E009DF56B /* photo-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B41D25F23E009DF56B /* photo-camera.png */; };
+		716328B71D25F244009DF56B /* Attach-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B61D25F244009DF56B /* Attach-50.png */; };
+		716328B91D25F257009DF56B /* Sign Up-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B81D25F257009DF56B /* Sign Up-50.png */; };
 		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
@@ -86,6 +90,10 @@
 		713D0D5F1CC6AE4F00878EAE /* Group2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group2.m; sourceTree = "<group>"; };
 		71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDownGestureRecognizer.h; sourceTree = "<group>"; };
 		71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDownGestureRecognizer.m; sourceTree = "<group>"; };
+		716328B21D25F215009DF56B /* Paint Bucket-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Paint Bucket-50.png"; sourceTree = "<group>"; };
+		716328B41D25F23E009DF56B /* photo-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-camera.png"; sourceTree = "<group>"; };
+		716328B61D25F244009DF56B /* Attach-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Attach-50.png"; sourceTree = "<group>"; };
+		716328B81D25F257009DF56B /* Sign Up-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sign Up-50.png"; sourceTree = "<group>"; };
 		716B04681BFC210300DA9451 /* TransformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformUtil.h; sourceTree = "<group>"; };
 		716B04691BFC210300DA9451 /* TransformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformUtil.m; sourceTree = "<group>"; };
 		71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualItem.h; sourceTree = "<group>"; };
@@ -280,10 +288,14 @@
 				71C23F271D21EF4800D53E0C /* textLetter.png */,
 				71C23F2A1D21EFD000D53E0C /* groupRectangle.png */,
 				71C23F2C1D21F0FC00D53E0C /* Archers Arrow-50.png */,
+				716328B81D25F257009DF56B /* Sign Up-50.png */,
 				71C23F2E1D21F23200D53E0C /* pen.png */,
 				71C23F301D21F41600D53E0C /* conversation-with-text-lines.png */,
 				71C23F361D2220CB00D53E0C /* fontSize.png */,
+				716328B21D25F215009DF56B /* Paint Bucket-50.png */,
 				71C23F381D23081700D53E0C /* fontColor.png */,
+				716328B41D25F23E009DF56B /* photo-camera.png */,
+				716328B61D25F244009DF56B /* Attach-50.png */,
 			);
 			name = "Button Icons";
 			sourceTree = "<group>";
@@ -388,16 +400,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				71C23F2D1D21F0FC00D53E0C /* Archers Arrow-50.png in Resources */,
+				716328B91D25F257009DF56B /* Sign Up-50.png in Resources */,
 				71C23F351D221A7800D53E0C /* Trash-50.png in Resources */,
 				77E13DAC1C01211E00105BB5 /* delete.png in Resources */,
 				71C23F311D21F41600D53E0C /* conversation-with-text-lines.png in Resources */,
+				716328B51D25F23E009DF56B /* photo-camera.png in Resources */,
 				77E13DA21C011C1700105BB5 /* compass.png in Resources */,
 				71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */,
+				716328B31D25F215009DF56B /* Paint Bucket-50.png in Resources */,
 				71C23F2B1D21EFD000D53E0C /* groupRectangle.png in Resources */,
 				71C23F1E1D1E0F3900D53E0C /* leftRightUpDown.png in Resources */,
 				77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */,
 				712EC9631BEAF21500ED6803 /* Main.storyboard in Resources */,
 				712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */,
+				716328B71D25F244009DF56B /* Attach-50.png in Resources */,
 				71C23F2F1D21F23200D53E0C /* pen.png in Resources */,
 				71C23F281D21EF4800D53E0C /* textLetter.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,
