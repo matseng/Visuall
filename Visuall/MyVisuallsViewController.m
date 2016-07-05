@@ -7,6 +7,7 @@
 //
 
 #import "MyVisuallsViewController.h"
+#import "MyVisuallsDetailViewController.h"
 
 @interface MyVisuallsViewController ()
 
@@ -16,6 +17,8 @@
 {
     NSArray *recipes;
 }
+
+//@synthesize tabqqqqqleView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -39,8 +42,17 @@
     }
     
     cell.textLabel.text = [recipes objectAtIndex:indexPath.row];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"showRecipeDetail"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        MyVisuallsDetailViewController *destViewController = segue.destinationViewController;
+        NSLog(@"prep fro Segue: %@", [recipes objectAtIndex:indexPath.row]);
+        destViewController.recipeName = [recipes objectAtIndex:indexPath.row];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

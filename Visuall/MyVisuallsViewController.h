@@ -11,4 +11,6 @@
 
 @interface MyVisuallsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+
 @end

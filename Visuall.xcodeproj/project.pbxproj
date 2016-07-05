@@ -42,6 +42,7 @@
 		71C23F371D2220CB00D53E0C /* fontSize.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F361D2220CB00D53E0C /* fontSize.png */; };
 		71C23F391D23081700D53E0C /* fontColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F381D23081700D53E0C /* fontColor.png */; };
 		71D96BCA1D2C59AA00CD1C49 /* MyVisuallsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BC91D2C59AA00CD1C49 /* MyVisuallsViewController.m */; };
+		71D96BD01D2C66D000CD1C49 /* MyVisuallsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -122,6 +123,8 @@
 		71C23F381D23081700D53E0C /* fontColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fontColor.png; sourceTree = "<group>"; };
 		71D96BC81D2C59AA00CD1C49 /* MyVisuallsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVisuallsViewController.h; sourceTree = "<group>"; };
 		71D96BC91D2C59AA00CD1C49 /* MyVisuallsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVisuallsViewController.m; sourceTree = "<group>"; };
+		71D96BCE1D2C66D000CD1C49 /* MyVisuallsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVisuallsDetailViewController.h; sourceTree = "<group>"; };
+		71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVisuallsDetailViewController.m; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -213,6 +216,8 @@
 				712EC95F1BEAF21500ED6803 /* ViewController.m */,
 				71D96BC81D2C59AA00CD1C49 /* MyVisuallsViewController.h */,
 				71D96BC91D2C59AA00CD1C49 /* MyVisuallsViewController.m */,
+				71D96BCE1D2C66D000CD1C49 /* MyVisuallsDetailViewController.h */,
+				71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */,
 				71B858691CEBD69C00135BE5 /* FirebaseHelper.h */,
 				71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */,
 				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
@@ -502,6 +507,7 @@
 			files = (
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
+				71D96BD01D2C66D000CD1C49 /* MyVisuallsDetailViewController.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */,
