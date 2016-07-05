@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIView *GroupsView;
 @property (weak, nonatomic) IBOutlet UIView *NotesView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
+
+
 @property UIView *drawGroupView;
 @property GroupsCollection *groupsCollection;
 @property CGPoint drawGroupViewStart;
@@ -43,7 +45,9 @@
 #define SELECTED_VIEW_BORDER_COLOR [[UIColor blueColor] CGColor]
 #define SELECTED_VIEW_BORDER_WIDTH 2.0
 
-@implementation ViewController
+@implementation ViewController {
+    NSArray *recipes;
+}
 
 - (void)viewDidLoad
 {
