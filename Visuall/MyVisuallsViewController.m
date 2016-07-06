@@ -26,6 +26,43 @@
     recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"ThisIsLimitLotsofTextHere"
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:nil
+                                                                            action:nil];
+    
+    
+//    self.navigationController.navigationBar.topItem.title = @"";
+//    self.navigationItem.leftItemsSupplementBackButton = YES;
+    
+//    UIButton *starButton = [UIButton buttonWithType:UIButtonTypeCustom];
+////    UIImage *starImg = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Star-50"] percentPadding: .15];
+//    UIImage *starImg = [UIImage imageNamed: @"Star-50"];
+//    starImg = [starImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+////    UIImage *starImgHilighted = [self makeImageFromImage: starImg withBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
+//    UIImage *starImgHilighted = [UIImage imageNamed: @"Star-50"];
+//    [starButton setImage:starImg forState:UIControlStateNormal];
+//    [starButton setImage:starImgHilighted forState:UIControlStateHighlighted];
+//    [starButton setTitle:@"star" forState:UIControlStateNormal];
+//    starButton.frame = CGRectMake(0, 0, 42, 42);
+//    starButton.layer.cornerRadius = 5;
+//    starButton.tintColor = self.view.tintColor;
+//    starButton.layer.borderWidth = 0;
+//    starButton.layer.masksToBounds = YES;
+//    [starButton.layer setBorderColor: [self.view.tintColor CGColor]];
+//    UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
+//    
+//    self.navigationItem.backBarButtonItem = starBarItem;
+
+
+}
+
+
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

@@ -155,8 +155,8 @@
     float padding = 10;
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     
-    self.navigationController.navigationBar.topItem.title = @"";
-    self.navigationItem.leftItemsSupplementBackButton = YES;
+    self.navigationItem.title = @"WHAT?";
+    self.navigationItem.leftItemsSupplementBackButton = NO;
 
     UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(-100,0,100,44)];
     searchBar.placeholder = @"Search";
@@ -178,9 +178,9 @@
     [editSwitchView addSubview: mySwitch];
     UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: editSwitchView];
     
-    int i = 4;
+    int i = 3;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
-    segmentControl.frame = CGRectMake(0, 0, w * 4, h);
+    segmentControl.frame = CGRectMake(0, 0, w * i, h);
     segmentControl.backgroundColor = backgroundColor;
     segmentControl.layer.cornerRadius = 0.0f;
     
@@ -199,12 +199,9 @@
     
     UIImage *sharing = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"User Groups-50"] percentPadding: .1];
     [segmentControl insertSegmentWithImage:sharing atIndex:1 animated:YES];
-    
-    UIImage *star = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Star-50"] percentPadding: .1];
-    [segmentControl insertSegmentWithImage:star atIndex:2 animated:YES];
 
     UIImage *info = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Info-50"] percentPadding: .1];
-    [segmentControl insertSegmentWithImage:info atIndex:3 animated:YES];
+    [segmentControl insertSegmentWithImage:info atIndex:2 animated:YES];
 
     UIBarButtonItem *segmentControlBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
     
@@ -225,11 +222,20 @@
     starButton.layer.masksToBounds = YES;
     [starButton.layer setBorderColor: [self.view.tintColor CGColor]];
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
+
+    // TODO: custom back arrow from png
     
-    self.navigationItem.leftBarButtonItems = @[searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
-//        self.navigationItem.leftBarButtonItems = @[searchBarItem, editBarItem, starBarItem, starBarItem];
-//        self.navigationItem.leftBarButtonItems = @[searchBarItem, segmentControlBarItem, starBarItem];
-//        self.navigationItem.leftBarButtonItems = @[segmentControlBarItem];
+//    self.navigationItem.leftBarButtonItems = @[backButtonItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
+    
+        self.navigationItem.leftBarButtonItems = @[searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
+    
+}
+
+
+
+-(void)btnClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)changeSwitch:(id)sender{
