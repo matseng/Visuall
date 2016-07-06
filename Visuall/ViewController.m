@@ -139,9 +139,48 @@
     
     [self loadFirebaseTransform];
     
+    [self createTopMenu];
+    
     [self addHorizontalScrollingButtonList];
     
     NSLog(@"Firebase URL: %@", self.firebaseURL);
+    
+
+}
+
+- (void) createTopMenu
+{
+    self.navigationItem.leftItemsSupplementBackButton = YES;
+
+    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,0,100,44)];
+    searchBar.placeholder = @"Search";
+    UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
+    searchBarItem.tag = 123;
+
+    
+    UILabel *editLabel = [[UILabel alloc] init];
+    editLabel.text = @"Edit";
+    [editLabel sizeToFit];
+    UISwitch *mySwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+//    mySwitch.frame = CGRectMake(editLabel.frame.size.width, -mySwitch.frame.size.height / 4, 0, 0);
+    [mySwitch addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
+    mySwitch.frame = CGRectMake(editLabel.frame.size.width, -5, 0, 0);
+    UIView *editSwitchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, editLabel.frame.size.width + mySwitch.frame.size.width, editLabel.frame.size.height)];
+    [editSwitchView addSubview: editLabel];
+    [editSwitchView addSubview: mySwitch];
+    UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: editSwitchView];
+    
+    self.navigationItem.leftBarButtonItems = @[searchBarItem, editBarItem];
+}
+
+- (void)changeSwitch:(id)sender{
+    if([sender isOn]){
+        // Execute any code when the switch is ON
+        NSLog(@"Switch is ON");
+    } else{
+        // Execute any code when the switch is OFF
+        NSLog(@"Switch is OFF");
+    }
 }
 
 - (void) addHorizontalScrollingButtonList
