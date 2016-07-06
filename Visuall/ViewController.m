@@ -150,27 +150,86 @@
 
 - (void) createTopMenu
 {
+    float h = 42;
+    float w = 42;
+    float padding = 10;
+    UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+    
+    self.navigationController.navigationBar.topItem.title = @"";
     self.navigationItem.leftItemsSupplementBackButton = YES;
 
-    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,0,100,44)];
+    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(-100,0,100,44)];
     searchBar.placeholder = @"Search";
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
     searchBarItem.tag = 123;
 
     
     UILabel *editLabel = [[UILabel alloc] init];
-    editLabel.text = @"Edit";
+    editLabel.text = @"ABCD";
     [editLabel sizeToFit];
     UISwitch *mySwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
 //    mySwitch.frame = CGRectMake(editLabel.frame.size.width, -mySwitch.frame.size.height / 4, 0, 0);
     [mySwitch addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     mySwitch.frame = CGRectMake(editLabel.frame.size.width, -5, 0, 0);
     UIView *editSwitchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, editLabel.frame.size.width + mySwitch.frame.size.width, editLabel.frame.size.height)];
+    editSwitchView.backgroundColor = backgroundColor;
+    editSwitchView.layer.borderWidth = 0.0f;
     [editSwitchView addSubview: editLabel];
     [editSwitchView addSubview: mySwitch];
     UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: editSwitchView];
     
-    self.navigationItem.leftBarButtonItems = @[searchBarItem, editBarItem];
+    int i = 4;
+    UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
+    segmentControl.frame = CGRectMake(0, 0, w * 4, h);
+    segmentControl.backgroundColor = backgroundColor;
+    segmentControl.layer.cornerRadius = 0.0f;
+    
+    segmentControl.layer.borderColor = backgroundColor.CGColor;
+    segmentControl.layer.borderWidth = 2.0f;
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, segmentControl.frame.size.height), NO, 0.0);
+    UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [segmentControl setDividerImage:blank
+                forLeftSegmentState:UIControlStateNormal
+                  rightSegmentState:UIControlStateNormal
+                         barMetrics:UIBarMetricsDefault];
+    
+    UIImage *reading = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Reading-50"] percentPadding: .1];
+    [segmentControl insertSegmentWithImage:reading atIndex:0 animated:YES];
+    
+    UIImage *sharing = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"User Groups-50"] percentPadding: .1];
+    [segmentControl insertSegmentWithImage:sharing atIndex:1 animated:YES];
+    
+    UIImage *star = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Star-50"] percentPadding: .1];
+    [segmentControl insertSegmentWithImage:star atIndex:2 animated:YES];
+
+    UIImage *info = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Info-50"] percentPadding: .1];
+    [segmentControl insertSegmentWithImage:info atIndex:3 animated:YES];
+
+    UIBarButtonItem *segmentControlBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
+    
+    UIButton *starButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *starImg = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Star-50"] percentPadding: .15];
+    starImg = [starImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *starImgHilighted = [self makeImageFromImage: starImg withBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
+    [starButton setImage:starImg forState:UIControlStateNormal];
+    [starButton setImage:starImgHilighted forState:UIControlStateHighlighted];
+    [starButton addTarget:self
+                   action:@selector(buttonTapped:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [starButton setTitle:@"star" forState:UIControlStateNormal];
+    starButton.frame = CGRectMake(0, 0, w, h);
+    starButton.layer.cornerRadius = 5;
+    starButton.tintColor = self.view.tintColor;
+    starButton.layer.borderWidth = 0;
+    starButton.layer.masksToBounds = YES;
+    [starButton.layer setBorderColor: [self.view.tintColor CGColor]];
+    UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
+    
+    self.navigationItem.leftBarButtonItems = @[searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
+//        self.navigationItem.leftBarButtonItems = @[searchBarItem, editBarItem, starBarItem, starBarItem];
+//        self.navigationItem.leftBarButtonItems = @[searchBarItem, segmentControlBarItem, starBarItem];
+//        self.navigationItem.leftBarButtonItems = @[segmentControlBarItem];
 }
 
 - (void)changeSwitch:(id)sender{
@@ -265,8 +324,8 @@
     [segmentControl setImage: conversation forSegmentAtIndex: 6];
     
     [segmentControl setSelectedSegmentIndex:0];
-    [scrollView addSubview: segmentControl];
     
+    [scrollView addSubview: segmentControl];
     
     i = nLeftButtons + nSegmentControl;
     UISegmentedControl *segmentControlFont = [[UISegmentedControl alloc] init];
