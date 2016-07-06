@@ -120,8 +120,12 @@
                     forControlEvents:UIControlEventEditingChanged];
     self.modeControl.selectedSegmentIndex = 3;
     
+//    NSLog(@"My firebase config %d", [[NSNumber numberWithBool: [Firebase defaultConfig].persistenceEnabled] integerValue]);
     
-    [Firebase defaultConfig].persistenceEnabled = YES;
+    if ( [Firebase defaultConfig].persistenceEnabled == NO) {
+        [Firebase defaultConfig].persistenceEnabled = YES;
+    }
+
     [Firebase goOffline];
     
     Firebase *connectedRef = [[Firebase alloc] initWithUrl:@"https://brainspace-biz.firebaseio.com/.info/connected"];
@@ -137,6 +141,7 @@
     
     [self addHorizontalScrollingButtonList];
     
+    NSLog(@"Firebase URL: %@", self.firebaseURL);
 }
 
 - (void) addHorizontalScrollingButtonList

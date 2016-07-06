@@ -8,6 +8,7 @@
 
 #import "MyVisuallsViewController.h"
 #import "MyVisuallsDetailViewController.h"
+#import "ViewController.h"
 
 @interface MyVisuallsViewController ()
 
@@ -47,11 +48,13 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"showRecipeDetail"]) {
+    if ([segue.identifier isEqualToString:@"showVisuallDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        MyVisuallsDetailViewController *destViewController = segue.destinationViewController;
+//        MyVisuallsDetailViewController *destViewController = segue.destinationViewController;
+        ViewController *destViewController = segue.destinationViewController;
         NSLog(@"prep fro Segue: %@", [recipes objectAtIndex:indexPath.row]);
-        destViewController.recipeName = [recipes objectAtIndex:indexPath.row];
+//        destViewController.recipeName = [recipes objectAtIndex:indexPath.row];
+        destViewController.firebaseURL = [recipes objectAtIndex:indexPath.row];
     }
 }
 

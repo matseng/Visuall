@@ -30,7 +30,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="M2b-Gf-vcy" kind="show" identifier="showRecipeDetail" id="SKI-hd-mgr"/>
+                                            <segue destination="BYZ-38-t0r" kind="show" identifier="showVisuallDetail" id="elC-ov-ARd"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -148,7 +148,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V1o-ut-g8R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3580" y="2009"/>
+            <point key="canvasLocation" x="3724" y="1947"/>
         </scene>
         <!--Home Root View Controller -->
         <scene sceneID="oex-Kv-lgE">
