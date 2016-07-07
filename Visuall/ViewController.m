@@ -157,6 +157,24 @@
     
     self.navigationItem.title = @"WHAT?";
     self.navigationItem.leftItemsSupplementBackButton = NO;
+    
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *backImg = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"back"] percentPadding: .25];
+    backImg = [backImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *backImgHilighted = [self makeImageFromImage: backImg withBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
+    [backButton setImage:backImg forState:UIControlStateNormal];
+    [backButton setImage:backImgHilighted forState:UIControlStateHighlighted];
+    [backButton addTarget:self
+                   action:@selector(backButtonHandler)
+         forControlEvents:UIControlEventTouchUpInside];
+    [backButton setTitle:@"back" forState:UIControlStateNormal];
+    backButton.frame = CGRectMake(0, 0, w, h);
+    backButton.layer.cornerRadius = 5;
+    backButton.tintColor = self.view.tintColor;
+    backButton.layer.borderWidth = 0;
+    backButton.layer.masksToBounds = YES;
+    [backButton.layer setBorderColor: [self.view.tintColor CGColor]];
+    UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
 
     UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(-100,0,100,44)];
     searchBar.placeholder = @"Search";
@@ -227,13 +245,11 @@
     
 //    self.navigationItem.leftBarButtonItems = @[backButtonItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
     
-        self.navigationItem.leftBarButtonItems = @[searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
+        self.navigationItem.leftBarButtonItems = @[backBarItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
     
 }
 
-
-
--(void)btnClick
+- (void) backButtonHandler
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -241,6 +257,7 @@
 - (void)changeSwitch:(id)sender{
     if([sender isOn]){
         // Execute any code when the switch is ON
+        
         NSLog(@"Switch is ON");
     } else{
         // Execute any code when the switch is OFF
