@@ -16,6 +16,8 @@
 #import "GroupsCollection.h"
 #import "AppDelegate.h"
 #import "TouchDownGestureRecognizer.h"
+#import "SevenSwitch.h"
+#import "UIImage+Extras.h"
 
 @interface ViewController () <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer;
@@ -154,12 +156,14 @@
     float w = 42;
     float padding = 10;
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+    UIColor *blueButtonColor = self.view.tintColor;
     
     self.navigationItem.title = @"WHAT?";
     self.navigationItem.leftItemsSupplementBackButton = NO;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *backImg = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"back"] percentPadding: .25];
+    backImg = [backImg imageByScalingAndCroppingForSize:CGSizeMake(30, h)];
     backImg = [backImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *backImgHilighted = [self makeImageFromImage: backImg withBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
     [backButton setImage:backImg forState:UIControlStateNormal];
@@ -167,8 +171,7 @@
     [backButton addTarget:self
                    action:@selector(backButtonHandler)
          forControlEvents:UIControlEventTouchUpInside];
-    [backButton setTitle:@"back" forState:UIControlStateNormal];
-    backButton.frame = CGRectMake(0, 0, w, h);
+    backButton.frame = CGRectMake(0, 0, 30, h);
     backButton.layer.cornerRadius = 5;
     backButton.tintColor = self.view.tintColor;
     backButton.layer.borderWidth = 0;
@@ -181,13 +184,13 @@
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
     searchBarItem.tag = 123;
 
-    
+    // TODO: Create "Edit" -> "Done" Switch, see "SevenSwitchExample-Swift.h"
+    /*
     UILabel *editLabel = [[UILabel alloc] init];
     editLabel.text = @"ABCD";
     [editLabel sizeToFit];
     UISwitch *mySwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-//    mySwitch.frame = CGRectMake(editLabel.frame.size.width, -mySwitch.frame.size.height / 4, 0, 0);
-    [mySwitch addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
+    [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     mySwitch.frame = CGRectMake(editLabel.frame.size.width, -5, 0, 0);
     UIView *editSwitchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, editLabel.frame.size.width + mySwitch.frame.size.width, editLabel.frame.size.height)];
     editSwitchView.backgroundColor = backgroundColor;
@@ -195,6 +198,19 @@
     [editSwitchView addSubview: editLabel];
     [editSwitchView addSubview: mySwitch];
     UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: editSwitchView];
+    */
+    
+    SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
+    mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
+    [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    mySwitch.offLabel.text = @"Edit";
+    mySwitch.offLabel.textColor = blueButtonColor;
+    mySwitch.onTintColor = blueButtonColor;
+    mySwitch.onLabel.text = @"Done";
+    mySwitch.onLabel.textColor = backgroundColor;
+    NSLog(@"offlabel text width: %f", mySwitch.offLabel.frame.size.width);
+    [mySwitch setOn:NO animated:YES];
+    UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: mySwitch];
     
     int i = 3;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
@@ -254,7 +270,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)changeSwitch:(id)sender{
+- (void) switchChanged:(id)sender{
     if([sender isOn]){
         // Execute any code when the switch is ON
         
@@ -470,6 +486,8 @@
     UIGraphicsEndImageContext();
     return testImg;
 }
+
+
 
 - (void) buttonTapped: (id) sender
 {

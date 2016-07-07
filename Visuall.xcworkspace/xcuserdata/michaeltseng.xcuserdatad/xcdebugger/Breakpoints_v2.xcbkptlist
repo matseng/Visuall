@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1027"
-            endingLineNumber = "1027"
+            startingLineNumber = "1048"
+            endingLineNumber = "1048"
             landmarkName = "-handlePanBackground:"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "857"
-            endingLineNumber = "857"
+            startingLineNumber = "878"
+            endingLineNumber = "878"
             landmarkName = "-handlePanGestureView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1087"
-            endingLineNumber = "1087"
+            startingLineNumber = "1108"
+            endingLineNumber = "1108"
             landmarkName = "-handlePanGroup:andGroupItem:"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1286"
-            endingLineNumber = "1286"
+            startingLineNumber = "1307"
+            endingLineNumber = "1307"
             landmarkName = "-handleTapGroup:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1282"
-            endingLineNumber = "1282"
+            startingLineNumber = "1303"
+            endingLineNumber = "1303"
             landmarkName = "-handleTapGroup:"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "721"
-            endingLineNumber = "721"
+            startingLineNumber = "742"
+            endingLineNumber = "742"
             landmarkName = "-addGestureRecognizers"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "764"
-            endingLineNumber = "764"
+            startingLineNumber = "785"
+            endingLineNumber = "785"
             landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "952"
-            endingLineNumber = "952"
+            startingLineNumber = "973"
+            endingLineNumber = "973"
             landmarkName = "-handlePanBackground:"
             landmarkType = "5">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Visuall/ViewController.m"
-            timestampString = "489557833.121826"
+            timestampString = "489620479.356451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "950"
-            endingLineNumber = "950"
+            startingLineNumber = "971"
+            endingLineNumber = "971"
             landmarkName = "-handlePanBackground:"
             landmarkType = "5">
          </BreakpointContent>

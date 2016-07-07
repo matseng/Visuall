@@ -48,6 +48,7 @@
 		71D96BD61D2DA58000CD1C49 /* Info-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BD51D2DA58000CD1C49 /* Info-50.png */; };
 		71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BD71D2DA5A400CD1C49 /* Star-50.png */; };
 		71D96BDA1D2E0D5300CD1C49 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BD91D2E0D5300CD1C49 /* back.png */; };
+		71D96BE11D2F030200CD1C49 /* UIImage+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -135,6 +136,8 @@
 		71D96BD51D2DA58000CD1C49 /* Info-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info-50.png"; sourceTree = "<group>"; };
 		71D96BD71D2DA5A400CD1C49 /* Star-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star-50.png"; sourceTree = "<group>"; };
 		71D96BD91D2E0D5300CD1C49 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		71D96BDF1D2F030200CD1C49 /* UIImage+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Extras.h"; path = "Helpers/UIImage+Extras.h"; sourceTree = "<group>"; };
+		71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Extras.m"; path = "Helpers/UIImage+Extras.m"; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -219,6 +222,8 @@
 		712EC9561BEAF21500ED6803 /* Visuall */ = {
 			isa = PBXGroup;
 			children = (
+				71D96BDF1D2F030200CD1C49 /* UIImage+Extras.h */,
+				71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */,
 				885AFD651C00217800F89DE5 /* model */,
 				712EC95B1BEAF21500ED6803 /* AppDelegate.h */,
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
@@ -543,6 +548,7 @@
 				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,
 				71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */,
+				71D96BE11D2F030200CD1C49 /* UIImage+Extras.m in Sources */,
 				71D96BCA1D2C59AA00CD1C49 /* MyVisuallsViewController.m in Sources */,
 				716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */,
 				712EC95A1BEAF21500ED6803 /* main.m in Sources */,

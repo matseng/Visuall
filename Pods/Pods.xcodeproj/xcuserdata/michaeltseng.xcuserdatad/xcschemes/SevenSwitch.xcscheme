@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '33E8D7D2A5FE5E16FF5019F9'
-               BlueprintName = 'Pods-VisuallTests'
+               BlueprintIdentifier = '72272329AFF9A88888C13051'
+               BlueprintName = 'SevenSwitch'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libPods-VisuallTests.a'>
+               BuildableName = 'libSevenSwitch.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

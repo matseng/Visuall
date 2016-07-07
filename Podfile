@@ -5,6 +5,8 @@ platform :ios, '8.0'
 
 pod 'Firebase', '>= 2.5.1'
 
+pod 'SevenSwitch', '~> 1.4' 
+
 target 'Visuall' do
 
 end
