@@ -187,7 +187,7 @@
     SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
     mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
     [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    mySwitch.offLabel.text = @"Edit ";
+    mySwitch.offLabel.text = @"Edit";
     mySwitch.offLabel.textColor = blueButtonColor;
     mySwitch.onTintColor = blueButtonColor;
     mySwitch.onLabel.text = @" Done";
@@ -241,27 +241,21 @@
     [starButton.layer setBorderColor: [self.view.tintColor CGColor]];
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
 
-//    self.navigationItem.leftBarButtonItems = @[backBarItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
 
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, h+2)];
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.height, h+2)];
+//    UIToolbar *toolbar = [[UIToolbar alloc] init];
     UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer30 setWidth:-30];
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer setWidth:-10];
     UIBarButtonItem *negativeSpacer5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer5 setWidth:-5];
-//    [toolbar setItems:@[negativeSpacer, negativeSpacer, negativeSpacer, backBarItem, negativeSpacer5, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, negativeSpacer, starBarItem] animated:YES];
-    
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//    [toolbar setItems:@[negativeSpacer30, backBarItem, flexibleSpace, searchBarItem, editBarItem, segmentControlBarItem, starBarItem, flexibleSpace] animated:YES];
-        [toolbar setItems:@[searchBarItem, editBarItem, segmentControlBarItem, starBarItem] animated:YES];
-//    [toolbar setItems:@[flexibleSpace, backBarItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem, flexibleSpace] animated:YES];
-//    toolbar.clipsToBounds = YES;
+    [toolbar setItems:@[searchBarItem, editBarItem, segmentControlBarItem, starBarItem] animated:YES];
     toolbar.clipsToBounds = YES;
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
     
-    
-    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, toolBarItem];
+    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
 
 }
 
