@@ -158,7 +158,6 @@
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     UIColor *blueButtonColor = self.view.tintColor;
     
-    self.navigationItem.title = @"WHAT?";
     self.navigationItem.leftItemsSupplementBackButton = NO;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -177,36 +176,21 @@
     backButton.layer.borderWidth = 0;
     backButton.layer.masksToBounds = YES;
     [backButton.layer setBorderColor: [self.view.tintColor CGColor]];
+    backButton.clipsToBounds = YES;
     UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
 
-    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(-100,0,100,44)];
+    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,0, 85,44)];
     searchBar.placeholder = @"Search";
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
     searchBarItem.tag = 123;
-
-    // TODO: Create "Edit" -> "Done" Switch, see "SevenSwitchExample-Swift.h"
-    /*
-    UILabel *editLabel = [[UILabel alloc] init];
-    editLabel.text = @"ABCD";
-    [editLabel sizeToFit];
-    UISwitch *mySwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-    [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    mySwitch.frame = CGRectMake(editLabel.frame.size.width, -5, 0, 0);
-    UIView *editSwitchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, editLabel.frame.size.width + mySwitch.frame.size.width, editLabel.frame.size.height)];
-    editSwitchView.backgroundColor = backgroundColor;
-    editSwitchView.layer.borderWidth = 0.0f;
-    [editSwitchView addSubview: editLabel];
-    [editSwitchView addSubview: mySwitch];
-    UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: editSwitchView];
-    */
     
     SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
     mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
     [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    mySwitch.offLabel.text = @"Edit";
+    mySwitch.offLabel.text = @"Edit ";
     mySwitch.offLabel.textColor = blueButtonColor;
     mySwitch.onTintColor = blueButtonColor;
-    mySwitch.onLabel.text = @"Done";
+    mySwitch.onLabel.text = @" Done";
     mySwitch.onLabel.textColor = backgroundColor;
     NSLog(@"offlabel text width: %f", mySwitch.offLabel.frame.size.width);
     [mySwitch setOn:NO animated:YES];
@@ -257,12 +241,28 @@
     [starButton.layer setBorderColor: [self.view.tintColor CGColor]];
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
 
-    // TODO: custom back arrow from png
+//    self.navigationItem.leftBarButtonItems = @[backBarItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
+
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, h+2)];
+    UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [negativeSpacer30 setWidth:-30];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [negativeSpacer setWidth:-10];
+    UIBarButtonItem *negativeSpacer5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [negativeSpacer5 setWidth:-5];
+//    [toolbar setItems:@[negativeSpacer, negativeSpacer, negativeSpacer, backBarItem, negativeSpacer5, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, negativeSpacer, starBarItem] animated:YES];
     
-//    self.navigationItem.leftBarButtonItems = @[backButtonItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    [toolbar setItems:@[negativeSpacer30, backBarItem, flexibleSpace, searchBarItem, editBarItem, segmentControlBarItem, starBarItem, flexibleSpace] animated:YES];
+        [toolbar setItems:@[searchBarItem, editBarItem, segmentControlBarItem, starBarItem] animated:YES];
+//    [toolbar setItems:@[flexibleSpace, backBarItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem, flexibleSpace] animated:YES];
+//    toolbar.clipsToBounds = YES;
+    toolbar.clipsToBounds = YES;
+    UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
     
-        self.navigationItem.leftBarButtonItems = @[backBarItem, searchBarItem, editBarItem, segmentControlBarItem, starBarItem];
     
+    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, toolBarItem];
+
 }
 
 - (void) backButtonHandler
