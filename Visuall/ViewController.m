@@ -245,8 +245,7 @@
 //    NSLog(@"total height: %f", totalHeight);
     
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
-//    toolbar.barTintColor = [UIColor clearColor];
-
+    
     UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer30 setWidth:-30];
     UIBarButtonItem *negativeSpacer10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -255,8 +254,8 @@
     [negativeSpacer5 setWidth:-5];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-//    [toolbar setItems:@[searchBarItem, editBarItem, segmentControlBarItem, starBarItem] animated:YES];
-    [toolbar setItems:@[backBarItem, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, negativeSpacer10, starBarItem] animated:YES];
+//    [toolbar setItems:@[backBarItem, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, negativeSpacer10, starBarItem] animated:YES];
+    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
     
 //    toolbar.clipsToBounds = YES;
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
@@ -277,11 +276,34 @@
 - (void) switchChanged:(id)sender{
     if([sender isOn]){
         // Execute any code when the switch is ON
+        [self.scrollViewButtonList setHidden: NO];
+        
+        CGRect rect = self.scrollViewButtonList.frame;
+        rect.origin.y = 0;
+        
+        [UIView animateWithDuration:0.3
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseIn
+                         animations:^(void) {
+                             [self.scrollViewButtonList setFrame: rect];
+                         }
+                         completion:NULL];
         
         NSLog(@"Switch is ON");
     } else{
         // Execute any code when the switch is OFF
         NSLog(@"Switch is OFF");
+//        [self.scrollViewButtonList setHidden: YES];
+        CGRect rect = self.scrollViewButtonList.frame;
+        rect.origin.y = -rect.size.height;
+        
+        [UIView animateWithDuration:0.3
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^(void) {
+                             [self.scrollViewButtonList setFrame: rect];
+                         }
+                         completion:NULL];
     }
 }
 
@@ -300,7 +322,7 @@
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, h + 2 * padding);
+    scrollView.frame = CGRectMake(0, - (h + 2 * padding), [[UIScreen mainScreen] bounds].size.width, h + 2 * padding);
     scrollView.contentSize = CGSizeMake((w + padding) * n, h);
     scrollView.backgroundColor = backgroundColor;
     [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
@@ -452,6 +474,8 @@
     scrollView.contentSize = CGSizeMake(contentRect.size.width + padding, contentRect.size.height);
     
     [self.Background addSubview: scrollView];
+    
+//    [scrollView setHidden:YES];
 }
 
 - (UIImage*)makeImageFromImage:(UIImage*) source withBackgroundColor: (UIColor *) backgroundColor andForegroundColor: (UIColor *) foregroundColor
