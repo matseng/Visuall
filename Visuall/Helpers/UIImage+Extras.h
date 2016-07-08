@@ -10,6 +10,8 @@
 
 @interface UIImage (Extras)
 
+- (UIImage*)imageWithExtraPadding: (float) percentPadding;
+
 - (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize;
 
 @end

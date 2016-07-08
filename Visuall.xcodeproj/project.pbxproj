@@ -49,6 +49,10 @@
 		71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BD71D2DA5A400CD1C49 /* Star-50.png */; };
 		71D96BDA1D2E0D5300CD1C49 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BD91D2E0D5300CD1C49 /* back.png */; };
 		71D96BE11D2F030200CD1C49 /* UIImage+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */; };
+		71D96BE91D301D7A00CD1C49 /* Globe-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BE81D301D7A00CD1C49 /* Globe-50.png */; };
+		71D96BEC1D301D8600CD1C49 /* alarm-bell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BEA1D301D8600CD1C49 /* alarm-bell@2x.png */; };
+		71D96BED1D301D8600CD1C49 /* light-bulb.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BEB1D301D8600CD1C49 /* light-bulb.png */; };
+		71D96BEF1D30347400CD1C49 /* light-bulb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BEE1D30347400CD1C49 /* light-bulb@2x.png */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -138,6 +142,10 @@
 		71D96BD91D2E0D5300CD1C49 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		71D96BDF1D2F030200CD1C49 /* UIImage+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Extras.h"; path = "Helpers/UIImage+Extras.h"; sourceTree = "<group>"; };
 		71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Extras.m"; path = "Helpers/UIImage+Extras.m"; sourceTree = "<group>"; };
+		71D96BE81D301D7A00CD1C49 /* Globe-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Globe-50.png"; sourceTree = "<group>"; };
+		71D96BEA1D301D8600CD1C49 /* alarm-bell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alarm-bell@2x.png"; sourceTree = "<group>"; };
+		71D96BEB1D301D8600CD1C49 /* light-bulb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light-bulb.png"; sourceTree = "<group>"; };
+		71D96BEE1D30347400CD1C49 /* light-bulb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light-bulb@2x.png"; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -310,6 +318,10 @@
 		71C23F291D21EF9400D53E0C /* Button Icons */ = {
 			isa = PBXGroup;
 			children = (
+				71D96BE81D301D7A00CD1C49 /* Globe-50.png */,
+				71D96BEB1D301D8600CD1C49 /* light-bulb.png */,
+				71D96BEE1D30347400CD1C49 /* light-bulb@2x.png */,
+				71D96BEA1D301D8600CD1C49 /* alarm-bell@2x.png */,
 				71D96BD91D2E0D5300CD1C49 /* back.png */,
 				71D96BD11D2D974C00CD1C49 /* Reading-50.png */,
 				71D96BD31D2D997500CD1C49 /* User Groups-50.png */,
@@ -443,6 +455,7 @@
 				77E13DAC1C01211E00105BB5 /* delete.png in Resources */,
 				71C23F311D21F41600D53E0C /* conversation-with-text-lines.png in Resources */,
 				716328B51D25F23E009DF56B /* photo-camera.png in Resources */,
+				71D96BEF1D30347400CD1C49 /* light-bulb@2x.png in Resources */,
 				77E13DA21C011C1700105BB5 /* compass.png in Resources */,
 				71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */,
 				716328B31D25F215009DF56B /* Paint Bucket-50.png in Resources */,
@@ -454,13 +467,16 @@
 				71D96BD61D2DA58000CD1C49 /* Info-50.png in Resources */,
 				712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */,
 				716328B71D25F244009DF56B /* Attach-50.png in Resources */,
+				71D96BE91D301D7A00CD1C49 /* Globe-50.png in Resources */,
 				71C23F2F1D21F23200D53E0C /* pen.png in Resources */,
 				71C23F281D21EF4800D53E0C /* textLetter.png in Resources */,
 				71D96BD41D2D997500CD1C49 /* User Groups-50.png in Resources */,
 				71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,
 				77E13DAA1C011DC100105BB5 /* plane.png in Resources */,
+				71D96BEC1D301D8600CD1C49 /* alarm-bell@2x.png in Resources */,
 				71C23F371D2220CB00D53E0C /* fontSize.png in Resources */,
+				71D96BED1D301D8600CD1C49 /* light-bulb.png in Resources */,
 				71D96BDA1D2E0D5300CD1C49 /* back.png in Resources */,
 				77E13DA61C011CF200105BB5 /* folder.png in Resources */,
 				71C23F391D23081700D53E0C /* fontColor.png in Resources */,

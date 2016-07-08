@@ -328,7 +328,7 @@
         <scene sceneID="UEo-oc-W2W">
             <objects>
                 <navigationController id="mtn-Ch-Ad4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Notifications" selectedImage="compass.png" id="FaW-Gx-IRk"/>
+                    <tabBarItem key="tabBarItem" title="Notifications" id="FaW-Gx-IRk"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pG0-eX-fwx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -437,7 +437,4 @@
             <point key="canvasLocation" x="795" y="2627"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="compass.png" width="24" height="24"/>
-    </resources>
 </document>

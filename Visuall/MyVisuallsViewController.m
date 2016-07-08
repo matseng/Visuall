@@ -9,6 +9,7 @@
 #import "MyVisuallsViewController.h"
 #import "MyVisuallsDetailViewController.h"
 #import "ViewController.h"
+#import "UIImage+Extras.h"
 
 @interface MyVisuallsViewController ()
 
@@ -36,6 +37,49 @@
                                                                             action:nil];
     
     self.navigationController.navigationBar.translucent = NO;
+    
+    UITabBarController *tabBarController = (UITabBarController *) self.tabBarController;
+    UITabBar *tabBar = tabBarController.tabBar;
+    UITabBarItem *tabBarItem0 = [tabBar.items objectAtIndex:0];
+    UITabBarItem *tabBarItem1 = [tabBar.items objectAtIndex:1];
+    UITabBarItem *tabBarItem2 = [tabBar.items objectAtIndex:2];
+    UITabBarItem *tabBarItem3 = [tabBar.items objectAtIndex:3];
+    UITabBarItem *tabBarItem4 = [tabBar.items objectAtIndex:4];
+    
+    tabBarItem0.title = @"Global";
+    tabBarItem1.title = @"Favorites";
+    tabBarItem2.title = @"My Visualls";
+    tabBarItem3.title = @"Notifications";
+    tabBarItem4.title = @"More";
+    
+//    [tabBarItem1 setSelectedImage:[UIImage imageNamed:@"Star-50"]];
+
+//    UIImage *globe = [[UIImage imageNamed:@"Globe-50"] imageByScalingAndCroppingForSize:CGSizeMake(30, 30)];
+//    globe = [globe imageWithExtraPadding:.15];
+//    UIImage *globe = [[UIImage imageNamed:@"Globe-50"] imageWithExtraPadding:.15];
+//    globe = [globe imageByScalingAndCroppingForSize:CGSizeMake(30, 30)];
+    UIImage *globe = [UIImage imageNamed:@"Globe-50"];
+    globe = [UIImage imageWithCGImage:globe.CGImage scale:2.2 orientation:globe.imageOrientation];
+    [tabBarItem0 setImage:globe];
+    
+    UIImage *star = [UIImage imageNamed:@"Star-50"];
+    star = [UIImage imageWithCGImage:star.CGImage scale:1.8 orientation:star.imageOrientation];
+    [tabBarItem1 setImage:star];
+    
+//    UIImage *lightBulb = [[UIImage imageNamed:@"light-bulb"] imageByScalingAndCroppingForSize:CGSizeMake(30, 30)];
+    UIImage *lightBulb = [UIImage imageNamed:@"light-bulb"];
+    lightBulb = [UIImage imageWithCGImage:lightBulb.CGImage scale:2.1 orientation:lightBulb.imageOrientation];
+    [tabBarItem2 setImage:lightBulb];
+    
+//    UIImage *alarmBell = [[[UIImage imageNamed:@"alarm-bell"] imageByScalingAndCroppingForSize:CGSizeMake(30, 30)] imageWithExtraPadding:0.2f];
+//    UIImage *alarmBell = [[UIImage imageNamed:@"alarm-bell"] imageWithExtraPadding:0.1];
+//    alarmBell = [alarmBell imageByScalingAndCroppingForSize:CGSizeMake(30,30)];
+    
+    UIImage *alarmBell = [UIImage imageNamed:@"alarm-bell"];
+    alarmBell = [UIImage imageWithCGImage:alarmBell.CGImage scale:2.6 orientation:alarmBell.imageOrientation];
+//    alarmBell = [ alarmBell imageWithExtraPadding:0];
+    [tabBarItem3 setImage: alarmBell];
+    
     
 //    self.navigationController.navigationBar.topItem.title = @"";
 //    self.navigationItem.leftItemsSupplementBackButton = YES;

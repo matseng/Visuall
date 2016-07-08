@@ -532,8 +532,6 @@
     return testImg;
 }
 
-
-
 - (void) buttonTapped: (id) sender
 {
     UIButton *button = (UIButton *) sender;

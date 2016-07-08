@@ -10,6 +10,26 @@
 
 @implementation UIImage (Extras)
 
+- (UIImage*)imageWithExtraPadding: (float) percentPadding
+{
+    UIImage *source = self;
+    const CGFloat margin = source.size.width * percentPadding;
+    CGSize size = CGSizeMake([source size].width + 2 * margin, [source size].height + 2*margin);
+    UIGraphicsBeginImageContext(size);
+    
+    [[UIColor clearColor] setFill];
+    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+    
+    CGRect rect = CGRectMake(margin, margin, size.width-2*margin, size.height-2*margin);
+    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    
+    UIImage *newImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    newImg = [UIImage imageWithCGImage:[newImg CGImage] scale:[[UIScreen mainScreen] scale] orientation:newImg.imageOrientation];
+    return newImg;
+}
+
 #pragma mark -
 #pragma mark Scale and crop image
 
