@@ -120,7 +120,7 @@
                     action:@selector(fontSizeEditingChangedHandler:)
 //            forControlEvents:UIControlEventEditingDidEnd];
                     forControlEvents:UIControlEventEditingChanged];
-    self.modeControl.selectedSegmentIndex = 3;
+    self.modeControl.selectedSegmentIndex = 2;
     
 //    NSLog(@"My firebase config %d", [[NSNumber numberWithBool: [Firebase defaultConfig].persistenceEnabled] integerValue]);
     
@@ -265,8 +265,20 @@
 //    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
     
-    
 }
+
+- (void) setNavigationBottomBorderColor:(UIColor *)color height:(CGFloat) height {
+    UIView *oldBottomBorder = [self.navigationController.navigationBar viewWithTag:999];
+    if (oldBottomBorder) {
+        [oldBottomBorder removeFromSuperview];
+    }
+    CGRect bottomBorderRect = CGRectMake(0, CGRectGetHeight(self.navigationController.navigationBar.frame), CGRectGetWidth(self.navigationController.navigationBar.frame), height);
+    UIView *bottomBorder = [[UIView alloc] initWithFrame:bottomBorderRect];
+    bottomBorder.tag = 999;
+    [bottomBorder setBackgroundColor: color];
+    [self.navigationController.navigationBar addSubview:bottomBorder];
+}
+
 
 - (void) backButtonHandler
 {
@@ -288,6 +300,8 @@
                              [self.scrollViewButtonList setFrame: rect];
                          }
                          completion:NULL];
+        UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+        [self setNavigationBottomBorderColor: backgroundColor height: 0.5f];
         
         NSLog(@"Switch is ON");
     } else{
@@ -296,6 +310,7 @@
 //        [self.scrollViewButtonList setHidden: YES];
         CGRect rect = self.scrollViewButtonList.frame;
         rect.origin.y = -rect.size.height;
+        UIColor *darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
         
         [UIView animateWithDuration:0.3
                               delay:0.0
@@ -303,7 +318,9 @@
                          animations:^(void) {
                              [self.scrollViewButtonList setFrame: rect];
                          }
-                         completion:NULL];
+                         completion:^(BOOL finished){
+                             [self setNavigationBottomBorderColor: darkGrayBorderColor height: 0.5f];
+                         }];
     }
 }
 
@@ -313,6 +330,7 @@
     float h = 40;
     float w = 40;
     float padding = 10;
+    float paddingTop = 4;
     int n = 25;
     int nLeftButtons = 1;
     int nSegmentControl = 7;
@@ -320,20 +338,19 @@
     int nInsertButtons = 3;
     int paddingCounter = 1;
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+    UIColor *darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.frame = CGRectMake(0, - (h + 2 * padding), [[UIScreen mainScreen] bounds].size.width, h + 2 * padding);
+    scrollView.frame = CGRectMake(0, - (h + 2 * padding), [[UIScreen mainScreen] bounds].size.width, h + 2 * paddingTop);
     scrollView.contentSize = CGSizeMake((w + padding) * n, h);
     scrollView.backgroundColor = backgroundColor;
     [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
     CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.frame = CGRectMake(0.0f, scrollView.frame.size.height - 1.0f, scrollView.contentSize.width, 1.0f);
-    bottomBorder.backgroundColor = [[UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f] CGColor];
+    bottomBorder.frame = CGRectMake(0.0f, scrollView.frame.size.height - 1.0f, scrollView.contentSize.width, 0.5f);
+    bottomBorder.backgroundColor = [darkGrayBorderColor CGColor];
     [scrollView.layer addSublayer:bottomBorder];
     self.scrollViewButtonList = scrollView;
 
-    //TODO undo and redo buttons
-//    UIButton *undoButton = [[UIButton alloc] init];
     int i = 0;
     UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *undoImg = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"undo-arrow"] percentPadding: .15];
@@ -348,7 +365,7 @@
          forControlEvents:UIControlEventTouchUpInside];
     
     [undoButton setTitle:@"undo" forState:UIControlStateNormal];
-    undoButton.frame = CGRectMake(padding * (paddingCounter++) + ( (i-0) * w), padding, w, h);
+    undoButton.frame = CGRectMake(padding * (paddingCounter++) + ( (i-0) * w), paddingTop, w, h);
     undoButton.layer.cornerRadius = 5;
     undoButton.tintColor = self.view.tintColor;
     undoButton.layer.borderWidth = 1;
@@ -359,7 +376,7 @@
     // TODO create array of button model objects (e.g. name, image, tag number, action, visible)
     i = nLeftButtons;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
-    segmentControl.frame = CGRectMake(padding * paddingCounter++ + w * (i + 0), padding, w * nSegmentControl, h);
+    segmentControl.frame = CGRectMake(padding * paddingCounter++ + w * (i + 0), paddingTop, w * nSegmentControl, h);
     segmentControl.backgroundColor = backgroundColor;
     
     segmentControl.layer.cornerRadius = 5.0;
@@ -394,7 +411,7 @@
     
     i = nLeftButtons + nSegmentControl;
     UISegmentedControl *segmentControlFont = [[UISegmentedControl alloc] init];
-    segmentControlFont.frame = CGRectMake(padding * (nLeftButtons + 2) + w * (i + 0), padding, w * 2, h);
+    segmentControlFont.frame = CGRectMake(padding * (nLeftButtons + 2) + w * (i + 0), paddingTop, w * 2, h);
     segmentControlFont.backgroundColor = backgroundColor;
     segmentControlFont.layer.cornerRadius = 5.0;
     for (int i = 0; i < 2; i++) {
@@ -412,7 +429,7 @@
     
     i = nLeftButtons + nSegmentControl + nStyleButtons;
     UISegmentedControl *segmentControlInsert = [[UISegmentedControl alloc] init];
-    segmentControlInsert.frame = CGRectMake(padding * 4 + w * (i + 0), padding, w * 3, h);
+    segmentControlInsert.frame = CGRectMake(padding * 4 + w * (i + 0), paddingTop, w * 3, h);
     segmentControlInsert.backgroundColor = backgroundColor;
     segmentControlInsert.layer.cornerRadius = 5.0;
     for (int i = 0; i < 3; i++) {
@@ -445,7 +462,7 @@
           forControlEvents:UIControlEventTouchUpInside];
     
     [trashButton setTitle:@"trash" forState:UIControlStateNormal];
-    trashButton.frame = CGRectMake(padding * 5 + ( (i-0) * w), padding, w, h);
+    trashButton.frame = CGRectMake(padding * 5 + ( (i-0) * w), paddingTop, w, h);
     trashButton.layer.cornerRadius = 5;
     trashButton.tintColor = self.view.tintColor;
     trashButton.layer.borderWidth = 1;
