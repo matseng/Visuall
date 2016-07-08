@@ -35,6 +35,7 @@
                                                                             target:nil
                                                                             action:nil];
     
+    self.navigationController.navigationBar.translucent = NO;
     
 //    self.navigationController.navigationBar.topItem.title = @"";
 //    self.navigationItem.leftItemsSupplementBackButton = YES;

@@ -201,7 +201,6 @@
     segmentControl.frame = CGRectMake(0, 0, w * i, h);
     segmentControl.backgroundColor = backgroundColor;
     segmentControl.layer.cornerRadius = 0.0f;
-    
     segmentControl.layer.borderColor = backgroundColor.CGColor;
     segmentControl.layer.borderWidth = 2.0f;
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, segmentControl.frame.size.height), NO, 0.0);
@@ -242,21 +241,32 @@
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
 
 
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.height, h+2)];
-//    UIToolbar *toolbar = [[UIToolbar alloc] init];
+//    float totalHeight = [[UIScreen mainScreen] bounds].size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+//    NSLog(@"total height: %f", totalHeight);
+    
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
+//    toolbar.barTintColor = [UIColor clearColor];
+
     UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer30 setWidth:-30];
-    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    [negativeSpacer setWidth:-10];
+    UIBarButtonItem *negativeSpacer10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [negativeSpacer10 setWidth:-10];
     UIBarButtonItem *negativeSpacer5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer5 setWidth:-5];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [toolbar setItems:@[searchBarItem, editBarItem, segmentControlBarItem, starBarItem] animated:YES];
-    toolbar.clipsToBounds = YES;
+    
+//    [toolbar setItems:@[searchBarItem, editBarItem, segmentControlBarItem, starBarItem] animated:YES];
+    [toolbar setItems:@[backBarItem, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, negativeSpacer10, starBarItem] animated:YES];
+    
+//    toolbar.clipsToBounds = YES;
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
     
-    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
-
+//    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+    
+//    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
+    self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
+    
+    
 }
 
 - (void) backButtonHandler
@@ -290,7 +300,7 @@
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.frame = CGRectMake(0, 64, [[UIScreen mainScreen] bounds].size.width, h + 2 * padding);
+    scrollView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, h + 2 * padding);
     scrollView.contentSize = CGSizeMake((w + padding) * n, h);
     scrollView.backgroundColor = backgroundColor;
     [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
