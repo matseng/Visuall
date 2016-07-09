@@ -30,6 +30,30 @@
     return newImg;
 }
 
+- (UIImage *) imageWithRoundedCornersSize:(float)cornerRadius
+{
+    UIImage *original = self;
+    CGRect frame = CGRectMake(0, 0, original.size.width, original.size.height);
+    
+    // Begin a new image that will be the new image with the rounded corners
+    // (here with the size of an UIImageView)
+    UIGraphicsBeginImageContextWithOptions(original.size, NO, original.scale);
+    
+    // Add a clip before drawing anything, in the shape of an rounded rect
+    [[UIBezierPath bezierPathWithRoundedRect:frame
+                                cornerRadius:cornerRadius] addClip];
+    // Draw your image
+    [original drawInRect:frame];
+    
+    // Get the image, here setting the UIImageView image
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // Lets forget about that we were drawing
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
 #pragma mark -
 #pragma mark Scale and crop image
 

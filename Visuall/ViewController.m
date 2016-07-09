@@ -161,8 +161,10 @@
     self.navigationItem.leftItemsSupplementBackButton = NO;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *backImg = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"back"] percentPadding: .25];
-    backImg = [backImg imageByScalingAndCroppingForSize:CGSizeMake(30, h)];
+    UIImage *backImg = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"back"] percentPadding: .1];
+//    backImg = [UIImage imageNamed: @"back"];
+    backImg = [UIImage imageWithCGImage:backImg.CGImage scale:2.4 orientation:backImg.imageOrientation];
+    
     backImg = [backImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *backImgHilighted = [self makeImageFromImage: backImg withBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
     [backButton setImage:backImg forState:UIControlStateNormal];
@@ -211,19 +213,25 @@
                   rightSegmentState:UIControlStateNormal
                          barMetrics:UIBarMetricsDefault];
     
-    UIImage *reading = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Reading-50"] percentPadding: .1];
+//    UIImage *reading = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Reading-50"] percentPadding: .1];
+    UIImage *reading = [UIImage imageNamed: @"Reading-50"];
+    reading = [UIImage imageWithCGImage:reading.CGImage scale:1.7 orientation:reading.imageOrientation];
+    reading = [reading imageWithRoundedCornersSize:5.0f];
     [segmentControl insertSegmentWithImage:reading atIndex:0 animated:YES];
     
-    UIImage *sharing = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"User Groups-50"] percentPadding: .1];
+    UIImage *sharing = [UIImage imageNamed: @"User Groups-50"];
+    sharing = [UIImage imageWithCGImage:sharing.CGImage scale:1.5 orientation:sharing.imageOrientation];
     [segmentControl insertSegmentWithImage:sharing atIndex:1 animated:YES];
 
-    UIImage *info = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Info-50"] percentPadding: .1];
+    UIImage *info = [UIImage imageNamed: @"Info-50"];
+    info = [UIImage imageWithCGImage:info.CGImage scale:1.7 orientation:info.imageOrientation];
     [segmentControl insertSegmentWithImage:info atIndex:2 animated:YES];
 
     UIBarButtonItem *segmentControlBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
     
     UIButton *starButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *starImg = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Star-50"] percentPadding: .15];
+    UIImage *starImg = [UIImage imageNamed: @"Star-50"];
+    starImg = [UIImage imageWithCGImage:starImg.CGImage scale:1.6 orientation:starImg.imageOrientation];
     starImg = [starImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *starImgHilighted = [self makeImageFromImage: starImg withBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
     [starButton setImage:starImg forState:UIControlStateNormal];

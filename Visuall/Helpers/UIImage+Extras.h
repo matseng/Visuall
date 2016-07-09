@@ -14,4 +14,6 @@
 
 - (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize;
 
+- (UIImage *)imageWithRoundedCornersSize:(float) cornerRadius;
+
 @end
