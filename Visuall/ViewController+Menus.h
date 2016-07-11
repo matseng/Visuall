@@ -12,4 +12,6 @@
 
 - (void) createTopMenu;
 
+- (void) addHorizontalScrollingButtonList;
+
 @end

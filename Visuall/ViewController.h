@@ -13,6 +13,10 @@
 
 @property (nonatomic, strong) NSString *firebaseURL;
 
+@property (strong, nonatomic) IBOutlet UIView *Background;
+
+@property (strong, nonatomic) UIScrollView *scrollViewButtonList;
+
 - (void) backButtonHandler;
 
 - (void) switchChanged:(id) sender;

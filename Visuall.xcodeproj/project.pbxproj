@@ -338,7 +338,6 @@
 				71D96BD51D2DA58000CD1C49 /* Info-50.png */,
 				71D96BD71D2DA5A400CD1C49 /* Star-50.png */,
 				71C23F321D2217BB00D53E0C /* undo-arrow.png */,
-				71C23F341D221A7800D53E0C /* Trash-50.png */,
 				71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */,
 				71C23F211D21DF9900D53E0C /* cursorClick.png */,
 				71C23F271D21EF4800D53E0C /* textLetter.png */,
@@ -354,6 +353,7 @@
 				716328BA1D25F867009DF56B /* picture.png */,
 				716328B41D25F23E009DF56B /* photo-camera.png */,
 				716328B61D25F244009DF56B /* Attach-50.png */,
+				71C23F341D221A7800D53E0C /* Trash-50.png */,
 			);
 			name = "Button Icons";
 			sourceTree = "<group>";
