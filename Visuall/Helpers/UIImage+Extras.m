@@ -30,6 +30,26 @@
     return newImg;
 }
 
+- (UIImage*) makeImageWithBackgroundColor: (UIColor *) backgroundColor andForegroundColor: (UIColor *) foregroundColor
+{
+    //    const CGFloat margin = source.size.width * percentPadding;
+    //    CGSize size = CGSizeMake([source size].width + 2*margin, [source size].height + 2*margin);
+    UIImage *source = self;
+    CGSize size = source.size;
+    UIGraphicsBeginImageContext(size);
+    
+    [backgroundColor setFill];
+    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+    
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    [foregroundColor setFill];
+    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1];
+    
+    UIImage *testImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return testImg;
+}
+
 - (UIImage *) imageWithRoundedCornersSize:(float)cornerRadius
 {
     UIImage *original = self;

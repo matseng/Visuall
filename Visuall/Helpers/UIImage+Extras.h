@@ -12,6 +12,8 @@
 
 - (UIImage*)imageWithExtraPadding: (float) percentPadding;
 
+- (UIImage*) makeImageWithBackgroundColor: (UIColor *) backgroundColor andForegroundColor: (UIColor *) foregroundColor;
+
 - (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize;
 
 - (UIImage *)imageWithRoundedCornersSize:(float) cornerRadius;

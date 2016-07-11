@@ -53,7 +53,8 @@
 		71D96BEC1D301D8600CD1C49 /* alarm-bell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BEA1D301D8600CD1C49 /* alarm-bell@2x.png */; };
 		71D96BED1D301D8600CD1C49 /* light-bulb.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BEB1D301D8600CD1C49 /* light-bulb.png */; };
 		71D96BEF1D30347400CD1C49 /* light-bulb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D96BEE1D30347400CD1C49 /* light-bulb@2x.png */; };
-		71D96BF21D308D6300CD1C49 /* Menus.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BF11D308D6300CD1C49 /* Menus.m */; };
+		71D96BF81D30AEBD00CD1C49 /* Menus.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BF71D30AEBD00CD1C49 /* Menus.m */; };
+		71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -147,8 +148,10 @@
 		71D96BEA1D301D8600CD1C49 /* alarm-bell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alarm-bell@2x.png"; sourceTree = "<group>"; };
 		71D96BEB1D301D8600CD1C49 /* light-bulb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light-bulb.png"; sourceTree = "<group>"; };
 		71D96BEE1D30347400CD1C49 /* light-bulb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light-bulb@2x.png"; sourceTree = "<group>"; };
-		71D96BF01D308D6300CD1C49 /* Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
-		71D96BF11D308D6300CD1C49 /* Menus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menus.m; sourceTree = "<group>"; };
+		71D96BF61D30AEBD00CD1C49 /* Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
+		71D96BF71D30AEBD00CD1C49 /* Menus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menus.m; sourceTree = "<group>"; };
+		71D96BF91D342A4100CD1C49 /* ViewController+Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+Menus.h"; sourceTree = "<group>"; };
+		71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Menus.m"; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -233,10 +236,12 @@
 		712EC9561BEAF21500ED6803 /* Visuall */ = {
 			isa = PBXGroup;
 			children = (
-				71D96BF01D308D6300CD1C49 /* Menus.h */,
-				71D96BF11D308D6300CD1C49 /* Menus.m */,
 				71D96BDF1D2F030200CD1C49 /* UIImage+Extras.h */,
 				71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */,
+				71D96BF61D30AEBD00CD1C49 /* Menus.h */,
+				71D96BF71D30AEBD00CD1C49 /* Menus.m */,
+				71D96BF91D342A4100CD1C49 /* ViewController+Menus.h */,
+				71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */,
 				885AFD651C00217800F89DE5 /* model */,
 				712EC95B1BEAF21500ED6803 /* AppDelegate.h */,
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
@@ -552,6 +557,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
+				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
 				71D96BD01D2C66D000CD1C49 /* MyVisuallsDetailViewController.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
@@ -569,7 +575,7 @@
 				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,
 				71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */,
-				71D96BF21D308D6300CD1C49 /* Menus.m in Sources */,
+				71D96BF81D30AEBD00CD1C49 /* Menus.m in Sources */,
 				71D96BE11D2F030200CD1C49 /* UIImage+Extras.m in Sources */,
 				71D96BCA1D2C59AA00CD1C49 /* MyVisuallsViewController.m in Sources */,
 				716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */,

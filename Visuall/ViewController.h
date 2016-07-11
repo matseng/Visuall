@@ -13,5 +13,11 @@
 
 @property (nonatomic, strong) NSString *firebaseURL;
 
+- (void) backButtonHandler;
+
+- (void) switchChanged:(id) sender;
+
+- (void) buttonTapped: (id) sender;
+
 @end
 

@@ -1,28 +1,27 @@
 //
-//  Menus.m
+//  ViewController+Menus.m
 //  Visuall
 //
-//  Created by Michael Tseng MacBook on 7/8/16.
+//  Created by Michael Tseng MacBook on 7/11/16.
 //  Copyright © 2016 Visuall. All rights reserved.
 //
 
-#import "Menus.h"
+#import "ViewController+Menus.h"
 #import <UIKit/UIKit.h>
 #import "UIImage+Extras.h"
 #import "SevenSwitch.h"
 
-@implementation Menus
+@implementation ViewController (Menus)
 
-- (void) createTopMenu: (UIViewController *) this
+- (void) createTopMenu
 {
-
     float h = 42;
     float w = 42;
     float padding = 10;
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
-    UIColor *blueButtonColor = this.view.tintColor;
+    UIColor *blueButtonColor = self.view.tintColor;
     
-    this.navigationItem.leftItemsSupplementBackButton = NO;
+    self.navigationItem.leftItemsSupplementBackButton = NO;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *backImg = [[UIImage imageNamed: @"back"] imageWithExtraPadding: .1];
@@ -30,18 +29,18 @@
     backImg = [UIImage imageWithCGImage:backImg.CGImage scale:2.4 orientation:backImg.imageOrientation];
     
     backImg = [backImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *backImgHilighted = [backImg  makeImageWithBackgroundColor:this.view.tintColor andForegroundColor:backgroundColor];
+    UIImage *backImgHilighted = [backImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: backgroundColor];
     [backButton setImage:backImg forState:UIControlStateNormal];
     [backButton setImage:backImgHilighted forState:UIControlStateHighlighted];
-    [backButton addTarget:this
+    [backButton addTarget:self
                    action:@selector(backButtonHandler)
          forControlEvents:UIControlEventTouchUpInside];
     backButton.frame = CGRectMake(0, 0, 30, h);
     backButton.layer.cornerRadius = 5;
-    backButton.tintColor = this.view.tintColor;
+    backButton.tintColor = self.view.tintColor;
     backButton.layer.borderWidth = 0;
     backButton.layer.masksToBounds = YES;
-    [backButton.layer setBorderColor: [this.view.tintColor CGColor]];
+    [backButton.layer setBorderColor: [self.view.tintColor CGColor]];
     backButton.clipsToBounds = YES;
     UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
@@ -51,8 +50,8 @@
     searchBarItem.tag = 123;
     
     SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
-    mySwitch.center = CGPointMake(this.view.bounds.size.width * 0.5, this.view.bounds.size.height * 0.5);
-    [mySwitch addTarget:this action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
+    [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     mySwitch.offLabel.text = @"Edit";
     mySwitch.offLabel.textColor = blueButtonColor;
     mySwitch.onTintColor = blueButtonColor;
@@ -77,7 +76,7 @@
                   rightSegmentState:UIControlStateNormal
                          barMetrics:UIBarMetricsDefault];
     
-    //    UIImage *reading = [this imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Reading-50"] percentPadding: .1];
+    //    UIImage *reading = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Reading-50"] percentPadding: .1];
     UIImage *reading = [UIImage imageNamed: @"Reading-50"];
     reading = [UIImage imageWithCGImage:reading.CGImage scale:1.7 orientation:reading.imageOrientation];
     reading = [reading imageWithRoundedCornersSize:5.0f];
@@ -97,19 +96,19 @@
     UIImage *starImg = [UIImage imageNamed: @"Star-50"];
     starImg = [UIImage imageWithCGImage:starImg.CGImage scale:1.6 orientation:starImg.imageOrientation];
     starImg = [starImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *starImgHilighted = [starImg makeImageWithBackgroundColor:this.view.tintColor andForegroundColor:backgroundColor];
+    UIImage *starImgHilighted = [starImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor:backgroundColor];
     [starButton setImage:starImg forState:UIControlStateNormal];
     [starButton setImage:starImgHilighted forState:UIControlStateHighlighted];
-    [starButton addTarget:this
+    [starButton addTarget:self
                    action:@selector(buttonTapped:)
          forControlEvents:UIControlEventTouchUpInside];
     [starButton setTitle:@"star" forState:UIControlStateNormal];
     starButton.frame = CGRectMake(0, 0, w, h);
     starButton.layer.cornerRadius = 5;
-    starButton.tintColor = this.view.tintColor;
+    starButton.tintColor = self.view.tintColor;
     starButton.layer.borderWidth = 0;
     starButton.layer.masksToBounds = YES;
-    [starButton.layer setBorderColor: [this.view.tintColor CGColor]];
+    [starButton.layer setBorderColor: [self.view.tintColor CGColor]];
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
     
     
@@ -132,10 +131,10 @@
     //    toolbar.clipsToBounds = YES;
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
     
-    //    this.navigationController.navigationBar.barTintColor = [UIColor redColor];
+    //    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
     
-    //    this.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
-    this.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
+    //    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
+    self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
     
 }
 
