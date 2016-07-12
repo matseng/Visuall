@@ -26,7 +26,6 @@
 }
 //@property (strong, nonatomic) IBOutlet UIView *Background;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
-@property UIView *drawGroupView;
 @property CGPoint drawGroupViewStart;
 @property UIGestureRecognizer *panBackground;
 @property NSManagedObjectContext *moc;
@@ -89,10 +88,7 @@
     
     
     // Initialize the rectangle group selection view
-    self.drawGroupView = [[UIView alloc] init];
-    self.drawGroupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
-    self.drawGroupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
-    self.drawGroupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+    self.drawGroupView = [self initializeDrawGroupView];
   /*
     // Initlialize the mutable array that holds our group UIViews
     self.groupsCollection = [GroupsCollection new];
@@ -986,41 +982,6 @@
 {
     NSLog(@"Group(s) being pinched");
 }
-
-- (void) refreshGroupView
-{
-    // Sort by area of group view
-    NSArray *sortedArray;
-    
-    sortedArray = [self.groupsCollection.groups2 keysSortedByValueUsingComparator: ^(GroupItem *group1, GroupItem *group2) {
-
-        float firstArea = group1.group.width * group1.group.height;
-        float secondArea = group2.group.width * group2.group.height;
-        
-        if ( firstArea > secondArea ) {
-            
-            return (NSComparisonResult) NSOrderedAscending;
-        }
-        if ( firstArea < secondArea ) {
-            
-            return (NSComparisonResult) NSOrderedDescending;
-        }
-        
-        return (NSComparisonResult)NSOrderedSame;
-    }];
-
-    for (NSString *key in sortedArray) {
-        float area = [self.groupsCollection getGroupAreaFromKey:key];
-        NSLog(@"Group area: %f", area);
-        [self.groupsCollection.groups2[key] removeFromSuperview];
-        [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
-    }
-    
-    [self.drawGroupView setFrame:(CGRect){0,0,0,0}];
-    [self.drawGroupView removeFromSuperview];
-
-}
-
 
 -(void)myWrapper:(UIPanGestureRecognizer *)gestureRecognizer
 {

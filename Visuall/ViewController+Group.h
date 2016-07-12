@@ -10,6 +10,8 @@
 
 @interface ViewController (Group)
 
+- (UIView *) initializeDrawGroupView;
+
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem;
 
 - (void) setItemsInGroup: (GroupItem *) groupItem;

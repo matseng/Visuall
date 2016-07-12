@@ -8,7 +8,22 @@
 
 #import "ViewController+Group.h"
 
+#define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
+#define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
+#define GROUP_VIEW_BORDER_WIDTH 1.0
+#define SELECTED_VIEW_BORDER_COLOR [[UIColor blueColor] CGColor]
+#define SELECTED_VIEW_BORDER_WIDTH 2.0
+
 @implementation ViewController (Group)
+
+- (UIView *) initializeDrawGroupView
+{
+    UIView *drawGroupView = [[UIView alloc] init];
+    drawGroupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
+    drawGroupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
+    drawGroupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+    return drawGroupView;
+}
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
@@ -123,6 +138,40 @@
     
     [groupItem setNotesInGroup: notesInGroup];
     [groupItem setGroupsInGroup:groupsInGroup];
+}
+
+- (void) refreshGroupView
+{
+    // Sort by area of group view
+    NSArray *sortedArray;
+    
+    sortedArray = [self.groupsCollection.groups2 keysSortedByValueUsingComparator: ^(GroupItem *group1, GroupItem *group2) {
+        
+        float firstArea = group1.group.width * group1.group.height;
+        float secondArea = group2.group.width * group2.group.height;
+        
+        if ( firstArea > secondArea ) {
+            
+            return (NSComparisonResult) NSOrderedAscending;
+        }
+        if ( firstArea < secondArea ) {
+            
+            return (NSComparisonResult) NSOrderedDescending;
+        }
+        
+        return (NSComparisonResult)NSOrderedSame;
+    }];
+    
+    for (NSString *key in sortedArray) {
+        float area = [self.groupsCollection getGroupAreaFromKey:key];
+        NSLog(@"Group area: %f", area);
+        [self.groupsCollection.groups2[key] removeFromSuperview];
+        [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
+    }
+    
+    [self.drawGroupView setFrame:(CGRect){0,0,0,0}];
+    [self.drawGroupView removeFromSuperview];
+    
 }
 
 

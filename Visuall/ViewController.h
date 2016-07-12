@@ -28,6 +28,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *GroupsView;
 
+@property UIView *drawGroupView;
+
 @property (weak, nonatomic) IBOutlet UIView *NotesView;
 
 - (BOOL) setSelectedObject:(UIView *) object;
@@ -46,7 +48,7 @@
 
 //- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem;
 
-- (void) refreshGroupView;
+//- (void) refreshG roupView;
 
 - (void) setTransformFirebase;
 
