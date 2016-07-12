@@ -56,6 +56,7 @@
 		71D96BF81D30AEBD00CD1C49 /* Menus.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BF71D30AEBD00CD1C49 /* Menus.m */; };
 		71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */; };
 		71D96BFE1D34791100CD1C49 /* ViewController+panHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96BFD1D34791100CD1C49 /* ViewController+panHandler.m */; };
+		71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -155,6 +156,8 @@
 		71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Menus.m"; sourceTree = "<group>"; };
 		71D96BFC1D34791100CD1C49 /* ViewController+panHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+panHandler.h"; sourceTree = "<group>"; };
 		71D96BFD1D34791100CD1C49 /* ViewController+panHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+panHandler.m"; sourceTree = "<group>"; };
+		71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+ViewHit.h"; sourceTree = "<group>"; };
+		71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+ViewHit.m"; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -245,6 +248,8 @@
 				71D96BF71D30AEBD00CD1C49 /* Menus.m */,
 				71D96BF91D342A4100CD1C49 /* ViewController+Menus.h */,
 				71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */,
+				71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */,
+				71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */,
 				71D96BFC1D34791100CD1C49 /* ViewController+panHandler.h */,
 				71D96BFD1D34791100CD1C49 /* ViewController+panHandler.m */,
 				885AFD651C00217800F89DE5 /* model */,
@@ -574,6 +579,7 @@
 				885AFD621C00215300F89DE5 /* Note.m in Sources */,
 				88ED06281C06237300C0486D /* Group+CoreDataProperties.m in Sources */,
 				713D0D601CC6AE4F00878EAE /* Group2.m in Sources */,
+				71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				71B8586B1CEBD69C00135BE5 /* FirebaseHelper.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,

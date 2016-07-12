@@ -16,6 +16,6 @@
 
 - (BOOL) isEditModeOn;
 
-- (BOOL) isDrawGroupSelected;
+- (BOOL) isDrawGroupButtonSelected;
 
 @end

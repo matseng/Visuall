@@ -11,16 +11,22 @@
 #import "NoteItem2.h"
 #import "GroupItem.h"
 #import "TransformUtil.h"
+#import "ViewController+ViewHit.h"
 
 @implementation ViewController (panHandler)
 
-
+/*
+ * Name: panHandler
+ * @param {type}
+ * @return {type}
+ * Notes:
+ */
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer
 {
     
     
 //    if (self.modeControl.selectedSegmentIndex == 2)
-    if ([self isDrawGroupSelected])
+    if ( [self isDrawGroupButtonSelected] )
     {
         [self drawGroup: gestureRecognizer];
         return;

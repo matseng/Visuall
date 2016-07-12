@@ -36,8 +36,6 @@
 
 - (void) buttonTapped: (id) sender;
 
-- (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer;
-
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer;
 
 - (void) setItemsInGroup: (GroupItem *) groupItem;

@@ -374,7 +374,7 @@ SevenSwitch *editSwitch;
     return [editSwitch isOn];
 }
 
-- (BOOL) isDrawGroupSelected
+- (BOOL) isDrawGroupButtonSelected
 {
     return NO;
 }
