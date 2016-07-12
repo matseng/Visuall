@@ -7,6 +7,10 @@
 //
 
 #import "ViewController+panHandler.h"
+#import "ViewController+Menus.h"
+#import "NoteItem2.h"
+#import "GroupItem.h"
+#import "TransformUtil.h"
 
 @implementation ViewController (panHandler)
 
@@ -15,7 +19,8 @@
 {
     
     
-    if (self.modeControl.selectedSegmentIndex == 2)
+//    if (self.modeControl.selectedSegmentIndex == 2)
+    if ([self isDrawGroupSelected])
     {
         [self drawGroup: gestureRecognizer];
         return;
@@ -34,12 +39,14 @@
             [nv handlePan:gestureRecognizer];
             [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
             return;
-        } else if ( viewHit.tag == 100 && self.modeControl.selectedSegmentIndex != 2)
+//        } else if ( viewHit.tag == 100 && self.modeControl.selectedSegmentIndex != 2)
+        } else if ( viewHit.tag == 100)
         {
             GroupItem  *gi = (GroupItem *) [viewHit superview];
             [self setSelectedObject:gi];
             [self setItemsInGroup:gi];
-        } else if ( viewHit.tag == 777 && self.modeControl.selectedSegmentIndex != 2)
+//        } else if ( viewHit.tag == 777 && self.modeControl.selectedSegmentIndex != 2)
+        } else if ( viewHit.tag == 777)
         {
             [self setSelectedObject:viewHit];  // TODO, still should highlight current group
         } else
@@ -48,12 +55,12 @@
         }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        if ([self.lastSelectedObject isKindOfClass: [NoteItem2 class]])
+        if ([self.lastSelectedObject isKindOfClass: [NoteItem2 class]] && [self isEditModeOn])
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];
             [self updateChildValues:ni Property1:@"x" Property2:@"y"];
-        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
+        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]] && [self isEditModeOn])
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
             [self handlePanGroup: gestureRecognizer andGroupItem:gi];
@@ -72,7 +79,7 @@
         }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        if ([viewHit isEqual:self.Background] || [viewHit isEqual:self.NotesView] || [viewHit isEqual:self.GroupsView])
+        if ([viewHit isEqual:self.Background] || [viewHit isEqual: self.NotesView] || [viewHit isEqual: self.GroupsView])
         {
             [self setTransformFirebase];
         }

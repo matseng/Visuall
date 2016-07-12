@@ -17,7 +17,7 @@
 
 @implementation ViewController (Menus)
 
-
+SevenSwitch *editSwitch;
 
 - (void) createTopMenu
 {
@@ -56,6 +56,7 @@
     searchBarItem.tag = 123;
     
     SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
+    editSwitch = mySwitch;
     mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
     [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     mySwitch.offLabel.text = @"Edit";
@@ -315,9 +316,67 @@
     //    [scrollView setHidden:YES];
 }
 
-- (BOOL) editModeOn
+- (void) switchChanged:(id) sender
 {
-    
+    if([sender isOn]){
+        // Execute any code when the switch is ON
+        [self.scrollViewButtonList setHidden: NO];
+        
+        CGRect rect = self.scrollViewButtonList.frame;
+        rect.origin.y = 0;
+        
+        [UIView animateWithDuration:0.3
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseIn
+                         animations:^(void) {
+                             [self.scrollViewButtonList setFrame: rect];
+                         }
+                         completion:NULL];
+        UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+        [self setNavigationBottomBorderColor: backgroundColor height: 0.5f];
+        
+        NSLog(@"Switch is ON");
+    } else{
+        // Execute any code when the switch is OFF
+        NSLog(@"Switch is OFF");
+        //        [self.scrollViewButtonList setHidden: YES];
+        CGRect rect = self.scrollViewButtonList.frame;
+        rect.origin.y = -rect.size.height;
+        UIColor *darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
+        
+        [UIView animateWithDuration:0.3
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^(void) {
+                             [self.scrollViewButtonList setFrame: rect];
+                         }
+                         completion:^(BOOL finished){
+                             [self setNavigationBottomBorderColor: darkGrayBorderColor height: 0.5f];
+                         }];
+    }
+}
+
+
+- (void) setNavigationBottomBorderColor:(UIColor *)color height:(CGFloat) height {
+    UIView *oldBottomBorder = [self.navigationController.navigationBar viewWithTag:999];
+    if (oldBottomBorder) {
+        [oldBottomBorder removeFromSuperview];
+    }
+    CGRect bottomBorderRect = CGRectMake(0, CGRectGetHeight(self.navigationController.navigationBar.frame), CGRectGetWidth(self.navigationController.navigationBar.frame), height);
+    UIView *bottomBorder = [[UIView alloc] initWithFrame:bottomBorderRect];
+    bottomBorder.tag = 999;
+    [bottomBorder setBackgroundColor: color];
+    [self.navigationController.navigationBar addSubview:bottomBorder];
+}
+
+- (BOOL) isEditModeOn
+{
+    return [editSwitch isOn];
+}
+
+- (BOOL) isDrawGroupSelected
+{
+    return NO;
 }
 
 @end

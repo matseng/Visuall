@@ -14,6 +14,8 @@
 
 - (void) addHorizontalScrollingButtonList;
 
-- (BOOL) editModeOn;
+- (BOOL) isEditModeOn;
+
+- (BOOL) isDrawGroupSelected;
 
 @end

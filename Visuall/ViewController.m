@@ -8,31 +8,24 @@
 
 #import "ViewController.h"
 #import "Note.h"
-#import "NotesCollection.h"
 #import "NoteItem.h"
 #import "NoteItem2.h"
 #import "TransformUtil.h"
-#import "GroupItem.h"
-#import "GroupsCollection.h"
 #import "AppDelegate.h"
 #import "TouchDownGestureRecognizer.h"
 #import "SevenSwitch.h"
 #import "UIImage+Extras.h"
 #import "Menus.h"
 #import "ViewController+Menus.h"
+#import "ViewController+panHandler.h"
 
 @interface ViewController () <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer;
 }
 //@property (strong, nonatomic) IBOutlet UIView *Background;
-@property (weak, nonatomic) IBOutlet UIView *GroupsView;
-@property (weak, nonatomic) IBOutlet UIView *NotesView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
 @property UIView *drawGroupView;
-@property GroupsCollection *groupsCollection;
 @property CGPoint drawGroupViewStart;
-@property NotesCollection *NotesCollection;
-@property UIView *lastSelectedObject;
 @property UIGestureRecognizer *panBackground;
 @property NSManagedObjectContext *moc;
 @property (strong, nonatomic) IBOutlet UIView *GestureView;
@@ -149,63 +142,9 @@
     
 }
 
-
-- (void) setNavigationBottomBorderColor:(UIColor *)color height:(CGFloat) height {
-    UIView *oldBottomBorder = [self.navigationController.navigationBar viewWithTag:999];
-    if (oldBottomBorder) {
-        [oldBottomBorder removeFromSuperview];
-    }
-    CGRect bottomBorderRect = CGRectMake(0, CGRectGetHeight(self.navigationController.navigationBar.frame), CGRectGetWidth(self.navigationController.navigationBar.frame), height);
-    UIView *bottomBorder = [[UIView alloc] initWithFrame:bottomBorderRect];
-    bottomBorder.tag = 999;
-    [bottomBorder setBackgroundColor: color];
-    [self.navigationController.navigationBar addSubview:bottomBorder];
-}
-
-
 - (void) backButtonHandler
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void) switchChanged:(id) sender
-{
-    if([sender isOn]){
-        // Execute any code when the switch is ON
-        [self.scrollViewButtonList setHidden: NO];
-        
-        CGRect rect = self.scrollViewButtonList.frame;
-        rect.origin.y = 0;
-        
-        [UIView animateWithDuration:0.3
-                              delay:0.0
-                            options:UIViewAnimationOptionCurveEaseIn
-                         animations:^(void) {
-                             [self.scrollViewButtonList setFrame: rect];
-                         }
-                         completion:NULL];
-        UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
-        [self setNavigationBottomBorderColor: backgroundColor height: 0.5f];
-        
-        NSLog(@"Switch is ON");
-    } else{
-        // Execute any code when the switch is OFF
-        NSLog(@"Switch is OFF");
-//        [self.scrollViewButtonList setHidden: YES];
-        CGRect rect = self.scrollViewButtonList.frame;
-        rect.origin.y = -rect.size.height;
-        UIColor *darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
-        
-        [UIView animateWithDuration:0.3
-                              delay:0.0
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^(void) {
-                             [self.scrollViewButtonList setFrame: rect];
-                         }
-                         completion:^(BOOL finished){
-                             [self setNavigationBottomBorderColor: darkGrayBorderColor height: 0.5f];
-                         }];
-    }
 }
 
 - (UIImage*) makeImageFromImage:(UIImage*) source withBackgroundColor: (UIColor *) backgroundColor andForegroundColor: (UIColor *) foregroundColor
@@ -1171,7 +1110,7 @@
 }
 
 
-- (BOOL)setSelectedObject:(UIView *)object
+- (BOOL)setSelectedObject:(UIView *) object
 {
     if (self.lastSelectedObject) {
         if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]])

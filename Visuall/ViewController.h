@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Firebase/Firebase.h>
+#import "GroupItem.h"
+#import "NotesCollection.h"
+#import "GroupsCollection.h"
 
 @interface ViewController : UIViewController
 
@@ -17,11 +20,37 @@
 
 @property (strong, nonatomic) UIScrollView *scrollViewButtonList;
 
+@property NotesCollection *NotesCollection;
+
+@property GroupsCollection *groupsCollection;
+
+@property UIView *lastSelectedObject;
+
+@property (weak, nonatomic) IBOutlet UIView *GroupsView;
+
+@property (weak, nonatomic) IBOutlet UIView *NotesView;
+
+- (BOOL) setSelectedObject:(UIView *) object;
+
 - (void) backButtonHandler;
 
-- (void) switchChanged:(id) sender;
-
 - (void) buttonTapped: (id) sender;
+
+- (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer;
+
+- (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer;
+
+- (void) setItemsInGroup: (GroupItem *) groupItem;
+
+- (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName;
+
+- (void) updateChildValues: (id) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
+
+- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem;
+
+- (void) refreshGroupView;
+
+- (void) setTransformFirebase;
 
 @end
 
