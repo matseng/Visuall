@@ -38,13 +38,13 @@
 
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer;
 
-- (void) setItemsInGroup: (GroupItem *) groupItem;
+//- (void) setItemsInGroup: (GroupItem *) groupItem;
 
 - (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName;
 
 - (void) updateChildValues: (id) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
 
-- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem;
+//- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem;
 
 - (void) refreshGroupView;
 

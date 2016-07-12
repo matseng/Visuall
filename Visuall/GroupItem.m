@@ -159,7 +159,6 @@
         
         [[TransformUtil sharedManager] transformGroupItem: self];
         
-        
         for (NoteItem *ni in self.notesInGroup) {
             [ni translateTx: translation.x andTy:translation.y];
         }

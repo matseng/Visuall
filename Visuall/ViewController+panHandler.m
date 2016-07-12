@@ -12,6 +12,7 @@
 #import "GroupItem.h"
 #import "TransformUtil.h"
 #import "ViewController+ViewHit.h"
+#import "ViewController+Group.h"
 
 @implementation ViewController (panHandler)
 
@@ -23,9 +24,6 @@
  */
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    
-    
-//    if (self.modeControl.selectedSegmentIndex == 2)
     if ( [self isDrawGroupButtonSelected] )
     {
         [self drawGroup: gestureRecognizer];
@@ -34,8 +32,6 @@
     
     UIView *viewHit  = [self getViewHit:gestureRecognizer];
     if (!viewHit) return;  // e.g. if viewHit is scrollViewButtonList then return
-    //    NSLog(@"panHandler pan began, viewHit: %@", [viewHit class]);
-    //    NSLog(@"viewHit.tag %li", (long) viewHit.tag);
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
@@ -45,13 +41,11 @@
             [nv handlePan:gestureRecognizer];
             [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
             return;
-//        } else if ( viewHit.tag == 100 && self.modeControl.selectedSegmentIndex != 2)
         } else if ( viewHit.tag == 100)
         {
             GroupItem  *gi = (GroupItem *) [viewHit superview];
             [self setSelectedObject:gi];
             [self setItemsInGroup:gi];
-//        } else if ( viewHit.tag == 777 && self.modeControl.selectedSegmentIndex != 2)
         } else if ( viewHit.tag == 777)
         {
             [self setSelectedObject:viewHit];  // TODO, still should highlight current group
@@ -74,12 +68,11 @@
         } else if ( self.lastSelectedObject.tag == 777)
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
-            [gi resizeGroup:gestureRecognizer];
+            [gi resizeGroup: gestureRecognizer];
             [self refreshGroupView];
             [self updateChildValues:gi Property1:@"width" Property2:@"height"];
         } else
         {
-            //            [self handlePanBackground:gestureRecognizer];
             [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
             
         }

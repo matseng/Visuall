@@ -19,6 +19,7 @@
 #import "ViewController+Menus.h"
 #import "ViewController+ViewHit.h"
 #import "ViewController+panHandler.h"
+#import "ViewController+Group.h"
 
 @interface ViewController () <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer;
@@ -525,64 +526,6 @@
     return NO;
 }
 
-- (void) handlePanGestureView:(UIPanGestureRecognizer *) gestureRecognizer
-{
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
-    {
-        UIView *viewHit = [self getViewHit:gestureRecognizer];
-//        NSLog(@"viewHit %@", [viewHit class]);
-//        NSLog(@"tag %ld", (long)viewHit.tag);
-//        NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
-        if ( [viewHit isKindOfClass: [NoteItem class]] ) {
-            NoteItem *nv = (NoteItem *) viewHit;
-            [self setSelectedObject:nv];
-            [nv handlePan2:gestureRecognizer];
-//        } else if ( [[viewHit superview] isKindOfClass: [GroupItem class]] &&
-        } else if ( viewHit.tag == 100 &&
-                   self.modeControl.selectedSegmentIndex != 2) {
-            GroupItem  *gi = (GroupItem *) [viewHit superview];
-            [self setSelectedObject:gi];
-            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
-        } else if ( viewHit.tag == 777 &&
-                  self.modeControl.selectedSegmentIndex != 2) {
-//            GroupItem  *gi = (GroupItem *) [viewHit superview];
-            
-            [self setSelectedObject:viewHit];  // TODO, still should highlight current group
-        } else {
-            [self handlePanBackground:gestureRecognizer];
-            [self setSelectedObject:nil];
-        }
-    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
-    {
-        if ([self.lastSelectedObject isKindOfClass:[ NoteItem class]])
-        {
-            NoteItem *ni = (NoteItem*) self.lastSelectedObject;
-            [ni handlePan2:gestureRecognizer];
-            [ni saveToCoreData];
-            
-        } else if ( [self.lastSelectedObject isKindOfClass: [GroupItem class]] &&
-                   self.modeControl.selectedSegmentIndex != 2)
-        {
-            GroupItem *gi = (GroupItem*) self.lastSelectedObject;
-            [self handlePanGroup:gestureRecognizer andGroupItem:gi];
-            [gi saveToCoreData];
-        } else if (self.lastSelectedObject.tag == 777)
-        {
-            GroupItem  *gi = (GroupItem *) [self.lastSelectedObject superview];
-            [gi resizeGroup: gestureRecognizer];
-        }
-        else {
-            [self handlePanBackground:gestureRecognizer];
-        }
-    } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
-        [self handlePanBackground:gestureRecognizer];
-    } else
-    {
-//        [self setSelectedObject:nil];
-    }
-}
-
 - (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
     [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection andGroups: self.groupsCollection];
@@ -709,122 +652,6 @@
         [self setSelectedObject:ni];
 //        [ni saveToCoreData];
     }
-}
-
-
-- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
-{
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
-    {
-        NSLog(@"Handle pan group began");
-    }
-    
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
-        NSLog(@"Handle pan group ended");
-    }
-    
-    if (gestureRecognizer.state == 0)
-    {
-        NSLog(@"Pan possible");
-    } else if (gestureRecognizer.state == 1)
-    {
-        NSLog(@"Pan began");
-    } else if (gestureRecognizer.state == 2)
-    {
-        NSLog(@"Pan changed I think");
-    }
-    
-    if (self.modeControl.selectedSegmentIndex == 2)
-    {
-        return;
-    }
-    
-    if (!groupItem) {
-        groupItem = (GroupItem *)gestureRecognizer.view;
-    }
-
-
-    CGPoint location = [gestureRecognizer locationInView: self.Background];
-    UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
-//    NSLog(@"viewHit tag %li", viewHit.tag);
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-
-        if (viewHit.tag == 777)
-        {
-//            self.lastSelectedObject = viewHit;
-            [self setLastSelectedObject:viewHit];
-            return;
-        }
-
-        [self setSelectedObject:groupItem];
-        NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
-        NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
-        for (NoteItem2 *ni in self.NotesCollection.Notes) {
-            if ([groupItem isNoteInGroup:ni]) {
-//                NSLog(@"Note name in group: %@", ni.note.title);
-                [notesInGroup addObject:ni];
-            }
-        }
-        for (GroupItem *gi in self.groupsCollection.groups) {
-            if ([groupItem isGroupInGroup:gi]) {
-                [groupsInGroup addObject:gi];
-            }
-        }
-        [groupItem setNotesInGroup: notesInGroup];
-        [groupItem setGroupsInGroup:groupsInGroup];
-    }
-    
-    if (self.lastSelectedObject.tag == 777)
-    {
-        GroupItem *gi = (id) self.lastSelectedObject.superview;
-        [gi resizeGroup:gestureRecognizer];
-    } else if ( [groupItem respondsToSelector:@selector(handlePanGroup2:)] )
-    {
-        [groupItem handlePanGroup2:gestureRecognizer];
-        
-        [self updateChildValues:groupItem Property1:@"x" Property2:@"y"];
-        for (NoteItem2 *ni2 in groupItem.notesInGroup) {
-            [self updateChildValues: ni2 Property1:@"x" Property2:@"y"];
-        }
-        for (GroupItem *gi in groupItem.groupsInGroup) {
-            [self updateChildValues: gi Property1:@"x" Property2:@"y"];
-        }
-
-    }
-}
-
-- (void) setItemsInGroup: (GroupItem *) groupItem
-{
-    NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
-    NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
-
-    //    for (NoteItem *ni in self.NotesCollection.Notes) {
-//        if ([groupItem isNoteInGroup:ni]) {
-//            //                NSLog(@"Note name in group: %@", ni.note.title);
-//            [notesInGroup addObject:ni];
-//        }
-//    }
-//    for (GroupItem *gi in self.groupsCollection.groups) {
-//        if ([groupItem isGroupInGroup:gi]) {
-//            [groupsInGroup addObject:gi];
-//        }
-//    }
-    [self.NotesCollection myForIn:^(NoteItem2 *ni)
-    {
-        if ([groupItem isNoteInGroup:ni]) {
-          [notesInGroup addObject:ni];
-        }
-    }];
-    
-    [self.groupsCollection myForIn:^(GroupItem *gi){
-        if ([groupItem isGroupInGroup:gi]) {
-            [groupsInGroup addObject:gi];
-        }
-    }];
-    
-    [groupItem setNotesInGroup: notesInGroup];
-    [groupItem setGroupsInGroup:groupsInGroup];
 }
 
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer
