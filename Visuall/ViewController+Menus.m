@@ -13,7 +13,11 @@
 
 //@property UIScrollView *scrollViewButtonList;
 
+
+
 @implementation ViewController (Menus)
+
+
 
 - (void) createTopMenu
 {
@@ -309,6 +313,11 @@
     [self.Background addSubview: scrollView];
     
     //    [scrollView setHidden:YES];
+}
+
+- (BOOL) editModeOn
+{
+    
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-//  ViewController+Menus.h
+//  ViewController+panHandler.h
 //  Visuall
 //
 //  Created by Michael Tseng MacBook on 7/11/16.
@@ -8,12 +8,8 @@
 
 #import "ViewController.h"
 
-@interface ViewController (Menus)
+@interface ViewController (panHandler)
 
-- (void) createTopMenu;
-
-- (void) addHorizontalScrollingButtonList;
-
-- (BOOL) editModeOn;
+- (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer;
 
 @end
