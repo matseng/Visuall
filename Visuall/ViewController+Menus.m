@@ -34,9 +34,7 @@ UISegmentedControl *segmentControlSubmenu;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *backImg = [[UIImage imageNamed: @"back"] imageWithExtraPadding: .1];
-    //    backImg = [UIImage imageNamed: @"back"];
     backImg = [UIImage imageWithCGImage:backImg.CGImage scale:2.4 orientation:backImg.imageOrientation];
-    
     backImg = [backImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *backImgHilighted = [backImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: backgroundColor];
     [backButton setImage:backImg forState:UIControlStateNormal];
@@ -281,11 +279,20 @@ UISegmentedControl *segmentControlSubmenu;
     [scrollView addSubview: segmentControlInsert];
     
     i = nLeftButtons + nSegmentControl + nStyleButtons + nInsertButtons;
-    UIButton *trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *trashImg = [[UIImage imageNamed: @"Trash-50"] imageWithExtraPadding: .15];
-    trashImg = [trashImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *trashImgHilighted = [trashImg makeImageWithBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
     
+//    UIButton *trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    UIImage *trashImg = [[UIImage imageNamed: @"Trash-50"] imageWithExtraPadding: .15];
+//    trashImg = [trashImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    UIImage *trashImgHilighted = [trashImg makeImageWithBackgroundColor:self.view.tintColor andForegroundColor:backgroundColor];
+//    
+//    [trashButton setImage:trashImg forState:UIControlStateNormal];
+//    [trashButton setImage:trashImgHilighted forState:UIControlStateHighlighted];
+//    
+    UIButton *trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *trashImg = [[UIImage imageNamed: @"Trash-50"] imageWithExtraPadding: 0.25];
+    trashImg = [UIImage imageWithCGImage:trashImg.CGImage scale:1.0 orientation:trashImg.imageOrientation];
+    trashImg = [trashImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *trashImgHilighted = [trashImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: backgroundColor];
     [trashButton setImage:trashImg forState:UIControlStateNormal];
     [trashButton setImage:trashImgHilighted forState:UIControlStateHighlighted];
     
@@ -294,7 +301,7 @@ UISegmentedControl *segmentControlSubmenu;
           forControlEvents:UIControlEventTouchUpInside];
     
     [trashButton setTitle:@"trash" forState:UIControlStateNormal];
-    trashButton.frame = CGRectMake(padding * 5 + ( (i-0) * w), paddingTop, w, h);
+    trashButton.frame = CGRectMake(padding * 5 + ( (i-0) * w), paddingTop, w + w/2, h);
     trashButton.layer.cornerRadius = 5;
     trashButton.tintColor = self.view.tintColor;
     trashButton.layer.borderWidth = 1;
@@ -348,9 +355,7 @@ UISegmentedControl *segmentControlSubmenu;
         
         NSLog(@"Switch is ON");
     } else{
-        // Execute any code when the switch is OFF
         NSLog(@"Switch is OFF");
-        //        [self.scrollViewButtonList setHidden: YES];
         CGRect rect = self.scrollViewButtonList.frame;
         rect.origin.y = -rect.size.height;
         UIColor *darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];

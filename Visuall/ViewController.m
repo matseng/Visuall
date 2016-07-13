@@ -811,7 +811,6 @@
 
     if ([object isKindOfClass:[NoteItem2 class]]) {
         NoteItem2 *noteToSet = (NoteItem2 *)object;
-//        [noteToSet saveToCoreData];  // TODO
 //        [noteToSet setBorderStyle:UITextBorderStyleRoundedRect];
         self.lastSelectedObject = noteToSet;
         visualObject = noteToSet;
