@@ -11,6 +11,7 @@
 #import "UIImage+Extras.h"
 #import "SevenSwitch.h"
 #import "UISegmentedControl+MyTitle.h"
+#import "ViewController+panHandler.h"
 
 //@property UIScrollView *scrollViewButtonList;
 
@@ -21,6 +22,7 @@
 SevenSwitch *editSwitch;
 UISegmentedControl *segmentControlTopMenu;
 UISegmentedControl *segmentControlSubmenu;
+
 
 - (void) createTopMenu
 {
@@ -174,6 +176,11 @@ UISegmentedControl *segmentControlSubmenu;
     [scrollView.layer addSublayer:bottomBorder];
     self.scrollViewButtonList = scrollView;
     
+//    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
+//                                             initWithTarget:self
+//                                             action:@selector(panHandlerForScrollViewButtonList:)];
+//    [self.scrollViewButtonList addGestureRecognizer: pan];
+    
     int i = 0;
     UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *undoImg = [[UIImage imageNamed: @"undo-arrow"] imageWithExtraPadding: .15];
@@ -301,7 +308,7 @@ UISegmentedControl *segmentControlSubmenu;
           forControlEvents:UIControlEventTouchUpInside];
     
     [trashButton setTitle:@"trash" forState:UIControlStateNormal];
-    trashButton.frame = CGRectMake(padding * 5 + ( (i-0) * w), paddingTop, w + w/2, h);
+    trashButton.frame = CGRectMake(padding * 5 + ( (i-0) * w), paddingTop, w, h);
     trashButton.layer.cornerRadius = 5;
     trashButton.tintColor = self.view.tintColor;
     trashButton.layer.borderWidth = 1;

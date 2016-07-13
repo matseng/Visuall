@@ -26,6 +26,8 @@
 
 @property UIView *lastSelectedObject;
 
+@property UIView *activelySelectedObjectDuringPan;
+
 @property (weak, nonatomic) IBOutlet UIView *GroupsView;
 
 @property UIView *drawGroupView;

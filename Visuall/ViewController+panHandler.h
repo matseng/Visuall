@@ -12,4 +12,6 @@
 
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer;
 
+- (void) panHandlerForScrollViewButtonList: (UIPanGestureRecognizer *) gestureRecognizer;
+
 @end

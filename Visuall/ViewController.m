@@ -10,6 +10,7 @@
 #import "Note.h"
 #import "NoteItem.h"
 #import "NoteItem2.h"
+#import "UIView+VisualItem.h"
 #import "TransformUtil.h"
 #import "AppDelegate.h"
 #import "TouchDownGestureRecognizer.h"
@@ -56,7 +57,6 @@
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                              initWithTarget:self
-//                                  action:@selector(handlePanBackground:)];
                                              action:@selector(panHandler:)];
     self.panBackground = panBackground;
     [self.Background addGestureRecognizer: panBackground];
@@ -788,7 +788,6 @@
     }
 }
 
-
 - (BOOL)setSelectedObject:(UIView *) object
 {
     if (self.lastSelectedObject) {
@@ -809,14 +808,14 @@
     
     UIView *visualObject = [[UIView alloc] init];
 
-    if ([object isKindOfClass:[NoteItem2 class]]) {
-        NoteItem2 *noteToSet = (NoteItem2 *)object;
-//        [noteToSet setBorderStyle:UITextBorderStyleRoundedRect];
+
+    if ( [object isNoteItem] )
+    {
+        NoteItem2 *noteToSet = [object getNoteItem];
         self.lastSelectedObject = noteToSet;
         visualObject = noteToSet;
     } else if ([object isKindOfClass:[GroupItem class]]) {
         GroupItem *groupToSet = (GroupItem *)object;
-        [groupToSet saveToCoreData];
         self.lastSelectedObject = groupToSet;
         visualObject = groupToSet;
         [[self.view window] endEditing:YES];
