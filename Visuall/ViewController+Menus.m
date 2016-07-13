@@ -236,8 +236,8 @@ UISegmentedControl *segmentControlSubmenu;
     UIImage *conversation = [[UIImage imageNamed: @"conversation-with-text-lines"] imageWithExtraPadding: .15];
     [segmentControl setImage: conversation forSegmentAtIndex: 6];
     
-    [segmentControl setSelectedSegmentIndex:0];
-    
+//    [segmentControl removeSegmentAtIndex:0 animated:NO];
+    [segmentControl setSelectedSegmentIndex:1];
     [scrollView addSubview: segmentControl];
     
     i = nLeftButtons + nSegmentControl;

@@ -52,7 +52,6 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     self.moc = appDelegate.managedObjectContext;
     
-//    [self addGestureRecognizers];
     self.GestureView.userInteractionEnabled = NO;
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
@@ -62,7 +61,6 @@
     self.panBackground = panBackground;
     [self.Background addGestureRecognizer: panBackground];
 //    panBackground.delegate = self;
-    
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
                                                  initWithTarget:self
@@ -77,34 +75,7 @@
     tapGestureDoubleTop.numberOfTapsRequired = 2;
     [self.Background addGestureRecognizer:tapGestureDoubleTop];
     
-    
-    /*
-    self.NotesCollection = [NotesCollection new];
-    [self.NotesCollection initializeNotes];
-    [self attachAllNotes];
-     */
-    
-//    UIPanGestureRecognizer *panNotesView = [[UIPanGestureRecognizer alloc]
-//                                             initWithTarget:self
-//                                             action:@selector(handlePanNotesView:)];
-//    [panNotesView setCancelsTouchesInView:NO];
-    
-    
-    // Initialize the rectangle group selection view
     self.drawGroupView = [self initializeDrawGroupView];
-  /*
-    // Initlialize the mutable array that holds our group UIViews
-    self.groupsCollection = [GroupsCollection new];
-    [self.groupsCollection initializeGroups];
-    [self loadGroupsFromCoreData];
-   
-    
-    for ( GroupItem *gi in self.groupsCollection.groups){
-        [self addGestureRecognizersToGroup: gi];
-    }
-
-    [self refreshGroupView];
-    */
     
     self.NotesView.opaque = NO;
     self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
@@ -431,32 +402,6 @@
     }
 }
 
-- (void) addGestureRecognizers
-{
-    self.GestureView.userInteractionEnabled = YES;
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-                                    initWithTarget:self
-                                    action:@selector(handlePanGestureView:)];
-    [self.GestureView addGestureRecognizer: pan];
-    pan.delegate = self;
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                    initWithTarget:self
-                                   action: @selector(handleTap:)];
-    
-    [self.GestureView addGestureRecognizer: tap];
-    tap.delegate = self;
-    
-//    [self.GestureView addGestureRecognizer: [UITapGestureRecognizer alloc] init:];
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
-//    [self.GestureView addGestureRecognizer: tap];
-    
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
-                                       initWithTarget:self action:@selector(handlePinchBackground:)];
-    [self.GestureView addGestureRecognizer: pinch];
-    pinch.delegate = self;
-}
-
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
        shouldReceiveTouch:(UITouch *)touch
 {
@@ -728,7 +673,7 @@
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
-                                   action:@selector(handleTap:)];
+                                   action:@selector(tapHandler:)];
     [noteItem.noteTextView addGestureRecognizer: tap];
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
