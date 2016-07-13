@@ -52,5 +52,7 @@
 
 - (void) addNoteToViewWithHandlers:(NoteItem2 *) noteItem;
 
+- (void) removeValue: (id) object;
+
 @end
 

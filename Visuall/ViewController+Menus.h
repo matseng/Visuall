@@ -22,4 +22,10 @@
 
 - (BOOL) isPointerButtonSelected;
 
+- (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture;
+
+- (void) highlightTrashButton;
+
+- (void) normalizeTrashButton;
+
 @end

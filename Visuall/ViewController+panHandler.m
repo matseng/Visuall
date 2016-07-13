@@ -104,12 +104,36 @@
                                  }
                                  completion:NULL];
             }
+            if ( [self trashButtonHitTest: gestureRecognizer] )
+            {
+                [self highlightTrashButton];
+            } else {
+                [self normalizeTrashButton];
+            }
+        } else {
+            [self normalizeTrashButton];
         }
         
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-//        [self setSelectedObject:nil];
+        if ( [self trashButtonHitTest: gestureRecognizer] )
+        {
+            if ([self.activelySelectedObjectDuringPan isKindOfClass:[NoteItem2 class]]) {
+                NoteItem2 *ni = (NoteItem2 *)self.lastSelectedObject;
+                [self removeValue:ni];
+                [self.NotesCollection deleteNoteGivenKey: ni.note.key];
+            } else if ([self.activelySelectedObjectDuringPan isKindOfClass:[GroupItem class]]) {
+                GroupItem *gi = (GroupItem *)self.lastSelectedObject;
+                [self removeValue:gi];
+                [self.groupsCollection deleteGroupGivenKey: gi.group.key];
+            }
+            [self.lastSelectedObject removeFromSuperview];
+            self.lastSelectedObject = nil;
+            [self normalizeTrashButton];
+        }
+        
         [self setActivelySelectedObjectDuringPan: nil];
+
         if ([viewHit isEqual:self.Background] || [viewHit isEqual: self.NotesView] || [viewHit isEqual: self.GroupsView])
         {
             [self setTransformFirebase];

@@ -22,6 +22,9 @@
 SevenSwitch *editSwitch;
 UISegmentedControl *segmentControlTopMenu;
 UISegmentedControl *segmentControlSubmenu;
+UIButton *trashButton;
+UIImage *trashImg;
+UIImage *trashImgHilighted;
 
 
 - (void) createTopMenu
@@ -295,11 +298,11 @@ UISegmentedControl *segmentControlSubmenu;
 //    [trashButton setImage:trashImg forState:UIControlStateNormal];
 //    [trashButton setImage:trashImgHilighted forState:UIControlStateHighlighted];
 //    
-    UIButton *trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *trashImg = [[UIImage imageNamed: @"Trash-50"] imageWithExtraPadding: 0.25];
+    trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    trashImg = [[UIImage imageNamed: @"Trash-50"] imageWithExtraPadding: 0.25];
     trashImg = [UIImage imageWithCGImage:trashImg.CGImage scale:1.0 orientation:trashImg.imageOrientation];
     trashImg = [trashImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *trashImgHilighted = [trashImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: backgroundColor];
+    trashImgHilighted = [trashImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: backgroundColor];
     [trashButton setImage:trashImg forState:UIControlStateNormal];
     [trashButton setImage:trashImgHilighted forState:UIControlStateHighlighted];
     
@@ -419,6 +422,30 @@ UISegmentedControl *segmentControlSubmenu;
 {
     return [editSwitch isOn] && [[segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
 }
+
+- (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture
+{
+    return [trashButton hitTest:[gesture locationInView: trashButton] withEvent:NULL];
+}
+
+- (void) highlightTrashButton
+{
+    [trashButton setImage:trashImgHilighted forState:UIControlStateNormal];
+}
+
+- (void) normalizeTrashButton
+{
+        [trashButton setImage:trashImg forState:UIControlStateNormal];
+//    [trashButton sendActionsForControlEvents:UIControlEventTouchDragExit];
+//    [trashButton sendActionsForControlEvents:UIControlEventTouchCancel];
+//        [trashButton sendActionsForControlEvents:UIControlEvent
+}
+
+
+//if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
+//{
+//    return self.scrollViewButtonList;
+//}
 
 
 @end
