@@ -58,6 +58,7 @@
 		71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */; };
 		71D96C041D359E0000CD1C49 /* ViewController+Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C031D359E0000CD1C49 /* ViewController+Group.m */; };
 		71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */; };
+		71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -161,6 +162,8 @@
 		71D96C031D359E0000CD1C49 /* ViewController+Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Group.m"; sourceTree = "<group>"; };
 		71D96C051D35A9A400CD1C49 /* ViewController+TapHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+TapHandler.h"; sourceTree = "<group>"; };
 		71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+TapHandler.m"; sourceTree = "<group>"; };
+		71D96C081D35D22000CD1C49 /* UISegmentedControl+MyTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISegmentedControl+MyTitle.h"; sourceTree = "<group>"; };
+		71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+MyTitle.m"; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -249,6 +252,8 @@
 				71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */,
 				71D96BF91D342A4100CD1C49 /* ViewController+Menus.h */,
 				71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */,
+				71D96C081D35D22000CD1C49 /* UISegmentedControl+MyTitle.h */,
+				71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */,
 				71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */,
 				71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */,
 				71D96BFC1D34791100CD1C49 /* ViewController+panHandler.h */,
@@ -571,6 +576,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */,
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,

@@ -20,4 +20,6 @@
 
 - (BOOL) isNoteButtonSelected;
 
+- (BOOL) isPointerButtonSelected;
+
 @end

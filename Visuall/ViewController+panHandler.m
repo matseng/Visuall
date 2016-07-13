@@ -35,18 +35,18 @@
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        if ( [self isEditModeOn] && [viewHit isKindOfClass: [NoteItem2 class]] ) {
+        if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isKindOfClass: [NoteItem2 class]] ) {
             NoteItem2 *nv = (NoteItem2 *) viewHit;
             [self setSelectedObject:nv];
             [nv handlePan:gestureRecognizer];
             [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
             return;
-        } else if ( viewHit.tag == 100)
+        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && viewHit.tag == 100)
         {
             GroupItem  *gi = (GroupItem *) [viewHit superview];
             [self setSelectedObject:gi];
             [self setItemsInGroup:gi];
-        } else if ( viewHit.tag == 777)
+        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && viewHit.tag == 777)
         {
             [self setSelectedObject:viewHit];  // TODO, still should highlight current group
         } else
@@ -55,17 +55,17 @@
         }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        if ([self isEditModeOn] && [self.lastSelectedObject isKindOfClass: [NoteItem2 class]])
+        if ([self isEditModeOn] && [self isPointerButtonSelected] && [self.lastSelectedObject isKindOfClass: [NoteItem2 class]])
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];
             [self updateChildValues:ni Property1:@"x" Property2:@"y"];
-        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]] && [self isEditModeOn])
+        } else if ([self isEditModeOn] && [self isPointerButtonSelected] && [self.lastSelectedObject isKindOfClass:[GroupItem class]] )
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
             [self handlePanGroup: gestureRecognizer andGroupItem:gi];
             [self updateChildValues:gi Property1:@"x" Property2:@"y"];
-        } else if ( self.lastSelectedObject.tag == 777)
+        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && self.lastSelectedObject.tag == 777)
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup: gestureRecognizer];

@@ -7,6 +7,7 @@
 //
 
 #import "ViewController+Group.h"
+#import "ViewController+Menus.h"
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
@@ -54,14 +55,14 @@
 //    }
     
     if (!groupItem) {
-        groupItem = (GroupItem *)gestureRecognizer.view;
+        groupItem = (GroupItem *) gestureRecognizer.view;
     }
     
     
     CGPoint location = [gestureRecognizer locationInView: self.Background];
     UIView *viewHit = [self.NotesView hitTest:location withEvent:NULL];
     //    NSLog(@"viewHit tag %li", viewHit.tag);
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+    if ( gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         
         if (viewHit.tag == 777)
         {
