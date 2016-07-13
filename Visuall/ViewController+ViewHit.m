@@ -18,23 +18,9 @@
     UIView *viewHit = gestureRecognizer.view;
     CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
     
-    if ( self.activelySelectedObjectDuringPan && [self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
+    if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
     {
-        float width = self.scrollViewButtonList.frame.size.width;
-        float widthContent = self.scrollViewButtonList.contentSize.width;
-        NSLog(@"scrollViewButtonList width and content width: %f, %f", width, widthContent);
-    
-        [UIView animateWithDuration:0.2
-                              delay:0.0
-                            options:UIViewAnimationOptionCurveEaseIn
-                         animations:^(void) {
-                             [self.scrollViewButtonList setContentOffset:CGPointMake(widthContent - width, 0)];
-                         }
-                         completion:NULL];
-        
-    } else if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
-    {
-        return nil;
+        return self.scrollViewButtonList;
     }
     
     NoteItem2 *ni = [self getNoteItem2FromViewHit:viewHit];

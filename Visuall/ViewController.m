@@ -414,6 +414,14 @@
 
     
     if (gestureRecognizer.state == 0) {
+        
+        [self setSelectedObject: gestureRecognizer.view];
+        
+        if ([gestureRecognizer.view isNoteItem] || [gestureRecognizer.view isGroupItem])
+        {
+            [self setActivelySelectedObjectDuringPan: gestureRecognizer.view];
+        }
+        
         NSLog(@"My gesture.state Possible");
     } else if (gestureRecognizer.state != 0) {
         NSLog(@"My gesture.state imPossible");

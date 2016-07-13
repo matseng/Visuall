@@ -36,7 +36,12 @@
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isKindOfClass: [NoteItem2 class]] ) {
+        if ( [viewHit isEqual: self.scrollViewButtonList] )
+        {
+//            [self setSelectedObject:nil];
+            return;
+        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isKindOfClass: [NoteItem2 class]] )
+        {
             NoteItem2 *nv = (NoteItem2 *) viewHit;
             [self setSelectedObject:nv];
             [self setActivelySelectedObjectDuringPan: nv];
@@ -55,33 +60,55 @@
             [self setActivelySelectedObjectDuringPan: nil];
         } else
         {
-            [self setSelectedObject:nil];
+//
         }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        if ([self isEditModeOn] && [self isPointerButtonSelected] && [self.lastSelectedObject isKindOfClass: [NoteItem2 class]])
+        if ([self isEditModeOn] && [self isPointerButtonSelected] &&
+                    [self.lastSelectedObject isKindOfClass: [NoteItem2 class]] && self.activelySelectedObjectDuringPan)
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];
             [self updateChildValues:ni Property1:@"x" Property2:@"y"];
-        } else if ([self isEditModeOn] && [self isPointerButtonSelected] && [self.lastSelectedObject isKindOfClass:[GroupItem class]] )
+        } else if ([self isEditModeOn] && [self isPointerButtonSelected] &&
+                   [self.lastSelectedObject isKindOfClass:[GroupItem class]] && self.activelySelectedObjectDuringPan)
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
             [self handlePanGroup: gestureRecognizer andGroupItem:gi];
             [self updateChildValues:gi Property1:@"x" Property2:@"y"];
-        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && self.lastSelectedObject.tag == 777)
+        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] &&
+                   self.lastSelectedObject.tag == 777 && self.activelySelectedObjectDuringPan)
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup: gestureRecognizer];
             [self refreshGroupView];
             [self updateChildValues:gi Property1:@"width" Property2:@"height"];
-        } else
+        } else if ( ![viewHit isEqual: self.scrollViewButtonList] )
         {
             [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
-            
         }
+        if ( self.activelySelectedObjectDuringPan && [viewHit isEqual: self.scrollViewButtonList] )
+        {
+            float width = self.scrollViewButtonList.frame.size.width;
+            float widthContent = self.scrollViewButtonList.contentSize.width;
+            float newContentOffset = widthContent - width;
+            NSLog(@"scrollViewButtonList width and content width: %f, %f", width, widthContent);
+            
+            if( ![[NSNumber numberWithFloat: self.scrollViewButtonList.contentOffset.x] isEqualToNumber:[NSNumber numberWithFloat: newContentOffset]] )
+            {
+                [UIView animateWithDuration:0.2
+                                      delay:0.0
+                                    options:UIViewAnimationOptionCurveEaseIn
+                                 animations:^(void) {
+                                     [self.scrollViewButtonList setContentOffset:CGPointMake(newContentOffset, 0)];
+                                 }
+                                 completion:NULL];
+            }
+        }
+        
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
+//        [self setSelectedObject:nil];
         [self setActivelySelectedObjectDuringPan: nil];
         if ([viewHit isEqual:self.Background] || [viewHit isEqual: self.NotesView] || [viewHit isEqual: self.GroupsView])
         {
@@ -113,22 +140,23 @@
 @end
 
 
-//    if ( self.activelySelectedObjectDuringPan && [self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
-//    {
-//        float width = self.scrollViewButtonList.frame.size.width;
-//        float widthContent = self.scrollViewButtonList.contentSize.width;
-//        NSLog(@"scrollViewButtonList width and content width: %f, %f", width, widthContent);
-//
-//
-//        [UIView animateWithDuration:0.2
-//                              delay:0.0
-//                            options:UIViewAnimationOptionCurveEaseIn
-//                         animations:^(void) {
-//                             [self.scrollViewButtonList setContentOffset:CGPointMake(widthContent - width, 0)];
-//                         }
-//                         completion:NULL];
-//
-//
-//        return nil;
-//    }
+//if ( self.activelySelectedObjectDuringPan && [self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
+//{
+//    float width = self.scrollViewButtonList.frame.size.width;
+//    float widthContent = self.scrollViewButtonList.contentSize.width;
+//    NSLog(@"scrollViewButtonList width and content width: %f, %f", width, widthContent);
+//    
+//    [UIView animateWithDuration:0.2
+//                          delay:0.0
+//                        options:UIViewAnimationOptionCurveEaseIn
+//                     animations:^(void) {
+//                         [self.scrollViewButtonList setContentOffset:CGPointMake(widthContent - width, 0)];
+//                     }
+//                     completion:NULL];
+//    
+//} else if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
+//{
+//    return nil;
+//}
+
 
