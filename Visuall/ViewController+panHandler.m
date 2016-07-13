@@ -35,7 +35,7 @@
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        if ( [viewHit isKindOfClass: [NoteItem2 class]] ) {
+        if ( [self isEditModeOn] && [viewHit isKindOfClass: [NoteItem2 class]] ) {
             NoteItem2 *nv = (NoteItem2 *) viewHit;
             [self setSelectedObject:nv];
             [nv handlePan:gestureRecognizer];
@@ -55,7 +55,7 @@
         }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        if ([self.lastSelectedObject isKindOfClass: [NoteItem2 class]] && [self isEditModeOn])
+        if ([self isEditModeOn] && [self.lastSelectedObject isKindOfClass: [NoteItem2 class]])
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];

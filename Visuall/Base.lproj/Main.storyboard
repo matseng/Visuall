@@ -92,9 +92,6 @@
                             <constraint firstItem="3wz-Yy-7Od" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="cRa-DV-yu2"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="3wz-Yy-7Od" secondAttribute="bottom" id="iOC-VW-ARF"/>
                         </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="S4Z-tg-fOV" appends="YES" id="pRd-IS-ggU"/>
-                        </connections>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="T60-g4-YB5" colorLabel="IBBuiltInLabel-Blue"/>

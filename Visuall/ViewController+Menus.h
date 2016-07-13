@@ -18,4 +18,6 @@
 
 - (BOOL) isDrawGroupButtonSelected;
 
+- (BOOL) isNoteButtonSelected;
+
 @end

@@ -19,6 +19,8 @@
 
 SevenSwitch *editSwitch;
 
+NSString *segmentSelected;
+
 - (void) createTopMenu
 {
     float h = 42;
@@ -197,6 +199,8 @@ SevenSwitch *editSwitch;
     // TODO create array of button model objects (e.g. name, image, tag number, action, visible)
     i = nLeftButtons;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
+    [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged:) forControlEvents:UIControlEventValueChanged];
+    
     segmentControl.frame = CGRectMake(padding * paddingCounter++ + w * (i + 0), paddingTop, w * nSegmentControl, h);
     segmentControl.backgroundColor = backgroundColor;
     
@@ -206,12 +210,14 @@ SevenSwitch *editSwitch;
     }
     
     UIImage *leftRightUpDown = [[UIImage imageNamed: @"leftRightUpDown"] imageWithExtraPadding: 0.1f];
+    [segmentControl setTitle:@"move" forSegmentAtIndex:0];
     [segmentControl setImage: leftRightUpDown forSegmentAtIndex: 0];
     
     UIImage *cursorClick = [[UIImage imageNamed: @"cursorClick.png"] imageWithExtraPadding: .1];
     [segmentControl setImage: cursorClick forSegmentAtIndex: 1];
     
     UIImage *textLetter = [[UIImage imageNamed: @"textLetter.png"] imageWithExtraPadding: 0];
+    [segmentControl setTitle:@"note" forSegmentAtIndex:2];
     [segmentControl setImage: textLetter forSegmentAtIndex: 2];
     
     UIImage *groupRectangle = [[UIImage imageNamed: @"groupRectangle"] imageWithExtraPadding: .15];
@@ -369,6 +375,11 @@ SevenSwitch *editSwitch;
     [self.navigationController.navigationBar addSubview:bottomBorder];
 }
 
+-(void) segmentChangeViewValueChanged:(UISegmentedControl *) segmentControl
+{
+    segmentSelected =  [segmentControl titleForSegmentAtIndex: segmentControl.selectedSegmentIndex];
+}
+
 - (BOOL) isEditModeOn
 {
     return [editSwitch isOn];
@@ -377,6 +388,11 @@ SevenSwitch *editSwitch;
 - (BOOL) isDrawGroupButtonSelected
 {
     return NO;
+}
+
+- (BOOL) isNoteButtonSelected
+{
+    return [editSwitch isOn] && [segmentSelected isEqualToString:@"note"];
 }
 
 @end

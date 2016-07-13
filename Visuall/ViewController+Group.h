@@ -16,4 +16,7 @@
 
 - (void) setItemsInGroup: (GroupItem *) groupItem;
 
+- (void) refreshGroupView;
+
 @end
+

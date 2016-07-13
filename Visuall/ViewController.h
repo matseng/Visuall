@@ -40,17 +40,15 @@
 
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer;
 
-//- (void) setItemsInGroup: (GroupItem *) groupItem;
-
 - (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName;
 
 - (void) updateChildValues: (id) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
 
-//- (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem;
-
-//- (void) refreshG roupView;
-
 - (void) setTransformFirebase;
+
+- (void) setInitialNote: (NoteItem2 *) ni;
+
+- (void) addNoteToViewWithHandlers:(NoteItem2 *) noteItem;
 
 @end
 

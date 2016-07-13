@@ -54,8 +54,10 @@
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
-        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+//        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
+//        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+        CGPoint translation = [gestureRecognizer translationInView: self.rootView];
+        [gestureRecognizer setTranslation:CGPointZero inView: self.rootView];
         float panX = self.pan.x + translation.x;
         float panY = self.pan.y + translation.y;
         self.pan = CGPointMake(panX, panY);  // these coordinates exists in transformed space
