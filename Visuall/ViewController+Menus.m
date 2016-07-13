@@ -225,6 +225,7 @@ UISegmentedControl *segmentControlSubmenu;
     [segmentControl setImage: textLetter forSegmentAtIndex: 2];
     
     UIImage *groupRectangle = [[UIImage imageNamed: @"groupRectangle"] imageWithExtraPadding: .15];
+    [segmentControl setMyTitle:@"group" forSegmentAtIndex:3];
     [segmentControl setImage: groupRectangle forSegmentAtIndex: 3];
     
     UIImage *arrow = [[UIImage imageNamed: @"Archers-Arrowhead"] imageWithExtraPadding: .15];
@@ -394,7 +395,7 @@ UISegmentedControl *segmentControlSubmenu;
 
 - (BOOL) isDrawGroupButtonSelected
 {
-    return NO;
+    return [editSwitch isOn] && [[segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
 }
 
 - (BOOL) isNoteButtonSelected
