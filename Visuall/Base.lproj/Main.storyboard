@@ -69,28 +69,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k9c-x9-eal">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pAz-ae-QjM">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qkV-Pt-sir">
+                                    <view contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k9c-x9-eal">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qkV-Pt-sir">
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                        </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="qkV-Pt-sir" firstAttribute="leading" secondItem="k9c-x9-eal" secondAttribute="leading" id="5PN-m3-aht"/>
+                                            <constraint firstItem="qkV-Pt-sir" firstAttribute="top" secondItem="k9c-x9-eal" secondAttribute="top" id="AF0-Yh-D3I"/>
+                                            <constraint firstAttribute="trailing" secondItem="qkV-Pt-sir" secondAttribute="trailing" id="IYs-ug-MdF"/>
+                                            <constraint firstAttribute="bottom" secondItem="qkV-Pt-sir" secondAttribute="bottom" id="P19-HZ-Cfk"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3wz-Yy-7Od">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
+                                <constraints>
+                                    <constraint firstItem="k9c-x9-eal" firstAttribute="leading" secondItem="pAz-ae-QjM" secondAttribute="leading" id="302-JQ-JeH"/>
+                                    <constraint firstItem="k9c-x9-eal" firstAttribute="top" secondItem="pAz-ae-QjM" secondAttribute="top" id="IfJ-Vq-n8h"/>
+                                    <constraint firstAttribute="trailing" secondItem="k9c-x9-eal" secondAttribute="trailing" id="QeW-qt-TvT"/>
+                                    <constraint firstAttribute="bottom" secondItem="k9c-x9-eal" secondAttribute="bottom" id="hcZ-SB-Fiy"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="3wz-Yy-7Od" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="EOK-yQ-jmq"/>
-                            <constraint firstAttribute="trailing" secondItem="3wz-Yy-7Od" secondAttribute="trailing" id="JHH-2h-8mS"/>
-                            <constraint firstItem="3wz-Yy-7Od" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="cRa-DV-yu2"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="3wz-Yy-7Od" secondAttribute="bottom" id="iOC-VW-ARF"/>
+                            <constraint firstAttribute="bottom" secondItem="pAz-ae-QjM" secondAttribute="bottom" id="2HI-z0-wCu"/>
+                            <constraint firstItem="pAz-ae-QjM" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="4dt-4B-Br5"/>
+                            <constraint firstItem="pAz-ae-QjM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ZHa-EK-CPk"/>
+                            <constraint firstAttribute="trailing" secondItem="pAz-ae-QjM" secondAttribute="trailing" id="iAj-rF-T50"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -98,7 +111,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="Background" destination="8bC-Xf-vdC" id="zVV-wg-dzI"/>
-                        <outlet property="GestureView" destination="3wz-Yy-7Od" id="gkN-2t-yxb"/>
+                        <outlet property="BackgroundScrollView" destination="pAz-ae-QjM" id="qG7-hF-saT"/>
                         <outlet property="GroupsView" destination="qkV-Pt-sir" id="3DH-gn-PVa"/>
                         <outlet property="NotesView" destination="k9c-x9-eal" id="X2T-fJ-C5r"/>
                         <outlet property="searchDisplayController" destination="QYq-Br-oaW" id="MFG-bU-dgP"/>

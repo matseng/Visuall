@@ -30,7 +30,7 @@
 @property CGPoint drawGroupViewStart;
 @property UIGestureRecognizer *panBackground;
 @property NSManagedObjectContext *moc;
-@property (strong, nonatomic) IBOutlet UIView *GestureView;
+//@property (strong, nonatomic) IBOutlet UIView *GestureView;
 @property CGPoint panBeginPoint;
 @property (strong, nonatomic) IBOutlet UITextField *fontSize;
 
@@ -52,8 +52,6 @@
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     self.moc = appDelegate.managedObjectContext;
-    
-    self.GestureView.userInteractionEnabled = NO;
     
     UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
                                              initWithTarget:self

@@ -18,6 +18,14 @@
 
 @property (strong, nonatomic) IBOutlet UIView *Background;
 
+@property (strong, nonatomic) IBOutlet UIScrollView *BackgroundScrollView;
+
+@property (weak, nonatomic) IBOutlet UIView *GroupsView;
+
+@property UIView *drawGroupView;
+
+@property (weak, nonatomic) IBOutlet UIView *NotesView;
+
 @property (strong, nonatomic) UIScrollView *scrollViewButtonList;
 
 @property NotesCollection *NotesCollection;
@@ -27,12 +35,6 @@
 @property UIView *lastSelectedObject;
 
 @property UIView *activelySelectedObjectDuringPan;
-
-@property (weak, nonatomic) IBOutlet UIView *GroupsView;
-
-@property UIView *drawGroupView;
-
-@property (weak, nonatomic) IBOutlet UIView *NotesView;
 
 - (BOOL) setSelectedObject:(UIView *) object;
 
