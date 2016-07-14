@@ -33,6 +33,7 @@
 //@property (strong, nonatomic) IBOutlet UIView *GestureView;
 @property CGPoint panBeginPoint;
 @property (strong, nonatomic) IBOutlet UITextField *fontSize;
+@property CGRect totalBoundsRect;
 
 @end
 
@@ -50,28 +51,9 @@
 {
     [super viewDidLoad];
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    self.moc = appDelegate.managedObjectContext;
+    [self setBackgroundViewGestures];
     
-    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
-                                             initWithTarget:self
-                                             action:@selector(panHandler:)];
-    self.panBackground = panBackground;
-    [self.Background addGestureRecognizer: panBackground];
-//    panBackground.delegate = self;
-    
-    UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
-                                                 initWithTarget:self
-                                                 action:@selector(handlePinchBackground:)];
-    [self.Background addGestureRecognizer:pinchBackground];
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
-    tapGesture.numberOfTapsRequired = 1;
-    [self.Background addGestureRecognizer:tapGesture];
-    
-    UITapGestureRecognizer *tapGestureDoubleTop = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    tapGestureDoubleTop.numberOfTapsRequired = 2;
-    [self.Background addGestureRecognizer:tapGestureDoubleTop];
+    self.totalBoundsRect = CGRectMake(0, 0, 1000, 1000);
     
     self.drawGroupView = [self initializeDrawGroupView];
     
@@ -81,9 +63,7 @@
     self.fontSize.delegate = self;
     [self.fontSize addTarget:self
                     action:@selector(fontSizeEditingChangedHandler:)
-//            forControlEvents:UIControlEventEditingDidEnd];
                     forControlEvents:UIControlEventEditingChanged];
-    self.modeControl.selectedSegmentIndex = 2;
     
 //    NSLog(@"My firebase config %d", [[NSNumber numberWithBool: [Firebase defaultConfig].persistenceEnabled] integerValue]);
     
@@ -110,6 +90,31 @@
     
     NSLog(@"Firebase URL: %@", self.firebaseURL);
     
+}
+
+- (void) setBackgroundViewGestures
+{
+    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
+                                             initWithTarget:self
+                                             action:@selector(panHandler:)];
+    self.panBackground = panBackground;
+//    [self.Background addGestureRecognizer: panBackground];
+    //    panBackground.delegate = self;  // NOTE: keep disabled for now
+    
+    UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
+                                                 initWithTarget:self
+                                                 action:@selector(handlePinchBackground:)];
+//    [self.Background addGestureRecognizer:pinchBackground];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+    tapGesture.numberOfTapsRequired = 1;
+//    [self.Background addGestureRecognizer:tapGesture];
+    
+    UITapGestureRecognizer *tapGestureDoubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    tapGestureDoubleTap.numberOfTapsRequired = 2;
+//    [self.Background addGestureRecognizer:tapGestureDoubleTap];
+    
+
 }
 
 - (void) backButtonHandler
@@ -185,6 +190,7 @@
 
 - (void) loadFirebaseGroups
 {
+
     Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
     [Firebase goOffline];
     self.groupsCollection = [GroupsCollection new];
@@ -208,7 +214,18 @@
     
 }
 
-- (void) loadFirebase
+- (void) calculateTotalBounds: (id) item
+{
+    if( [item isKindOfClass: [UIView class]] )
+    {
+        UIView *itemView = (UIView *) item;
+        self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, itemView.frame);
+//        self.totalBoundsRect = CGRectInset(self.totalBoundsRect, 0, -20);          //Adding padding to top and bottom (don't forget, negative values make padding not an inset)
+        self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
+    }
+}
+
+- (void) loadFirebaseNotes
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
     [Firebase goOffline];
@@ -224,6 +241,9 @@
         NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase:snapshot.key andValue:snapshot.value];
         [self.NotesCollection addNote:newNote withKey:snapshot.key];
         [self addNoteToViewWithHandlers:newNote];
+        
+        [self calculateTotalBounds: newNote];
+        
     } withCancelBlock:^(NSError *error)
     {
         NSLog(@"%@", error.description);
@@ -238,13 +258,19 @@
     {
         [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
          {
+             /*
              float zoom = [snapshot.value[@"zoom"] floatValue];
              float tx = [snapshot.value[@"tx"] floatValue];
              float ty = [snapshot.value[@"ty"] floatValue];
+              */
+             float zoom = 1.0f;
+             float tx = 0.0f;
+             float ty = 0.0f;
+
              [[TransformUtil sharedManager] setZoom:zoom];
              [[TransformUtil sharedManager] setPan:(CGPointMake(tx, ty))];
              
-             [self loadFirebase];
+             [self loadFirebaseNotes];
              [self loadFirebaseGroups];
          } withCancelBlock:^(NSError *error)
          {
