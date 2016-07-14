@@ -25,7 +25,7 @@ UISegmentedControl *segmentControlSubmenu;
 UIButton *trashButton;
 UIImage *trashImg;
 UIImage *trashImgHilighted;
-
+BOOL alreadyAnimated = NO;
 
 - (void) createTopMenu
 {
@@ -338,11 +338,43 @@ UIImage *trashImgHilighted;
         contentRect = CGRectUnion(contentRect, view.frame);
     }
     scrollView.contentSize = CGSizeMake(contentRect.size.width + padding, contentRect.size.height);
+    float width = self.scrollViewButtonList.frame.size.width;
+    float widthContent = self.scrollViewButtonList.contentSize.width;
+    float newContentOffset = widthContent - width;
+    scrollView.contentOffset = CGPointMake(newContentOffset, 0);
     
     [self.Background addSubview: scrollView];
     
     //    [scrollView setHidden:YES];
 }
+
+/*
+
+ {
+ float width = self.scrollViewButtonList.frame.size.width;
+ float widthContent = self.scrollViewButtonList.contentSize.width;
+ float newContentOffset = widthContent - width;
+ NSLog(@"scrollViewButtonList width and content width: %f, %f", width, widthContent);
+ 
+ if( ![[NSNumber numberWithFloat: self.scrollViewButtonList.contentOffset.x] isEqualToNumber:[NSNumber numberWithFloat: newContentOffset]] )
+ {
+ [UIView animateWithDuration:0.2
+ delay:0.0
+ options:UIViewAnimationOptionCurveEaseIn
+ animations:^(void) {
+ [self.scrollViewButtonList setContentOffset:CGPointMake(newContentOffset, 0)];
+ }
+ completion:NULL];
+ }
+ if ( [self trashButtonHitTest: gestureRecognizer] )
+ {
+ [self highlightTrashButton];
+ } else {
+ [self normalizeTrashButton];
+ }
+ }
+ 
+ */
 
 - (void) switchChanged:(id) sender
 {
@@ -353,13 +385,30 @@ UIImage *trashImgHilighted;
         CGRect rect = self.scrollViewButtonList.frame;
         rect.origin.y = 0;
         
-        [UIView animateWithDuration:0.3
+        [UIView animateWithDuration:0.4
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:^(void) {
                              [self.scrollViewButtonList setFrame: rect];
                          }
-                         completion:NULL];
+                         completion:^(BOOL finished) {
+                             //Completion Block
+                             if ( !alreadyAnimated )
+                             {
+                                 alreadyAnimated = YES;
+                                 [UIView animateWithDuration:1.8
+                                                       delay:0.2
+                                      usingSpringWithDamping:0.7
+                                       initialSpringVelocity:3.6
+                                                     options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                                                         self.scrollViewButtonList.contentOffset = CGPointMake(0, 0);
+                                                     }
+                                                  completion:^(BOOL finished) {}
+                                  ];
+                             }
+                         }
+         ];
+        
         UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
         [self setNavigationBottomBorderColor: backgroundColor height: 0.5f];
         
@@ -378,6 +427,10 @@ UIImage *trashImgHilighted;
                          }
                          completion:^(BOOL finished){
                              [self setNavigationBottomBorderColor: darkGrayBorderColor height: 0.5f];
+//                             float width = self.scrollViewButtonList.frame.size.width;
+//                             float widthContent = self.scrollViewButtonList.contentSize.width;
+//                             float newContentOffset = widthContent - width;
+//                             self.scrollViewButtonList.contentOffset = CGPointMake(newContentOffset, 0);
                          }];
     }
 }
