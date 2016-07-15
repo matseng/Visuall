@@ -53,14 +53,7 @@
     
     [self setBackgroundViewGestures];
     
-//    self.NotesView.contentMode = UIViewContentModeRedraw;
-//    [self.NotesView setFrame: CGRectMake(-100, -100, 1000, 1000)];
-    
-    self.totalBoundsRect = self.NotesView.frame;
-    self.BackgroundScrollView.minimumZoomScale = 0.01;
-    self.BackgroundScrollView.maximumZoomScale = 6.0;
-    self.BackgroundScrollView.delegate = self;
-//    self.automaticallyAdjustsScrollViewInsets = NO;
+    [self initializeBackgroundScrollView];
     
     self.drawGroupView = [self initializeDrawGroupView];
     
@@ -123,10 +116,36 @@
     
 }
 
+- (void) initializeBackgroundScrollView
+{
+    self.NotesView.contentMode = UIViewContentModeRedraw;
+    [self.NotesView setFrame: CGRectMake(0, 0, 200, 450)];
+    CGRect rect = self.NotesView.frame;
+    rect = CGRectMake(-rect.size.width * 4, -rect.size.height * 3, rect.size.width * 8, rect.size.height * 6);
+    self.totalBoundsRect = rect;
+    
+    CALayer *sublayer = [CALayer layer];
+    sublayer.backgroundColor = [UIColor clearColor].CGColor;
+    sublayer.frame = rect;
+    sublayer.borderColor = [UIColor blueColor].CGColor;
+    sublayer.borderWidth = 100.0;
+    [self.NotesView.layer addSublayer:sublayer];
+    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    
+//    self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
+    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2, self.totalBoundsRect.size.height / 2);
+    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 2, self.totalBoundsRect.size.width / 2, 0, 0);
+    self.BackgroundScrollView.minimumZoomScale = 0.01;
+    self.BackgroundScrollView.maximumZoomScale = 6.0;
+    self.BackgroundScrollView.delegate = self;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+//    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+}
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-//    CGRect rect = self.NotesView.frame;
-//    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    CGRect rect = self.NotesView.frame;
+    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     return self.NotesView;
 }
 
@@ -138,17 +157,27 @@
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
-//    scale = scale * [[[self.BackgroundScrollView window] screen] scale];
-    [view setContentScaleFactor:scale];
-    for (UIView *subview in view.subviews) {
-        [subview setContentScaleFactor:scale];
-        NSLog(@"scrollview scale: %f", scale);
-    }
-    
-    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2 * scale, self.totalBoundsRect.size.height / 2 * scale);
+//    CGRect rect = self.NotesView.frame;
+    CGRect rect = view.frame;
+//    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width * scale, self.totalBoundsRect.size.height * scale);
+//    rect.origin.x = rect.origin.x / scale;
+//    rect.origin.y = rect.origin.y / scale;
+//    [self.NotesView setFrame: rect];
+//    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
+//    [self.NotesView setFrame: ]
+//    scale = scale * [[[self.BackgroundScrollView window] screen] scale];
+//    [view setContentScaleFactor:scale];
+//    for (UIView *subview in view.subviews) {
+//        [subview setContentScaleFactor:scale];
+//        NSLog(@"scrollview scale: %f", scale);
+//    }
+
+    
+    
     // TODO: Calculate adjustments for contentSize and contentInset to keep view from jumping
-    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 1 * scale, self.totalBoundsRect.size.width * scale / 4, 0, 0);
+    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2 * scale, self.totalBoundsRect.size.height / 2 * scale);
+    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 2 * scale, self.totalBoundsRect.size.width / 2 * scale, 0, 0);
     
 //    UIView *subView = self.NotesView;
 //    
