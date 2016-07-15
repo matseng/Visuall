@@ -53,12 +53,19 @@
     
     [self setBackgroundViewGestures];
     
-    self.totalBoundsRect = CGRectMake(0, 0, 1000, 1000);
+//    self.NotesView.contentMode = UIViewContentModeRedraw;
+//    [self.NotesView setFrame: CGRectMake(-100, -100, 1000, 1000)];
+    
+    self.totalBoundsRect = self.NotesView.frame;
+    self.BackgroundScrollView.minimumZoomScale = 0.01;
+    self.BackgroundScrollView.maximumZoomScale = 6.0;
+    self.BackgroundScrollView.delegate = self;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
     
     self.drawGroupView = [self initializeDrawGroupView];
     
     self.NotesView.opaque = NO;
-    self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
+//    self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
     
     self.fontSize.delegate = self;
     [self.fontSize addTarget:self
@@ -82,7 +89,7 @@
         }
     }];
     
-    [self loadFirebaseTransform];
+//    [self loadFirebaseTransform];
     
     [self createTopMenu];
     
@@ -114,7 +121,63 @@
     tapGestureDoubleTap.numberOfTapsRequired = 2;
 //    [self.Background addGestureRecognizer:tapGestureDoubleTap];
     
+}
 
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+//    CGRect rect = self.NotesView.frame;
+//    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    return self.NotesView;
+}
+
+-(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+        CGRect rect = self.NotesView.frame;
+        NSLog(@"scrollview did end dragging: NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+//    scale = scale * [[[self.BackgroundScrollView window] screen] scale];
+    [view setContentScaleFactor:scale];
+    for (UIView *subview in view.subviews) {
+        [subview setContentScaleFactor:scale];
+        NSLog(@"scrollview scale: %f", scale);
+    }
+    
+    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2 * scale, self.totalBoundsRect.size.height / 2 * scale);
+
+    // TODO: Calculate adjustments for contentSize and contentInset to keep view from jumping
+    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 1 * scale, self.totalBoundsRect.size.width * scale / 4, 0, 0);
+    
+//    UIView *subView = self.NotesView;
+//    
+//    CGFloat offsetX = MAX((scrollView.bounds.size.width - scrollView.contentSize.width) * scale, 0.0);
+//    CGFloat offsetY = MAX((scrollView.bounds.size.height - scrollView.contentSize.height) * scale, 0.0);
+//    
+//    subView.center = CGPointMake(scrollView.contentSize.width * scale + offsetX,
+//                                 scrollView.contentSize.height * scale + offsetY);
+    
+//    CGRect rect = self.NotesView.frame;
+//    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//    [self.NotesView setFrame: CGRectMake(100, 100, 1000, 1000)];
+//    [self.NotesView setNeedsDisplay];
+//    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+}
+
+- (void) calculateTotalBounds: (id) item
+{
+    if( [item isKindOfClass: [UIView class]] )
+    {
+        UIView *itemView = (UIView *) item;
+        self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, itemView.frame);
+//        self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
+        self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2, self.totalBoundsRect.size.height / 2);
+        self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 2, self.totalBoundsRect.size.width / 2, 0, 0);
+        
+        //        self.BackgroundScrollView.contentOffset = CGPointMake(self.totalBoundsRect.size.width / 2, self.totalBoundsRect.size.height / 2);
+
+    }
 }
 
 - (void) backButtonHandler
@@ -206,23 +269,12 @@
          [self addGestureRecognizersToGroup: newGroup];
          [self.groupsCollection addGroup: newGroup withKey: snapshot.key];
          [self.GroupsView addSubview:newGroup];
-         [[TransformUtil sharedManager] transformGroupItem: newGroup];
+//         [[TransformUtil sharedManager] transformGroupItem: newGroup];
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"%@", error.description);
      }];
     
-}
-
-- (void) calculateTotalBounds: (id) item
-{
-    if( [item isKindOfClass: [UIView class]] )
-    {
-        UIView *itemView = (UIView *) item;
-        self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, itemView.frame);
-//        self.totalBoundsRect = CGRectInset(self.totalBoundsRect, 0, -20);          //Adding padding to top and bottom (don't forget, negative values make padding not an inset)
-        self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
-    }
 }
 
 - (void) loadFirebaseNotes
@@ -243,6 +295,7 @@
         [self addNoteToViewWithHandlers:newNote];
         
         [self calculateTotalBounds: newNote];
+        
         
     } withCancelBlock:^(NSError *error)
     {
