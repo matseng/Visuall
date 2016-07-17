@@ -17,7 +17,7 @@
 
 
 
-@implementation ViewController (Menus)
+@implementation ViewController (Menus) 
 
 SevenSwitch *editSwitch;
 UISegmentedControl *segmentControlTopMenu;
@@ -178,6 +178,7 @@ BOOL alreadyAnimated = NO;
     bottomBorder.backgroundColor = [darkGrayBorderColor CGColor];
     [scrollView.layer addSublayer:bottomBorder];
     self.scrollViewButtonList = scrollView;
+    self.scrollViewButtonList.delegate = self;
     
 //    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
 //                                             initWithTarget:self

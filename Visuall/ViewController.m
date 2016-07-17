@@ -34,6 +34,7 @@
 @property CGPoint panBeginPoint;
 @property (strong, nonatomic) IBOutlet UITextField *fontSize;
 @property CGRect totalBoundsRect;
+@property CGPoint zoomOffsetPoint;
 
 @end
 
@@ -144,21 +145,104 @@
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    CGRect rect = self.NotesView.frame;
-    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//    CGRect rect = self.NotesView.frame;
+//    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//    NSLog(@"ScrollING Content Offset: %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y);
     return self.NotesView;
+}
+
+-(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    NSLog(@"Drag Content Offset #0: %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y);
 }
 
 -(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-        CGRect rect = self.NotesView.frame;
-        NSLog(@"scrollview did end dragging: NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//    NSLog(@"Drag Content Offset #1: %f, %f", self.scrollViewButtonList.contentOffset.x, self.scrollViewButtonList.contentOffset.y);
+//    if ( self.scrollViewButtonList.contentOffset.x < 0 ) self.scrollViewButtonList.contentInset = UIEdgeInsetsMake(0, -(self.scrollViewButtonList.contentOffset.x), 0, 0);
+//    NSLog(@"Drag Content Offset #1: %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y);
+//        CGRect rect = self.NotesView.frame;
+//        NSLog(@"Content Offset: %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y);
+//        NSLog(@"scrollview did end dragging: NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    
+    NSLog(@"Content Offset: %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y);
+    NSLog(@"Content Inset: %f, %f", self.BackgroundScrollView.contentInset.left, self.BackgroundScrollView.contentInset.top);
+    
+//    float scale = self.BackgroundScrollView.contentScaleFactor;
+    float xOffsetDelta = (-self.BackgroundScrollView.contentOffset.x - self.BackgroundScrollView.contentInset.left);
+    float yOffsetDelta = (-self.BackgroundScrollView.contentOffset.y - self.BackgroundScrollView.contentInset.top);
+
+    NSLog(@"Content Offset: %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y);
+    NSLog(@"Content Inset: %f, %f", self.BackgroundScrollView.contentInset.left, self.BackgroundScrollView.contentInset.top);
+    NSLog(@"Delta: %f, %f", xOffsetDelta, yOffsetDelta);
+    
+    CGRect rect = self.totalBoundsRect;
+    if (xOffsetDelta < 0 )
+    {
+        xOffsetDelta = 0;
+    }
+    if (yOffsetDelta < 0)
+    {
+        yOffsetDelta = 0;
+        
+    }
+    rect.size.width = (rect.size.width + xOffsetDelta);
+    rect.size.height = (rect.size.height + yOffsetDelta);
+    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.BackgroundScrollView.contentInset.top + yOffsetDelta, self.BackgroundScrollView.contentInset.left + xOffsetDelta, 0, 0);
+
+    
+    
+    CALayer *sublayer = [CALayer layer];
+    sublayer.backgroundColor = [UIColor clearColor].CGColor;
+    sublayer.frame = rect;
+    sublayer.borderColor = [UIColor blueColor].CGColor;
+    sublayer.borderWidth = 100.0;
+//    [self.NotesView.layer addSublayer:sublayer];
+    
+//    self.totalBoundsRect = rect;
+//    
+//    float xHalf = self.totalBoundsRect.size.width / 2 * scale;
+//    float yHalf = self.totalBoundsRect.size.height / 2 * scale;
+//    
+//    self.BackgroundScrollView.contentSize = CGSizeMake(xHalf, yHalf);
+
+}
+
+- (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
+{
+//    CGRect rect = self.NotesView.frame;
+//    NSLog(@"Begin NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    
+    NSLog(@"Scroll Content Offset #0: %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y);
+    _zoomOffsetPoint = self.BackgroundScrollView.contentOffset;
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
-//    CGRect rect = self.NotesView.frame;
-    CGRect rect = view.frame;
+    
+//    rect = self.BackgroundScrollView.frame;
+//    NSLog(@"BackgroundScrollView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+
+    
+    NSLog(@"Scroll Content Offset #1: %f, %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y, scale);
+    
+    float xOffsetDelta = - (self.BackgroundScrollView.contentOffset.x - self.BackgroundScrollView.contentInset.left) / scale;
+    float yOffsetDelta = - (self.BackgroundScrollView.contentOffset.y - self.BackgroundScrollView.contentInset.top) / scale;
+    
+    CGRect rect = self.totalBoundsRect;
+    if (xOffsetDelta > 0 ) rect.size.width = (rect.size.width + xOffsetDelta) * scale;
+    if (yOffsetDelta > 0) rect.size.height = (rect.size.height + yOffsetDelta) * scale;
+    
+    CALayer *sublayer = [CALayer layer];
+    sublayer.backgroundColor = [UIColor clearColor].CGColor;
+    sublayer.frame = rect;
+    sublayer.borderColor = [UIColor blueColor].CGColor;
+    sublayer.borderWidth = 100.0;
+//    [self.NotesView.layer addSublayer:sublayer];
+//    self.totalBoundsRect = rect;
+    
+    //    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//    rect.size.width = rect.size.width + 
 //    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width * scale, self.totalBoundsRect.size.height * scale);
 //    rect.origin.x = rect.origin.x / scale;
 //    rect.origin.y = rect.origin.y / scale;
@@ -173,11 +257,13 @@
 //        NSLog(@"scrollview scale: %f", scale);
 //    }
 
+    float xHalf = self.totalBoundsRect.size.width / 2 * scale;
+    float yHalf = self.totalBoundsRect.size.height / 2 * scale;
     
+    self.BackgroundScrollView.contentSize = CGSizeMake(xHalf, yHalf);
+    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(yHalf, xHalf, 0, 0);
     
-    // TODO: Calculate adjustments for contentSize and contentInset to keep view from jumping
-    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2 * scale, self.totalBoundsRect.size.height / 2 * scale);
-    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 2 * scale, self.totalBoundsRect.size.width / 2 * scale, 0, 0);
+//    NSLog(@"Content Offset #2: %f, %f", self.BackgroundScrollView.contentOffset.x, self.BackgroundScrollView.contentOffset.y);
     
 //    UIView *subView = self.NotesView;
 //    
