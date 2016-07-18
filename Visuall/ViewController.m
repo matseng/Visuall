@@ -56,7 +56,7 @@
     
     self.BoundsView = [[TiledLayerView alloc] init];
     self.BoundsView.frame = CGRectMake(0, 0, 1000, 1000);
-    self.BoundsView.backgroundColor = [UIColor grayColor];
+    self.BoundsView.backgroundColor = [UIColor whiteColor];
     [self.BackgroundScrollView addSubview: self.BoundsView];
     [self.NotesView removeFromSuperview];
     [self.BoundsView addSubview: self.NotesView];
@@ -224,6 +224,8 @@
         self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, itemView.frame);
         self.BoundsView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
         self.BackgroundScrollView.contentSize = self.BoundsView.frame.size;
+        self.NotesView.frame = CGRectMake(fabs(self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y), self.NotesView.frame.size.width, self.NotesView.frame.size.height);
+        self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
 //        float contentSizeX = (self.totalBoundsRect.origin.x + self.totalBoundsRect.size.width);
 //        float contentSizeY = (self.totalBoundsRect.origin.y + self.totalBoundsRect.size.height);
 //        float insetSizeTop = - self.totalBoundsRect.origin.y;
@@ -377,7 +379,7 @@
              [[TransformUtil sharedManager] setPan:(CGPointMake(tx, ty))];
              
              [self loadFirebaseNotes];
-//             [self loadFirebaseGroups];
+             [self loadFirebaseGroups];
          } withCancelBlock:^(NSError *error)
          {
              NSLog(@"%@", error.description);
