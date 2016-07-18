@@ -27,6 +27,7 @@
 		716328BD1D260798009DF56B /* Archers-Arrowhead.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328BC1D260798009DF56B /* Archers-Arrowhead.png */; };
 		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
 		716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B51D51D36C2A40049A203 /* UIView+VisualItem.m */; };
+		7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBCE1D3D55E700F609DE /* TiledLayerView.m */; };
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
@@ -121,6 +122,8 @@
 		716B04691BFC210300DA9451 /* TransformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformUtil.m; sourceTree = "<group>"; };
 		716B51D41D36C2A40049A203 /* UIView+VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VisualItem.h"; sourceTree = "<group>"; };
 		716B51D51D36C2A40049A203 /* UIView+VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VisualItem.m"; sourceTree = "<group>"; };
+		7195EBCD1D3D55E700F609DE /* TiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledLayerView.h; sourceTree = "<group>"; };
+		7195EBCE1D3D55E700F609DE /* TiledLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiledLayerView.m; sourceTree = "<group>"; };
 		71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualItem.h; sourceTree = "<group>"; };
 		71B0EF001CB83CCE009D8F5C /* VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualItem.m; sourceTree = "<group>"; };
 		71B0EF021CB83E6D009D8F5C /* NoteItem2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem2.h; sourceTree = "<group>"; };
@@ -251,6 +254,8 @@
 		712EC9561BEAF21500ED6803 /* Visuall */ = {
 			isa = PBXGroup;
 			children = (
+				7195EBCD1D3D55E700F609DE /* TiledLayerView.h */,
+				7195EBCE1D3D55E700F609DE /* TiledLayerView.m */,
 				71D96BDF1D2F030200CD1C49 /* UIImage+Extras.h */,
 				71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */,
 				716B51D41D36C2A40049A203 /* UIView+VisualItem.h */,
@@ -581,6 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */,
 				71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */,
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,

@@ -21,11 +21,13 @@
 #import "ViewController+panHandler.h"
 #import "ViewController+TapHandler.h"
 #import "ViewController+Group.h"
+#import "TiledLayerView.h"
 
 @interface ViewController () <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer;
 }
 //@property (strong, nonatomic) IBOutlet UIView *Background;
+@property (strong, nonatomic) TiledLayerView *BoundsView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
 @property CGPoint drawGroupViewStart;
 @property UIGestureRecognizer *panBackground;
@@ -51,6 +53,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.BoundsView = [[TiledLayerView alloc] init];
+    self.BoundsView.frame = CGRectMake(0, 0, 1000, 1000);
+    self.BoundsView.backgroundColor = [UIColor grayColor];
+    [self.BackgroundScrollView addSubview: self.BoundsView];
+    [self.NotesView removeFromSuperview];
+    [self.BoundsView addSubview: self.NotesView];
     
     [self setBackgroundViewGestures];
     
@@ -83,7 +92,7 @@
         }
     }];
     
-//    [self loadFirebaseTransform];
+    [self loadFirebaseTransform];
     
     [self createTopMenu];
     
@@ -123,7 +132,8 @@
     [self.NotesView setFrame: CGRectMake(0, 0, 200, 450)];
     CGRect rect = self.NotesView.frame;
     rect = CGRectMake(-rect.size.width * 4, -rect.size.height * 3, rect.size.width * 8, rect.size.height * 6);
-    self.totalBoundsRect = rect;
+//    self.totalBoundsRect = rect;
+    self.totalBoundsRect = self.BoundsView.frame;
     
     CALayer *sublayer = [CALayer layer];
     sublayer.backgroundColor = [UIColor clearColor].CGColor;
@@ -136,7 +146,9 @@
 //    self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
 //    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2, self.totalBoundsRect.size.height / 2);
 //    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 2, self.totalBoundsRect.size.width / 2, 0, 0);
-    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
+//    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
+    
+    self.BackgroundScrollView.contentSize = CGSizeMake(self.BoundsView.frame.size.width, self.BoundsView.frame.size.height);
 
     self.BackgroundScrollView.minimumZoomScale = 0.01;
     self.BackgroundScrollView.maximumZoomScale = 6.0;
@@ -145,9 +157,12 @@
 //    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
-- (void)centerScrollViewContents {
+
+
+- (void) centerScrollViewContents {
     CGSize boundsSize = self.BackgroundScrollView.bounds.size;
-    CGRect contentsFrame = self.NotesView.frame;
+//    CGRect contentsFrame = self.NotesView.frame;
+    CGRect contentsFrame = self.BoundsView.frame;
 
     CGRect rect = self.BackgroundScrollView.frame;
     NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
@@ -163,7 +178,32 @@
         contentsFrame.origin.y = contentsFrame.origin.y - self.BackgroundScrollView.bounds.origin.y;
     }
     
-    self.NotesView.frame = contentsFrame;
+//    self.NotesView.frame = contentsFrame;
+    self.BoundsView.frame = contentsFrame;
+}
+
+- (void) __centerScrollViewContents {
+    CGSize boundsSize = self.BackgroundScrollView.bounds.size;
+    CGRect contentsFrame = self.totalBoundsRect;
+    
+    if (contentsFrame.size.width < boundsSize.width) {
+        contentsFrame.origin.x = contentsFrame.origin.x - self.BackgroundScrollView.bounds.origin.x;
+    }
+    
+    if (contentsFrame.size.height < boundsSize.height) {
+        contentsFrame.origin.y = contentsFrame.origin.y - self.BackgroundScrollView.bounds.origin.y;
+    }
+    
+    float scale = self.BackgroundScrollView.zoomScale;
+    float contentSizeX = fabsf( (self.totalBoundsRect.origin.x + self.totalBoundsRect.size.width) - self.NotesView.frame.origin.x ) * scale;
+    float contentSizeY = fabsf( (self.totalBoundsRect.origin.y + self.totalBoundsRect.size.height) - self.NotesView.frame.origin.y ) * scale;
+    float insetSizeTop = fabsf( self.NotesView.frame.origin.y - self.totalBoundsRect.origin.y ) * scale;
+    float insetSizeLeft = fabsf ( self.NotesView.frame.origin.x - self.totalBoundsRect.origin.x ) * scale;
+    self.BackgroundScrollView.contentSize = CGSizeMake(contentSizeX, contentSizeY);
+    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(insetSizeTop, insetSizeLeft, 0 , 0);
+    
+//    self.totalBoundsRect = contentsFrame;
+    self.NotesView.frame = CGRectMake(contentsFrame.origin.x, contentsFrame.origin.y, self.NotesView.frame.size.width, self.NotesView.frame.size.height);
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
@@ -172,7 +212,8 @@
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return self.NotesView;
+//    return self.NotesView;
+    return self.BoundsView;
 }
 
 - (void) calculateTotalBounds: (id) item
@@ -181,12 +222,14 @@
     {
         UIView *itemView = (UIView *) item;
         self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, itemView.frame);
-//        self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
-        self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2, self.totalBoundsRect.size.height / 2);
-        self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 2, self.totalBoundsRect.size.width / 2, 0, 0);
-        
-        //        self.BackgroundScrollView.contentOffset = CGPointMake(self.totalBoundsRect.size.width / 2, self.totalBoundsRect.size.height / 2);
-
+        self.BoundsView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
+        self.BackgroundScrollView.contentSize = self.BoundsView.frame.size;
+//        float contentSizeX = (self.totalBoundsRect.origin.x + self.totalBoundsRect.size.width);
+//        float contentSizeY = (self.totalBoundsRect.origin.y + self.totalBoundsRect.size.height);
+//        float insetSizeTop = - self.totalBoundsRect.origin.y;
+//        float insetSizeLeft = - self.totalBoundsRect.origin.x;
+//        self.BackgroundScrollView.contentSize = CGSizeMake(contentSizeX, contentSizeY);
+//        self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(insetSizeTop, insetSizeLeft, 0 , 0);
     }
 }
 
@@ -334,7 +377,7 @@
              [[TransformUtil sharedManager] setPan:(CGPointMake(tx, ty))];
              
              [self loadFirebaseNotes];
-             [self loadFirebaseGroups];
+//             [self loadFirebaseGroups];
          } withCancelBlock:^(NSError *error)
          {
              NSLog(@"%@", error.description);
