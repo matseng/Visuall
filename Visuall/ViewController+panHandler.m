@@ -148,6 +148,11 @@
         {
             [self setTransformFirebase];
         }
+        
+        if ([viewHit isGroupItem])
+        {
+            [self refreshGroupView];
+        }
     }
 }
 
