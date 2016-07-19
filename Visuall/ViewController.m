@@ -58,10 +58,10 @@
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1000, 1000);
     self.BoundsTiledLayerView.backgroundColor = [UIColor whiteColor];
     
-    UITapGestureRecognizer *singleTapBoundsView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
-    singleTapBoundsView.cancelsTouchesInView = YES;
+//    UITapGestureRecognizer *singleTapBoundsView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+//    singleTapBoundsView.cancelsTouchesInView = YES;
 //    singleTapBoundsView.delegate = self;
-    [self.BoundsTiledLayerView addGestureRecognizer:singleTapBoundsView];
+//    [self.BoundsTiledLayerView addGestureRecognizer:singleTapBoundsView];
     
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];

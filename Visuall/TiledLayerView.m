@@ -32,7 +32,7 @@
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
         {
-            return subview;
+            return [subview hitTest:convertedPoint withEvent:event];
         }
     }
 //    return self;

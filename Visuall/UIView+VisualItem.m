@@ -13,17 +13,17 @@
 
 - (BOOL) isNoteItem
 {
-    return [self isKindOfClass:[NoteItem2 class]];
+    return [self isKindOfClass:[NoteItem2 class]] || [self.superview isKindOfClass:[NoteItem2 class]];
 }
 
-- (NoteItem2 *) getNoteItem
-{
-    if ([self isNoteItem])
-    {
-        return (NoteItem2 *) self;
-    }
-    return nil;
-}
+//- (NoteItem2 *) getNoteItem
+//{
+//    if ([self isNoteItem])
+//    {
+//        return (NoteItem2 *) self;
+//    }
+//    return nil;
+//}
 
 - (BOOL) isGroupItem
 {
@@ -40,6 +40,20 @@
         return (GroupItem *) [self superview];
     }
     return nil;
+}
+
+- (NoteItem2 *) getNoteItem
+{
+    UIView *viewHit = self;
+    NoteItem2 *ni = nil;
+    if ( [viewHit isKindOfClass: [NoteItem2 class]])
+    {
+        ni = (NoteItem2 *) viewHit;
+    } else if ( [[viewHit superview] isKindOfClass: [NoteItem2 class]] )
+    {
+        ni = (NoteItem2*)[viewHit superview];
+    }
+    return ni;
 }
 
 @end

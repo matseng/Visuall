@@ -10,6 +10,7 @@
 #import "ViewController+ViewHit.h"
 #import "ViewController+Menus.h"
 #import "TransformUtil.h"
+#import "UIView+VisualItem.h"
 
 @implementation ViewController (TapHandler)
 
@@ -23,14 +24,15 @@
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
-        UIView *viewHit = [self getViewHit:sender];
+//        UIView *viewHit = [self getViewHit:sender];
+        UIView *viewHit = sender.view;
         //        NSLog(@"My viewHit %@", [viewHit class]);
         //        NSLog(@"tag %ld", (long)viewHit.tag);
         //        NSLog(@"gestureRecognizer %@", [sender.view class]);
         
-        if ( [viewHit isKindOfClass: [NoteItem2 class]])
+        if ( [viewHit isNoteItem] )
         {
-            NoteItem2 *nv = (NoteItem2 *) viewHit;
+            NoteItem2 *nv = [viewHit getNoteItem];
             [self setSelectedObject:nv];
             NSLog(@"Note key: %@", nv.note.key);
             NSLog(@"Parent group key: %@", nv.note.parentGroupKey);
