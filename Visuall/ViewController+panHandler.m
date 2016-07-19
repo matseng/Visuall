@@ -51,6 +51,14 @@
         } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isGroupItem])
         {
 //            GroupItem  *gi = (GroupItem *) [viewHit superview];
+            if (viewHit.tag == 777)
+            {
+                [self setSelectedObject:viewHit];  // TODO, still should highlight current group
+                [self setActivelySelectedObjectDuringPan: viewHit];
+                return;
+            }
+            
+            
             GroupItem  *gi = [viewHit getGroupItem];
             [self setActivelySelectedObjectDuringPan: gi];
             [self setSelectedObject:gi];
@@ -82,8 +90,9 @@
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup: gestureRecognizer];
-            [self refreshGroupView];
+//            [self refreshGroupView];
             [self updateChildValues:gi Property1:@"width" Property2:@"height"];
+            return;
         } else if ( ![viewHit isEqual: self.scrollViewButtonList] )
         {
 //            [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
