@@ -39,26 +39,26 @@
     {
         if ( [viewHit isEqual: self.scrollViewButtonList] )
         {
-//            [self setSelectedObject:nil];
             return;
-        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isKindOfClass: [NoteItem2 class]] )
+        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isNoteItem] )
         {
-            NoteItem2 *nv = (NoteItem2 *) viewHit;
+            NoteItem2 *nv = [viewHit getNoteItem];
             [self setSelectedObject:nv];
             [self setActivelySelectedObjectDuringPan: nv];
             [nv handlePan:gestureRecognizer];
             [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
             return;
-        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && viewHit.tag == 100)
+        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isGroupItem])
         {
-            GroupItem  *gi = (GroupItem *) [viewHit superview];
+//            GroupItem  *gi = (GroupItem *) [viewHit superview];
+            GroupItem  *gi = [viewHit getGroupItem];
             [self setActivelySelectedObjectDuringPan: gi];
             [self setSelectedObject:gi];
             [self setItemsInGroup:gi];
         } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && viewHit.tag == 777)
         {
             [self setSelectedObject:viewHit];  // TODO, still should highlight current group
-            [self setActivelySelectedObjectDuringPan: nil];
+            [self setActivelySelectedObjectDuringPan: viewHit];
         } else
         {
 //
@@ -86,7 +86,7 @@
             [self updateChildValues:gi Property1:@"width" Property2:@"height"];
         } else if ( ![viewHit isEqual: self.scrollViewButtonList] )
         {
-            [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
+//            [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
         }
         if ( self.activelySelectedObjectDuringPan && [viewHit isEqual: self.scrollViewButtonList] )
         {

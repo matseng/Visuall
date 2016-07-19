@@ -844,7 +844,7 @@
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(panHandler:)];
-//    [noteItem.noteTextView addGestureRecognizer: pan];
+    [noteItem.noteTextView addGestureRecognizer: pan];
     
     [self.NotesView addSubview:noteItem];
     [[TransformUtil sharedManager] transformVisualItem: noteItem];
@@ -1023,7 +1023,14 @@
                                    initWithTarget:self
 //                                   action:@selector(myWrapper:)];
                                    action:@selector(panHandler:)];
-//    [gi addGestureRecognizer: pan];
+    [gi addGestureRecognizer: pan];
+
+    UIView *groupHandle = [gi viewWithTag:777];
+    UIPanGestureRecognizer *pan2 = [[UIPanGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   //                                   action:@selector(myWrapper:)];
+                                   action:@selector(panHandler:)];
+    [groupHandle addGestureRecognizer: pan2];
 
 //    pan.delegate = self;
  //    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
