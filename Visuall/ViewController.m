@@ -27,7 +27,7 @@
     UIPinchGestureRecognizer *pinchGestureRecognizer;
 }
 //@property (strong, nonatomic) IBOutlet UIView *Background;
-@property (strong, nonatomic) TiledLayerView *BoundsView;
+@property (strong, nonatomic) TiledLayerView *BoundsTiledLayerView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
 @property CGPoint drawGroupViewStart;
 @property UIGestureRecognizer *panBackground;
@@ -54,19 +54,19 @@
 {
     [super viewDidLoad];
     
-    self.BoundsView = [[TiledLayerView alloc] init];
-    self.BoundsView.frame = CGRectMake(0, 0, 1000, 1000);
-    self.BoundsView.backgroundColor = [UIColor whiteColor];
+    self.BoundsTiledLayerView = [[TiledLayerView alloc] init];
+    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1000, 1000);
+    self.BoundsTiledLayerView.backgroundColor = [UIColor whiteColor];
     
-    UITapGestureRecognizer *singleTapBoundsView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
-    singleTapBoundsView.cancelsTouchesInView = NO;
+    UITapGestureRecognizer *singleTapBoundsView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+    singleTapBoundsView.cancelsTouchesInView = YES;
 //    singleTapBoundsView.delegate = self;
-    [self.BoundsView addGestureRecognizer:singleTapBoundsView];
+    [self.BoundsTiledLayerView addGestureRecognizer:singleTapBoundsView];
     
     
-    [self.BackgroundScrollView addSubview: self.BoundsView];
+    [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
     [self.NotesView removeFromSuperview];
-    [self.BoundsView addSubview: self.NotesView];
+    [self.BoundsTiledLayerView addSubview: self.NotesView];
     
     [self setBackgroundViewGestures];
     
@@ -126,10 +126,10 @@
 //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
 //    tapGesture.numberOfTapsRequired = 1;
 //    [self.Background addGestureRecognizer:tapGesture];
-    UITapGestureRecognizer *singleTapBackgroundView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
-    singleTapBackgroundView.cancelsTouchesInView = NO;
-    singleTapBackgroundView.delegate = self;
-    [self.Background addGestureRecognizer:singleTapBackgroundView];
+//    UITapGestureRecognizer *singleTapBackgroundView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
+//    singleTapBackgroundView.cancelsTouchesInView = NO;
+//    singleTapBackgroundView.delegate = self;
+//    [self.Background addGestureRecognizer:singleTapBackgroundView];
 
     
     
@@ -154,21 +154,21 @@
     
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
     singleTap.cancelsTouchesInView = NO;
-    singleTap.delegate = self;
+//    singleTap.delegate = self;
     [self.BackgroundScrollView addGestureRecognizer:singleTap];
     
     self.NotesView.contentMode = UIViewContentModeRedraw;
     [self.NotesView setFrame: CGRectMake(0, 0, 600, 450)];
     
-    UITapGestureRecognizer *singleTapNotesView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
-    singleTapNotesView.cancelsTouchesInView = NO;
-    singleTapNotesView.delegate = self;
-    [self.NotesView addGestureRecognizer:singleTapNotesView];
+//    UITapGestureRecognizer *singleTapNotesView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
+//    singleTapNotesView.cancelsTouchesInView = NO;
+//    singleTapNotesView.delegate = self;
+//    [self.NotesView addGestureRecognizer:singleTapNotesView];
     
     CGRect rect = self.NotesView.frame;
     rect = CGRectMake(-rect.size.width * 4, -rect.size.height * 3, rect.size.width * 8, rect.size.height * 6);
 //    self.totalBoundsRect = rect;
-    self.totalBoundsRect = self.BoundsView.frame;
+    self.totalBoundsRect = self.BoundsTiledLayerView.frame;
     
     CALayer *sublayer = [CALayer layer];
     sublayer.backgroundColor = [UIColor clearColor].CGColor;
@@ -183,18 +183,18 @@
 //    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 2, self.totalBoundsRect.size.width / 2, 0, 0);
 //    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
     
-    self.BackgroundScrollView.contentSize = CGSizeMake(self.BoundsView.frame.size.width, self.BoundsView.frame.size.height);
+    self.BackgroundScrollView.contentSize = CGSizeMake(self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
 
     self.BackgroundScrollView.minimumZoomScale = 0.01;
     self.BackgroundScrollView.maximumZoomScale = 6.0;
-    self.BackgroundScrollView.delegate = self;
+    self.BackgroundScrollView.delegate = self;  // REQUIRED to enable pinch to zoom
     self.automaticallyAdjustsScrollViewInsets = NO;
 //    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
 - (void) centerScrollViewContents {
     CGSize boundsSize = self.BackgroundScrollView.bounds.size;
-    CGRect contentsFrame = self.BoundsView.frame;
+    CGRect contentsFrame = self.BoundsTiledLayerView.frame;
 
     CGRect rect = self.BackgroundScrollView.frame;
     NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
@@ -209,7 +209,7 @@
     if (contentsFrame.size.height < boundsSize.height) {
         contentsFrame.origin.y = contentsFrame.origin.y - self.BackgroundScrollView.bounds.origin.y;
     }
-    self.BoundsView.frame = contentsFrame;
+    self.BoundsTiledLayerView.frame = contentsFrame;
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
@@ -219,7 +219,7 @@
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
 //    return self.NotesView;
-    return self.BoundsView;
+    return self.BoundsTiledLayerView;
 }
 
 - (void) calculateTotalBounds: (id) item
@@ -233,8 +233,8 @@
         
         UIView *itemView = (UIView *) item;
         self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, itemView.frame);
-        self.BoundsView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
-        self.BackgroundScrollView.contentSize = self.BoundsView.frame.size;
+        self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
+        self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
         self.NotesView.frame = CGRectMake(fabs(self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y), self.NotesView.frame.size.width, self.NotesView.frame.size.height);
         self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
         
@@ -555,8 +555,9 @@
 //    }
     
     UIView *touchView = touch.view;
-        if( touch.view == self.BoundsView || touch.view == self.BackgroundScrollView || touch.view == self.NotesView || touch.view == self.GroupsView ) {
+        if( touch.view == self.BoundsTiledLayerView || touch.view == self.BackgroundScrollView || touch.view == self.NotesView || touch.view == self.GroupsView ) {
             NSLog(@"NO, shouldReceiveTouch: %@", [touch.view class]);
+            NSLog(@"NO, shouldReceiveTouch: %@", [gestureRecognizer.view class]);
             return NO;
         } else if ( [touch.view isNoteItem] )
         {
@@ -836,14 +837,13 @@
                                    initWithTarget:self
                                    action:@selector(tapHandler:)];
     
-    tap.delegate = self;
-//    noteItem.noteTextView.canCancelContentTouches = YES;
+//    tap.delegate = self;
     [noteItem.noteTextView addGestureRecognizer: tap];
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(panHandler:)];
-    [noteItem.noteTextView addGestureRecognizer: pan];
+//    [noteItem.noteTextView addGestureRecognizer: pan];
     
     [self.NotesView addSubview:noteItem];
     [[TransformUtil sharedManager] transformVisualItem: noteItem];
@@ -1014,7 +1014,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(tapHandler:)];
-    tap.delegate = self;
+//    tap.delegate = self;
     
     [gi addGestureRecognizer: tap];
     
@@ -1022,9 +1022,9 @@
                                    initWithTarget:self
 //                                   action:@selector(myWrapper:)];
                                    action:@selector(panHandler:)];
-    [gi addGestureRecognizer: pan];
+//    [gi addGestureRecognizer: pan];
 
-    pan.delegate = self;
+//    pan.delegate = self;
  //    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
 //                                       initWithTarget:self
 //                                       action:@selector(testPinch:)];

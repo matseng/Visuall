@@ -7,6 +7,7 @@
 //
 
 #import "TiledLayerView.h"
+#import "NoteItem2.h"
 
 @implementation TiledLayerView
 
@@ -20,6 +21,22 @@
 
 + (Class)layerClass {
     return [CATiledLayer class];
+}
+
+// implement custom hit testing for notes and groups // http://smnh.me/hit-testing-in-ios/
+
+- (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+
+    UIView *NotesView = self.subviews[0];
+    for (UIView *subview in [NotesView.subviews reverseObjectEnumerator]) {
+        CGPoint convertedPoint = [subview convertPoint:point fromView:self];
+        if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
+        {
+            return subview;
+        }
+    }
+//    return self;
+    return nil;
 }
 
 @end

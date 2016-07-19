@@ -31,7 +31,8 @@
         return;
     }
     
-    UIView *viewHit  = [self getViewHit:gestureRecognizer];
+//    UIView *viewHit  = [self getViewHit:gestureRecognizer];
+    UIView *viewHit = gestureRecognizer.view;
     if (!viewHit) return;
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
