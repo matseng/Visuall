@@ -8,6 +8,7 @@
 
 #import "TiledLayerView.h"
 #import "NoteItem2.h"
+#import "UIView+VisualItem.h"
 
 @implementation TiledLayerView
 
@@ -35,7 +36,13 @@
             return [subview hitTest:convertedPoint withEvent:event];
         }
     }
-//    return self;
+    for (UIView *subview in  [[NotesView viewWithTag:999].subviews reverseObjectEnumerator]) {
+        CGPoint convertedPoint = [subview convertPoint:point fromView:self];
+        if ([subview pointInside:convertedPoint withEvent:event] && [subview isGroupItem])
+        {
+            return [subview hitTest:convertedPoint withEvent:event];
+        }
+    }
     return nil;
 }
 

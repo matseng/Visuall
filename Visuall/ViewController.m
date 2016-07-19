@@ -72,6 +72,7 @@
     
     [self initializeBackgroundScrollView];
     
+    self.GroupsView.tag = 999;
     self.drawGroupView = [self initializeDrawGroupView];
     
     self.NotesView.opaque = NO;
