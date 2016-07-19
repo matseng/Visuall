@@ -15,6 +15,32 @@
 - (UIView *) getViewHit: (UIGestureRecognizer *) gestureRecognizer
 {
     
+//     UIView *hitTestView = [super hitTest:point withEvent:event];
+    
+    UIView *viewHit;
+    CGPoint location;
+    
+    if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
+    {
+        return self.scrollViewButtonList;
+    }
+    
+    UIView *view = gestureRecognizer.view;
+    location = [gestureRecognizer locationInView: self.NotesView];
+    viewHit = [self.NotesView hitTest:location withEvent:NULL];
+    if ( viewHit )  
+    {
+        return [self getNoteItem2FromViewHit:viewHit];
+    }
+    
+    return viewHit;
+}
+
+
+
+- (UIView *) ____getViewHit: (UIGestureRecognizer *) gestureRecognizer
+{
+    
     UIView *viewHit = gestureRecognizer.view;
     CGPoint location = [gestureRecognizer locationInView: gestureRecognizer.view];
     
