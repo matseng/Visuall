@@ -546,8 +546,17 @@
     }
 }
 
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(nonnull UIGestureRecognizer *)otherGestureRecognizer
+{
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]])
+    {
+        return YES;
+    }
+    return NO;
+}
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
-       shouldReceiveTouch:(UITouch *)touch
+       __shouldReceiveTouch:(UITouch *)touch
 {
 //    if (gestureRecognizer.state == UIGestureRecognizerStatePossible) {
 //        NSLog(@"My gesture.state Possible");
@@ -613,7 +622,7 @@
 //}
 
 //
-- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+- (BOOL) __gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
 
     if (pinchGestureRecognizer.state != 0 )
@@ -844,6 +853,7 @@
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(panHandler:)];
+    pan.delegate = self;
     [noteItem.noteTextView addGestureRecognizer: pan];
     
     [self.NotesView addSubview:noteItem];
@@ -1023,6 +1033,7 @@
                                    initWithTarget:self
 //                                   action:@selector(myWrapper:)];
                                    action:@selector(panHandler:)];
+    pan.delegate = self;
     [gi addGestureRecognizer: pan];
 
     UIView *groupHandle = [gi viewWithTag:777];

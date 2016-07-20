@@ -149,7 +149,7 @@
             [self setTransformFirebase];
         }
         
-        if ([viewHit isGroupItem])
+        if (self.lastSelectedObject.tag == 777)
         {
             [self refreshGroupView];
         }
