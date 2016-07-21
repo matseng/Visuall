@@ -599,7 +599,16 @@
             return NO;
         }
     }
-    return YES;
+
+    
+    if ([view isGroupItem] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] )
+    {
+        if ( ![view isInBoundsOfView:self.BackgroundScrollView] )
+        {
+            return NO;
+        }
+    }
+        return YES;
 }
 
 

@@ -56,4 +56,27 @@
     return ni;
 }
 
+- (BOOL) isInBoundsOfView: (UIView *) parentView
+{
+    CGRect rect = self.frame;
+    CGRect parentRect = parentView.frame;
+    CGPoint bottomRight = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
+//    CGPoint convertedOrigin = [parentView convertPoint: rect.origin fromView:self.superview];
+//    CGPoint convertedBottomLeft = [parentView convertPoint: bottomLeft fromView:self.superview];
+    CGPoint convertedOrigin = [parentView.superview convertPoint: CGPointZero fromView:self];
+    CGPoint convertedBottomRight = [parentView.superview convertPoint: CGPointMake(rect.size.width, rect.size.height) fromView:self];
+    
+    if ( convertedOrigin.x < parentRect.origin.x || parentRect.origin.y < parentRect.origin.y)
+    {
+        return NO;
+    }
+    
+    if ( convertedBottomRight.x > parentRect.origin.x + parentRect.size.width || convertedBottomRight.y > parentRect.origin.y + parentRect.size.height)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
+
 @end

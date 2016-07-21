@@ -20,4 +20,6 @@
 
 - (GroupItem *) getGroupItem;
 
+- (BOOL) isInBoundsOfView: (UIView *) parentView;
+
 @end
