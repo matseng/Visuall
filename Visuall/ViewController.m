@@ -24,7 +24,7 @@
 #import "TiledLayerView.h"
 
 @interface ViewController () <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate> {
-    UIPinchGestureRecognizer *pinchGestureRecognizer;
+    UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
 }
 //@property (strong, nonatomic) IBOutlet UIView *Background;
 @property (strong, nonatomic) TiledLayerView *BoundsTiledLayerView;
@@ -153,10 +153,25 @@
     height = height - h0 - h1 - h2;
     self.BackgroundScrollView.frame = CGRectMake(x, y, width, height);
     
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
-    singleTap.cancelsTouchesInView = NO;
-//    singleTap.delegate = self;
-    [self.BackgroundScrollView addGestureRecognizer:singleTap];
+    BackgroundScrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+//    BackgroundScrollViewTapGesture.cancelsTouchesInView = NO;
+    BackgroundScrollViewTapGesture.delegate = self;
+    [self.BackgroundScrollView addGestureRecognizer:BackgroundScrollViewTapGesture];
+    self.BackgroundScrollView.delaysContentTouches = YES;
+    
+    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
+                                             initWithTarget:self
+                                             action:@selector(panHandler:)];
+    self.panBackground = panBackground;
+//    [self.BoundsTiledLayerView addGestureRecognizer: panBackground];
+    
+    UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
+                                                 initWithTarget:self
+                                                 action:@selector(handlePinchBackground:)];
+    pinchBackground.delegate = self;
+//    pinchBackground.cancelsTouchesInView = YES;
+    [self.BackgroundScrollView addGestureRecognizer:pinchBackground];
+    
     
     self.NotesView.contentMode = UIViewContentModeRedraw;
     [self.NotesView setFrame: CGRectMake(0, 0, 600, 450)];
@@ -221,6 +236,11 @@
 {
 //    return self.NotesView;
     return self.BoundsTiledLayerView;
+}
+
+- (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
+{
+    NSLog(@"HERE in scrollViewWillBeginZooming");
 }
 
 - (void) calculateTotalBounds: (id) item
@@ -546,13 +566,171 @@
     }
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer: (UIGestureRecognizer *)otherGestureRecognizer{
+//    return YES;
+//    if (gestureRecognizer.view == self.BackgroundScrollView && [otherGestureRecognizer.view isGroupItem])
+//    {
+//        if (otherGestureRecognizer.numberOfTouches == 1)
+//        {
+//            return NO;
+//        }
+//    }
+    if ( [gestureRecognizer.view isGroupItem] && gestureRecognizer.numberOfTouches == 1)
+    {
+        if ( otherGestureRecognizer.view == self.BackgroundScrollView && otherGestureRecognizer.numberOfTouches == 1)
+        {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(nonnull UIGestureRecognizer *)otherGestureRecognizer
 {
-    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]])
+//    NSLog(@"gestureRecognizer touch(s): %lu", (unsigned long)gestureRecognizer.numberOfTouches);
+//    
+//    NSLog(@"otherGestureRecognizer touch(s): %lu", (unsigned long)otherGestureRecognizer.numberOfTouches);
+    
+    NSLog(@"gesture view and class: %@, %@", [gestureRecognizer view].class, [gestureRecognizer class]);
+    
+    NSLog(@"other gesture view and class: %@, %@", [otherGestureRecognizer view].class, [otherGestureRecognizer class]);
+    
+    if ([gestureRecognizer.view isGroupItem] && (gestureRecognizer.numberOfTouches > 1 || otherGestureRecognizer.numberOfTouches > 1 ) )
     {
         return YES;
     }
+    
+    if (gestureRecognizer.view == self.BackgroundScrollView)
+    {
+        return YES;
+    }
+//    if (gestureRecognizer.view == self.BackgroundScrollView && [otherGestureRecognizer.view isGroupItem])
+//    {
+//        if (otherGestureRecognizer.numberOfTouches == 1)
+//        {
+//                return YES;
+//        }
+//    }
+    
+//        [gestureRecognizer.superclass isKindOfClass:[UIPanGestureRecognizer class]] && (otherGestureRecognizer.numberOfTouches > 0) )
+    
+//    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]])
+//    {
+//        return YES;
+//        
+//        //TODO COUNT NUMBER OF TOUCHES
+//    }
     return NO;
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer __shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    NSLog(@"gesture classes %@, %@", [gestureRecognizer class], [otherGestureRecognizer class]);
+    NSLog(@"gesture views %@, %@", [gestureRecognizer view].class, [otherGestureRecognizer view].class);
+//    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]])
+//    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && otherGestureRecognizer.view == self.BackgroundScrollView)
+//    {
+//        return NO;
+//    }
+    
+//    if ( [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] == [otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]
+//        && gestureRecognizer.view == otherGestureRecognizer.view)
+//    {
+//        return YES;
+//    }
+
+    if ( ([gestureRecognizer.view isGroupItem] && [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) && [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] )
+    {
+        return YES;
+    }
+    
+    return  NO;
+}
+
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer __shouldRequireFailureOfGestureRecognizer:(nonnull UIGestureRecognizer *)otherGestureRecognizer
+{
+    NSLog(@"Failure: gesture views %@, %@", [gestureRecognizer view].class, [otherGestureRecognizer view].class);
+    NSLog(@"Failure: gesture classes %@, %@", [gestureRecognizer class], [otherGestureRecognizer class]);
+
+//    if ( ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && [gestureRecognizer.view isGroupItem]) && ( ([otherGestureRecognizer.view isKindOfClass:[UIScrollView class]]) && ([otherGestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] || [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]]) ) )
+//    {
+//        return YES;
+//    }
+//    return NO;
+//    if ( ([gestureRecognizer.view isGroupItem] && [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) && [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] )
+//    {
+//        return YES;
+//    }
+    
+    return NO;
+    
+}
+
+- (BOOL) gestureRecognizerShouldBegin:(UIGestureRecognizer *) gestureRecognizer
+{
+    
+//    NSLog(@"gesture views: %@", [gestureRecognizer view].class);
+//    NSLog(@"gesture classes: %@", [gestureRecognizer class]);
+//    if(self.BackgroundScrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
+//       self.BackgroundScrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+//    {
+//        return NO;
+//    }
+//
+//    if( [gestureRecognizer.view isGroupItem] && gestureRecognizer.state == UIGestureRecognizerStateBegan)
+//    {
+//        return NO;
+//    }
+    
+    return YES;
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch
+{
+    
+    NSLog(@"gesture and touch views: %@, %@", [gestureRecognizer view].class, [touch.view class]);
+    NSLog(@"gesture classes: %@", [gestureRecognizer class]);
+//    NSLog(@"number of touches: %i", [t
+    
+    UIView *view = gestureRecognizer.view;
+    if ( ![self isEditModeOn] ) {
+        if ([view isGroupItem] || [view isNoteItem])
+        {
+            return NO;
+        }
+    }
+    
+
+//    if ( [self isEditModeOn] && [view isGroupItem]) {
+//        NSLog(@"gesture state: %li", (long)gestureRecognizer.state);
+//        if(self.BackgroundScrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || self.BackgroundScrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+//        {
+//            return NO;
+//        }
+//        if (gestureRecognizer.state == UIGestureRecognizerStatePossible || gestureRecognizer.state == UIGestureRecognizerStateBegan)
+//        {
+////            return NO;
+//        }
+//        if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]])
+//        {
+//            return NO;
+//        }
+//    }
+//    
+//    
+//    if(self.BackgroundScrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateBegan ||
+//       self.BackgroundScrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateChanged ||
+//       self.BackgroundScrollView.panGestureRecognizer.state == UIGestureRecognizerStateBegan  ||
+//       self.BackgroundScrollView.panGestureRecognizer.state == UIGestureRecognizerStateChanged ||
+//       BackgroundScrollViewTapGesture.state == UIGestureRecognizerStateBegan ||
+//       BackgroundScrollViewTapGesture.state == UIGestureRecognizerStateChanged )
+//    {
+//        return NO;
+//    }
+//
+    return YES;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
@@ -644,10 +822,14 @@
 
 - (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
-    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection andGroups: self.groupsCollection];
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        [self setTransformFirebase];
-    }
+    
+    NSLog(@"HEre is handlePinchBackground");
+//    self.BackgroundScrollView.maximumZoomScale = 1.0;
+//    self.BackgroundScrollView.minimumZoomScale = 1.0;
+//    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection andGroups: self.groupsCollection];
+//    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+//        [self setTransformFirebase];
+//    }
 //    if ([[TransformUtil sharedManager] zoom] > 1.0){
 //        [self.Background removeGestureRecognizer: self.panBackground];
 //    } else if ( ![self.Background.gestureRecognizers containsObject:self.panBackground] ){
@@ -1034,6 +1216,7 @@
 //                                   action:@selector(myWrapper:)];
                                    action:@selector(panHandler:)];
     pan.delegate = self;
+//    pan.delaysTouchesBegan = YES;
     [gi addGestureRecognizer: pan];
 
     UIView *groupHandle = [gi viewWithTag:777];
@@ -1043,11 +1226,16 @@
                                    action:@selector(panHandler:)];
     [groupHandle addGestureRecognizer: pan2];
 
-//    pan.delegate = self;
- //    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
-//                                       initWithTarget:self
-//                                       action:@selector(testPinch:)];
+     UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
+                                       initWithTarget:self
+                                       action:@selector(testPinch:)];
+    pinch.cancelsTouchesInView = YES;
+    pinch.delegate = self;
 //    [gi addGestureRecognizer:pinch];
+    
+//    [pan requireGestureRecognizerToFail: pinch];
+//    [pan requireGestureRecognizerToFail: self.BackgroundScrollView.pinchGestureRecognizer];
+    
 
 //    TouchDownGestureRecognizer *touchDown = [[TouchDownGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchDown:)];
 //    [gi addGestureRecognizer:touchDown];

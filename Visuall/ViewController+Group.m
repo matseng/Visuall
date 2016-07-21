@@ -28,26 +28,26 @@
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
-    {
-        NSLog(@"Handle pan group began");
-    }
-    
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
-        NSLog(@"Handle pan group ended");
-    }
-    
-    if (gestureRecognizer.state == 0)
-    {
-        NSLog(@"Pan possible");
-    } else if (gestureRecognizer.state == 1)
-    {
-        NSLog(@"Pan began");
-    } else if (gestureRecognizer.state == 2)
-    {
-        NSLog(@"Pan changed I think");
-    }
+//    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+//    {
+//        NSLog(@"Handle pan group began");
+//    }
+//    
+//    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+//    {
+//        NSLog(@"Handle pan group ended");
+//    }
+//    
+//    if (gestureRecognizer.state == 0)
+//    {
+//        NSLog(@"Pan possible");
+//    } else if (gestureRecognizer.state == 1)
+//    {
+//        NSLog(@"Pan began");
+//    } else if (gestureRecognizer.state == 2)
+//    {
+//        NSLog(@"Pan changed I think");
+//    }
     
 //    if (self.modeControl.selectedSegmentIndex == 2)
 //    {

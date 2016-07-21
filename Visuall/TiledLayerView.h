@@ -10,4 +10,6 @@
 
 @interface TiledLayerView : UIView
 
+@property UIView *hitTestView;
+
 @end

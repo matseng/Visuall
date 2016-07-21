@@ -33,16 +33,19 @@
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
         {
-            return [subview hitTest:convertedPoint withEvent:event];
+            self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
+            return self.hitTestView;
         }
     }
     for (UIView *subview in  [[NotesView viewWithTag:999].subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isGroupItem])
         {
-            return [subview hitTest:convertedPoint withEvent:event];
+            self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
+            return self.hitTestView;
         }
     }
+    self.hitTestView = nil;
     return nil;
 }
 

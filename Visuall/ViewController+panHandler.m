@@ -14,6 +14,7 @@
 #import "ViewController+ViewHit.h"
 #import "ViewController+Group.h"
 #import "UIView+VisualItem.h"
+#import "TiledLayerView.h"
 
 @implementation ViewController (panHandler)
 
@@ -31,8 +32,8 @@
         return;
     }
     
-//    UIView *viewHit  = [self getViewHit:gestureRecognizer];
-    UIView *viewHit = gestureRecognizer.view;
+    UIView *viewHit  = gestureRecognizer.view;
+//    UIView *viewHit = ((TiledLayerView *) gestureRecognizer.view).hitTestView;
     if (!viewHit) return;
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
