@@ -65,8 +65,10 @@
     
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
-    [self.NotesView removeFromSuperview];
-    [self.BoundsTiledLayerView addSubview: self.NotesView];
+//    [self.GroupsView removeFromSuperview];
+    [self.VisualItemsView removeFromSuperview];
+//    [self.BoundsTiledLayerView addSubview: self.GroupsView];
+    [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
     
     [self setBackgroundViewGestures];
     
@@ -173,17 +175,20 @@
     [self.BackgroundScrollView addGestureRecognizer:pinchBackground];
     
     
-    self.NotesView.contentMode = UIViewContentModeRedraw;
-    [self.NotesView setFrame: CGRectMake(0, 0, 600, 450)];
+    self.VisualItemsView.contentMode = UIViewContentModeRedraw;
+//    [self.NotesView setFrame: CGRectMake(0, 0, 600, 450)];
+    [self.VisualItemsView setFrame: CGRectMake(0, 0, 600, 450)];
+    [self.GroupsView setFrame: CGRectMake(0, 0, 100, 100)];
+    [self.EdgesView setFrame: CGRectMake(0, 0, 200, 200)];
+    [self.NotesView setFrame: CGRectMake(0, 0, 300, 300)];
     
 //    UITapGestureRecognizer *singleTapNotesView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
 //    singleTapNotesView.cancelsTouchesInView = NO;
 //    singleTapNotesView.delegate = self;
 //    [self.NotesView addGestureRecognizer:singleTapNotesView];
     
-    CGRect rect = self.NotesView.frame;
-    rect = CGRectMake(-rect.size.width * 4, -rect.size.height * 3, rect.size.width * 8, rect.size.height * 6);
-//    self.totalBoundsRect = rect;
+    CGRect rect = self.VisualItemsView.frame;
+    rect = [[UIScreen mainScreen] bounds];
     self.totalBoundsRect = self.BoundsTiledLayerView.frame;
     
     CALayer *sublayer = [CALayer layer];
@@ -256,7 +261,7 @@
         self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, itemView.frame);
         self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
         self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
-        self.NotesView.frame = CGRectMake(fabs(self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y), self.NotesView.frame.size.width, self.NotesView.frame.size.height);
+        self.VisualItemsView.frame = CGRectMake(fabs(self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y), self.VisualItemsView.frame.size.width, self.VisualItemsView.frame.size.height);
         self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
         
 //        self.BackgroundScrollView.zoomScale = prevScale;

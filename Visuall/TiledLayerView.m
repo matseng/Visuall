@@ -28,7 +28,9 @@
 
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
-    UIView *NotesView = self.subviews[0];
+    UIView *NotesView = self.subviews[0].subviews[2];  // TODO: Create singleton to hold views
+    UIView *GroupsView = self.subviews[0].subviews[0];
+    
     for (UIView *subview in [NotesView.subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
@@ -37,7 +39,7 @@
             return self.hitTestView;
         }
     }
-    for (UIView *subview in  [[NotesView viewWithTag:999].subviews reverseObjectEnumerator]) {
+    for (UIView *subview in [GroupsView.subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isGroupItem])
         {

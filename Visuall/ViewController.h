@@ -20,7 +20,12 @@
 
 @property (strong, nonatomic) IBOutlet UIScrollView *BackgroundScrollView;
 
+@property (strong, nonatomic) IBOutlet UIView *VisualItemsView;
+
 @property (strong, nonatomic) IBOutlet UIView *GroupsView;
+
+@property (strong, nonatomic) IBOutlet UIView *EdgesView;
+
 
 @property UIView *drawGroupView;
 

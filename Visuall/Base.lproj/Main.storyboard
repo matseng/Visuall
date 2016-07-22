@@ -59,16 +59,27 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" id="k9c-x9-eal">
+                                    <view contentMode="scaleToFill" id="vg0-Xp-mCM" userLabel="VisualItems View">
+                                        <rect key="frame" x="40" y="236" width="240" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" id="qkV-Pt-sir">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                                <rect key="frame" x="-180" y="-236" width="600" height="600"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
+                                            <view contentMode="scaleToFill" id="Vtt-DE-NhF" userLabel="Edges View">
+                                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                            <view contentMode="scaleToFill" id="k9c-x9-eal">
+                                                <rect key="frame" x="120" y="64" width="0.0" height="0.0"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" red="1" green="0.90642860270000003" blue="0.24244154309999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            </view>
                                         </subviews>
-                                        <color key="backgroundColor" red="1" green="0.90642860270000003" blue="0.24244154309999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.64313727620000005" green="0.84705883260000003" blue="0.40392157439999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -83,8 +94,10 @@
                     <connections>
                         <outlet property="Background" destination="8bC-Xf-vdC" id="zVV-wg-dzI"/>
                         <outlet property="BackgroundScrollView" destination="pAz-ae-QjM" id="qG7-hF-saT"/>
+                        <outlet property="EdgesView" destination="Vtt-DE-NhF" id="HBz-CA-SWF"/>
                         <outlet property="GroupsView" destination="qkV-Pt-sir" id="3DH-gn-PVa"/>
                         <outlet property="NotesView" destination="k9c-x9-eal" id="X2T-fJ-C5r"/>
+                        <outlet property="VisualItemsView" destination="vg0-Xp-mCM" id="ZsG-wy-H0e"/>
                         <outlet property="searchDisplayController" destination="QYq-Br-oaW" id="MFG-bU-dgP"/>
                     </connections>
                 </viewController>
