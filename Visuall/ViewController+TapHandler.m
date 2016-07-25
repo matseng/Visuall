@@ -14,6 +14,8 @@
 
 @implementation ViewController (TapHandler)
 
+NoteItem2 *previousNoteItem;
+NoteItem2 *currentNoteItem;
 
 /*
  Handle tap gesture on background AND other objects especially Groups (and Notes?)

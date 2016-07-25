@@ -36,4 +36,6 @@
 
 - (void) scaleFontSize: (float) scalar;
 
+- (CGPoint) getCenterPoint;
+
 @end

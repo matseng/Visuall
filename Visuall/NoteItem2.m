@@ -174,4 +174,15 @@
     return NO;
 }
 
+- (NSString *) getKey
+{
+    return self.note.key;
+}
+
+- (CGPoint) getCenterPoint
+{
+    CGPoint pt = CGPointMake(self.note.x + 0.5 * self.note.width, self.note.y + 0.5 * self.note.height);
+    return pt;
+}
+
 @end

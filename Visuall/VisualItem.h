@@ -16,8 +16,10 @@
 @property float width;
 @property float height;
 
--(void) setX:(float)x andY:(float)y andWidth: (float) width andHeight:(float) height;
+- (void) setX:(float)x andY:(float) y andWidth: (float) width andHeight:(float) height;
 
 - (BOOL) isNote;
+
+- (NSString *) getKey; // NOTE: my naive implementatin of a protocol declaration - see NoteItem2.m for 'delegate' implementation
 
 @end

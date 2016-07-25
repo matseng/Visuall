@@ -31,4 +31,9 @@
     return NO;
 }
 
+- (NSString *) getKey
+{
+    return nil;
+}
+
 @end

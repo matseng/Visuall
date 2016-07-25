@@ -28,6 +28,8 @@
 		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
 		716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B51D51D36C2A40049A203 /* UIView+VisualItem.m */; };
 		7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBCE1D3D55E700F609DE /* TiledLayerView.m */; };
+		7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD11D4664BB00F609DE /* ArrowItem.m */; };
+		7195EBD51D46684500F609DE /* Arrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD41D46684500F609DE /* Arrow.m */; };
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
@@ -124,6 +126,10 @@
 		716B51D51D36C2A40049A203 /* UIView+VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VisualItem.m"; sourceTree = "<group>"; };
 		7195EBCD1D3D55E700F609DE /* TiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledLayerView.h; sourceTree = "<group>"; };
 		7195EBCE1D3D55E700F609DE /* TiledLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiledLayerView.m; sourceTree = "<group>"; };
+		7195EBD01D4664BB00F609DE /* ArrowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrowItem.h; sourceTree = "<group>"; };
+		7195EBD11D4664BB00F609DE /* ArrowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArrowItem.m; sourceTree = "<group>"; };
+		7195EBD31D46684500F609DE /* Arrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arrow.h; sourceTree = "<group>"; };
+		7195EBD41D46684500F609DE /* Arrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arrow.m; sourceTree = "<group>"; };
 		71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualItem.h; sourceTree = "<group>"; };
 		71B0EF001CB83CCE009D8F5C /* VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualItem.m; sourceTree = "<group>"; };
 		71B0EF021CB83E6D009D8F5C /* NoteItem2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem2.h; sourceTree = "<group>"; };
@@ -299,6 +305,10 @@
 				713D0D5C1CC18CAB00878EAE /* Note2.m */,
 				71B0EF021CB83E6D009D8F5C /* NoteItem2.h */,
 				71B0EF031CB83E6D009D8F5C /* NoteItem2.m */,
+				7195EBD31D46684500F609DE /* Arrow.h */,
+				7195EBD41D46684500F609DE /* Arrow.m */,
+				7195EBD01D4664BB00F609DE /* ArrowItem.h */,
+				7195EBD11D4664BB00F609DE /* ArrowItem.m */,
 				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
 				71FC72131BF2E881003B7F14 /* NotesCollection.m */,
 				88ED06201C05567E00C0486D /* GroupsCollection.h */,
@@ -590,11 +600,13 @@
 				71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */,
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,
+				7195EBD51D46684500F609DE /* Arrow.m in Sources */,
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
 				71D96BD01D2C66D000CD1C49 /* MyVisuallsDetailViewController.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */,
+				7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */,
 				71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */,
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,
 				713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */,
