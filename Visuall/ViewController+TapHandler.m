@@ -27,10 +27,10 @@ NoteItem2 *targetNoteForArrow;
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
-        NSLog(@"tapHandler called HERE");
+//        NSLog(@"tapHandler called HERE");
 //        UIView *viewHit = [self getViewHit:sender];
         UIView *viewHit = sender.view;
-        //        NSLog(@"My viewHit %@", [viewHit class]);
+        NSLog(@"tapHandler viewHit %@", [viewHit class]);
         //        NSLog(@"tag %ld", (long)viewHit.tag);
         //        NSLog(@"gestureRecognizer %@", [sender.view class]);
         

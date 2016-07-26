@@ -70,6 +70,7 @@
         [self setNote: note];
         
         self.noteTextView = [[UITextView alloc] init];
+        self.noteTextView.tag = 333;
         [self.noteTextView setFont:[UIFont fontWithName: @"Arial" size:note.fontSize]];
         [self resizeToFit: note.title];
         [self addSubview: self.noteTextView];  // adds the text view to this note's super view
@@ -116,6 +117,8 @@
     [self.note setY: y];
     [self.note setWidth: frame.size.width];
     [self.note setHeight: frame.size.height];
+    
+    self.frame = frame;
 }
 
 - (void) saveToCoreData

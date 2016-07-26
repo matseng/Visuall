@@ -606,7 +606,11 @@
     if ( ![self isEditModeOn] ) {
         if ([view isGroupItem] || [view isNoteItem])
         {
-            return NO;
+            if ([gestureRecognizer isKindOfClass: [UITapGestureRecognizer class]] )
+            {
+                return YES;  // When edit mode if off, notes and groups can still receive tap gestures
+            }
+            return NO; // When edit mode if off, notes and groups can NOT receive pan or pinch gestures 
         }
     }
 
@@ -615,12 +619,12 @@
     {
         if ( ![view isInBoundsOfView:self.BackgroundScrollView] )
         {
-            return NO;
+            return NO;  // Only groups in view can receive a pan gesture
         }
     }
-        return YES;
+    
+    return YES;
 }
-
 
 - (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
@@ -810,43 +814,56 @@
     [self tapHandler: gestureRecognizer];  // tap group --> check to see if we should add a note
 }
 
-- (BOOL) textFieldShouldReturn:(UITextField *) textField
-{
-    NSLog(@"Should remove keyboard here again");
-    [textField resignFirstResponder];
-    return YES;
-}
-
-
-- (void) attachAllNotes
-{
-    for (NoteItem2 *ni in self.NotesCollection.Notes) {
-        [self addNoteToViewWithHandlers:ni]; // TODO: re-enable
-    }
-}
+//- (void) attachAllNotes
+//{
+//    for (NoteItem2 *ni in self.NotesCollection.Notes) {
+//        [self addNoteToViewWithHandlers:ni]; // TODO: re-enable
+//    }
+//}
 
 - (void) addNoteToViewWithHandlers:(NoteItem2 *) noteItem
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(tapHandler:)];
-    
     tap.delegate = self;
     [noteItem.noteTextView addGestureRecognizer: tap];
+//    [noteItem addGestureRecognizer: tap];
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(panHandler:)];
     pan.delegate = self;
     [noteItem.noteTextView addGestureRecognizer: pan];
+
+    
+    noteItem.noteTextView.delegate = self;  // Enables delegate method textViewShouldReturn
+    noteItem.noteTextView.editable = NO;
     
     [self.NotesView addSubview:noteItem];
     [[TransformUtil sharedManager] transformVisualItem: noteItem];
-    self.lastSelectedObject = noteItem;
-    
-    noteItem.noteTextView.delegate = self;  // Enables delagte method textFieldShouldReturn
+//    self.lastSelectedObject = noteItem;
+
 }
 
+//- (BOOL) textFieldShouldReturn:(UITextField *) textField
+//{
+//    NSLog(@"Should remove keyboard here again");
+//    [textField resignFirstResponder];
+//    return YES;
+//}
+//
+- (BOOL) textViewShouldBeginEditing:(UITextView *) textView
+{
+    NSLog(@"textFieldShouldBeginEditing");
+    if ( [textView getNoteItem] == self.lastSelectedObject) {
+        return YES;
+    } else
+    {
+//        [self tapHandler: textView
+    }
+    return NO;
+}
 
 - (void) textViewDidChange:(UITextView *) textView
 {
@@ -952,6 +969,8 @@
     if (self.lastSelectedObject) {
         if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]])
         {
+            NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
+            ni.noteTextView.editable = NO;
             self.lastSelectedObject.layer.borderWidth = 0;
         } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
         {
@@ -962,17 +981,20 @@
         {
             [self.lastSelectedObject superview].layer.borderWidth = 0;
         }
-
     }
     
     UIView *visualObject = [[UIView alloc] init];
-
 
     if ( [object isNoteItem] )
     {
         NoteItem2 *noteToSet = [object getNoteItem];
         self.lastSelectedObject = noteToSet;
         visualObject = noteToSet;
+        if ( [self isEditModeOn] )
+        {
+            noteToSet.noteTextView.editable = YES;
+        }
+        
     } else if ([object isKindOfClass:[GroupItem class]]) {
         GroupItem *groupToSet = (GroupItem *)object;
         self.lastSelectedObject = groupToSet;
