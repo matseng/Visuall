@@ -15,6 +15,6 @@
 
 @property Arrow *arrow;
 
-- (instancetype) initArrowWithSoruceNoteItem: (NoteItem2*) ni0 andTargetNoteItem: (NoteItem2*) ni1;
+- (instancetype) initArrowWithSourceNoteItem: (NoteItem2*) ni0 andTargetNoteItem: (NoteItem2*) ni1;
 
 @end

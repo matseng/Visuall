@@ -30,6 +30,7 @@
 		7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBCE1D3D55E700F609DE /* TiledLayerView.m */; };
 		7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD11D4664BB00F609DE /* ArrowItem.m */; };
 		7195EBD51D46684500F609DE /* Arrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD41D46684500F609DE /* Arrow.m */; };
+		7195EBD81D47035400F609DE /* UIBezierPath+arrowhead.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD71D47035400F609DE /* UIBezierPath+arrowhead.m */; };
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
@@ -130,6 +131,8 @@
 		7195EBD11D4664BB00F609DE /* ArrowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArrowItem.m; sourceTree = "<group>"; };
 		7195EBD31D46684500F609DE /* Arrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arrow.h; sourceTree = "<group>"; };
 		7195EBD41D46684500F609DE /* Arrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arrow.m; sourceTree = "<group>"; };
+		7195EBD61D47035400F609DE /* UIBezierPath+arrowhead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+arrowhead.h"; sourceTree = "<group>"; };
+		7195EBD71D47035400F609DE /* UIBezierPath+arrowhead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+arrowhead.m"; sourceTree = "<group>"; };
 		71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualItem.h; sourceTree = "<group>"; };
 		71B0EF001CB83CCE009D8F5C /* VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualItem.m; sourceTree = "<group>"; };
 		71B0EF021CB83E6D009D8F5C /* NoteItem2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem2.h; sourceTree = "<group>"; };
@@ -260,6 +263,8 @@
 		712EC9561BEAF21500ED6803 /* Visuall */ = {
 			isa = PBXGroup;
 			children = (
+				7195EBD61D47035400F609DE /* UIBezierPath+arrowhead.h */,
+				7195EBD71D47035400F609DE /* UIBezierPath+arrowhead.m */,
 				7195EBCD1D3D55E700F609DE /* TiledLayerView.h */,
 				7195EBCE1D3D55E700F609DE /* TiledLayerView.m */,
 				71D96BDF1D2F030200CD1C49 /* UIImage+Extras.h */,
@@ -629,6 +634,7 @@
 				71D96BFE1D34791100CD1C49 /* ViewController+panHandler.m in Sources */,
 				712EC95A1BEAF21500ED6803 /* main.m in Sources */,
 				71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */,
+				7195EBD81D47035400F609DE /* UIBezierPath+arrowhead.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

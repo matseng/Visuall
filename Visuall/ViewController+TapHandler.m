@@ -12,6 +12,7 @@
 #import "TransformUtil.h"
 #import "UIView+VisualItem.h"
 #import "ArrowItem.h"
+#import "UIBezierPath+arrowhead.h"
 
 @implementation ViewController (TapHandler)
 
@@ -46,7 +47,7 @@ NoteItem2 *targetNoteForArrow;
                     sourceNoteForArrow = ni;
                 } else {
                     // init arrow, draw arrow view, save arrow to firebase and get key, cross-share note and arrow keys
-                    ArrowItem *ai = [[ArrowItem alloc] initArrowWithSoruceNoteItem:sourceNoteForArrow andTargetNoteItem: ni];
+                    ArrowItem *ai = [[ArrowItem alloc] initArrowWithSourceNoteItem:sourceNoteForArrow andTargetNoteItem: ni];
                     [self.ArrowsView addSubview: ai];
                     sourceNoteForArrow = nil;
                 }
