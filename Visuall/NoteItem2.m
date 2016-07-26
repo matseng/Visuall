@@ -188,4 +188,10 @@
     return pt;
 }
 
+- (CGPoint) getRelativeCenterPoint
+{
+    CGPoint pt = CGPointMake(0.5 * self.note.width, 0.5 * self.note.height);
+    return pt;
+}
+
 @end

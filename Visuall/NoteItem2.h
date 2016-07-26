@@ -38,4 +38,6 @@
 
 - (CGPoint) getCenterPoint;
 
+- (CGPoint) getRelativeCenterPoint;
+
 @end
