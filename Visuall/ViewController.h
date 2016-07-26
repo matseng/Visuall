@@ -24,8 +24,7 @@
 
 @property (strong, nonatomic) IBOutlet UIView *GroupsView;
 
-@property (strong, nonatomic) IBOutlet UIView *EdgesView;
-
+@property (strong, nonatomic) IBOutlet UIView *ArrowsView;
 
 @property UIView *drawGroupView;
 

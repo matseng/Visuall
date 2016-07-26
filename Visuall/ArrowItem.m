@@ -19,7 +19,7 @@
 }
 */
 
-- (instancetype) initEdgewithStartingNoteItem: (NoteItem2*) ni0 andEndingNoteItem: (NoteItem2*) ni1
+- (instancetype) initArrowWithSoruceNoteItem: (NoteItem2*) ni0 andTargetNoteItem: (NoteItem2*) ni1
 {
     self = [super init];
     if (self) {

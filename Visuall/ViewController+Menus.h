@@ -28,4 +28,6 @@
 
 - (void) normalizeTrashButton;
 
+- (BOOL) isArrowButtonSelected;
+
 @end

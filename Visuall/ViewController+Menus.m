@@ -238,6 +238,7 @@ BOOL alreadyAnimated = NO;
     [segmentControl setImage: groupRectangle forSegmentAtIndex: 3];
     
     UIImage *arrow = [[UIImage imageNamed: @"Archers-Arrowhead"] imageWithExtraPadding: .15];
+    [segmentControl setMyTitle:@"arrow" forSegmentAtIndex:4];
     [segmentControl setImage: arrow forSegmentAtIndex: 4];
     
     UIImage *pen = [[UIImage imageNamed: @"Sign Up-50"] imageWithExtraPadding: .15];
@@ -475,6 +476,11 @@ BOOL alreadyAnimated = NO;
 - (BOOL) isPointerButtonSelected
 {
     return [editSwitch isOn] && [[segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
+}
+
+- (BOOL) isArrowButtonSelected
+{
+    return [editSwitch isOn] && [[segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
 }
 
 - (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture

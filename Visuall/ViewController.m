@@ -179,7 +179,7 @@
 //    [self.NotesView setFrame: CGRectMake(0, 0, 600, 450)];
     [self.VisualItemsView setFrame: CGRectMake(0, 0, 600, 450)];
     [self.GroupsView setFrame: CGRectMake(0, 0, 100, 100)];
-    [self.EdgesView setFrame: CGRectMake(0, 0, 200, 200)];
+    [self.ArrowsView setFrame: CGRectMake(0, 0, 200, 200)];
     [self.NotesView setFrame: CGRectMake(0, 0, 300, 300)];
     
 //    UITapGestureRecognizer *singleTapNotesView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
@@ -580,6 +580,11 @@
             return NO;  // e.g. if panning on a group with 1 finger and panning on the scrollView with the same finger simultaneously, then actually don't allow the scroll to pan
         }
     }
+    if ( [gestureRecognizer isKindOfClass: [UITapGestureRecognizer class]] )
+    {
+        return NO;  // e.g. don't allow a simultaneous tap on a buried layer
+    }
+        
     
     return YES;
 }
@@ -826,7 +831,7 @@
                                    initWithTarget:self
                                    action:@selector(tapHandler:)];
     
-//    tap.delegate = self;
+    tap.delegate = self;
     [noteItem.noteTextView addGestureRecognizer: tap];
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
