@@ -1021,6 +1021,11 @@
         [[self.view window] endEditing:YES];
     }
     
+    if ( [visualObject isGroupItem] )
+    {
+        // check and swap negative lengths
+    }
+    
     visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
     visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
     return YES;

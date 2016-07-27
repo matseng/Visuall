@@ -13,7 +13,7 @@
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [UIColor blackColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
-#define HANDLE_RADIUS 40.0
+#define HANDLE_DIAMETER 40.0
 
 @interface GroupItem ()
 @property NSManagedObjectContext *moc;
@@ -107,12 +107,12 @@
     float scale = [[TransformUtil sharedManager] zoom];
     
     [self setFrame: CGRectMake(
-                               (-self.group.width/2 - HANDLE_RADIUS / 2) * scale,
-                               (-self.group.height / 2 - HANDLE_RADIUS / 2) * scale,
-                               (self.group.width + HANDLE_RADIUS),
-                               (self.group.height + HANDLE_RADIUS) )];
+                               (-self.group.width/2 - HANDLE_DIAMETER / 2) * scale,
+                               (-self.group.height / 2 - HANDLE_DIAMETER / 2) * scale,
+                               (self.group.width + HANDLE_DIAMETER),
+                               (self.group.height + HANDLE_DIAMETER) )];
     
-    UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width, self.group.height)];
+    UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_DIAMETER / 2, HANDLE_DIAMETER / 2, self.group.width, self.group.height)];
     
     [innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
     [innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
@@ -128,14 +128,14 @@
     float scale = [[TransformUtil sharedManager] zoom];
     
     [self setFrame: CGRectMake(
-                               (-self.group.width/2 - HANDLE_RADIUS / 2) * scale,
-                               (-self.group.height / 2 - HANDLE_RADIUS / 2) * scale,
-                               (self.group.width + HANDLE_RADIUS) * scale,
-                               (self.group.height + HANDLE_RADIUS) * scale)];
+                               (-self.group.width/2 - HANDLE_DIAMETER / 2) * scale,
+                               (-self.group.height / 2 - HANDLE_DIAMETER / 2) * scale,
+                               (self.group.width + HANDLE_DIAMETER) * scale,
+                               (self.group.height + HANDLE_DIAMETER) * scale)];
     
-    [[self viewWithTag:100] setFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width, self.group.height)];
+    [[self viewWithTag:100] setFrame:CGRectMake(HANDLE_DIAMETER / 2, HANDLE_DIAMETER / 2, self.group.width, self.group.height)];
     
-//    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS)];
+//    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER)];
     [self updateHandles];
     
 }
@@ -148,29 +148,29 @@
 //    UIView *handleBottomLeft;
 //    UIView *handleBottomRight;
 
-    handleBottomRight = [self makeHandle: CGRectMake(self.group.width, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS)];
+    handleBottomRight = [self makeHandle: CGRectMake(self.group.width, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER)];
     handleBottomRight.tag = 777;
     [self addSubview:handleBottomRight];
     
-    handleTopLeft = [self makeHandle: CGRectMake(0, 0, HANDLE_RADIUS, HANDLE_RADIUS)];
+    handleTopLeft = [self makeHandle: CGRectMake(0, 0, HANDLE_DIAMETER, HANDLE_DIAMETER)];
     [self addSubview:handleTopLeft];
 
-    handleTopRight = [self makeHandle: CGRectMake(self.group.width, 0, HANDLE_RADIUS, HANDLE_RADIUS)];
+    handleTopRight = [self makeHandle: CGRectMake(self.group.width, 0, HANDLE_DIAMETER, HANDLE_DIAMETER)];
     [self addSubview:handleTopRight];
     
-    handleBottomLeft = [self makeHandle: CGRectMake(0, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS)];
+    handleBottomLeft = [self makeHandle: CGRectMake(0, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER)];
     [self addSubview:handleBottomLeft];
 }
 
 - (void) updateHandles
 {
-    handleBottomRight.frame = CGRectMake(self.group.width, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS);
+    handleBottomRight.frame = CGRectMake(self.group.width, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER);
     
-    handleTopLeft.frame = CGRectMake(0, 0, HANDLE_RADIUS, HANDLE_RADIUS);
+    handleTopLeft.frame = CGRectMake(0, 0, HANDLE_DIAMETER, HANDLE_DIAMETER);
     
-    handleTopRight.frame = CGRectMake(self.group.width, 0, HANDLE_RADIUS, HANDLE_RADIUS);
+    handleTopRight.frame = CGRectMake(self.group.width, 0, HANDLE_DIAMETER, HANDLE_DIAMETER);
     
-    handleBottomLeft.frame = CGRectMake(0, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS);
+    handleBottomLeft.frame = CGRectMake(0, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER);
     
 }
 
@@ -178,7 +178,7 @@
 {
     UIView *circleView = [[UIView alloc] initWithFrame: rect];
     circleView.alpha = 0.5;
-    circleView.layer.cornerRadius = HANDLE_RADIUS / 2;
+    circleView.layer.cornerRadius = HANDLE_DIAMETER / 2;
     circleView.backgroundColor = [UIColor blueColor];
     return circleView;
 }
@@ -226,8 +226,14 @@
             float width = self.group.width + translation.x;
             float height = self.group.height + translation.y;
             //        [self.group setHeight:height andWidth:width];
-            [self.group setWidth: width];
-            [self.group setHeight: height];
+            if ( width > HANDLE_DIAMETER )
+            {
+                [self.group setWidth: width];
+            }
+            if (height > HANDLE_DIAMETER * 1 ) {
+                [self.group setHeight: height];
+            }
+
             [self updateGroupDimensions];
             [[TransformUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleTopLeft)
@@ -240,6 +246,30 @@
             [self.group setHeight: height];
             [self.group setX:self.group.x + translation.x];
             [self.group setY:self.group.y + translation.y];
+            [self updateGroupDimensions];
+            [[TransformUtil sharedManager] transformGroupItem: self];
+        } else if (self.handleSelected == handleTopRight)
+        {
+            CGPoint translation = [gestureRecognizer translationInView:self];
+            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            float width = self.group.width + translation.x;
+            float height = self.group.height - translation.y;
+            [self.group setWidth: width];
+            [self.group setHeight: height];
+            [self.group setX:self.group.x];
+            [self.group setY:self.group.y + translation.y];
+            [self updateGroupDimensions];
+            [[TransformUtil sharedManager] transformGroupItem: self];
+        } else if (self.handleSelected == handleBottomLeft)
+        {
+            CGPoint translation = [gestureRecognizer translationInView:self];
+            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            float width = self.group.width - translation.x;
+            float height = self.group.height + translation.y;
+            [self.group setWidth: width];
+            [self.group setHeight: height];
+            [self.group setX:self.group.x + translation.x];
+            [self.group setY:self.group.y];
             [self updateGroupDimensions];
             [[TransformUtil sharedManager] transformGroupItem: self];
         }
@@ -305,7 +335,7 @@
 
 - (float) getRadius
 {
-    return HANDLE_RADIUS;
+    return HANDLE_DIAMETER;
 }
 
 
