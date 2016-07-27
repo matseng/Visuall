@@ -24,7 +24,10 @@
 @implementation GroupItem
 
 {
-    UIView *handlesView;
+    UIView *handleTopLeft;
+    UIView *handleTopRight;
+    UIView *handleBottomLeft;
+    UIView *handleBottomRight;
 }
 //- (instancetype) initGroup:(Group *)group
 //{
@@ -132,20 +135,52 @@
     
     [[self viewWithTag:100] setFrame:CGRectMake(HANDLE_RADIUS / 2, HANDLE_RADIUS / 2, self.group.width, self.group.height)];
     
-    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS)];
+//    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS)];
+    [self updateHandles];
     
 }
 
 - (void) renderHandles
 {
-    float radius = HANDLE_RADIUS;
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(self.group.width, self.group.height, radius, radius)];
+    
+//    UIView *handleTopLeft;
+//    UIView *handleTopRight;
+//    UIView *handleBottomLeft;
+//    UIView *handleBottomRight;
+
+    handleBottomRight = [self makeHandle: CGRectMake(self.group.width, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS)];
+    handleBottomRight.tag = 777;
+    [self addSubview:handleBottomRight];
+    
+    handleTopLeft = [self makeHandle: CGRectMake(0, 0, HANDLE_RADIUS, HANDLE_RADIUS)];
+    [self addSubview:handleTopLeft];
+
+    handleTopRight = [self makeHandle: CGRectMake(self.group.width, 0, HANDLE_RADIUS, HANDLE_RADIUS)];
+    [self addSubview:handleTopRight];
+    
+    handleBottomLeft = [self makeHandle: CGRectMake(0, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS)];
+    [self addSubview:handleBottomLeft];
+}
+
+- (void) updateHandles
+{
+    handleBottomRight.frame = CGRectMake(self.group.width, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS);
+    
+    handleTopLeft.frame = CGRectMake(0, 0, HANDLE_RADIUS, HANDLE_RADIUS);
+    
+    handleTopRight.frame = CGRectMake(self.group.width, 0, HANDLE_RADIUS, HANDLE_RADIUS);
+    
+    handleBottomLeft.frame = CGRectMake(0, self.group.height, HANDLE_RADIUS, HANDLE_RADIUS);
+    
+}
+
+- (UIView *) makeHandle: (CGRect) rect
+{
+    UIView *circleView = [[UIView alloc] initWithFrame: rect];
     circleView.alpha = 0.5;
-    circleView.layer.cornerRadius = radius / 2;
+    circleView.layer.cornerRadius = HANDLE_RADIUS / 2;
     circleView.backgroundColor = [UIColor blueColor];
-    circleView.tag = 777;
-    handlesView = circleView;
-    [self addSubview:circleView];
+    return circleView;
 }
 
 -(void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer
@@ -271,9 +306,9 @@
 
 - (BOOL) hitTestOnHandles: (UIGestureRecognizer*) gestureRecognizer
 {
-    CGPoint location = [gestureRecognizer locationInView: handlesView];
-    UIView *result = [handlesView hitTest:location withEvent:nil];
-    if (result == handlesView)
+    CGPoint location = [gestureRecognizer locationInView: handleBottomRight];
+    UIView *result = [handleBottomRight hitTest:location withEvent:nil];
+    if (result == handleBottomRight)
     {
         return YES;
     }
