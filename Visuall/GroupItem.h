@@ -21,6 +21,8 @@
 
 @property (strong) NSMutableArray *groupsInGroup;
 
+@property UIView *handleSelected;
+
 //- (instancetype) initGroup:(Group *)group;
 
 - (instancetype) initGroup: (NSString *) key andValue: (NSDictionary *) value;
@@ -43,6 +45,6 @@
 
 - (CGPoint) getCenterPoint;
 
-- (BOOL) hitTestOnHandles: (UIGestureRecognizer *) gestureRecognizer;
+- (UIView *) hitTestOnHandles: (UIGestureRecognizer *) gestureRecognizer;
 
 @end

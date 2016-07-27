@@ -52,10 +52,13 @@
         } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isGroupItem])
         {
 //            GroupItem  *gi = (GroupItem *) [viewHit superview];
-            if (viewHit.tag == 777)
+//            if (viewHit.tag == 777)
+            UIView *handleSelected = [[viewHit getGroupItem] hitTestOnHandles:gestureRecognizer];
+            if ( handleSelected )
             {
-                [self setSelectedObject:viewHit];  // TODO, still should highlight current group
-                [self setActivelySelectedObjectDuringPan: viewHit];
+                [self setSelectedObject:handleSelected];  // TODO, still should highlight current group
+                [self setActivelySelectedObjectDuringPan: handleSelected];
+                [[viewHit getGroupItem] setHandleSelected: handleSelected];
                 return;
             }
             
@@ -88,7 +91,7 @@
             [self handlePanGroup: gestureRecognizer andGroupItem:gi];
             [self updateChildValues:gi Property1:@"x" Property2:@"y"];
         } else if ( [self isEditModeOn] && [self isPointerButtonSelected] &&
-                   self.lastSelectedObject.tag == 777 && self.activelySelectedObjectDuringPan)
+                   [self.lastSelectedObject isGroupItemSubview] && self.activelySelectedObjectDuringPan)
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup: gestureRecognizer];
@@ -150,7 +153,7 @@
             [self setTransformFirebase];
         }
         
-        if (self.lastSelectedObject.tag == 777)
+        if ([self.lastSelectedObject isGroupItemSubview])
         {
             [self refreshGroupView];
         }

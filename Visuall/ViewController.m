@@ -587,12 +587,7 @@
 
     if ( [gestureRecognizer.view isGroupItem]  )
     {
-        return  NO;
-//    NSLog(@"View class and tag: %@, %li", gestureRecognizer.view.class, gestureRecognizer.view.tag);
-//        if ( [[gestureRecognizer.view getGroupItem] hitTestOnHandles: gestureRecognizer] )
-//        {
-//            return NO; // e.g. only the group's handle receives a gesture and ignore the other gesture
-//        }
+        return  NO;  // e.g. avoid simultanous pan gesture on group handle and rest of group
     }
         
     return YES;
@@ -986,7 +981,7 @@
             self.lastSelectedObject.layer.borderWidth = 0;
             self.lastSelectedObject.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
 //            self.lastSelectedObject.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
-        } else if (self.lastSelectedObject.tag == 777)
+        } else if ([self.lastSelectedObject isGroupItemSubview])
         {
             [self.lastSelectedObject superview].layer.borderWidth = 0;
         }
@@ -1015,10 +1010,10 @@
         visualObject = (GroupItem *) [object superview];
         [[self.view window] endEditing:YES];
         
-    } else if (object.tag == 777)
+    } else if ([object isGroupItemSubview])
     {
         self.lastSelectedObject = object;
-        visualObject = (GroupItem *) [object superview];
+        visualObject = [object getGroupItem];
         [[self.view window] endEditing:YES];
     } else
     {
@@ -1052,12 +1047,11 @@
 //    pan.delaysTouchesBegan = YES;
     [gi addGestureRecognizer: pan];
 
-    UIView *groupHandle = [gi viewWithTag:777];
-    UIPanGestureRecognizer *pan2 = [[UIPanGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   //                                   action:@selector(myWrapper:)];
-                                   action:@selector(panHandler:)];
-    [groupHandle addGestureRecognizer: pan2];
+//    UIView *groupHandle = [gi viewWithTag:777];
+//    UIPanGestureRecognizer *pan2 = [[UIPanGestureRecognizer alloc]
+//                                   initWithTarget:self
+//                                   action:@selector(panHandler:)];
+//    [groupHandle addGestureRecognizer: pan2];
 
      UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
                                        initWithTarget:self

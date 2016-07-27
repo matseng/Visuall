@@ -219,15 +219,30 @@
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        CGPoint translation = [gestureRecognizer translationInView:self];
-        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-        float width = self.group.width + translation.x;
-        float height = self.group.height + translation.y;
-//        [self.group setHeight:height andWidth:width];
-        [self.group setWidth: width];
-        [self.group setHeight: height];
-        [self updateGroupDimensions];
-        [[TransformUtil sharedManager] transformGroupItem: self];
+        if (self.handleSelected == handleBottomRight)
+        {
+            CGPoint translation = [gestureRecognizer translationInView:self];
+            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            float width = self.group.width + translation.x;
+            float height = self.group.height + translation.y;
+            //        [self.group setHeight:height andWidth:width];
+            [self.group setWidth: width];
+            [self.group setHeight: height];
+            [self updateGroupDimensions];
+            [[TransformUtil sharedManager] transformGroupItem: self];
+        } else if (self.handleSelected == handleTopLeft)
+        {
+            CGPoint translation = [gestureRecognizer translationInView:self];
+            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            float width = self.group.width - translation.x;
+            float height = self.group.height - translation.y;
+            [self.group setWidth: width];
+            [self.group setHeight: height];
+            [self.group setX:self.group.x + translation.x];
+            [self.group setY:self.group.y + translation.y];
+            [self updateGroupDimensions];
+            [[TransformUtil sharedManager] transformGroupItem: self];
+        }
     }
 }
 
@@ -304,15 +319,40 @@
     return CGPointMake(self.group.x + self.group.width/2, self.group.y + self.group.height/2);
 }
 
-- (BOOL) hitTestOnHandles: (UIGestureRecognizer*) gestureRecognizer
+- (UIView *) hitTestOnHandles: (UIGestureRecognizer*) gestureRecognizer
 {
-    CGPoint location = [gestureRecognizer locationInView: handleBottomRight];
-    UIView *result = [handleBottomRight hitTest:location withEvent:nil];
+    CGPoint location;
+    UIView *result;
+    
+    location = [gestureRecognizer locationInView: handleBottomRight];
+    result = [handleBottomRight hitTest:location withEvent:nil];
     if (result == handleBottomRight)
     {
-        return YES;
+        return handleBottomRight;
     }
-    return NO;
+    
+    location = [gestureRecognizer locationInView: handleBottomLeft];
+    result = [handleBottomLeft hitTest:location withEvent:nil];
+    if (result == handleBottomLeft)
+    {
+        return handleBottomLeft;
+    }
+    
+    location = [gestureRecognizer locationInView: handleTopLeft];
+    result = [handleTopLeft hitTest:location withEvent:nil];
+    if (result == handleTopLeft)
+    {
+        return handleTopLeft;
+    }
+
+    location = [gestureRecognizer locationInView: handleTopRight];
+    result = [handleTopRight hitTest:location withEvent:nil];
+    if (result == handleTopRight)
+    {
+        return handleTopRight;
+    }
+    
+    return nil;
 }
 
 /*
