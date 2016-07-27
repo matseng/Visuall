@@ -47,4 +47,8 @@
 
 - (UIView *) hitTestOnHandles: (UIGestureRecognizer *) gestureRecognizer;
 
+- (void) setViewAsSelected;
+
+- (void) setViewAsNotSelected;
+
 @end

@@ -22,4 +22,8 @@
 
 - (NSString *) getKey; // NOTE: my naive implementatin of a protocol declaration - see NoteItem2.m for 'delegate' implementation
 
+- (void) setSelected;
+
+- (void) setNotSelected;
+
 @end

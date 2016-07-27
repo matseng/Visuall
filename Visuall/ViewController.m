@@ -976,14 +976,9 @@
             NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
             ni.noteTextView.editable = NO;
             self.lastSelectedObject.layer.borderWidth = 0;
-        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]])
+        } else if ([self.lastSelectedObject isGroupItem])
         {
-            self.lastSelectedObject.layer.borderWidth = 0;
-            self.lastSelectedObject.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
-//            self.lastSelectedObject.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
-        } else if ([self.lastSelectedObject isGroupItemSubview])
-        {
-            [self.lastSelectedObject superview].layer.borderWidth = 0;
+            [[self.lastSelectedObject getGroupItem] setViewAsNotSelected];
         }
     }
     
@@ -1026,8 +1021,14 @@
         // check and swap negative lengths
     }
     
-    visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
-    visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
+    if ([visualObject isGroupItem])
+    {
+        [[visualObject getGroupItem] setViewAsSelected];
+    } else
+    {
+        visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
+        visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
+    }
     return YES;
 }
 

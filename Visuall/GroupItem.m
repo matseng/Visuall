@@ -14,6 +14,10 @@
 #define GROUP_VIEW_BORDER_COLOR [UIColor blackColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
 #define HANDLE_DIAMETER 40.0
+#define HANDLE_COLOR [UIColor blueColor]
+#define SELECTED_VIEW_BORDER_COLOR [[UIColor blueColor] CGColor]
+#define SELECTED_VIEW_BORDER_WIDTH 2.0
+
 
 @interface GroupItem ()
 @property NSManagedObjectContext *moc;
@@ -65,6 +69,7 @@
 
         [self setGroup: group];
         [self renderGroup];
+        [self setViewAsNotSelected];
         [[TransformUtil sharedManager] transformGroupItem: self];
     }
     return self;
@@ -96,6 +101,7 @@
         group.height = height;
         [self setGroup: group];
         [self renderGroup];
+        [self setViewAsNotSelected];
         [[TransformUtil sharedManager] transformGroupItem: self];
     }
 
@@ -111,6 +117,8 @@
                                (-self.group.height / 2 - HANDLE_DIAMETER / 2) * scale,
                                (self.group.width + HANDLE_DIAMETER),
                                (self.group.height + HANDLE_DIAMETER) )];
+    self.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+    self.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
     
     UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_DIAMETER / 2, HANDLE_DIAMETER / 2, self.group.width, self.group.height)];
     
@@ -179,7 +187,7 @@
     UIView *circleView = [[UIView alloc] initWithFrame: rect];
     circleView.alpha = 0.5;
     circleView.layer.cornerRadius = HANDLE_DIAMETER / 2;
-    circleView.backgroundColor = [UIColor blueColor];
+    circleView.layer.backgroundColor = [HANDLE_COLOR CGColor];
     return circleView;
 }
 
@@ -233,7 +241,6 @@
             if (height > HANDLE_DIAMETER * 1 ) {
                 [self.group setHeight: height];
             }
-
             [self updateGroupDimensions];
             [[TransformUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleTopLeft)
@@ -242,10 +249,15 @@
             [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
             float width = self.group.width - translation.x;
             float height = self.group.height - translation.y;
-            [self.group setWidth: width];
-            [self.group setHeight: height];
-            [self.group setX:self.group.x + translation.x];
-            [self.group setY:self.group.y + translation.y];
+            if ( width > HANDLE_DIAMETER )
+            {
+                [self.group setWidth: width];
+                [self.group setX:self.group.x + translation.x];
+            }
+            if (height > HANDLE_DIAMETER * 1 ) {
+                [self.group setHeight: height];
+                [self.group setY:self.group.y + translation.y];
+            }
             [self updateGroupDimensions];
             [[TransformUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleTopRight)
@@ -254,10 +266,15 @@
             [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
             float width = self.group.width + translation.x;
             float height = self.group.height - translation.y;
-            [self.group setWidth: width];
-            [self.group setHeight: height];
-            [self.group setX:self.group.x];
-            [self.group setY:self.group.y + translation.y];
+            if ( width > HANDLE_DIAMETER )
+            {
+                [self.group setWidth: width];
+                [self.group setX:self.group.x];
+            }
+            if (height > HANDLE_DIAMETER * 1 ) {
+                [self.group setHeight: height];
+                [self.group setY:self.group.y + translation.y];
+            }
             [self updateGroupDimensions];
             [[TransformUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleBottomLeft)
@@ -266,10 +283,15 @@
             [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
             float width = self.group.width - translation.x;
             float height = self.group.height + translation.y;
-            [self.group setWidth: width];
-            [self.group setHeight: height];
-            [self.group setX:self.group.x + translation.x];
-            [self.group setY:self.group.y];
+            if ( width > HANDLE_DIAMETER )
+            {
+                [self.group setWidth: width];
+                [self.group setX:self.group.x + translation.x];
+            }
+            if (height > HANDLE_DIAMETER * 1 ) {
+                [self.group setHeight: height];
+                [self.group setY:self.group.y];
+            }
             [self updateGroupDimensions];
             [[TransformUtil sharedManager] transformGroupItem: self];
         }
@@ -384,6 +406,25 @@
     
     return nil;
 }
+
+- (void) setViewAsSelected
+{
+    self.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
+    handleTopLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
+    handleTopRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
+    handleBottomLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
+    handleBottomRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
+}
+
+- (void) setViewAsNotSelected
+{
+    self.layer.borderWidth = 0;
+    handleTopLeft.layer.backgroundColor = [[UIColor clearColor] CGColor];
+    handleTopRight.layer.backgroundColor = [[UIColor clearColor] CGColor];
+    handleBottomLeft.layer.backgroundColor = [[UIColor clearColor] CGColor];
+    handleBottomRight.layer.backgroundColor = [[UIColor clearColor] CGColor];
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.
