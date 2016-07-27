@@ -23,6 +23,9 @@
 
 @implementation GroupItem
 
+{
+    UIView *handlesView;
+}
 //- (instancetype) initGroup:(Group *)group
 //{
 //    self = [super init];
@@ -141,6 +144,7 @@
     circleView.layer.cornerRadius = radius / 2;
     circleView.backgroundColor = [UIColor blueColor];
     circleView.tag = 777;
+    handlesView = circleView;
     [self addSubview:circleView];
 }
 
@@ -263,6 +267,17 @@
 - (CGPoint) getCenterPoint
 {
     return CGPointMake(self.group.x + self.group.width/2, self.group.y + self.group.height/2);
+}
+
+- (BOOL) hitTestOnHandles: (UIGestureRecognizer*) gestureRecognizer
+{
+    CGPoint location = [gestureRecognizer locationInView: handlesView];
+    UIView *result = [handlesView hitTest:location withEvent:nil];
+    if (result == handlesView)
+    {
+        return YES;
+    }
+    return NO;
 }
 
 /*

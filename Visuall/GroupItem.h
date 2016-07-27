@@ -43,4 +43,6 @@
 
 - (CGPoint) getCenterPoint;
 
+- (BOOL) hitTestOnHandles: (UIGestureRecognizer *) gestureRecognizer;
+
 @end

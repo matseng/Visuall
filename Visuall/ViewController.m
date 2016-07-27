@@ -584,8 +584,17 @@
     {
         return NO;  // e.g. don't allow a simultaneous tap on a buried layer
     }
+
+    if ( [gestureRecognizer.view isGroupItem]  )
+    {
+        return  NO;
+//    NSLog(@"View class and tag: %@, %li", gestureRecognizer.view.class, gestureRecognizer.view.tag);
+//        if ( [[gestureRecognizer.view getGroupItem] hitTestOnHandles: gestureRecognizer] )
+//        {
+//            return NO; // e.g. only the group's handle receives a gesture and ignore the other gesture
+//        }
+    }
         
-    
     return YES;
 }
 

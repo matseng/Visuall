@@ -30,6 +30,11 @@
     return [self isKindOfClass:[GroupItem class]]  || [ [self superview] isKindOfClass:[GroupItem class]];
 }
 
+- (BOOL) isGroupItemSubview
+{
+    return ( ![self isKindOfClass:[GroupItem class]]  && [ [self superview] isKindOfClass:[GroupItem class]] );
+}
+
 - (GroupItem *) getGroupItem
 {
     if ( [self isKindOfClass:[GroupItem class]] )

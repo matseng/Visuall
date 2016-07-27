@@ -22,4 +22,6 @@
 
 - (BOOL) isInBoundsOfView: (UIView *) parentView;
 
+- (BOOL) isGroupItemSubview;
+
 @end

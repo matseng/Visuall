@@ -165,7 +165,7 @@
     
     for (NSString *key in sortedArray) {
         float area = [self.groupsCollection getGroupAreaFromKey:key];
-        NSLog(@"Group area: %f", area);
+//        NSLog(@"Group area: %f", area);
         [self.groupsCollection.groups2[key] removeFromSuperview];
         [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
     }

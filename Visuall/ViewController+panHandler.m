@@ -59,16 +59,17 @@
                 return;
             }
             
-            
             GroupItem  *gi = [viewHit getGroupItem];
             [self setActivelySelectedObjectDuringPan: gi];
             [self setSelectedObject:gi];
             [self setItemsInGroup:gi];
-        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && viewHit.tag == 777)
-        {
-            [self setSelectedObject:viewHit];  // TODO, still should highlight current group
-            [self setActivelySelectedObjectDuringPan: viewHit];
-        } else
+        }
+//        else if ( [self isEditModeOn] && [self isPointerButtonSelected] && viewHit.tag == 777)
+//        {
+//            [self setSelectedObject:viewHit];  // TODO, still should highlight current group
+//            [self setActivelySelectedObjectDuringPan: viewHit];
+//        }
+        else
         {
 //
         }
@@ -91,7 +92,6 @@
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup: gestureRecognizer];
-//            [self refreshGroupView];
             [self updateChildValues:gi Property1:@"width" Property2:@"height"];
             return;
         } else if ( ![viewHit isEqual: self.scrollViewButtonList] )
