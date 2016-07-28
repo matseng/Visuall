@@ -60,12 +60,13 @@
                 [self setActivelySelectedObjectDuringPan: handleSelected];
                 [[viewHit getGroupItem] setHandleSelected: handleSelected];
                 return;
+            } else if ([viewHit isInBoundsOfView:self.BackgroundScrollView])
+            {
+                GroupItem  *gi = [viewHit getGroupItem];
+                [self setActivelySelectedObjectDuringPan: gi];
+                [self setSelectedObject:gi];
+                [self setItemsInGroup:gi];
             }
-            
-            GroupItem  *gi = [viewHit getGroupItem];
-            [self setActivelySelectedObjectDuringPan: gi];
-            [self setSelectedObject:gi];
-            [self setItemsInGroup:gi];
         }
 //        else if ( [self isEditModeOn] && [self isPointerButtonSelected] && viewHit.tag == 777)
 //        {

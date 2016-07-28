@@ -619,13 +619,13 @@
     }
 
     
-    if ([view isGroupItem] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] )
-    {
-        if ( ![view isInBoundsOfView:self.BackgroundScrollView] )
-        {
-            return NO;  // Only groups in view can receive a pan gesture
-        }
-    }
+//    if ([view isGroupItem] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] )
+//    {
+//        if ( ![view isInBoundsOfView:self.BackgroundScrollView] )
+//        {
+//            return NO;  // Only groups in view can receive a pan gesture
+//        }
+//    }
     
     return YES;
 }

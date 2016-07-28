@@ -26,7 +26,10 @@
 @property float _relativeScale;
 @property NotesCollection *notesCollection;
 @property GroupsCollection *groupsCollection;
-
+// New state properties (moving away from ViewController)
+@property UIView *selectedVisualItem;
+@property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing
+@property BOOL editModeOn;
 
 +(id)sharedManager;
 

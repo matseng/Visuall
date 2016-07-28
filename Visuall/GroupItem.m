@@ -410,10 +410,13 @@
 - (void) setViewAsSelected
 {
     self.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
-    handleTopLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
-    handleTopRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
-    handleBottomLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
-    handleBottomRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
+    if ( [[TransformUtil sharedManager] editModeOn])
+    {
+        handleTopLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
+        handleTopRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
+        handleBottomLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
+        handleBottomRight.layer.backgroundColor = [HANDLE_COLOR CGColor];        
+    }
 }
 
 - (void) setViewAsNotSelected

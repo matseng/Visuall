@@ -12,6 +12,7 @@
 #import "SevenSwitch.h"
 #import "UISegmentedControl+MyTitle.h"
 #import "ViewController+panHandler.h"
+#import "TransformUtil.h"
 
 //@property UIScrollView *scrollViewButtonList;
 
@@ -19,6 +20,7 @@
 
 @implementation ViewController (Menus) 
 
+TransformUtil *state;
 SevenSwitch *editSwitch;
 UISegmentedControl *segmentControlTopMenu;
 UISegmentedControl *segmentControlSubmenu;
@@ -29,6 +31,7 @@ BOOL alreadyAnimated = NO;
 
 - (void) createTopMenu
 {
+    state = [TransformUtil sharedManager];
     float h = 42;
     float w = 42;
     float padding = 10;
@@ -382,6 +385,8 @@ BOOL alreadyAnimated = NO;
 {
     if([sender isOn]){
         // Execute any code when the switch is ON
+        state.editModeOn = YES;
+        [self setSelectedObject: self.lastSelectedObject];
         [self.scrollViewButtonList setHidden: NO];
         
         CGRect rect = self.scrollViewButtonList.frame;
@@ -417,6 +422,8 @@ BOOL alreadyAnimated = NO;
         NSLog(@"Switch is ON");
     } else{
         NSLog(@"Switch is OFF");
+        state.editModeOn = NO;
+        [self setSelectedObject: self.lastSelectedObject];
         CGRect rect = self.scrollViewButtonList.frame;
         rect.origin.y = -rect.size.height;
         UIColor *darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
