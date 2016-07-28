@@ -862,20 +862,16 @@
     NSLog(@"textFieldShouldBeginEditing");
     if ( [textView getNoteItem] == self.lastSelectedObject) {
         return YES;
-    } else
-    {
-//        [self tapHandler: textView
     }
     return NO;
 }
 
 - (void) textViewDidChange:(UITextView *) textView
 {
-    NoteItem2 *ni = (NoteItem2 *) [textView superview];
+    NoteItem2 *ni = (NoteItem2 *) textView.superview;
     [ni resizeToFit: textView.text];
     ni.note.title = textView.text;
-    [[TransformUtil sharedManager] transformVisualItem: ni];
-//    [ni saveToCoreData];
+//    [[TransformUtil sharedManager] transformVisualItem: ni];
     [self updateChildValue:ni andProperty:@"title"];
 }
 

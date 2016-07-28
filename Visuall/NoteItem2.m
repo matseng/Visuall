@@ -96,10 +96,11 @@
     }
     
     CGRect frame = self.noteTextView.frame;
-    CGSize tempSize = self.noteTextView.bounds.size;
-    tempSize.width = CGRectInfinite.size.width;
-    frame.size = tempSize;
-    [self.noteTextView setFrame: frame];
+//    CGSize tempSize = self.noteTextView.bounds.size;
+//    tempSize.width = CGRectInfinite.size.width;
+//    frame.size = tempSize;
+    frame.size.width = CGRectInfinite.size.width;
+    self.noteTextView.frame = frame;
     
     [self.noteTextView setScrollEnabled: YES];
     [self.noteTextView setText: text];
@@ -109,16 +110,17 @@
     frame = self.noteTextView.frame;
 //    float x = self.note.x - (frame.size.width - self.note.width)/2;
 //    float y = self.note.y - (frame.size.height - self.note.height)/2;
-    float x = self.note.x;
-    float y = self.note.y;
+//    float x = self.note.x;
+//    float y = self.note.y;
     
-    [self setX: x andY: y andWidth: frame.size.width andHeight: frame.size.height];
-    [self.note setX: x];
-    [self.note setY: y];
+    [self setX: self.note.x andY: self.note.y andWidth: frame.size.width andHeight: frame.size.height];
+//    [self.note setX: x];
+//    [self.note setY: y];
     [self.note setWidth: frame.size.width];
     [self.note setHeight: frame.size.height];
     
-    self.frame = frame;
+//    self.frame = frame;
+    self.frame = CGRectMake(self.note.x, self.note.y, frame.size.width, frame.size.height);
 }
 
 - (void) saveToCoreData
@@ -193,5 +195,10 @@
     CGPoint pt = CGPointMake(0.5 * self.note.width, 0.5 * self.note.height);
     return pt;
 }
+
+//- (void) updateView
+//{
+//    self.frame = CGRectMake(self., <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
+//}
 
 @end
