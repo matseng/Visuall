@@ -41,7 +41,7 @@
         if ( [viewHit isEqual: self.scrollViewButtonList] )
         {
             return;
-        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isNoteItem] )
+        } else if ( [self isEditModeOn] && ([self isPointerButtonSelected] || [self isNoteButtonSelected]) && [viewHit isNoteItem] )
         {
             NoteItem2 *nv = [viewHit getNoteItem];
             [self setSelectedObject:nv];

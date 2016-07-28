@@ -22,8 +22,9 @@
 #import "ViewController+TapHandler.h"
 #import "ViewController+Group.h"
 #import "TiledLayerView.h"
+#import "ScrollViewMod.h"
 
-@interface ViewController () <UITextFieldDelegate, UITextViewDelegate, UIGestureRecognizerDelegate> {
+@interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
 }
 //@property (strong, nonatomic) IBOutlet UIView *Background;
@@ -63,6 +64,9 @@
 //    singleTapBoundsView.delegate = self;
 //    [self.BoundsTiledLayerView addGestureRecognizer:singleTapBoundsView];
     
+    [self.BackgroundScrollView removeFromSuperview];
+    self.BackgroundScrollView = [[ScrollViewMod alloc] init];
+    [self.Background addSubview: self.BackgroundScrollView];
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
 //    [self.GroupsView removeFromSuperview];
@@ -585,11 +589,11 @@
         return NO;  // e.g. don't allow a simultaneous tap on a buried layer
     }
 
-    if ( [gestureRecognizer.view isGroupItem]  )
-    {
-        return  NO;  // e.g. avoid simultanous pan gesture on group handle and rest of group
-    }
-        
+//    if ( [gestureRecognizer.view isGroupItem]  )
+//    {
+//        return  NO;  // e.g. avoid simultanous pan gesture on group handle and rest of group
+//    }
+    
     return YES;
 }
 
@@ -634,6 +638,8 @@
 {
     
     NSLog(@"Here is handlePinchBackground");
+    [[self.view window] endEditing:YES];
+    
 //    self.BackgroundScrollView.maximumZoomScale = 1.0;
 //    self.BackgroundScrollView.minimumZoomScale = 1.0;
 //    [[TransformUtil sharedManager] handlePinchBackground:gestureRecognizer withNotes:self.NotesCollection andGroups: self.groupsCollection];
@@ -839,9 +845,7 @@
                                    action:@selector(panHandler:)];
     pan.delegate = self;
     [noteItem.noteTextView addGestureRecognizer: pan];
-
-    
-    noteItem.noteTextView.delegate = self;  // Enables delegate method textViewShouldReturn
+    noteItem.noteTextView.delegate = self;
     noteItem.noteTextView.editable = NO;
     
     [self.NotesView addSubview:noteItem];
