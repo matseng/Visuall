@@ -17,6 +17,8 @@
 		712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9641BEAF21500ED6803 /* Images.xcassets */; };
 		712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9661BEAF21500ED6803 /* LaunchScreen.xib */; };
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
+		71333A3A1D4AAAF600578A14 /* ViewController+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 71333A391D4AAAF600578A14 /* ViewController+Authentication.m */; };
+		71333A3C1D4AAB5200578A14 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71333A3B1D4AAB5200578A14 /* GoogleService-Info.plist */; };
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
@@ -112,6 +114,9 @@
 		712EC96D1BEAF21500ED6803 /* VisuallTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VisuallTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		712EC9721BEAF21500ED6803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		712EC9731BEAF21500ED6803 /* VisuallTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VisuallTests.m; sourceTree = "<group>"; };
+		71333A381D4AAAF600578A14 /* ViewController+Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ViewController+Authentication.h"; path = "../ViewController+Authentication.h"; sourceTree = "<group>"; };
+		71333A391D4AAAF600578A14 /* ViewController+Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ViewController+Authentication.m"; path = "../ViewController+Authentication.m"; sourceTree = "<group>"; };
+		71333A3B1D4AAB5200578A14 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		713D0D5B1CC18CAB00878EAE /* Note2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note2.h; sourceTree = "<group>"; };
 		713D0D5C1CC18CAB00878EAE /* Note2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note2.m; sourceTree = "<group>"; };
 		713D0D5E1CC6AE4F00878EAE /* Group2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group2.h; sourceTree = "<group>"; };
@@ -286,6 +291,8 @@
 				71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */,
 				71D96C021D359E0000CD1C49 /* ViewController+Group.h */,
 				71D96C031D359E0000CD1C49 /* ViewController+Group.m */,
+				71333A381D4AAAF600578A14 /* ViewController+Authentication.h */,
+				71333A391D4AAAF600578A14 /* ViewController+Authentication.m */,
 				885AFD651C00217800F89DE5 /* model */,
 				712EC95B1BEAF21500ED6803 /* AppDelegate.h */,
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
@@ -343,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				712EC9581BEAF21500ED6803 /* Info.plist */,
+				71333A3B1D4AAB5200578A14 /* GoogleService-Info.plist */,
 				712EC9591BEAF21500ED6803 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -534,6 +542,7 @@
 				71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,
 				77E13DAA1C011DC100105BB5 /* plane.png in Resources */,
+				71333A3C1D4AAB5200578A14 /* GoogleService-Info.plist in Resources */,
 				71D96BEC1D301D8600CD1C49 /* alarm-bell@2x.png in Resources */,
 				71C23F371D2220CB00D53E0C /* fontSize.png in Resources */,
 				71D96BED1D301D8600CD1C49 /* light-bulb.png in Resources */,
@@ -614,6 +623,7 @@
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
 				71D96BD01D2C66D000CD1C49 /* MyVisuallsDetailViewController.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
+				71333A3A1D4AAAF600578A14 /* ViewController+Authentication.m in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */,
 				716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */,

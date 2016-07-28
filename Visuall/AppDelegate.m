@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "TransformUtil.h"
 
 @interface AppDelegate ()
 
@@ -17,8 +18,67 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    // Use Firebase library to configure APIs
+    [FIRApp configure];
+    
+    [GIDSignIn sharedInstance].clientID = [FIRApp defaultApp].options.clientID;
+    [GIDSignIn sharedInstance].delegate = self;
+    
     
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<NSString *, id> *)options {
+    return [[GIDSignIn sharedInstance] handleURL:url
+                               sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [[GIDSignIn sharedInstance] handleURL:url
+                               sourceApplication:sourceApplication
+                                      annotation:annotation];
+}
+
+- (void)signIn:(GIDSignIn *)signIn
+didSignInForUser:(GIDGoogleUser *)user
+     withError:(NSError *)error {
+    if (error == nil) {
+        GIDAuthentication *authentication = user.authentication;
+        FIRAuthCredential *credential =
+        [FIRGoogleAuthProvider credentialWithIDToken:authentication.idToken
+                                         accessToken:authentication.accessToken];
+        [[FIRAuth auth] signInWithCredential:credential
+                                  completion:^(FIRUser *user, NSError *error) {
+                                      [[TransformUtil sharedManager] setFirebaseUser: user];
+                                      if (user != nil) {
+                                          // User is signed in.
+                                          for ( id <FIRUserInfo> profile in user.providerData) {
+                                              NSString *providerID = profile.providerID;
+                                              NSString *uid = profile.uid;  // Provider-specific UID
+                                              NSString *name = profile.displayName;
+                                              NSString *email = profile.email;
+                                              NSURL *photoURL = profile.photoURL;
+                                          }
+                                      } else {
+                                          // No user is signed in.
+                                      }
+                                  }];
+    } else {
+        NSLog(@"%@", error.localizedDescription);
+    }
+}
+
+- (void)signIn:(GIDSignIn *)signIn
+didDisconnectWithUser:(GIDGoogleUser *)user
+     withError:(NSError *)error {
+    // Perform any operations when the user disconnects from app here.
+    // ...
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

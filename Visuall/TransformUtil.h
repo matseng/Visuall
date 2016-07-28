@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@import Firebase;
 #import "Note.h"
 #import "NoteItem.h"
 #import "NotesCollection.h"
@@ -18,6 +19,7 @@
 
 @interface TransformUtil : NSObject
 
+@property FIRUser *firebaseUser;
 @property CGPoint translation;
 @property float scale;
 @property float scaleTest;

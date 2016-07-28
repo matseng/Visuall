@@ -24,6 +24,7 @@
 #import "TiledLayerView.h"
 #import "ScrollViewMod.h"
 
+
 @interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
 }
@@ -54,6 +55,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // TODO(developer) Configure the sign-in button look/feel
+    
+    [GIDSignIn sharedInstance].uiDelegate = self;
+    
+    // Uncomment to automatically sign in the user.
+    //[[GIDSignIn sharedInstance] signInSilently];
     
     self.BoundsTiledLayerView = [[TiledLayerView alloc] init];
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1000, 1000);
@@ -90,7 +98,8 @@
                     forControlEvents:UIControlEventEditingChanged];
     
 //    NSLog(@"My firebase config %d", [[NSNumber numberWithBool: [Firebase defaultConfig].persistenceEnabled] integerValue]);
-    
+ 
+/*
     if ( [Firebase defaultConfig].persistenceEnabled == NO) {
         [Firebase defaultConfig].persistenceEnabled = YES;
     }
@@ -107,6 +116,7 @@
     }];
     
     [self loadFirebaseTransform];
+*/
     
     [self createTopMenu];
     
@@ -344,6 +354,8 @@
     }
 }
 
+
+/*
 - (void) loadFirebaseGroups
 {
 
@@ -530,7 +542,8 @@
         }];
     }
 }
-
+*/
+ 
 - (void) findChildandTitleNotes
 {
 
@@ -802,7 +815,9 @@
                                            andHeight:self.drawGroupView.frame.size.height / zoom];
             
 //            [currentGroupItem saveToCoreData];
+            /*
             [self setGroup: currentGroupItem];
+             */
             [self addGestureRecognizersToGroup: currentGroupItem];
             
             [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];

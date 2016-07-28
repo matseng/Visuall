@@ -28,6 +28,20 @@ NoteItem2 *targetNoteForArrow;
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
+        
+         FIRUser *user = [[TransformUtil sharedManager] firebaseUser];
+        if (user != nil) {
+            // User is signed in.
+            for ( id <FIRUserInfo> profile in user.providerData) {
+                NSString *providerID = profile.providerID;
+                NSString *uid = profile.uid;  // Provider-specific UID
+                NSString *name = profile.displayName;
+                NSString *email = profile.email;
+                NSURL *photoURL = profile.photoURL;
+            }
+        } else {
+            // No user is signed in.
+        }
 //        NSLog(@"tapHandler called HERE");
 //        UIView *viewHit = [self getViewHit:sender];
         UIView *viewHit = sender.view;

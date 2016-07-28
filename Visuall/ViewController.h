@@ -12,7 +12,12 @@
 #import "NotesCollection.h"
 #import "GroupsCollection.h"
 
-@interface ViewController : UIViewController
+//@import Firebase;
+#import <GoogleSignIn/GoogleSignIn.h>
+
+@interface ViewController : UIViewController <GIDSignInUIDelegate>
+
+@property(weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
 
 @property (nonatomic, strong) NSString *firebaseURL;
 

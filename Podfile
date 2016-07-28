@@ -7,6 +7,10 @@ pod 'Firebase', '>= 2.5.1'
 
 pod 'SevenSwitch', '~> 1.4' 
 
+pod 'Firebase/Auth'
+
+pod 'GoogleSignIn'
+
 target 'Visuall' do
 
 end

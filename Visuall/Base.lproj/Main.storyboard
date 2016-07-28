@@ -22,7 +22,7 @@
                                         <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Am-8h-GBx" id="Sgt-RT-SF7">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
@@ -81,6 +81,11 @@
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
+                                    <view contentMode="scaleToFill" id="X37-D5-6ha" customClass="GIDSignInButton">
+                                        <rect key="frame" x="40" y="372" width="112" height="59"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.80000001190000003" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.64313727620000005" green="0.84705883260000003" blue="0.40392157439999998" alpha="1" colorSpace="calibratedRGB"/>
                             </scrollView>
@@ -99,6 +104,7 @@
                         <outlet property="NotesView" destination="k9c-x9-eal" id="X2T-fJ-C5r"/>
                         <outlet property="VisualItemsView" destination="vg0-Xp-mCM" id="ZsG-wy-H0e"/>
                         <outlet property="searchDisplayController" destination="QYq-Br-oaW" id="MFG-bU-dgP"/>
+                        <outlet property="signInButton" destination="X37-D5-6ha" id="HHj-5D-0iQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -125,7 +131,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="2015.4666666666667" y="1153.9866666666667"/>
+            <point key="canvasLocation" x="2015" y="1153"/>
         </scene>
         <!--My Visualls Detail View Controller-->
         <scene sceneID="Lns-dI-6m9">
