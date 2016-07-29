@@ -15,6 +15,7 @@ FIRDatabaseReference *_ref;
 -(void) userIsSignedInHandler: (FIRUser *) user
 {
     _ref = [[[FIRDatabase database] reference] child:@"version_01"];
+    
     NSString *userID = [FIRAuth auth].currentUser.uid;
     NSString *name;
     NSString *email;
@@ -52,6 +53,20 @@ FIRDatabaseReference *_ref;
     } withCancelBlock:^(NSError * _Nonnull error) {
         NSLog(@"%@", error.localizedDescription);
     }];
+}
+
+- (void) setValueNote: (NoteItem2 *) ni
+{
+    FIRDatabaseReference *notesRef = [_ref child: @"notes"];
+        NSDictionary *noteDictionary = @{
+                                         @"data/title": ni.note.title,
+                                         @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                         @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+                                         @"style/font-size": [NSString stringWithFormat:@"%.3f", ni.note.fontSize]
+                                         };
+    FIRDatabaseReference *newNoteRef = [notesRef childByAutoId];
+    [newNoteRef updateChildValues: noteDictionary];
+    ni.note.key = newNoteRef.key;
 }
 
 //- (void) setValueNote: (NoteItem2 *) ni

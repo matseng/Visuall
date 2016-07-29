@@ -59,7 +59,9 @@
 
 //- (void)processCompleted;
 
--(void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
+- (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
+
+- (void) setValueNote: (NoteItem2 *) ni;
 
 @end
 

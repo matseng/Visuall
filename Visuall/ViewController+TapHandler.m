@@ -28,20 +28,7 @@ NoteItem2 *targetNoteForArrow;
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
-        
-         FIRUser *user = [[StateUtil sharedManager] firebaseUser];
-        if (user != nil) {
-            // User is signed in.
-            for ( id <FIRUserInfo> profile in user.providerData) {
-                NSString *providerID = profile.providerID;
-                NSString *uid = profile.uid;  // Provider-specific UID
-                NSString *name = profile.displayName;
-                NSString *email = profile.email;
-                NSURL *photoURL = profile.photoURL;
-            }
-        } else {
-            // No user is signed in.
-        }
+
 //        NSLog(@"tapHandler called HERE");
 //        UIView *viewHit = [self getViewHit:sender];
         UIView *viewHit = sender.view;
@@ -80,9 +67,9 @@ NoteItem2 *targetNoteForArrow;
             CGPoint point = [sender locationInView: self.NotesView];
 //            CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
             NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
-            [self setInitialNote:newNote];
+//            [self setInitialNote:newNote];
+            [[StateUtil sharedManager] setValueNote: newNote];
             [self.NotesCollection addNote:newNote withKey:newNote.note.key];  // TODO: set key after saving to firebase
-            
             [self addNoteToViewWithHandlers:newNote];
             [self setSelectedObject:newNote];
             [newNote becomeFirstResponder];  // puts cursor on text field
