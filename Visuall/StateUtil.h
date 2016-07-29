@@ -17,7 +17,7 @@
 #import "VisualItem.h"
 #import "GroupsCollection.h"
 
-@interface TransformUtil : NSObject
+@interface StateUtil : NSObject
 
 @property FIRUser *firebaseUser;
 @property CGPoint translation;

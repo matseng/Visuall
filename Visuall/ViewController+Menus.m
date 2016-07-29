@@ -12,7 +12,7 @@
 #import "SevenSwitch.h"
 #import "UISegmentedControl+MyTitle.h"
 #import "ViewController+panHandler.h"
-#import "TransformUtil.h"
+#import "StateUtil.h"
 
 //@property UIScrollView *scrollViewButtonList;
 
@@ -20,7 +20,7 @@
 
 @implementation ViewController (Menus) 
 
-TransformUtil *state;
+StateUtil *state;
 SevenSwitch *editSwitch;
 UISegmentedControl *segmentControlTopMenu;
 UISegmentedControl *segmentControlSubmenu;
@@ -31,7 +31,7 @@ BOOL alreadyAnimated = NO;
 
 - (void) createTopMenu
 {
-    state = [TransformUtil sharedManager];
+    state = [StateUtil sharedManager];
     float h = 42;
     float w = 42;
     float padding = 10;

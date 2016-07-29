@@ -9,7 +9,7 @@
 #import "NoteItem2.h"
 
 #import "Note+CoreDataProperties.h"
-#import "TransformUtil.h"
+#import "StateUtil.h"
 #import "AppDelegate.h"
 
 @interface NoteItem2()
@@ -83,7 +83,7 @@
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
-        float zoom = [[TransformUtil sharedManager] zoom];
+        float zoom = [[StateUtil sharedManager] zoom];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         [self translateTx: translation.x / zoom andTy: translation.y / zoom];  // scale translation
     }
@@ -141,7 +141,7 @@
     [self setX: x];
     [self setY: y];
     
-    [[TransformUtil sharedManager] transformVisualItem: self];
+    [[StateUtil sharedManager] transformVisualItem: self];
 }
 
 - (void) setFontSize: (float) fontSize

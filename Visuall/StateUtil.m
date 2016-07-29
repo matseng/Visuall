@@ -6,13 +6,13 @@
 //  Copyright © 2015 Visuall. All rights reserved.
 //
 
-#import "TransformUtil.h"
+#import "StateUtil.h"
 #import "NoteItem.h"
 #import "GroupItem.h"
 #import "VisualItem.h"
 #import "NoteItem2.h"
 
-@interface TransformUtil()
+@interface StateUtil()
 //@property float zoomPreviousValue;
 @property float noteTitleScale;
 @property float timeElapsed;
@@ -21,11 +21,11 @@
 @property FIRDatabaseReference *ref;
 @end
 
-@implementation TransformUtil
+@implementation StateUtil
 
 +(id)sharedManager {
     
-    static TransformUtil *sharedMyManager = nil;
+    static StateUtil *sharedMyManager = nil;
     
     @synchronized(self) {
         if (sharedMyManager == nil) {

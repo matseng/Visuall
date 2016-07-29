@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "TransformUtil.h"
+#import "StateUtil.h"
 
 @interface AppDelegate ()
 
@@ -55,7 +55,7 @@ didSignInForUser:(GIDGoogleUser *)user
                                   completion:^(FIRUser *user, NSError *error) {
                                       if (user != nil) {
                                           // User is signed in.
-                                          [[TransformUtil sharedManager] userIsSignedInHandler: user];
+                                          [[StateUtil sharedManager] userIsSignedInHandler: user];
                                       } else {
                                           // No user is signed in.
                                       }

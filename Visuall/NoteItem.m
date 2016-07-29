@@ -7,7 +7,7 @@
 //
 
 #import "Note+CoreDataProperties.h"
-#import "TransformUtil.h"
+#import "StateUtil.h"
 #import "AppDelegate.h"
 
 @interface NoteItem()
@@ -54,7 +54,7 @@
         self.frame = frame;
         */
         
-        [[TransformUtil sharedManager] transformNoteItem: self];
+        [[StateUtil sharedManager] transformNoteItem: self];
 //        CGRect frame2 = self.frame;
 //        NSLog(@"Init %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
     }
@@ -95,7 +95,7 @@
     
     CGRect frame = self.frame;
     [self.note setHeight:frame.size.height andWidth:frame.size.width];
-    [[TransformUtil sharedManager] transformNoteItem: self];
+    [[StateUtil sharedManager] transformNoteItem: self];
 }
 
 - (void) renderToAutosizeWidth2
@@ -115,7 +115,7 @@
     [self setFrame:frame];
     //    [self setNeedsDisplay];
     [self.note setHeight:frame.size.height andWidth:frame.size.width];
-    [[TransformUtil sharedManager] transformNoteItem: self];
+    [[StateUtil sharedManager] transformNoteItem: self];
 }
 
 
@@ -156,7 +156,7 @@
     float yCenter = self.note.centerY.floatValue + ty;
     [self.note setCenterX:xCenter andCenterY:yCenter];
     
-    [[TransformUtil sharedManager] transformNoteItem: self];
+    [[StateUtil sharedManager] transformNoteItem: self];
     
 //    NSLog(@"New note %f, %f", self.note.centerX.floatValue, self.note.centerY.floatValue);
 }

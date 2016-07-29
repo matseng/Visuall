@@ -11,7 +11,7 @@
 #import "NoteItem.h"
 #import "NoteItem2.h"
 #import "UIView+VisualItem.h"
-#import "TransformUtil.h"
+#import "StateUtil.h"
 #import "AppDelegate.h"
 #import "TouchDownGestureRecognizer.h"
 #import "SevenSwitch.h"
@@ -351,7 +351,7 @@
         if (!view) {
             return;
         }
-        [[TransformUtil sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
+        [[StateUtil sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
     }
 }
 
@@ -585,7 +585,7 @@
     {
         NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
         [ni setFontSize:fontSize];
-        [[TransformUtil sharedManager] transformVisualItem: ni];
+        [[StateUtil sharedManager] transformVisualItem: ni];
     }
 }
 
@@ -749,9 +749,9 @@
             self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
             
             // Make a copy of the current group view and add it to our list of group views
-            float zoom = [[TransformUtil sharedManager] zoom];
+            float zoom = [[StateUtil sharedManager] zoom];
             GroupItem *currentGroupItem = [[GroupItem alloc]
-                                           initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.drawGroupView.frame.origin]
+                                           initWithPoint:[[StateUtil sharedManager] getGlobalCoordinate: self.drawGroupView.frame.origin]
                                             andWidth:self.drawGroupView.frame.size.width / zoom
                                             andHeight:self.drawGroupView.frame.size.height / zoom];
             
@@ -768,7 +768,7 @@
     }
     else
     {
-        [[TransformUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
+        [[StateUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
     }
 }
 
@@ -809,9 +809,9 @@
             self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
             
             // Make a copy of the current group view and add it to our list of group views
-            float zoom = [[TransformUtil sharedManager] zoom];
+            float zoom = [[StateUtil sharedManager] zoom];
             GroupItem *currentGroupItem = [[GroupItem alloc]
-                                           initWithPoint:[[TransformUtil sharedManager] getGlobalCoordinate: self.drawGroupView.frame.origin]
+                                           initWithPoint:[[StateUtil sharedManager] getGlobalCoordinate: self.drawGroupView.frame.origin]
                                            andWidth:self.drawGroupView.frame.size.width / zoom
                                            andHeight:self.drawGroupView.frame.size.height / zoom];
             
@@ -865,7 +865,7 @@
     noteItem.noteTextView.editable = NO;
     
     [self.NotesView addSubview:noteItem];
-    [[TransformUtil sharedManager] transformVisualItem: noteItem];
+    [[StateUtil sharedManager] transformVisualItem: noteItem];
 //    self.lastSelectedObject = noteItem;
 
 }
@@ -922,7 +922,7 @@
 //    frame = [[textView layoutManager] usedRectForTextContainer:[textView textContainer]];
     NSLog(@"After resize: %f, %f", frame.size.width, frame.size.height);
     
-    [[TransformUtil sharedManager] transformNoteItem:textView];
+    [[StateUtil sharedManager] transformNoteItem:textView];
     [textView saveToCoreData];
 }
 

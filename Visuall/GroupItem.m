@@ -7,7 +7,7 @@
 //
 
 #import "GroupItem.h"
-#import "TransformUtil.h"
+#import "StateUtil.h"
 #import "AppDelegate.h"
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
@@ -70,7 +70,7 @@
         [self setGroup: group];
         [self renderGroup];
         [self setViewAsNotSelected];
-        [[TransformUtil sharedManager] transformGroupItem: self];
+        [[StateUtil sharedManager] transformGroupItem: self];
     }
     return self;
 }
@@ -102,7 +102,7 @@
         [self setGroup: group];
         [self renderGroup];
         [self setViewAsNotSelected];
-        [[TransformUtil sharedManager] transformGroupItem: self];
+        [[StateUtil sharedManager] transformGroupItem: self];
     }
 
     return self;
@@ -110,7 +110,7 @@
 
 - (void) renderGroup
 {
-    float scale = [[TransformUtil sharedManager] zoom];
+    float scale = [[StateUtil sharedManager] zoom];
     
     [self setFrame: CGRectMake(
                                (-self.group.width/2 - HANDLE_DIAMETER / 2) * scale,
@@ -133,7 +133,7 @@
 
 - (void) updateGroupDimensions
 {
-    float scale = [[TransformUtil sharedManager] zoom];
+    float scale = [[StateUtil sharedManager] zoom];
     
     [self setFrame: CGRectMake(
                                (-self.group.width/2 - HANDLE_DIAMETER / 2) * scale,
@@ -204,7 +204,7 @@
         [self.group setX: x];
         [self.group setY: y];
         
-        [[TransformUtil sharedManager] transformGroupItem: self];
+        [[StateUtil sharedManager] transformGroupItem: self];
         
         for (NoteItem *ni in self.notesInGroup) {
             [ni translateTx: translation.x andTy:translation.y];
@@ -215,7 +215,7 @@
             [gi.group setX: x andY: y];
 //            [gi.group setX: x];
 //            [gi.group setY: y];
-            [[TransformUtil sharedManager] transformGroupItem: gi];
+            [[StateUtil sharedManager] transformGroupItem: gi];
         }
         
         
@@ -242,7 +242,7 @@
                 [self.group setHeight: height];
             }
             [self updateGroupDimensions];
-            [[TransformUtil sharedManager] transformGroupItem: self];
+            [[StateUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleTopLeft)
         {
             CGPoint translation = [gestureRecognizer translationInView:self];
@@ -259,7 +259,7 @@
                 [self.group setY:self.group.y + translation.y];
             }
             [self updateGroupDimensions];
-            [[TransformUtil sharedManager] transformGroupItem: self];
+            [[StateUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleTopRight)
         {
             CGPoint translation = [gestureRecognizer translationInView:self];
@@ -276,7 +276,7 @@
                 [self.group setY:self.group.y + translation.y];
             }
             [self updateGroupDimensions];
-            [[TransformUtil sharedManager] transformGroupItem: self];
+            [[StateUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleBottomLeft)
         {
             CGPoint translation = [gestureRecognizer translationInView:self];
@@ -293,7 +293,7 @@
                 [self.group setY:self.group.y];
             }
             [self updateGroupDimensions];
-            [[TransformUtil sharedManager] transformGroupItem: self];
+            [[StateUtil sharedManager] transformGroupItem: self];
         }
     }
 }
@@ -410,7 +410,7 @@
 - (void) setViewAsSelected
 {
     self.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
-    if ( [[TransformUtil sharedManager] editModeOn])
+    if ( [[StateUtil sharedManager] editModeOn])
     {
         handleTopLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
         handleTopRight.layer.backgroundColor = [HANDLE_COLOR CGColor];

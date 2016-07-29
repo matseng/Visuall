@@ -9,7 +9,7 @@
 #import "ViewController+TapHandler.h"
 #import "ViewController+ViewHit.h"
 #import "ViewController+Menus.h"
-#import "TransformUtil.h"
+#import "StateUtil.h"
 #import "UIView+VisualItem.h"
 #import "ArrowItem.h"
 #import "UIBezierPath+arrowhead.h"
@@ -29,7 +29,7 @@ NoteItem2 *targetNoteForArrow;
     if (sender.state == UIGestureRecognizerStateEnded)
     {
         
-         FIRUser *user = [[TransformUtil sharedManager] firebaseUser];
+         FIRUser *user = [[StateUtil sharedManager] firebaseUser];
         if (user != nil) {
             // User is signed in.
             for ( id <FIRUserInfo> profile in user.providerData) {

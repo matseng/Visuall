@@ -27,7 +27,7 @@
 		716328B91D25F257009DF56B /* Sign Up-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B81D25F257009DF56B /* Sign Up-50.png */; };
 		716328BB1D25F867009DF56B /* picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328BA1D25F867009DF56B /* picture.png */; };
 		716328BD1D260798009DF56B /* Archers-Arrowhead.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328BC1D260798009DF56B /* Archers-Arrowhead.png */; };
-		716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* TransformUtil.m */; };
+		716B046A1BFC210300DA9451 /* StateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* StateUtil.m */; };
 		716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B51D51D36C2A40049A203 /* UIView+VisualItem.m */; };
 		7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBCE1D3D55E700F609DE /* TiledLayerView.m */; };
 		7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD11D4664BB00F609DE /* ArrowItem.m */; };
@@ -128,8 +128,8 @@
 		716328B81D25F257009DF56B /* Sign Up-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sign Up-50.png"; sourceTree = "<group>"; };
 		716328BA1D25F867009DF56B /* picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picture.png; sourceTree = "<group>"; };
 		716328BC1D260798009DF56B /* Archers-Arrowhead.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Archers-Arrowhead.png"; sourceTree = "<group>"; };
-		716B04681BFC210300DA9451 /* TransformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformUtil.h; sourceTree = "<group>"; };
-		716B04691BFC210300DA9451 /* TransformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformUtil.m; sourceTree = "<group>"; };
+		716B04681BFC210300DA9451 /* StateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateUtil.h; sourceTree = "<group>"; };
+		716B04691BFC210300DA9451 /* StateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StateUtil.m; sourceTree = "<group>"; };
 		716B51D41D36C2A40049A203 /* UIView+VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VisualItem.h"; sourceTree = "<group>"; };
 		716B51D51D36C2A40049A203 /* UIView+VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VisualItem.m"; sourceTree = "<group>"; };
 		7195EBCD1D3D55E700F609DE /* TiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledLayerView.h; sourceTree = "<group>"; };
@@ -308,8 +308,8 @@
 				71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */,
 				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
 				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
-				716B04681BFC210300DA9451 /* TransformUtil.h */,
-				716B04691BFC210300DA9451 /* TransformUtil.m */,
+				716B04681BFC210300DA9451 /* StateUtil.h */,
+				716B04691BFC210300DA9451 /* StateUtil.m */,
 				713D0D5E1CC6AE4F00878EAE /* Group2.h */,
 				713D0D5F1CC6AE4F00878EAE /* Group2.m */,
 				210833161C0127AB00BA059F /* GroupItem.h */,
@@ -646,7 +646,7 @@
 				71D96C041D359E0000CD1C49 /* ViewController+Group.m in Sources */,
 				71D96BE11D2F030200CD1C49 /* UIImage+Extras.m in Sources */,
 				71D96BCA1D2C59AA00CD1C49 /* MyVisuallsViewController.m in Sources */,
-				716B046A1BFC210300DA9451 /* TransformUtil.m in Sources */,
+				716B046A1BFC210300DA9451 /* StateUtil.m in Sources */,
 				71D96BFE1D34791100CD1C49 /* ViewController+panHandler.m in Sources */,
 				712EC95A1BEAF21500ED6803 /* main.m in Sources */,
 				71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */,
