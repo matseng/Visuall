@@ -67,6 +67,7 @@
 		71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */; };
 		71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */; };
 		71E1AF561D4AF7E700B818A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */; };
+		71E1AF5C1D4BDFF900B818A0 /* StateUtil+Firebase.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -187,6 +188,8 @@
 		71D96C081D35D22000CD1C49 /* UISegmentedControl+MyTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISegmentedControl+MyTitle.h"; sourceTree = "<group>"; };
 		71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+MyTitle.m"; sourceTree = "<group>"; };
 		71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StateUtil+Firebase.h"; sourceTree = "<group>"; };
+		71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StateUtil+Firebase.m"; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -308,6 +311,8 @@
 				71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */,
 				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
 				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
+				71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */,
+				71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */,
 				716B04681BFC210300DA9451 /* StateUtil.h */,
 				716B04691BFC210300DA9451 /* StateUtil.m */,
 				713D0D5E1CC6AE4F00878EAE /* Group2.h */,
@@ -648,6 +653,7 @@
 				71D96BCA1D2C59AA00CD1C49 /* MyVisuallsViewController.m in Sources */,
 				716B046A1BFC210300DA9451 /* StateUtil.m in Sources */,
 				71D96BFE1D34791100CD1C49 /* ViewController+panHandler.m in Sources */,
+				71E1AF5C1D4BDFF900B818A0 /* StateUtil+Firebase.m in Sources */,
 				712EC95A1BEAF21500ED6803 /* main.m in Sources */,
 				71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */,
 				7195EBD81D47035400F609DE /* UIBezierPath+arrowhead.m in Sources */,

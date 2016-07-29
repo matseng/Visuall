@@ -475,21 +475,6 @@
     }
 }
 
-- (void) setInitialNote: (NoteItem2 *) ni
-{
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
-    Firebase *notesRef = [ref childByAppendingPath: @"notes2"];
-    Firebase *newNoteRef = [notesRef childByAutoId];
-    NSDictionary *noteDictionary = @{
-                                    @"data/title": ni.note.title,
-                                    @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
-                                    @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-                                    @"style/font-size": [NSString stringWithFormat:@"%.3f", ni.note.fontSize]
-                                  };
-    [newNoteRef updateChildValues: noteDictionary];
-    ni.note.key = newNoteRef.key;
-}
-
 - (void) setGroup: (GroupItem *) gi
 {
     Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
