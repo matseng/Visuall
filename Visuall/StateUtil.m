@@ -7,7 +7,6 @@
 //
 
 #import "StateUtil.h"
-#import "NoteItem.h"
 #import "GroupItem.h"
 #import "VisualItem.h"
 #import "NoteItem2.h"
@@ -249,35 +248,6 @@
     frame.size.height = visualItem.height * self.zoom;
     [visualItem setFrame: frame];
     
-}
-
--(void) transformNoteItem: (NoteItem *) noteItem
-{
-    CGAffineTransform matrix = noteItem.transform;
-    matrix.a = self.zoom;
-    matrix.d = self.zoom;
-//    matrix.tx = (noteItem.note.centerX.floatValue * self.zoom) + self.pan.x;
-//    matrix.ty = (noteItem.note.centerY.floatValue * self.zoom) + self.pan.y;
-//    NSLog(@"tx and ty %f, %f", matrix.tx, matrix.ty);
-//    NSLog(@"pan.x and pan.y %f, %f", self.pan.x, self.pan.y);
-//    NSLog(@"zoom %f", self.zoom);
-//    NSLog(@"Check frame %f, %f", noteItem.frame.origin.x, noteItem.frame.origin.y);
-//    noteItem.transform = matrix;
-    
-//    CGRectApplyAffineTransform(noteItem.frame , matrix);
-//    NSLog(@"Check frame %f, %f", noteItem.frame.origin.x, noteItem.frame.origin.y);
-    [noteItem setTransform: matrix];
-    
-    CGRect frame = noteItem.frame;
-    frame.origin.x = (-noteItem.note.width.floatValue/2 + noteItem.note.centerX.floatValue ) * self.zoom + self.pan.x;
-    frame.origin.y = (-noteItem.note.height.floatValue/2 + noteItem.note.centerY.floatValue ) * self.zoom + self.pan.y;
-
-    NSLog(@"Transformed %f, %f", noteItem.note.width.floatValue, noteItem.note.height.floatValue);
-    frame.size.width = noteItem.note.width.floatValue * self.zoom;  // Why do I do this?
-    frame.size.height = noteItem.note.height.floatValue * self.zoom;  // Why do I do this?
-//    noteItem.frame = frame;
-    [noteItem setFrame: frame];
-
 }
 
 -(void) transformGroupItem: (GroupItem *) groupItem

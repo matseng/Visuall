@@ -68,7 +68,6 @@
 		71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */; };
 		71E1AF561D4AF7E700B818A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */; };
 		71E1AF5C1D4BDFF900B818A0 /* StateUtil+Firebase.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */; };
-		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
 		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; };
@@ -190,8 +189,6 @@
 		71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StateUtil+Firebase.h"; sourceTree = "<group>"; };
 		71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StateUtil+Firebase.m"; sourceTree = "<group>"; };
-		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
-		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
 		71FC72131BF2E881003B7F14 /* NotesCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesCollection.m; sourceTree = "<group>"; };
 		77E13DA11C011C1700105BB5 /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
@@ -321,8 +318,6 @@
 				210833171C0127AB00BA059F /* GroupItem.m */,
 				71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */,
 				71B0EF001CB83CCE009D8F5C /* VisualItem.m */,
-				71E354F71BF5953600B5EA99 /* NoteItem.h */,
-				71E354F81BF5953600B5EA99 /* NoteItem.m */,
 				713D0D5B1CC18CAB00878EAE /* Note2.h */,
 				713D0D5C1CC18CAB00878EAE /* Note2.m */,
 				71B0EF021CB83E6D009D8F5C /* NoteItem2.h */,
@@ -655,7 +650,6 @@
 				71D96BFE1D34791100CD1C49 /* ViewController+panHandler.m in Sources */,
 				71E1AF5C1D4BDFF900B818A0 /* StateUtil+Firebase.m in Sources */,
 				712EC95A1BEAF21500ED6803 /* main.m in Sources */,
-				71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */,
 				7195EBD81D47035400F609DE /* UIBezierPath+arrowhead.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

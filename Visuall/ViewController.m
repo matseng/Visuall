@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "Note.h"
-#import "NoteItem.h"
 #import "NoteItem2.h"
 #import "UIView+VisualItem.h"
 #import "AppDelegate.h"
@@ -586,16 +585,6 @@
     }
 }
 
-- (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
-{
-    if ( [gestureRecognizer.view respondsToSelector:@selector(handlePan2:)] ) {
-        NoteItem *ni = (NoteItem *)gestureRecognizer.view;
-        [ni handlePan2:gestureRecognizer];
-        [self setSelectedObject:ni];
-//        [ni saveToCoreData];
-    }
-}
-
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
     {
@@ -709,35 +698,10 @@
     [[StateUtil sharedManager] updateChildValue:ni Property:@"title"];
 }
 
-- (void) textViewDidChange_ARCHIVE:(NoteItem *)textView
+-(void) textViewDidChangeSelection:(UITextView *)textView
 {
-
-//    textView.frame = CGRectZero;
-    CGRect frame = textView.frame;
-    
-    CGSize tempSize = textView.bounds.size;
-    tempSize.width = CGRectInfinite.size.width;
-    
-    frame.size = tempSize;
-    [textView setFrame: frame];  //TODO: getting error here when zoomed out
-    
-    [textView setScrollEnabled:YES];
-    NSLog(@"New text: %@", textView.text);
-    [textView setText: textView.text];
-    textView.note.title = textView.text;
-
-    NSLog(@"Before resize: %f, %f", frame.size.width, frame.size.height);
-    [textView sizeToFit];
-
-    [textView setScrollEnabled:NO];
-    frame = textView.frame;
-    [textView.note setWidth:frame.size.width andHeight:frame.size.height];
-    
-//    frame = [[textView layoutManager] usedRectForTextContainer:[textView textContainer]];
-    NSLog(@"After resize: %f, %f", frame.size.width, frame.size.height);
-    
-    [[StateUtil sharedManager] transformNoteItem:textView];
-    [textView saveToCoreData];
+    NoteItem2 *ni = [textView getNoteItem];
+    [self setSelectedObject: ni];
 }
 
 - (IBAction)onDeletePressed:(UIBarButtonItem *)sender {
@@ -800,11 +764,16 @@
 
 - (BOOL)setSelectedObject:(UIView *) object
 {
+    if (self.lastSelectedObject == object)
+    {
+        return NO;
+    }
     if (self.lastSelectedObject) {
         if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]])
         {
             NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
             ni.noteTextView.editable = NO;
+            ni.noteTextView.selectable = NO;
             self.lastSelectedObject.layer.borderWidth = 0;
         } else if ([self.lastSelectedObject isGroupItem])
         {
@@ -822,6 +791,7 @@
         if ( [self isEditModeOn] )
         {
             noteToSet.noteTextView.editable = YES;
+            noteToSet.noteTextView.selectable = YES;
         }
         
     } else if ([object isKindOfClass:[GroupItem class]]) {

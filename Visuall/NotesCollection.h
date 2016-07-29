@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NoteItem.h"
 #import "NoteItem2.h"
 
 @interface NotesCollection : NSObject

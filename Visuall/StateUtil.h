@@ -11,7 +11,6 @@
 
 @import Firebase;
 #import "Note.h"
-#import "NoteItem.h"
 #import "NotesCollection.h"
 #import "GroupItem.h"
 #import "VisualItem.h"
@@ -37,9 +36,7 @@
 
 -(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
 
--(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NotesCollection *) Notes andGroups: (GroupsCollection *) Groups;
-
--(void) transformNoteItem: (NoteItem *) noteItem;
+//-(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NotesCollection *) Notes andGroups: (GroupsCollection *) Groups;
 
 -(void) transformGroupItem: (GroupItem *) groupItem;
 

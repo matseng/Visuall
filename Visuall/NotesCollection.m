@@ -8,7 +8,6 @@
 
 #import "NotesCollection.h"
 #import "Note+CoreDataProperties.h"
-#import "NoteItem.h"
 #import "NoteItem2.h"
 #import "AppDelegate.h"
 

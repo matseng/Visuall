@@ -43,10 +43,11 @@
         note.fontSize = DEFAULT_FONTSIZE;
         [self setNote: note];
         
-        self.noteTextView = [[UITextView alloc] init];
-        [self.noteTextView setFont:[UIFont fontWithName: @"Arial" size:note.fontSize]];
-        [self resizeToFit: note.title];
-        [self addSubview: self.noteTextView];  // adds the text view to this note's super view
+//        self.noteTextView = [[UITextView alloc] init];
+//        [self.noteTextView setFont:[UIFont fontWithName: @"Arial" size:note.fontSize]];
+//        [self resizeToFit: note.title];
+//        [self addSubview: self.noteTextView];  // adds the text view to this note's super view
+        [self addTextView];
     }
     return self;
 }
@@ -68,14 +69,19 @@
         note.y = [value[@"data"][@"y"] floatValue];
         note.fontSize = [value[@"data"][@"font-size"] floatValue];
         [self setNote: note];
-        
-        self.noteTextView = [[UITextView alloc] init];
-        self.noteTextView.tag = 333;
-        [self.noteTextView setFont:[UIFont fontWithName: @"Arial" size:note.fontSize]];
-        [self resizeToFit: note.title];
-        [self addSubview: self.noteTextView];  // adds the text view to this note's super view
+        [self addTextView];
     }
     return self;
+}
+
+- (void) addTextView
+{
+    self.noteTextView = [[UITextView alloc] init];
+    [self.noteTextView setFont:[UIFont fontWithName: @"Arial" size: self.note.fontSize]];
+    [self resizeToFit: self.note.title];
+    self.noteTextView.editable = NO;
+    self.noteTextView.selectable = NO;
+    [self addSubview: self.noteTextView];
 }
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer

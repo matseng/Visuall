@@ -65,9 +65,7 @@ NoteItem2 *targetNoteForArrow;
         
         if ( [self isNoteButtonSelected] ) {  // new note button  //- (BOOL) isNoteButtonSelected
             CGPoint point = [sender locationInView: self.NotesView];
-//            CGPoint point = [[TransformUtil sharedManager] getGlobalCoordinate:gesturePoint];
             NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
-//            [self setInitialNote:newNote];
             [[StateUtil sharedManager] setValueNote: newNote];
             [self.NotesCollection addNote:newNote withKey:newNote.note.key];  // TODO: set key after saving to firebase
             [self addNoteToViewWithHandlers:newNote];

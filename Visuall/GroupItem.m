@@ -9,6 +9,7 @@
 #import "GroupItem.h"
 #import "StateUtil.h"
 #import "AppDelegate.h"
+#import "NoteItem2.h"
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [UIColor blackColor]
@@ -206,7 +207,7 @@
         
         [[StateUtil sharedManager] transformGroupItem: self];
         
-        for (NoteItem *ni in self.notesInGroup) {
+        for (NoteItem2 *ni in self.notesInGroup) {
             [ni translateTx: translation.x andTy:translation.y];
         }
         for (GroupItem *gi in self.groupsInGroup) {

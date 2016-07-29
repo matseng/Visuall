@@ -78,7 +78,7 @@ FIRDatabaseReference *_ref;
     FIRDatabaseReference *notesRef = [_ref child: @"notes"];
 //    [Firebase goOffline];
     self.notesCollection = [NotesCollection new];
-    [notesRef observeSingleEventOfType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+    [notesRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
          if([self.notesCollection getNoteFromKey:snapshot.key])  // If the note already exists in the collection
          {

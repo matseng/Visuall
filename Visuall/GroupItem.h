@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Group.h"
-#import "NoteItem.h"
 #import "NoteItem2.h"
 #import "Group2.h"
 
