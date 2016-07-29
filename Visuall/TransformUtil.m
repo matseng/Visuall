@@ -18,6 +18,7 @@
 @property float timeElapsed;
 @property float timerThreshold;
 @property UIView *rootView;
+@property FIRDatabaseReference *ref;
 @end
 
 @implementation TransformUtil
@@ -323,6 +324,48 @@
         return YES;
     }
     return NO;
+}
+
+-(void) userIsSignedInHandler: (FIRUser *) user
+{
+    self.ref = [[FIRDatabase database] reference];
+    NSString *userID = [FIRAuth auth].currentUser.uid;
+    NSString *name;
+    NSString *email;
+    NSString *provider;
+    for ( id <FIRUserInfo> profile in user.providerData) {
+        NSString *providerID = profile.providerID;
+        NSString *uid = profile.uid;  // Provider-specific UID
+        name = profile.displayName;
+        email = profile.email;
+//        provider = profile.email;
+        NSURL *photoURL = profile.photoURL;
+        NSLog(@"userID: %@", userID);
+        NSLog(@"uid: %@", uid);
+    }
+
+    [[[_ref child:@"users"] child:userID] observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        if ( ![snapshot exists] )  // we have a new user
+        {
+            NSDictionary *newUserBasicUserInfo = @{
+                                            @"full_name" : name,
+                                            @"email": email,
+                                            @"date_joined": [FIRServerValue timestamp],
+                                            @"date_last_visit": [FIRServerValue timestamp]
+                                            };
+            [[[_ref child:@"users"] child: userID] setValue: newUserBasicUserInfo];
+        } else {
+            NSLog(@"%@", snapshot.value );
+            [[[_ref child:@"users"] child: userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
+        }
+
+        // Get user value
+//        NSString *myUserName = snapshot.value[@"username"];
+        
+        // ...
+    } withCancelBlock:^(NSError * _Nonnull error) {
+        NSLog(@"%@", error.localizedDescription);
+    }];
 }
 
 @end

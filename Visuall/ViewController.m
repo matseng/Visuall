@@ -40,6 +40,7 @@
 @property CGRect totalBoundsRect;
 @property CGPoint zoomOffsetPoint;
 
+
 @end
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]

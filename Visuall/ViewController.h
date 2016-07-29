@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Firebase/Firebase.h>
+//#import <Firebase/Firebase.h>
 #import "GroupItem.h"
 #import "NotesCollection.h"
 #import "GroupsCollection.h"
 
-//@import Firebase;
+@import Firebase;
+//@import FirebaseDatabase;
+
 #import <GoogleSignIn/GoogleSignIn.h>
 
 @interface ViewController : UIViewController <GIDSignInUIDelegate>

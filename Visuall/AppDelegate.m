@@ -20,10 +20,8 @@
     // Override point for customization after application launch.
     // Use Firebase library to configure APIs
     [FIRApp configure];
-    
     [GIDSignIn sharedInstance].clientID = [FIRApp defaultApp].options.clientID;
     [GIDSignIn sharedInstance].delegate = self;
-    
     
     return YES;
 }
@@ -55,16 +53,9 @@ didSignInForUser:(GIDGoogleUser *)user
                                          accessToken:authentication.accessToken];
         [[FIRAuth auth] signInWithCredential:credential
                                   completion:^(FIRUser *user, NSError *error) {
-                                      [[TransformUtil sharedManager] setFirebaseUser: user];
                                       if (user != nil) {
                                           // User is signed in.
-                                          for ( id <FIRUserInfo> profile in user.providerData) {
-                                              NSString *providerID = profile.providerID;
-                                              NSString *uid = profile.uid;  // Provider-specific UID
-                                              NSString *name = profile.displayName;
-                                              NSString *email = profile.email;
-                                              NSURL *photoURL = profile.photoURL;
-                                          }
+                                          [[TransformUtil sharedManager] userIsSignedInHandler: user];
                                       } else {
                                           // No user is signed in.
                                       }

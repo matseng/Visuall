@@ -49,6 +49,8 @@
 
 -(void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView: (UIView *) view;
 
+-(void) userIsSignedInHandler: (FIRUser *) firebaseUser;
+
 //-(void) setNotesCollection: (NotesCollection *) nc andGroupsCollection: (GroupsCollection *) gc;
 
 @end
