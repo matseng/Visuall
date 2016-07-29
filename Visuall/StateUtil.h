@@ -57,11 +57,15 @@
 
 @protocol FirebaseUtilProtocolDelegate
 
-//- (void)processCompleted;
+- (void) loadFirebaseNotes: (void (^)(NoteItem2 *ni)) callback;
 
 - (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
 
 - (void) setValueNote: (NoteItem2 *) ni;
+
+- (void) updateChildValue: (UIView *) visualObject Property: (NSString *) propertyName;
+
+- (void) updateChildValues: (UIView *) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
 
 @end
 

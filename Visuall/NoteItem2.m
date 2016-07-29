@@ -66,7 +66,7 @@
         }
         note.x = [value[@"data"][@"x"] floatValue];
         note.y = [value[@"data"][@"y"] floatValue];
-        note.fontSize = [value[@"style"][@"font-size"] floatValue];
+        note.fontSize = [value[@"data"][@"font-size"] floatValue];
         [self setNote: note];
         
         self.noteTextView = [[UITextView alloc] init];

@@ -11,7 +11,6 @@
 #import "NoteItem.h"
 #import "NoteItem2.h"
 #import "UIView+VisualItem.h"
-#import "StateUtil.h"
 #import "AppDelegate.h"
 #import "TouchDownGestureRecognizer.h"
 #import "SevenSwitch.h"
@@ -23,6 +22,7 @@
 #import "ViewController+Group.h"
 #import "TiledLayerView.h"
 #import "ScrollViewMod.h"
+#import "StateUtil.h"
 
 
 @interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate> {
@@ -118,6 +118,10 @@
     
     [self loadFirebaseTransform];
 */
+    [[StateUtil sharedManager] loadFirebaseNotes:^(NoteItem2 *ni) {
+        [self addNoteToViewWithHandlers: ni];
+        [self calculateTotalBounds: ni];
+    }];
     
     [self createTopMenu];
     
@@ -354,181 +358,6 @@
         [[StateUtil sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
     }
 }
-
-
-/*
-- (void) loadFirebaseGroups
-{
-
-    Firebase *refGroups = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/groups2"];
-    [Firebase goOffline];
-    self.groupsCollection = [GroupsCollection new];
-    [[TransformUtil sharedManager] setGroupsCollection: self.groupsCollection];
-    [refGroups observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
-     {
-         if([self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the note already exists in the collection
-         {
-             return;  // TODO: add functionality to update values during multiuser collaboration
-         }
-         
-         GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
-         [self addGestureRecognizersToGroup: newGroup];
-         [self.groupsCollection addGroup: newGroup withKey: snapshot.key];
-         [self.GroupsView addSubview:newGroup];
-//         [[TransformUtil sharedManager] transformGroupItem: newGroup];
-     } withCancelBlock:^(NSError *error)
-     {
-         NSLog(@"%@", error.description);
-     }];
-    
-}
-
-- (void) loadFirebaseNotes
-{
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/notes2"];
-    [Firebase goOffline];
-    self.NotesCollection = [NotesCollection new];
-    [[TransformUtil sharedManager] setNotesCollection: self.NotesCollection];
-    [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot)
-    {
-        if([self.NotesCollection getNoteFromKey:snapshot.key])  // If the note already exists in the collection
-        {
-            return;  // TODO: add functionality to update values during multiuser collaboration
-        }
-        
-        NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase:snapshot.key andValue:snapshot.value];
-        [self.NotesCollection addNote:newNote withKey:snapshot.key];
-        [self addNoteToViewWithHandlers:newNote];
-        
-        [self calculateTotalBounds: newNote];
-        
-        
-    } withCancelBlock:^(NSError *error)
-    {
-        NSLog(@"%@", error.description);
-    }];
-}
-
-- (void) loadFirebaseTransform
-{
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com/transform"];
-    [Firebase goOffline];
-    if (ref)
-    {
-        [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot)
-         {
-             
-//             float zoom = [snapshot.value[@"zoom"] floatValue];
-//             float tx = [snapshot.value[@"tx"] floatValue];
-//             float ty = [snapshot.value[@"ty"] floatValue];
-             
-             float zoom = 1.0f;
-             float tx = 0.0f;
-             float ty = 0.0f;
-
-             [[TransformUtil sharedManager] setZoom:zoom];
-             [[TransformUtil sharedManager] setPan:(CGPointMake(tx, ty))];
-             
-             self.BackgroundScrollView.zoomScale = zoom;
-             self.BackgroundScrollView.contentOffset = CGPointMake(tx, ty);
-             
-             [self loadFirebaseNotes];
-             [self loadFirebaseGroups];
-         } withCancelBlock:^(NSError *error)
-         {
-             NSLog(@"%@", error.description);
-         }];
-    }
-}
-
-- (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName
-{
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
-    
-    if ( [visualObject isKindOfClass: [NoteItem2 class]] ) {
-        NoteItem2 *ni = (NoteItem2 *) visualObject;
-        NSString *noteUrl = [[@"notes2/" stringByAppendingString: ni.note.key] stringByAppendingString:@"/data/"];
-        [ref updateChildValues: @{
-                                  [noteUrl stringByAppendingString:propertyName] : [ni.note valueForKey:propertyName]
-                                  }];
-    }
-}
-
-- (void) updateChildValues: (id) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2
-{
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
-    
-    if ( [visualObject isKindOfClass: [NoteItem2 class]] ) {  // TODO - simple method the check visualObject its a NoteItem2
-        NoteItem2 *ni = (NoteItem2 *) visualObject;
-        NSString *noteUrl = [[@"notes2/" stringByAppendingString: ni.note.key] stringByAppendingString:@"/data/"];
-        [ref updateChildValues: @{
-                                  [noteUrl stringByAppendingString:propertyName1] : [ni.note valueForKey:propertyName1],
-                                  [noteUrl stringByAppendingString:propertyName2] : [ni.note valueForKey:propertyName2],
-                                  }];
-    } else if ([visualObject isKindOfClass: [GroupItem class]]) {  // TODO - simple method the check if it's a GroupItem
-        GroupItem *gi = (GroupItem *) visualObject;
-        NSString *groupUrl = [[@"groups2/" stringByAppendingString: gi.group.key] stringByAppendingString:@"/data/"];
-        [ref updateChildValues: @{
-                                  [groupUrl stringByAppendingString:propertyName1] : [gi.group valueForKey:propertyName1],
-                                  [groupUrl stringByAppendingString:propertyName2] : [gi.group valueForKey:propertyName2],
-                                  }];
-    }
-}
-
-- (void) setGroup: (GroupItem *) gi
-{
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
-    Firebase *groupsRef = [ref childByAppendingPath: @"groups2"];
-    Firebase *newGroupRef = [groupsRef childByAutoId];
-    NSDictionary *groupDictionary = @{
-                                     @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
-                                     @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
-                                     @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
-                                     @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height]
-                                     };
-    [newGroupRef updateChildValues: groupDictionary];
-    gi.group.key = newGroupRef.key;
-}
-
-- (void) setTransformFirebase
-{
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
-    Firebase *transformRef = [ref childByAppendingPath: @"transform"];
-    NSDictionary *transformDictionary = @{
-                                      @"zoom": [NSString stringWithFormat:@"%.3f", [[TransformUtil sharedManager] zoom]],
-                                      @"tx": [NSString stringWithFormat:@"%.3f", [[TransformUtil sharedManager] pan].x],
-                                      @"ty": [NSString stringWithFormat:@"%.3f", [[TransformUtil sharedManager] pan].y]
-                                      };
-    [transformRef updateChildValues: transformDictionary];
-}
-
-- (void) removeValue: (id) object
-{
-    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
-    if([object isKindOfClass: [NoteItem2 class]]) {
-        NoteItem2 *ni = (NoteItem2 *) object;
-        Firebase *noteRef = [ref childByAppendingPath: [@"notes2/" stringByAppendingString:ni.note.key]];
-        [noteRef removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
-            if (error) {
-                NSLog(@"Data could not be removed.");
-            } else {
-                NSLog(@"Data removed successfully.");
-            }
-        }];
-        
-    } else if([object isKindOfClass: [GroupItem class]]) {
-        GroupItem *gi = (GroupItem *) object;
-        Firebase *groupRef = [ref childByAppendingPath: [@"groups2/" stringByAppendingString:gi.group.key]];
-        [groupRef removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
-            if (error) {
-                NSLog(@"Group could not be removed.");
-            } else {
-                NSLog(@"Group removed successfully.");
-            }
-        }];
-    }
-}
-*/
  
 - (void) findChildandTitleNotes
 {
@@ -877,7 +706,7 @@
     [ni resizeToFit: textView.text];
     ni.note.title = textView.text;
 //    [[TransformUtil sharedManager] transformVisualItem: ni];
-    [self updateChildValue:ni andProperty:@"title"];
+    [[StateUtil sharedManager] updateChildValue:ni Property:@"title"];
 }
 
 - (void) textViewDidChange_ARCHIVE:(NoteItem *)textView

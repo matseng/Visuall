@@ -8,6 +8,7 @@
 
 #import "ViewController+Group.h"
 #import "ViewController+Menus.h"
+#
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
@@ -97,12 +98,13 @@
     {
         [groupItem handlePanGroup2:gestureRecognizer];
         
-        [self updateChildValues:groupItem Property1:@"x" Property2:@"y"];
+//        [self updateChildValues:groupItem Property1:@"x" Property2:@"y"];
+        
         for (NoteItem2 *ni2 in groupItem.notesInGroup) {
-            [self updateChildValues: ni2 Property1:@"x" Property2:@"y"];
+//            [self updateChildValues: ni2 Property1:@"x" Property2:@"y"];
         }
         for (GroupItem *gi in groupItem.groupsInGroup) {
-            [self updateChildValues: gi Property1:@"x" Property2:@"y"];
+//            [self updateChildValues: gi Property1:@"x" Property2:@"y"];
         }
         
     }

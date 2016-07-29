@@ -55,9 +55,9 @@
 
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer;
 
-- (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName;
+//- (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName;
 
-- (void) updateChildValues: (id) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
+//- (void) updateChildValues: (id) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
 
 - (void) setTransformFirebase;
 

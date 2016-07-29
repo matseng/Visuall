@@ -84,19 +84,20 @@
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];
-            [self updateChildValues:ni Property1:@"x" Property2:@"y"];
+//            [self updateChildValues:ni Property1:@"x" Property2:@"y"];
+            [[StateUtil sharedManager] updateChildValues: ni Property1:@"x" Property2:@"y"];
         } else if ([self isEditModeOn] && [self isPointerButtonSelected] &&
                    [self.lastSelectedObject isKindOfClass:[GroupItem class]] && self.activelySelectedObjectDuringPan)
         {
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
             [self handlePanGroup: gestureRecognizer andGroupItem:gi];
-            [self updateChildValues:gi Property1:@"x" Property2:@"y"];
+//            [self updateChildValues:gi Property1:@"x" Property2:@"y"];
         } else if ( [self isEditModeOn] && [self isPointerButtonSelected] &&
                    [self.lastSelectedObject isGroupItemSubview] && self.activelySelectedObjectDuringPan)
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup: gestureRecognizer];
-            [self updateChildValues:gi Property1:@"width" Property2:@"height"];
+//            [self updateChildValues:gi Property1:@"width" Property2:@"height"];
             return;
         } else if ( ![viewHit isEqual: self.scrollViewButtonList] )
         {
