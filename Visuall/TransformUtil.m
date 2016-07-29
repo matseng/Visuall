@@ -328,7 +328,7 @@
 
 -(void) userIsSignedInHandler: (FIRUser *) user
 {
-    self.ref = [[FIRDatabase database] reference];
+    self.ref = [[[FIRDatabase database] reference] child:@"version_01"];
     NSString *userID = [FIRAuth auth].currentUser.uid;
     NSString *name;
     NSString *email;

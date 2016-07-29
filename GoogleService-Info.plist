@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>169067197130-v4qbfssfp7gtpcifglq1fjuvnqlhfbcr.apps.googleusercontent.com</string>
+	<string>547811396909-kno98gmgf5hhpavg9uvj7vrgcjtba06l.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.169067197130-v4qbfssfp7gtpcifglq1fjuvnqlhfbcr</string>
+	<string>com.googleusercontent.apps.547811396909-kno98gmgf5hhpavg9uvj7vrgcjtba06l</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAmgQIoi7wXtZVJFjK8nQ4AG-6fFYVXueU</string>
+	<string>AIzaSyBbxVx1sWJrBEp8vx-c0uhOXx1FdgR5Hrc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>169067197130</string>
+	<string>547811396909</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>matseng.Visuall</string>
 	<key>PROJECT_ID</key>
-	<string>brainspace-biz</string>
+	<string>visuall-2f878</string>
 	<key>STORAGE_BUCKET</key>
-	<string>brainspace-biz.appspot.com</string>
+	<string>visuall-2f878.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:169067197130:ios:54fbae0be93a3540</string>
+	<string>1:547811396909:ios:54fbae0be93a3540</string>
 	<key>DATABASE_URL</key>
-	<string>https://brainspace-biz.firebaseio.com</string>
+	<string>https://visuall-2f878.firebaseio.com</string>
 </dict>
 </plist>

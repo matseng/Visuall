@@ -18,7 +18,6 @@
 		712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9661BEAF21500ED6803 /* LaunchScreen.xib */; };
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
 		71333A3A1D4AAAF600578A14 /* ViewController+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 71333A391D4AAAF600578A14 /* ViewController+Authentication.m */; };
-		71333A3C1D4AAB5200578A14 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71333A3B1D4AAB5200578A14 /* GoogleService-Info.plist */; };
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
@@ -67,6 +66,7 @@
 		71D96C041D359E0000CD1C49 /* ViewController+Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C031D359E0000CD1C49 /* ViewController+Group.m */; };
 		71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */; };
 		71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */; };
+		71E1AF561D4AF7E700B818A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */; };
 		71E354F91BF5953600B5EA99 /* NoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E354F81BF5953600B5EA99 /* NoteItem.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -116,7 +116,6 @@
 		712EC9731BEAF21500ED6803 /* VisuallTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VisuallTests.m; sourceTree = "<group>"; };
 		71333A381D4AAAF600578A14 /* ViewController+Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ViewController+Authentication.h"; path = "../ViewController+Authentication.h"; sourceTree = "<group>"; };
 		71333A391D4AAAF600578A14 /* ViewController+Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ViewController+Authentication.m"; path = "../ViewController+Authentication.m"; sourceTree = "<group>"; };
-		71333A3B1D4AAB5200578A14 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		713D0D5B1CC18CAB00878EAE /* Note2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note2.h; sourceTree = "<group>"; };
 		713D0D5C1CC18CAB00878EAE /* Note2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note2.m; sourceTree = "<group>"; };
 		713D0D5E1CC6AE4F00878EAE /* Group2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group2.h; sourceTree = "<group>"; };
@@ -187,6 +186,7 @@
 		71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+TapHandler.m"; sourceTree = "<group>"; };
 		71D96C081D35D22000CD1C49 /* UISegmentedControl+MyTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISegmentedControl+MyTitle.h"; sourceTree = "<group>"; };
 		71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+MyTitle.m"; sourceTree = "<group>"; };
+		71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71E354F71BF5953600B5EA99 /* NoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteItem.h; sourceTree = "<group>"; };
 		71E354F81BF5953600B5EA99 /* NoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -350,7 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				712EC9581BEAF21500ED6803 /* Info.plist */,
-				71333A3B1D4AAB5200578A14 /* GoogleService-Info.plist */,
+				71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */,
 				712EC9591BEAF21500ED6803 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -542,7 +542,7 @@
 				71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,
 				77E13DAA1C011DC100105BB5 /* plane.png in Resources */,
-				71333A3C1D4AAB5200578A14 /* GoogleService-Info.plist in Resources */,
+				71E1AF561D4AF7E700B818A0 /* GoogleService-Info.plist in Resources */,
 				71D96BEC1D301D8600CD1C49 /* alarm-bell@2x.png in Resources */,
 				71C23F371D2220CB00D53E0C /* fontSize.png in Resources */,
 				71D96BED1D301D8600CD1C49 /* light-bulb.png in Resources */,
