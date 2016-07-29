@@ -6,7 +6,7 @@
 //  Copyright © 2016 Visuall. All rights reserved.
 //
 
-#import "StateUtil+FIrebase.h"
+#import "StateUtil+Firebase.h"
 
 @implementation StateUtil (Firebase)
 
@@ -54,7 +54,7 @@ FIRDatabaseReference *_ref;
     }];
 }
 
-//- (void) setInitialNote: (NoteItem2 *) ni
+//- (void) setValueNote: (NoteItem2 *) ni
 //{
 //    Firebase *ref = [[Firebase alloc] initWithUrl: @"https://brainspace-biz.firebaseio.com"];
 //    Firebase *notesRef = [ref childByAppendingPath: @"notes2"];

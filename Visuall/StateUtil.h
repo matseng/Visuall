@@ -49,9 +49,17 @@
 
 -(void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView: (UIView *) view;
 
--(void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
+
 
 //-(void) setNotesCollection: (NotesCollection *) nc andGroupsCollection: (GroupsCollection *) gc;
+
+@end
+
+@protocol FirebaseUtilProtocolDelegate
+
+//- (void)processCompleted;
+
+-(void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
 
 @end
 

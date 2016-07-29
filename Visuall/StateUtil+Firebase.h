@@ -1,5 +1,5 @@
 //
-//  StateUtil+FIrebase.h
+//  StateUtil+Firebase.h
 //  Visuall
 //
 //  Created by Michael Tseng MacBook on 7/29/16.
@@ -8,6 +8,6 @@
 
 #import "StateUtil.h"
 
-@interface StateUtil (Firebase)
+@interface StateUtil (Firebase) <FirebaseUtilProtocolDelegate>
 
 @end
