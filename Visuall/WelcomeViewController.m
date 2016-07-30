@@ -32,19 +32,19 @@
     [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
 }
 
+- (IBAction)signoutHandler:(id)sender {
+        NSError *error;
+        [[FIRAuth auth] signOut:&error];
+        if (!error) {
+            NSLog(@"Sign-out succeeded");
+        }
+}
+
 - (void) segueToNextView
 {
     [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
 }
 
-- (IBAction)__logoutHandler:(id)sender {
-    
-//    NSError *error;
-//    [[FIRAuth auth] signOut:&error];
-//    if (!error) {
-//        NSLog(@"Sign-out succeeded");
-//    }
-}
 
 - (void) signInWillDispatch:(GIDSignIn *)signIn error:(NSError *)error
 {
