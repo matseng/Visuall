@@ -59,16 +59,17 @@ BOOL alreadyAnimated = NO;
     backButton.clipsToBounds = YES;
     UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    /*
+    
     UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,0, 85,44)];
     searchBar.placeholder = @"Search";
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
     searchBarItem.tag = 123;
-     */
-    
+     
+    /*
     GIDSignInButton *signInButton = [[GIDSignInButton alloc] init];
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:signInButton];
     searchBarItem.tag = 123;
+     */
     
     SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
     editSwitch = mySwitch;

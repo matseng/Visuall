@@ -55,14 +55,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // TODO(developer) Configure the sign-in button look/feel
-    
-    [GIDSignIn sharedInstance].uiDelegate = self;
-    
-    // Uncomment to automatically sign in the user.
-    //[[GIDSignIn sharedInstance] signInSilently];
-    
+        
     self.BoundsTiledLayerView = [[TiledLayerView alloc] init];
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1000, 1000);
     self.BoundsTiledLayerView.backgroundColor = [UIColor whiteColor];

@@ -23,6 +23,9 @@
     [GIDSignIn sharedInstance].clientID = [FIRApp defaultApp].options.clientID;
     [GIDSignIn sharedInstance].delegate = self;
     
+    UINavigationController *localNavigationController = self.window.rootViewController.navigationController;
+    [localNavigationController setNavigationBarHidden:YES animated:YES];
+    
     return YES;
 }
 
