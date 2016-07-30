@@ -60,11 +60,11 @@ didSignInForUser:(GIDGoogleUser *)user
                                       if (user != nil) {
                                           // User is signed in.
                                           [[StateUtil sharedManager] userIsSignedInHandler: user];
-                                          /*
+                                          
                                           UIWindow *window = [UIApplication sharedApplication].keyWindow;
                                           WelcomeViewController *rootViewController = (WelcomeViewController *) window.rootViewController;
                                           [rootViewController segueToNextView];
-                                           */
+                                           
                                       } else {
                                           // No user is signed in.
                                       }

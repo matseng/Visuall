@@ -7,24 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import <Firebase/Firebase.h>
 #import "GroupItem.h"
 #import "NotesCollection.h"
 #import "GroupsCollection.h"
+#import "TiledLayerView.h"
 
-//@import Firebase;
-
-//#import <GoogleSignIn/GoogleSignIn.h>
 
 @interface ViewController : UIViewController 
-
-//@property(weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
 
 @property (nonatomic, strong) NSString *firebaseURL;
 
 @property (strong, nonatomic) IBOutlet UIView *Background;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *BackgroundScrollView;
+
+@property TiledLayerView *BoundsTiledLayerView;
 
 @property (strong, nonatomic) IBOutlet UIView *VisualItemsView;
 

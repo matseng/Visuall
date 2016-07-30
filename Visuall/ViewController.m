@@ -19,7 +19,6 @@
 #import "ViewController+panHandler.h"
 #import "ViewController+TapHandler.h"
 #import "ViewController+Group.h"
-#import "TiledLayerView.h"
 #import "ScrollViewMod.h"
 #import "StateUtil.h"
 
@@ -28,7 +27,7 @@
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
 }
 //@property (strong, nonatomic) IBOutlet UIView *Background;
-@property (strong, nonatomic) TiledLayerView *BoundsTiledLayerView;
+
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
 @property CGPoint drawGroupViewStart;
 @property UIGestureRecognizer *panBackground;
@@ -170,13 +169,14 @@
 //    BackgroundScrollViewTapGesture.cancelsTouchesInView = NO;
     BackgroundScrollViewTapGesture.delegate = self;
     [self.BackgroundScrollView addGestureRecognizer:BackgroundScrollViewTapGesture];
-    self.BackgroundScrollView.delaysContentTouches = YES;
+//    self.BackgroundScrollView.delaysContentTouches = YES;
     
-    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
+    UIPanGestureRecognizer *panBackgroundScrollView = [[UIPanGestureRecognizer alloc]
                                              initWithTarget:self
                                              action:@selector(panHandler:)];
-    self.panBackground = panBackground;
-//    [self.BoundsTiledLayerView addGestureRecognizer: panBackground];
+    panBackgroundScrollView.delegate = self;
+    self.panBackground = panBackgroundScrollView;
+    [self.BackgroundScrollView addGestureRecognizer: panBackgroundScrollView];
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
                                                  initWithTarget:self
@@ -229,9 +229,9 @@
     CGRect contentsFrame = self.BoundsTiledLayerView.frame;
 
     CGRect rect = self.BackgroundScrollView.frame;
-    NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//    NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     rect = self.BackgroundScrollView.bounds;
-    NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//    NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     
     if (contentsFrame.size.width < boundsSize.width) {
@@ -395,6 +395,21 @@
     }
 }
 
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch
+{
+
+    if ([gestureRecognizer isKindOfClass: [UIPinchGestureRecognizer class]])
+    {
+        return NO;
+    }
+    if ( [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] )
+    {
+        
+    }
+    return YES;
+}
+
+/*
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer: (UIGestureRecognizer *)otherGestureRecognizer{
 
     if ( ([gestureRecognizer.view isGroupItem] || [gestureRecognizer.view isNoteItem] ) && gestureRecognizer.numberOfTouches == 1)
@@ -453,6 +468,8 @@
     
     return YES;
 }
+
+*/
 
 - (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
@@ -648,15 +665,15 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(tapHandler:)];
-    tap.delegate = self;
-    [noteItem.noteTextView addGestureRecognizer: tap];
+//    tap.delegate = self;
+//    [noteItem.noteTextView addGestureRecognizer: tap];
 //    [noteItem addGestureRecognizer: tap];
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(panHandler:)];
-    pan.delegate = self;
-    [noteItem.noteTextView addGestureRecognizer: pan];
+//    pan.delegate = self;
+//    [noteItem.noteTextView addGestureRecognizer: pan];
     noteItem.noteTextView.delegate = self;
     noteItem.noteTextView.editable = NO;
     
@@ -836,15 +853,15 @@
                                    action:@selector(tapHandler:)];
 //    tap.delegate = self;
     
-    [gi addGestureRecognizer: tap];
+//    [gi addGestureRecognizer: tap];
     
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
                                    initWithTarget:self
 //                                   action:@selector(myWrapper:)];
                                    action:@selector(panHandler:)];
-    pan.delegate = self;
+//    pan.delegate = self;
 //    pan.delaysTouchesBegan = YES;
-    [gi addGestureRecognizer: pan];
+//    [gi addGestureRecognizer: pan];
 
 //    UIView *groupHandle = [gi viewWithTag:777];
 //    UIPanGestureRecognizer *pan2 = [[UIPanGestureRecognizer alloc]
@@ -855,8 +872,8 @@
      UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
                                        initWithTarget:self
                                        action:@selector(testPinch:)];
-    pinch.cancelsTouchesInView = YES;
-    pinch.delegate = self;
+//    pinch.cancelsTouchesInView = YES;
+//    pinch.delegate = self;
 //    [gi addGestureRecognizer:pinch];
     
 //    [pan requireGestureRecognizerToFail: pinch];

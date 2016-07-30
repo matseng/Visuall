@@ -30,8 +30,10 @@ NoteItem2 *targetNoteForArrow;
     {
 
 //        NSLog(@"tapHandler called HERE");
-//        UIView *viewHit = [self getViewHit:sender];
-        UIView *viewHit = sender.view;
+
+//        UIView *viewHit = sender.view;
+        CGPoint point = [sender locationInView: self.BoundsTiledLayerView];
+        UIView *viewHit = [self.BoundsTiledLayerView hitTest:point withEvent:nil];
         NSLog(@"tapHandler viewHit %@", [viewHit class]);
         //        NSLog(@"tag %ld", (long)viewHit.tag);
         //        NSLog(@"gestureRecognizer %@", [sender.view class]);
