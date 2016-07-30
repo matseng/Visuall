@@ -10,10 +10,12 @@
 #import <GoogleSignIn/GoogleSignIn.h>
 @import Firebase;
 
-@interface WelcomeViewContoller : UIViewController <GIDSignInUIDelegate>
+@interface WelcomeViewController : UIViewController <GIDSignInUIDelegate>
 
 @property(weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
 
 - (IBAction) skipThisStep:(id)sender;
+
+- (void) segueToNextView;
 
 @end

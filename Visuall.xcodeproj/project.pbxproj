@@ -68,7 +68,7 @@
 		71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */; };
 		71E1AF561D4AF7E700B818A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */; };
 		71E1AF5C1D4BDFF900B818A0 /* StateUtil+Firebase.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */; };
-		71E1AF621D4C278900B818A0 /* WelcomeViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF611D4C278900B818A0 /* WelcomeViewContoller.m */; };
+		71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF611D4C278900B818A0 /* WelcomeViewController.m */; };
 		71E1AF651D4C325400B818A0 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF641D4C325400B818A0 /* TabBarViewController.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
@@ -191,8 +191,8 @@
 		71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StateUtil+Firebase.h"; sourceTree = "<group>"; };
 		71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StateUtil+Firebase.m"; sourceTree = "<group>"; };
-		71E1AF601D4C278900B818A0 /* WelcomeViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewContoller.h; sourceTree = "<group>"; };
-		71E1AF611D4C278900B818A0 /* WelcomeViewContoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewContoller.m; sourceTree = "<group>"; };
+		71E1AF601D4C278900B818A0 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
+		71E1AF611D4C278900B818A0 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		71E1AF631D4C325400B818A0 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		71E1AF641D4C325400B818A0 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
@@ -302,8 +302,8 @@
 				885AFD651C00217800F89DE5 /* model */,
 				712EC95B1BEAF21500ED6803 /* AppDelegate.h */,
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
-				71E1AF601D4C278900B818A0 /* WelcomeViewContoller.h */,
-				71E1AF611D4C278900B818A0 /* WelcomeViewContoller.m */,
+				71E1AF601D4C278900B818A0 /* WelcomeViewController.h */,
+				71E1AF611D4C278900B818A0 /* WelcomeViewController.m */,
 				71E1AF631D4C325400B818A0 /* TabBarViewController.h */,
 				71E1AF641D4C325400B818A0 /* TabBarViewController.m */,
 				712EC95E1BEAF21500ED6803 /* ViewController.h */,
@@ -638,7 +638,7 @@
 				712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */,
 				716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */,
 				71E1AF651D4C325400B818A0 /* TabBarViewController.m in Sources */,
-				71E1AF621D4C278900B818A0 /* WelcomeViewContoller.m in Sources */,
+				71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */,
 				7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */,
 				71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */,
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,
