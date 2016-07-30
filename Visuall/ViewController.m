@@ -166,14 +166,16 @@
     self.BackgroundScrollView.frame = CGRectMake(x, y, width, height);
     
     BackgroundScrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
-//    BackgroundScrollViewTapGesture.cancelsTouchesInView = NO;
-    BackgroundScrollViewTapGesture.delegate = self;
-    [self.BackgroundScrollView addGestureRecognizer:BackgroundScrollViewTapGesture];
-//    self.BackgroundScrollView.delaysContentTouches = YES;
+//    BackgroundScrollViewTapGesture.delegate = self;
+//    [self.BackgroundScrollView addGestureRecognizer:BackgroundScrollViewTapGesture];
+
     
     UIPanGestureRecognizer *panBackgroundScrollView = [[UIPanGestureRecognizer alloc]
                                              initWithTarget:self
-                                             action:@selector(panHandler:)];
+//                                             action:@selector(panHandler:)];
+                                            action:nil];
+    panBackgroundScrollView.cancelsTouchesInView = YES;
+    panBackgroundScrollView.delaysTouchesBegan = YES;
     panBackgroundScrollView.delegate = self;
     self.panBackground = panBackgroundScrollView;
     [self.BackgroundScrollView addGestureRecognizer: panBackgroundScrollView];
@@ -395,17 +397,19 @@
     }
 }
 
-- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch
+// --> TODO: Fix pan of notes: add pan gesture to background (not scrollview)... then use custom hit test and pan handler to decide whether to pan a note or to pass the gesture on to the scroll view
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch
 {
 
     if ([gestureRecognizer isKindOfClass: [UIPinchGestureRecognizer class]])
     {
         return NO;
     }
-    if ( [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] )
-    {
-        
-    }
+//    if ( [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && gestureRecognizer.numberOfTouches == 1 )
+//    {
+//        return [self panHandler: (UIPanGestureRecognizer *) gestureRecognizer];
+//    }
     return YES;
 }
 

@@ -56,10 +56,10 @@ NoteItem2 *targetNoteForArrow;
                 }
                 
             }
-            NSLog(@"Note key: %@", ni.note.key);
-            NSLog(@"Parent group key: %@", ni.note.parentGroupKey);
-            NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
-            NSLog(@"Note width: %f", ni.frame.size.width);
+//            NSLog(@"Note key: %@", ni.note.key);
+//            NSLog(@"Parent group key: %@", ni.note.parentGroupKey);
+//            NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
+//            NSLog(@"Note width: %f", ni.frame.size.width);
             return;
         } else {
             sourceNoteForArrow = nil;

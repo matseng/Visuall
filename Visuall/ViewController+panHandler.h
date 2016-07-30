@@ -10,7 +10,7 @@
 
 @interface ViewController (panHandler)
 
-- (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer;
+- (BOOL) panHandler: (UIPanGestureRecognizer *) gestureRecognizer;
 
 - (void) panHandlerForScrollViewButtonList: (UIPanGestureRecognizer *) gestureRecognizer;
 

@@ -28,15 +28,21 @@
 
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
+    NSLog(@"TiledLayerView point %f, %f", point.x, point.y);
     UIView *NotesView = self.subviews[0].subviews[2];  // TODO: Create singleton to hold views
     UIView *GroupsView = self.subviews[0].subviews[0];
+    UIView *target = nil;
     
     for (UIView *subview in [NotesView.subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
         {
-            self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
-            return self.hitTestView;
+//            self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
+//            return self.hitTestView;
+            target = [subview hitTest:convertedPoint withEvent:event];
+            NSLog(@"TiledLayerView viewHit %@", [target class]);
+            return target;
+            
         }
     }
     for (UIView *subview in [GroupsView.subviews reverseObjectEnumerator]) {
@@ -47,7 +53,8 @@
             return self.hitTestView;
         }
     }
-    self.hitTestView = nil;
+//    self.hitTestView = nil;
+    NSLog(@"TiledLayerView viewHit %@", [target class]);
     return nil;
 }
 
