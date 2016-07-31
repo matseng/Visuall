@@ -26,6 +26,10 @@
  */
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer
 {
+/*
+ TODO: add pan gesture to background (not background scroll view) and add custom hitTest to determine if a note or group was target and save that hit on self. Then determine which gesture should receive touch, ie background or scroll view. If back ground should receive the touch then proceed to pan handler.
+ 
+ */
     if ( [self isDrawGroupButtonSelected] )
     {
         [self drawGroup: gestureRecognizer];
@@ -80,7 +84,7 @@
     } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
         if ([self isEditModeOn] && [self isPointerButtonSelected] &&
-                    [self.lastSelectedObject isKindOfClass: [NoteItem2 class]] && self.activelySelectedObjectDuringPan)
+                    [self.lastSelectedObject isNoteItem] && self.activelySelectedObjectDuringPan)
         {
             NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
             [ni handlePan:gestureRecognizer];

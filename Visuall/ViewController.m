@@ -395,6 +395,16 @@
     }
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer: (UIGestureRecognizer *)otherGestureRecognizer
+{
+    if ( [gestureRecognizer.view isNoteItem] && [otherGestureRecognizer.view isNoteItem] )
+    {
+        return YES;
+    }
+    return NO;
+}
+/*
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer: (UIGestureRecognizer *)otherGestureRecognizer{
 
     if ( ([gestureRecognizer.view isGroupItem] || [gestureRecognizer.view isNoteItem] ) && gestureRecognizer.numberOfTouches == 1)
@@ -454,6 +464,8 @@
     return YES;
 }
 
+ */
+ 
 - (void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer
 {
     
@@ -657,7 +669,8 @@
                                    action:@selector(panHandler:)];
     pan.delegate = self;
     [noteItem.noteTextView addGestureRecognizer: pan];
-    noteItem.noteTextView.delegate = self;
+//    [noteItem addGestureRecognizer: pan];
+//    noteItem.noteTextView.delegate = self;
     noteItem.noteTextView.editable = NO;
     
     [self.NotesView addSubview:noteItem];
