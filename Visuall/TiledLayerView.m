@@ -26,6 +26,7 @@
 
 // implement custom hit testing for notes and groups // http://smnh.me/hit-testing-in-ios/
 
+// TODO - move hitTest into ScrollViewMod
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
     NSLog(@"TiledLayerView point %f, %f", point.x, point.y);
@@ -37,11 +38,12 @@
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
         {
-//            self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
-//            return self.hitTestView;
-            target = [subview hitTest:convertedPoint withEvent:event];
-            NSLog(@"TiledLayerView viewHit %@", [target class]);
-            return target;
+            self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
+            NSLog(@"TiledLayerView viewHit %@", [self.hitTestView class]);
+            return self.hitTestView;
+//            target = [subview hitTest:convertedPoint withEvent:event];
+            
+//            return target;
             
         }
     }
@@ -53,7 +55,7 @@
             return self.hitTestView;
         }
     }
-//    self.hitTestView = nil;
+    self.hitTestView = nil;
     NSLog(@"TiledLayerView viewHit %@", [target class]);
     return nil;
 }

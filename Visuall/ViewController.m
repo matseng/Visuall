@@ -166,14 +166,14 @@
     self.BackgroundScrollView.frame = CGRectMake(x, y, width, height);
     
     BackgroundScrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
-//    BackgroundScrollViewTapGesture.delegate = self;
-//    [self.BackgroundScrollView addGestureRecognizer:BackgroundScrollViewTapGesture];
+    BackgroundScrollViewTapGesture.delegate = self;
+    [self.BackgroundScrollView addGestureRecognizer:BackgroundScrollViewTapGesture];
 
     
     UIPanGestureRecognizer *panBackgroundScrollView = [[UIPanGestureRecognizer alloc]
                                              initWithTarget:self
-//                                             action:@selector(panHandler:)];
-                                            action:nil];
+                                             action:@selector(panHandler:)];
+//                                            action:nil];
     panBackgroundScrollView.cancelsTouchesInView = YES;
     panBackgroundScrollView.delaysTouchesBegan = YES;
     panBackgroundScrollView.delegate = self;
@@ -406,11 +406,20 @@
     {
         return NO;
     }
+    if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isNoteItem])
+    {
+        return YES;
+    }
+    if ([gestureRecognizer isKindOfClass: [UITapGestureRecognizer class]])
+    {
+        return YES;
+    }
+
 //    if ( [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && gestureRecognizer.numberOfTouches == 1 )
 //    {
 //        return [self panHandler: (UIPanGestureRecognizer *) gestureRecognizer];
 //    }
-    return YES;
+    return NO;
 }
 
 /*

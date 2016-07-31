@@ -33,8 +33,9 @@
     }
     
     CGPoint point = [gestureRecognizer locationInView: self.NotesView];
-    CGPoint convertedPoint = [self.BoundsTiledLayerView convertPoint:point fromView: nil];
-    UIView *viewHit = [self.BoundsTiledLayerView hitTest:convertedPoint withEvent:nil];
+//    CGPoint convertedPoint = [self.BoundsTiledLayerView convertPoint:point fromView: nil];
+//    UIView *viewHit = [self.BoundsTiledLayerView hitTest:convertedPoint withEvent:nil];
+    UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
     NSLog(@"panHandler viewHit %@", [viewHit class]);
     
 //    if (!viewHit) return NO;  // Delegate pan gesture does NOT receive touch, therefore the gesture is passed to UIScrollView's native pan... in short NO --> YES pan background scrollview
