@@ -44,7 +44,8 @@
     
     for (UIView *subview in [NotesView.subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
-        if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
+//        if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
+        if ([subview pointInside:convertedPoint withEvent:event] && [subview isNoteItem])
         {
             target =  [subview hitTest:convertedPoint withEvent:event];
             NSLog(@"scrollView hitTest %@", [target class]);

@@ -11,7 +11,7 @@
 #import "GroupItem.h"
 #import "NotesCollection.h"
 #import "GroupsCollection.h"
-
+#import "BackgroundView.h"
 //@import Firebase;
 
 //#import <GoogleSignIn/GoogleSignIn.h>
@@ -22,7 +22,7 @@
 
 @property (nonatomic, strong) NSString *firebaseURL;
 
-@property (strong, nonatomic) IBOutlet UIView *Background;
+@property (strong, nonatomic) IBOutlet BackgroundView *Background;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *BackgroundScrollView;
 

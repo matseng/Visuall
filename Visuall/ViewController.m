@@ -23,7 +23,6 @@
 #import "ScrollViewMod.h"
 #import "StateUtil.h"
 
-
 @interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
 }
@@ -55,7 +54,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+
+    UIView *myRootView = [self.Background superview];
+    CGRect frame = self.Background.frame;
+    [self.Background removeFromSuperview];
+    self.Background = [[BackgroundView alloc] init];
+    self.Background.frame = frame;
+    self.Background.backgroundColor = [UIColor purpleColor];
+    [self.view addSubview: self.Background];
+    [self.Background setNotesView: self.NotesView andGroupsView: self.GroupsView];
+    
     self.BoundsTiledLayerView = [[TiledLayerView alloc] init];
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1000, 1000);
     self.BoundsTiledLayerView.backgroundColor = [UIColor whiteColor];
@@ -70,9 +78,7 @@
     [self.Background addSubview: self.BackgroundScrollView];
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
-//    [self.GroupsView removeFromSuperview];
     [self.VisualItemsView removeFromSuperview];
-//    [self.BoundsTiledLayerView addSubview: self.GroupsView];
     [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
     
     [self setBackgroundViewGestures];
@@ -176,7 +182,7 @@
                                              initWithTarget:self
                                              action:@selector(panHandler:)];
     self.panBackground = panBackground;
-//    [self.BoundsTiledLayerView addGestureRecognizer: panBackground];
+    [self.BackgroundScrollView addGestureRecognizer: panBackground];
     
     UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
                                                  initWithTarget:self

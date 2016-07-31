@@ -70,6 +70,7 @@
 		71E1AF5C1D4BDFF900B818A0 /* StateUtil+Firebase.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */; };
 		71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF611D4C278900B818A0 /* WelcomeViewController.m */; };
 		71E1AF651D4C325400B818A0 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF641D4C325400B818A0 /* TabBarViewController.m */; };
+		71E1AF681D4E984C00B818A0 /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF671D4E984C00B818A0 /* BackgroundView.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
 		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; };
@@ -195,6 +196,8 @@
 		71E1AF611D4C278900B818A0 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		71E1AF631D4C325400B818A0 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		71E1AF641D4C325400B818A0 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
+		71E1AF661D4E984C00B818A0 /* BackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
+		71E1AF671D4E984C00B818A0 /* BackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
 		71FC72131BF2E881003B7F14 /* NotesCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesCollection.m; sourceTree = "<group>"; };
 		77E13DA11C011C1700105BB5 /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
@@ -308,6 +311,8 @@
 				71E1AF641D4C325400B818A0 /* TabBarViewController.m */,
 				712EC95E1BEAF21500ED6803 /* ViewController.h */,
 				712EC95F1BEAF21500ED6803 /* ViewController.m */,
+				71E1AF661D4E984C00B818A0 /* BackgroundView.h */,
+				71E1AF671D4E984C00B818A0 /* BackgroundView.m */,
 				712682011D49997700A0A2F7 /* ScrollViewMod.h */,
 				712682021D49997700A0A2F7 /* ScrollViewMod.m */,
 				71D96BC81D2C59AA00CD1C49 /* MyVisuallsViewController.h */,
@@ -660,6 +665,7 @@
 				71D96BCA1D2C59AA00CD1C49 /* MyVisuallsViewController.m in Sources */,
 				716B046A1BFC210300DA9451 /* StateUtil.m in Sources */,
 				71D96BFE1D34791100CD1C49 /* ViewController+panHandler.m in Sources */,
+				71E1AF681D4E984C00B818A0 /* BackgroundView.m in Sources */,
 				71E1AF5C1D4BDFF900B818A0 /* StateUtil+Firebase.m in Sources */,
 				712EC95A1BEAF21500ED6803 /* main.m in Sources */,
 				7195EBD81D47035400F609DE /* UIBezierPath+arrowhead.m in Sources */,
