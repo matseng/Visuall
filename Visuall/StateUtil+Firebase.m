@@ -148,6 +148,21 @@ FIRDatabaseReference *_ref;
                                            propertyName : [ni.note valueForKey:propertyName]
                                            }];
     }
+    else if ( [visualObject isGroupItem] )
+    {
+        if ( [propertyName isEqualToString:@"frame"] )
+        {
+            GroupItem *gi = [visualObject getGroupItem];
+            FIRDatabaseReference *groupDataRef = [[_ref child: @"groups"] child: [gi.group.key stringByAppendingString:@"/data"]];
+            NSDictionary *groupDictionary = @{
+                                              @"x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                              @"y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                              @"width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                              @"height": [NSString stringWithFormat:@"%.3f", gi.group.height]
+                                              };
+            [groupDataRef updateChildValues: groupDictionary];
+        }
+    }
 }
 
 - (void) updateChildValues: (UIView *) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2

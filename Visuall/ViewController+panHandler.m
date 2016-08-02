@@ -92,12 +92,14 @@
             GroupItem *gi = (GroupItem *) self.lastSelectedObject;
             [self handlePanGroup: gestureRecognizer andGroupItem:gi];
 //            [self updateChildValues:gi Property1:@"x" Property2:@"y"];
+            [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
             return YES;
         } else if ( [self isEditModeOn] && [self isPointerButtonSelected] &&
                    [self.lastSelectedObject isGroupItemSubview] && self.activelySelectedObjectDuringPan)  // Resize a group
         {
             GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
             [gi resizeGroup: gestureRecognizer];
+            [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
 //            [self updateChildValues:gi Property1:@"width" Property2:@"height"];
             return YES;
         } else if ( ![viewHit isEqual: self.scrollViewButtonList] )

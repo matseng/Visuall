@@ -406,8 +406,6 @@
     }
 }
 
-// --> TODO: Fix pan of notes: add pan gesture to background (not scrollview)... then use custom hit test and pan handler to decide whether to pan a note or to pass the gesture on to the scroll view
-
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch
 {
 
@@ -416,6 +414,10 @@
         return NO;
     }
     if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isNoteItem])
+    {
+        return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
+    }
+    if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isGroupItem])
     {
         return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
     }
@@ -428,10 +430,6 @@
         return YES;
     }
 
-//    if ( [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && gestureRecognizer.numberOfTouches == 1 )
-//    {
-//        return [self panHandler: (UIPanGestureRecognizer *) gestureRecognizer];
-//    }
     return NO;
 }
 
