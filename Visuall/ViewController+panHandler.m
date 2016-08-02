@@ -32,76 +32,34 @@
         return NO;
     }
     
-//    CGPoint point = [gestureRecognizer locationInView: self.NotesView];
-//    CGPoint convertedPoint = [self.BoundsTiledLayerView convertPoint:point fromView: nil];
-//    UIView *viewHit = [self.BoundsTiledLayerView hitTest:convertedPoint withEvent:nil];
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
     NSLog(@"panHandler viewHit %@", [viewHit class]);
     
 //    if (!viewHit) return NO;  // Delegate pan gesture does NOT receive touch, therefore the gesture is passed to UIScrollView's native pan... in short NO --> YES pan background scrollview
     
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
-    {
-        if ( [viewHit isEqual: self.scrollViewButtonList] )
-        {
-            return YES;  // i.e. NO panning of background scrollview
-        } else if ( [self isEditModeOn] && ([self isPointerButtonSelected] || [self isNoteButtonSelected]) && [viewHit isNoteItem] )
-        {
-            NoteItem2 *nv = [viewHit getNoteItem];
-            [self setSelectedObject:nv];
-            [self setActivelySelectedObjectDuringPan: nv];
-            [nv handlePan:gestureRecognizer];
-            [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
-            return YES;
-        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isGroupItem])
-        {
-//            GroupItem  *gi = (GroupItem *) [viewHit superview];
-//            if (viewHit.tag == 777)
-            UIView *handleSelected = [[viewHit getGroupItem] hitTestOnHandles:gestureRecognizer];
-            if ( handleSelected )
-            {
-                [self setSelectedObject:handleSelected];  // TODO, still should highlight current group
-                [self setActivelySelectedObjectDuringPan: handleSelected];
-                [[viewHit getGroupItem] setHandleSelected: handleSelected];
-            } else if ([viewHit isInBoundsOfView:self.BackgroundScrollView])
-            {
-                GroupItem  *gi = [viewHit getGroupItem];
-                [self setActivelySelectedObjectDuringPan: gi];
-                [self setSelectedObject:gi];
-                [self setItemsInGroup:gi];
-            }
-            return YES; // TODO: will need fine tuning later to decide if, for example, we need to scroll when zoomed in on a group
-        }
-        else
-        {
-            return NO;
-        }
-    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
     
-        if ([self isEditModeOn] && [self isPointerButtonSelected] &&
-                    [self.lastSelectedObject isKindOfClass: [NoteItem2 class]] && self.activelySelectedObjectDuringPan)  // Pan a note
+        if ( [self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isNoteItem])  // Pan a note
         {
-            NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
+            NoteItem2 *ni = [self.activelySelectedObjectDuringPan getNoteItem];
             [ni handlePan:gestureRecognizer];
             [[StateUtil sharedManager] updateChildValues: ni Property1:@"x" Property2:@"y"];
             return YES;
-        } else if ([self isEditModeOn] && [self isPointerButtonSelected] &&
-                   [self.lastSelectedObject isKindOfClass:[GroupItem class]] && self.activelySelectedObjectDuringPan)  // Pan a group
+        } else if ([self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isGroupItem])  // Pan or resize a group
         {
-            GroupItem *gi = (GroupItem *) self.lastSelectedObject;
-            [self handlePanGroup: gestureRecognizer andGroupItem:gi];
-//            [self updateChildValues:gi Property1:@"x" Property2:@"y"];
-            [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
-            return YES;
-        } else if ( [self isEditModeOn] && [self isPointerButtonSelected] &&
-                   [self.lastSelectedObject isGroupItemSubview] && self.activelySelectedObjectDuringPan)  // Resize a group
-        {
-            GroupItem *gi = (GroupItem *) [self.lastSelectedObject superview];
-            [gi resizeGroup: gestureRecognizer];
-            [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
-//            [self updateChildValues:gi Property1:@"width" Property2:@"height"];
-            return YES;
+            GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
+            if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [gi isHandle: self.activelySelectedObjectDuringPan] )
+            {
+                [gi resizeGroup: gestureRecognizer];
+                [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
+                return YES;
+            } else
+            {
+                [self handlePanGroup: gestureRecognizer andGroupItem:gi];
+                [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
+                return YES;
+            }
         } else if ( ![viewHit isEqual: self.scrollViewButtonList] )
         {
             return YES;
@@ -212,5 +170,6 @@
 //{
 //    return nil;
 //}
+
 
 

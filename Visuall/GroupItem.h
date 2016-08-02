@@ -52,4 +52,6 @@
 
 - (void) setViewAsNotSelected;
 
+- (BOOL) isHandle: (UIView *) subView;
+
 @end

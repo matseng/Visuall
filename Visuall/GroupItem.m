@@ -185,6 +185,12 @@
     return circleView;
 }
 
+- (BOOL) isHandle: (UIView *) subView
+{
+    BOOL result = (subView == handleTopLeft) || (subView == handleTopRight) || (subView == handleBottomRight) || (subView == handleBottomLeft);
+    return result;
+}
+
 -(void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||

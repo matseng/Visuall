@@ -21,7 +21,7 @@
 #import "ViewController+Group.h"
 #import "ScrollViewMod.h"
 #import "StateUtil.h"
-
+#import "TouchDownGestureRecognizer.h"
 
 @interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
@@ -37,7 +37,6 @@
 @property (strong, nonatomic) IBOutlet UITextField *fontSize;
 @property CGRect totalBoundsRect;
 @property CGPoint zoomOffsetPoint;
-
 
 @end
 
@@ -173,6 +172,10 @@
     float h2 = self.tabBarController.tabBar.frame.size.height;
     height = height - h0 - h1 - h2;
     self.BackgroundScrollView.frame = CGRectMake(x, y, width, height);
+    
+    TouchDownGestureRecognizer *touchDown = [[TouchDownGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchDown:)];
+    touchDown.delegate = self;
+    [self.BackgroundScrollView addGestureRecognizer:touchDown];
     
     BackgroundScrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
     BackgroundScrollViewTapGesture.delegate = self;
@@ -406,6 +409,41 @@
     }
 }
 
+-(void) handleTouchDown:(TouchDownGestureRecognizer *) gestureRecognizer {
+    UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
+    NSLog(@"handleTouchDown viewHit %@", [viewHit class]);
+    
+    if ( [viewHit isEqual: self.scrollViewButtonList] )
+    {
+        return;
+    }
+    else if ( [viewHit isNoteItem] )
+    {
+        NoteItem2 *nv = [viewHit getNoteItem];
+        //            [self setSelectedObject:nv];
+        [self setActivelySelectedObjectDuringPan: nv];
+        //            [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
+    }
+    else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isGroupItem])
+    {
+        UIView *handleSelected = [[viewHit getGroupItem] hitTestOnHandles:gestureRecognizer];
+        if ( handleSelected )
+        {
+            //                [self setSelectedObject:handleSelected];  // TODO, still should highlight current group
+            [self setActivelySelectedObjectDuringPan: handleSelected];
+            [[viewHit getGroupItem] setHandleSelected: handleSelected];
+        } else if ([viewHit isInBoundsOfView:self.BackgroundScrollView])
+        {
+            GroupItem  *gi = [viewHit getGroupItem];
+            [self setActivelySelectedObjectDuringPan: gi];
+            //                [self setSelectedObject:gi];
+            //                [self setItemsInGroup:gi];
+        }
+        
+    }
+    
+}
+
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch
 {
 
@@ -413,11 +451,17 @@
     {
         return NO;
     }
+    if( [gestureRecognizer isKindOfClass: [TouchDownGestureRecognizer class]])
+    {
+        return YES;
+    }
+    
     if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isNoteItem])
     {
         return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
     }
-    if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isGroupItem])
+    if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] &&
+        [self.BoundsTiledLayerView.hitTestView isGroupItem] && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
     {
         return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
     }
@@ -430,6 +474,15 @@
         return YES;
     }
 
+    return NO;
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    if( [gestureRecognizer isKindOfClass: [TouchDownGestureRecognizer class]] )
+    {
+        return YES;
+    }
     return NO;
 }
 
@@ -893,10 +946,6 @@
 //    TouchDownGestureRecognizer *touchDown = [[TouchDownGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchDown:)];
 //    [gi addGestureRecognizer:touchDown];
     
-}
-
--(void)handleTouchDown:(TouchDownGestureRecognizer *)touchDown{
-    NSLog(@"Down");
 }
 
 - (void) testPinch: (UIPinchGestureRecognizer *) gestureRecognizer
