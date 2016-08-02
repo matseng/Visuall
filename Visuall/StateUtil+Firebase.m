@@ -13,6 +13,12 @@
 @implementation StateUtil (Firebase)
 
 FIRDatabaseReference *_ref;
+FIRDatabaseReference *_currentUserRef;
+FIRDatabaseReference *_visuallsRef;
+FIRDatabaseReference *_currentVisuallRef;
+FIRDatabaseReference *_notesRef;
+//typedef void (^_callbackOnNote)(NoteItem2 *ni);
+void (^_callbackOnNote)(NoteItem2 *ni);
 
 - (void) GIDdisconnect
 {
@@ -23,6 +29,7 @@ FIRDatabaseReference *_ref;
 -(void) userIsSignedInHandler: (FIRUser *) user
 {
     _ref = [[[FIRDatabase database] reference] child:@"version_01"];
+    _notesRef = [_ref child: @"notes"];
     
     NSString *userID = [FIRAuth auth].currentUser.uid;
     NSString *name;
@@ -39,7 +46,8 @@ FIRDatabaseReference *_ref;
         NSLog(@"uid: %@", uid);
     }
     
-    [[[_ref child:@"users"] child:userID] observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+    _currentUserRef = [[_ref child:@"users"] child:userID];
+    [_currentUserRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         if ( ![snapshot exists] )  // we have a new user
         {
             NSDictionary *newUserBasicUserInfo = @{
@@ -63,37 +71,82 @@ FIRDatabaseReference *_ref;
     }];
 }
 
-- (void) setValueNote: (NoteItem2 *) ni
+- (void) loadVisuallsForCurrentUser
 {
-    FIRDatabaseReference *notesRef = [_ref child: @"notes"];
-        NSDictionary *noteDictionary = @{
-                                         @"data/title": ni.note.title,
-                                         @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
-                                         @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-                                         @"data/font-size": [NSString stringWithFormat:@"%.3f", ni.note.fontSize],
-                                         @"metadata/date-created": [FIRServerValue timestamp],
-                                         @"metadata/created-by": [FIRAuth auth].currentUser.uid
-                                         };
-    FIRDatabaseReference *newNoteRef = [notesRef childByAutoId];
-    [newNoteRef updateChildValues: noteDictionary];
-    ni.note.key = newNoteRef.key;
+    _visuallsRef = [_ref child: @"visualls"];
+    FIRDatabaseReference *visuallsPersonalRef =  [_currentUserRef child: @"visualls/personal"];
+    
+    [visuallsPersonalRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+     {
+         if ( ![snapshot exists] ) //create first Visuall for current user
+         {
+             NSDictionary *visuallDictionary = @{
+                                              @"title": @"My First Visuall",
+                                              @"date-created": [FIRServerValue timestamp],
+                                              @"created-by": [FIRAuth auth].currentUser.uid,
+                                              @"write-access:" : @{ [FIRAuth auth].currentUser.uid : @"1" }
+                                              };
+             _currentVisuallRef = [_visuallsRef childByAutoId];
+             [_currentVisuallRef updateChildValues: visuallDictionary];
+             [visuallsPersonalRef updateChildValues: @{_currentVisuallRef.key: @"1"} ];
+         
+         } else {
+            NSDictionary *visuallPersonalKeys = (NSDictionary *) snapshot.value;
+             for (NSString *key in visuallPersonalKeys) {
+                 [self loadVisuallFromKey: key];
+                 return; // NOTE: early termination here only loading the 1st and only visuall
+             }
+         }
+     }];
+    
 }
 
-- (void) setValueGroup: (GroupItem *) gi
+- (void) setCallbackOnNote: (void (^)(NoteItem2 *ni)) callbackOnNote
 {
-    FIRDatabaseReference *groupsRef = [_ref child: @"groups"];
-    NSDictionary *groupDictionary = @{
-                                      @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
-                                      @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
-                                      @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
-                                      @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height]
-                                      };
-    FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
-    [newGroupRef updateChildValues: groupDictionary];
-    gi.group.key = newGroupRef.key;
+    _callbackOnNote = [callbackOnNote copy];
+};
+
+- (void) loadVisuallFromKey: (NSString *) key
+{
+    FIRDatabaseReference *listOfNoteKeysRef = [[_visuallsRef child:key] child: @"notes"];
+    [self loadNotes: listOfNoteKeysRef];
 }
 
-- (void) loadFirebaseNotes: (void (^)(NoteItem2 *ni)) callback
+- (void) loadNotes: (FIRDatabaseReference *) listOfNoteKeysRef
+{
+    self.notesCollection = [NotesCollection new];
+    [listOfNoteKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         NSString *key = snapshot.key;
+         [self loadNote: [_notesRef child:key]];
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"%@", error.description);
+     }];
+}
+
+-(void) loadNote: (FIRDatabaseReference *) noteRef
+{
+    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
+         {
+             return;
+         }
+         
+         NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
+         [self.notesCollection addNote:newNote withKey:snapshot.key];
+         _callbackOnNote(newNote);
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"%@", error.description);
+     }];
+    
+}
+
+- (void) __loadFirebaseNotes: (void (^)(NoteItem2 *ni)) callback
 {
     _ref = [[[FIRDatabase database] reference] child:@"version_01"];
     FIRDatabaseReference *notesRef = [_ref child: @"notes"];
@@ -136,6 +189,37 @@ FIRDatabaseReference *_ref;
      {
          NSLog(@"%@", error.description);
      }];
+}
+
+- (void) setValueNote: (NoteItem2 *) ni
+{
+    FIRDatabaseReference *notesRef = [_ref child: @"notes"];
+    NSDictionary *noteDictionary = @{
+                                     @"data/title": ni.note.title,
+                                     @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                     @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+                                     @"data/font-size": [NSString stringWithFormat:@"%.3f", ni.note.fontSize],
+                                     @"metadata/date-created": [FIRServerValue timestamp],
+                                     @"metadata/created-by": [FIRAuth auth].currentUser.uid
+                                     };
+    FIRDatabaseReference *newNoteRef = [notesRef childByAutoId];
+    [newNoteRef updateChildValues: noteDictionary];
+    ni.note.key = newNoteRef.key;
+    [[_currentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
+}
+
+- (void) setValueGroup: (GroupItem *) gi
+{
+    FIRDatabaseReference *groupsRef = [_ref child: @"groups"];
+    NSDictionary *groupDictionary = @{
+                                      @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                      @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                      @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                      @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height]
+                                      };
+    FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
+    [newGroupRef updateChildValues: groupDictionary];
+    gi.group.key = newGroupRef.key;
 }
 
 - (void) updateChildValue: (UIView *) visualObject Property: (NSString *) propertyName

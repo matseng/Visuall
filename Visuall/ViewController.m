@@ -87,27 +87,12 @@
     [self.fontSize addTarget:self
                     action:@selector(fontSizeEditingChangedHandler:)
                     forControlEvents:UIControlEventEditingChanged];
-    
-//    NSLog(@"My firebase config %d", [[NSNumber numberWithBool: [Firebase defaultConfig].persistenceEnabled] integerValue]);
- 
-/*
-    if ( [Firebase defaultConfig].persistenceEnabled == NO) {
-        [Firebase defaultConfig].persistenceEnabled = YES;
-    }
-
-    [Firebase goOffline];
-    
-    Firebase *connectedRef = [[Firebase alloc] initWithUrl:@"https://brainspace-biz.firebaseio.com/.info/connected"];
-    [connectedRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-        if([snapshot.value boolValue]) {
-            NSLog(@"connected");
-        } else {
-            NSLog(@"not connected");
-        }
+    [[StateUtil sharedManager] setCallbackOnNote:^(NoteItem2 *ni) {
+        [self addNoteToViewWithHandlers: ni];
+        [self calculateTotalBounds: ni];
     }];
-    
-    [self loadFirebaseTransform];
-*/
+    [[StateUtil sharedManager] loadVisuallsForCurrentUser];
+    /*
     [[StateUtil sharedManager] loadFirebaseNotes:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
         [self calculateTotalBounds: ni];
@@ -119,8 +104,9 @@
         if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
         [self.groupsCollection addGroup: gi withKey: gi.group.key];
 //        [self refreshGroupView];
-        [self setSelectedObject: gi];
+        [self calculateTotalBounds: gi];
     }];
+     */
     
     [self createTopMenu];
     
@@ -277,8 +263,6 @@
 {
     if( [item isKindOfClass: [UIView class]] )
     {
-//        float prevScale = self.BackgroundScrollView.zoomScale;
-//        CGPoint prevOffset = self.BackgroundScrollView.contentOffset;
         self.BackgroundScrollView.zoomScale = 1.0;
         self.BackgroundScrollView.contentOffset = CGPointZero;
         
@@ -288,9 +272,7 @@
         self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
         self.VisualItemsView.frame = CGRectMake(fabs(self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y), self.VisualItemsView.frame.size.width, self.VisualItemsView.frame.size.height);
         self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
-        
-//        self.BackgroundScrollView.zoomScale = prevScale;
-//        self.BackgroundScrollView.contentOffset = prevOffset;
+
     }
 }
 
