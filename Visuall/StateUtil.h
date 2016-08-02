@@ -56,6 +56,8 @@
 
 - (void) loadFirebaseNotes: (void (^)(NoteItem2 *ni)) callback;
 
+- (void) loadFirebaseGroups: (void (^)(GroupItem *ni)) callback;
+
 - (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
 
 - (void) setValueNote: (NoteItem2 *) ni;

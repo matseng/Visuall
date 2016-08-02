@@ -113,6 +113,15 @@
         [self addNoteToViewWithHandlers: ni];
         [self calculateTotalBounds: ni];
     }];
+
+    [[StateUtil sharedManager] loadFirebaseGroups:^(GroupItem *gi) {
+        [self addGestureRecognizersToGroup: gi];
+        [self.GroupsView addSubview: gi];
+        if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
+        [self.groupsCollection addGroup: gi withKey: gi.group.key];
+//        [self refreshGroupView];
+        [self setSelectedObject: gi];
+    }];
     
     [self createTopMenu];
     

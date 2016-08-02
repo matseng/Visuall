@@ -116,6 +116,28 @@ FIRDatabaseReference *_ref;
      }];
 }
 
+- (void) loadFirebaseGroups: (void (^)(GroupItem *ni)) callback
+{
+    _ref = [[[FIRDatabase database] reference] child:@"version_01"];
+    FIRDatabaseReference *groupsRef = [_ref child: @"groups"];
+    self.groupsCollection = [GroupsCollection new];
+    [groupsRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )  // If the group already exists in the collection
+         {
+             return;
+         }
+         
+         GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
+         [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+         callback(newGroup);
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"%@", error.description);
+     }];
+}
+
 - (void) updateChildValue: (UIView *) visualObject Property: (NSString *) propertyName
 {
     if ( [visualObject isNoteItem] )
