@@ -144,14 +144,8 @@
 
 - (void) renderHandles
 {
-    
-//    UIView *handleTopLeft;
-//    UIView *handleTopRight;
-//    UIView *handleBottomLeft;
-//    UIView *handleBottomRight;
 
     handleBottomRight = [self makeHandle: CGRectMake(self.group.width, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER)];
-    handleBottomRight.tag = 777;
     [self addSubview:handleBottomRight];
     
     handleTopLeft = [self makeHandle: CGRectMake(0, 0, HANDLE_DIAMETER, HANDLE_DIAMETER)];
