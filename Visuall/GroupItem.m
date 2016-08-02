@@ -76,24 +76,12 @@
     return self;
 }
 
-- (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float)width andHeight:(float)height
+- (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float) width andHeight:(float)height
 {
     self = [super init];
     
     if (self)
     {
-//        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-//        self.moc = appDelegate.managedObjectContext;
-//        
-//        self.group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:self.moc];
-//        [self.group setTopPoint:coordinate];
-//        [self.group setHeight:height andWidth:width];
-        
-//        [self.group setX:coordinate.x andY:coordinate.y];
-//        [self.group setWidth:width andHeight:height];
-//        [self renderGroup];
-//        [[TransformUtil sharedManager] transformGroupItem: self];
-        
         Group2 *group = [[Group2 alloc] init];
         group.key = nil;
         group.x = coordinate.x;
@@ -107,6 +95,11 @@
     }
 
     return self;
+}
+
+- (GroupItem *) initWithRect: (CGRect) rect
+{
+    return [self initWithPoint:rect.origin andWidth: rect.size.width andHeight:rect.size.height];
 }
 
 - (void) renderGroup

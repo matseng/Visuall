@@ -408,9 +408,13 @@
     }
     if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isNoteItem])
     {
-        return YES;
+        return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
     }
     if ([gestureRecognizer isKindOfClass: [UITapGestureRecognizer class]])
+    {
+        return YES;
+    }
+    if( [self isDrawGroupButtonSelected] )
     {
         return YES;
     }
@@ -517,6 +521,7 @@
     return CGRectMake(x1, y1, width, height);
 }
 
+/*
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
     
@@ -607,6 +612,7 @@
         [[StateUtil sharedManager] handlePanBackground:gestureRecognizer withNotes: self.NotesCollection withGroups: self.groupsCollection];
     }
 }
+*/
 
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
@@ -614,44 +620,28 @@
         // State began
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
         {
-            self.drawGroupViewStart = [gestureRecognizer locationInView:gestureRecognizer.view];
+            self.drawGroupViewStart = [gestureRecognizer locationInView: self.GroupsView];
             
-            [self.GroupsView addSubview:self.drawGroupView];
+            [self.GroupsView addSubview: self.drawGroupView];
         }
         
         // State changed
         if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
+            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
             self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
         }
         
         // State ended
-        //        else if (gestureRecognizer.state == UIGestureRecognizerStateEnded &&
-        //            ![self.lastSelectedObject isKindOfClass:[ NoteItem class]]
-        //            ) {
         if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView:gestureRecognizer.view];
-            
+            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
             self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
-            
-            // Make a copy of the current group view and add it to our list of group views
-            float zoom = [[StateUtil sharedManager] zoom];
-            GroupItem *currentGroupItem = [[GroupItem alloc]
-                                           initWithPoint:[[StateUtil sharedManager] getGlobalCoordinate: self.drawGroupView.frame.origin]
-                                           andWidth:self.drawGroupView.frame.size.width / zoom
-                                           andHeight:self.drawGroupView.frame.size.height / zoom];
-            
-//            [currentGroupItem saveToCoreData];
-            /*
-            [self setGroup: currentGroupItem];
-             */
+            GroupItem *currentGroupItem = [[GroupItem alloc] initWithRect: self.drawGroupView.frame];
+            [[StateUtil sharedManager] setValueGroup: currentGroupItem];
             [self addGestureRecognizersToGroup: currentGroupItem];
-            
+            [self.GroupsView addSubview: currentGroupItem];
+            if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
             [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
-            
             [self refreshGroupView];
-            
-            // set currentGroupItem as lastSelectedObject
             [self setSelectedObject:currentGroupItem];
         }
     }

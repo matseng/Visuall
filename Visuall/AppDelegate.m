@@ -47,6 +47,13 @@
                                       annotation:annotation];
 }
 
+-(void) signIn:(GIDSignIn *)signIn didDisconnectWithUser:(GIDGoogleUser *)user withError:(NSError *)error
+{
+    if (!error) {
+        NSLog(@"Google Sign-out succeeded");
+    }
+}
+
 - (void)signIn:(GIDSignIn *)signIn
 didSignInForUser:(GIDGoogleUser *)user
      withError:(NSError *)error {
@@ -72,13 +79,6 @@ didSignInForUser:(GIDGoogleUser *)user
     } else {
         NSLog(@"%@", error.localizedDescription);
     }
-}
-
-- (void)signIn:(GIDSignIn *)signIn
-didDisconnectWithUser:(GIDGoogleUser *)user
-     withError:(NSError *)error {
-    // Perform any operations when the user disconnects from app here.
-    // ...
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

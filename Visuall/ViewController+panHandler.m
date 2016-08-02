@@ -32,7 +32,7 @@
         return NO;
     }
     
-    CGPoint point = [gestureRecognizer locationInView: self.NotesView];
+//    CGPoint point = [gestureRecognizer locationInView: self.NotesView];
 //    CGPoint convertedPoint = [self.BoundsTiledLayerView convertPoint:point fromView: nil];
 //    UIView *viewHit = [self.BoundsTiledLayerView hitTest:convertedPoint withEvent:nil];
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;

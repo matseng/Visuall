@@ -7,6 +7,7 @@
 //
 
 #import "WelcomeViewController.h"
+#import "StateUtil.h"
 
 @implementation WelcomeViewController
 
@@ -18,7 +19,7 @@
     [GIDSignIn sharedInstance].uiDelegate = self;
     
     // Uncomment to automatically sign in the user.
-    [[GIDSignIn sharedInstance] signInSilently];
+//    [[GIDSignIn sharedInstance] signInSilently];
 }
 
 
@@ -38,6 +39,7 @@
         if (!error) {
             NSLog(@"Sign-out succeeded");
         }
+    [[StateUtil sharedManager] GIDdisconnect];
 }
 
 - (void) segueToNextView
@@ -48,7 +50,7 @@
 
 - (void) signInWillDispatch:(GIDSignIn *)signIn error:(NSError *)error
 {
-    [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
+//    [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
 }
 
 @end

@@ -28,6 +28,8 @@
 
 - (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float)width andHeight:(float)height;
 
+- (GroupItem *) initWithRect: (CGRect) rect;
+
 - (void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer;
 
 - (BOOL) isNoteInGroup: (NoteItem2 *) noteItem;

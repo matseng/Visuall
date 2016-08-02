@@ -17,7 +17,6 @@
 		712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9641BEAF21500ED6803 /* Images.xcassets */; };
 		712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 712EC9661BEAF21500ED6803 /* LaunchScreen.xib */; };
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
-		71333A3A1D4AAAF600578A14 /* ViewController+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 71333A391D4AAAF600578A14 /* ViewController+Authentication.m */; };
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
@@ -36,7 +35,6 @@
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
-		71B8586B1CEBD69C00135BE5 /* FirebaseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */; };
 		71C23F1E1D1E0F3900D53E0C /* leftRightUpDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */; };
 		71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F211D21DF9900D53E0C /* cursorClick.png */; };
 		71C23F281D21EF4800D53E0C /* textLetter.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F271D21EF4800D53E0C /* textLetter.png */; };
@@ -116,8 +114,6 @@
 		712EC96D1BEAF21500ED6803 /* VisuallTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VisuallTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		712EC9721BEAF21500ED6803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		712EC9731BEAF21500ED6803 /* VisuallTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VisuallTests.m; sourceTree = "<group>"; };
-		71333A381D4AAAF600578A14 /* ViewController+Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ViewController+Authentication.h"; path = "../ViewController+Authentication.h"; sourceTree = "<group>"; };
-		71333A391D4AAAF600578A14 /* ViewController+Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ViewController+Authentication.m"; path = "../ViewController+Authentication.m"; sourceTree = "<group>"; };
 		713D0D5B1CC18CAB00878EAE /* Note2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note2.h; sourceTree = "<group>"; };
 		713D0D5C1CC18CAB00878EAE /* Note2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note2.m; sourceTree = "<group>"; };
 		713D0D5E1CC6AE4F00878EAE /* Group2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group2.h; sourceTree = "<group>"; };
@@ -148,8 +144,6 @@
 		71B0EF031CB83E6D009D8F5C /* NoteItem2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem2.m; sourceTree = "<group>"; };
 		71B37E771C1924800048851A /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = Visuall/HomeViewController.h; sourceTree = "<group>"; };
 		71B37E781C1924800048851A /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Visuall/HomeViewController.m; sourceTree = "<group>"; };
-		71B858691CEBD69C00135BE5 /* FirebaseHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirebaseHelper.h; sourceTree = "<group>"; };
-		71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirebaseHelper.m; sourceTree = "<group>"; };
 		71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leftRightUpDown.png; sourceTree = "<group>"; };
 		71C23F211D21DF9900D53E0C /* cursorClick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursorClick.png; sourceTree = "<group>"; };
 		71C23F271D21EF4800D53E0C /* textLetter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textLetter.png; sourceTree = "<group>"; };
@@ -297,8 +291,6 @@
 				71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */,
 				71D96C021D359E0000CD1C49 /* ViewController+Group.h */,
 				71D96C031D359E0000CD1C49 /* ViewController+Group.m */,
-				71333A381D4AAAF600578A14 /* ViewController+Authentication.h */,
-				71333A391D4AAAF600578A14 /* ViewController+Authentication.m */,
 				885AFD651C00217800F89DE5 /* model */,
 				712EC95B1BEAF21500ED6803 /* AppDelegate.h */,
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
@@ -314,8 +306,6 @@
 				71D96BC91D2C59AA00CD1C49 /* MyVisuallsViewController.m */,
 				71D96BCE1D2C66D000CD1C49 /* MyVisuallsDetailViewController.h */,
 				71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */,
-				71B858691CEBD69C00135BE5 /* FirebaseHelper.h */,
-				71B8586A1CEBD69C00135BE5 /* FirebaseHelper.m */,
 				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
 				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
 				71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */,
@@ -493,7 +483,7 @@
 				TargetAttributes = {
 					712EC9531BEAF21500ED6803 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = 7V4PMC5UAU;
+						DevelopmentTeam = YFQYNUR55X;
 					};
 					712EC96C1BEAF21500ED6803 = {
 						CreatedOnToolsVersion = 6.4;
@@ -633,7 +623,6 @@
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
 				71D96BD01D2C66D000CD1C49 /* MyVisuallsDetailViewController.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
-				71333A3A1D4AAAF600578A14 /* ViewController+Authentication.m in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */,
 				716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */,
@@ -649,7 +638,6 @@
 				713D0D601CC6AE4F00878EAE /* Group2.m in Sources */,
 				71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
-				71B8586B1CEBD69C00135BE5 /* FirebaseHelper.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
 				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,
 				71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */,
@@ -795,7 +783,7 @@
 				INFOPLIST_FILE = Visuall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "matseng.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Visuall;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -811,7 +799,7 @@
 				INFOPLIST_FILE = Visuall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "matseng.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Visuall;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

@@ -8,10 +8,17 @@
 
 #import "StateUtil+Firebase.h"
 #import "UIView+VisualItem.h"
+#import <GoogleSignIn/GoogleSignIn.h>
 
 @implementation StateUtil (Firebase)
 
 FIRDatabaseReference *_ref;
+
+- (void) GIDdisconnect
+{
+//    [[GIDSignIn sharedInstance] disconnect];
+    [[GIDSignIn sharedInstance] signOut];
+}
 
 -(void) userIsSignedInHandler: (FIRUser *) user
 {
@@ -70,6 +77,20 @@ FIRDatabaseReference *_ref;
     FIRDatabaseReference *newNoteRef = [notesRef childByAutoId];
     [newNoteRef updateChildValues: noteDictionary];
     ni.note.key = newNoteRef.key;
+}
+
+- (void) setValueGroup: (GroupItem *) gi
+{
+    FIRDatabaseReference *groupsRef = [_ref child: @"groups"];
+    NSDictionary *groupDictionary = @{
+                                      @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                      @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                      @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                      @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height]
+                                      };
+    FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
+    [newGroupRef updateChildValues: groupDictionary];
+    gi.group.key = newGroupRef.key;
 }
 
 - (void) loadFirebaseNotes: (void (^)(NoteItem2 *ni)) callback
