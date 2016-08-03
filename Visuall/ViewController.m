@@ -87,9 +87,17 @@
     [self.fontSize addTarget:self
                     action:@selector(fontSizeEditingChangedHandler:)
                     forControlEvents:UIControlEventEditingChanged];
-    [[StateUtil sharedManager] setCallbackOnNote:^(NoteItem2 *ni) {
+    [[StateUtil sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
         [self calculateTotalBounds: ni];
+    }];
+    [[StateUtil sharedManager] setCallbackGroupItem:^(GroupItem *gi) {
+        [self addGestureRecognizersToGroup: gi];
+        [self.GroupsView addSubview: gi];
+        if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
+        [self.groupsCollection addGroup: gi withKey: gi.group.key];
+        //        [self refreshGroupView];
+        [self calculateTotalBounds: gi];
     }];
     [[StateUtil sharedManager] loadVisuallsForCurrentUser];
     /*

@@ -54,7 +54,9 @@
 
 @protocol FirebaseUtilProtocolDelegate
 
-- (void) setCallbackOnNote: (void (^)(NoteItem2 *ni)) callbackOnNote;
+- (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;
+
+- (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem;
 
 - (void) loadVisuallsForCurrentUser;
 
