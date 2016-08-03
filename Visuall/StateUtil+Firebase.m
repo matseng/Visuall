@@ -14,10 +14,10 @@
 
 FIRDatabaseReference *_ref;
 FIRDatabaseReference *_currentUserRef;
+NSString *_visuallKey;
 FIRDatabaseReference *_visuallsRef;
 FIRDatabaseReference *_currentVisuallRef;
 FIRDatabaseReference *_notesRef;
-//typedef void (^_callbackOnNote)(NoteItem2 *ni);
 void (^_callbackOnNote)(NoteItem2 *ni);
 
 - (void) GIDdisconnect
@@ -84,7 +84,7 @@ void (^_callbackOnNote)(NoteItem2 *ni);
                                               @"title": @"My First Visuall",
                                               @"date-created": [FIRServerValue timestamp],
                                               @"created-by": [FIRAuth auth].currentUser.uid,
-                                              @"write-access:" : @{ [FIRAuth auth].currentUser.uid : @"1" }
+                                              @"write-permission:" : @{ [FIRAuth auth].currentUser.uid : @"1" }
                                               };
              _currentVisuallRef = [_visuallsRef childByAutoId];
              [_currentVisuallRef updateChildValues: visuallDictionary];
@@ -93,6 +93,7 @@ void (^_callbackOnNote)(NoteItem2 *ni);
          } else {
             NSDictionary *visuallPersonalKeys = (NSDictionary *) snapshot.value;
              for (NSString *key in visuallPersonalKeys) {
+                 _visuallKey = key;
                  [self loadVisuallFromKey: key];
                  return; // NOTE: early termination here only loading the 1st and only visuall
              }
@@ -108,6 +109,13 @@ void (^_callbackOnNote)(NoteItem2 *ni);
 
 - (void) loadVisuallFromKey: (NSString *) key
 {
+//    key = @"-KOCYoeegUE3gb-gK-8v"; // NOTE: going to test Firebase rules - this Visuall belongs to matseng (not current user mikeyaheard)
+//    {
+//        "rules": {
+//            ".read": "auth != null",
+//            ".write": "auth != null"
+//        }
+//    }
     FIRDatabaseReference *listOfNoteKeysRef = [[_visuallsRef child:key] child: @"notes"];
     [self loadNotes: listOfNoteKeysRef];
 }
@@ -118,6 +126,8 @@ void (^_callbackOnNote)(NoteItem2 *ni);
     [listOfNoteKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
          NSString *key = snapshot.key;
+//         key = @"-KOCYylG_Phv30aCavZB";
+//         FIRDatabaseReference _securityTestRef = _ref
          [self loadNote: [_notesRef child:key]];
          
      } withCancelBlock:^(NSError *error)
@@ -199,6 +209,7 @@ void (^_callbackOnNote)(NoteItem2 *ni);
                                      @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
                                      @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
                                      @"data/font-size": [NSString stringWithFormat:@"%.3f", ni.note.fontSize],
+                                     @"metadata/parent-visuall": _visuallKey,
                                      @"metadata/date-created": [FIRServerValue timestamp],
                                      @"metadata/created-by": [FIRAuth auth].currentUser.uid
                                      };
