@@ -12,13 +12,13 @@
 
 @implementation StateUtil (Firebase)
 
-FIRDatabaseReference *_ref;
-FIRDatabaseReference *_currentUserRef;
-NSString *_visuallKey;
-FIRDatabaseReference *_visuallsRef;
-FIRDatabaseReference *_currentVisuallRef;
-FIRDatabaseReference *_notesRef;
-FIRDatabaseReference *_groupsRef;
+FIRDatabaseReference *_version01TableRef;
+FIRDatabaseReference *_usersTableCurrentUser;
+NSString *_currentVisuallKey;
+FIRDatabaseReference *_visuallsTableRef;
+FIRDatabaseReference *_visuallsTableCurrentVisuallRef;
+FIRDatabaseReference *_notesTableRef;
+FIRDatabaseReference *_groupsTableRef;
 void (^_callbackNoteItem)(NoteItem2 *ni);
 void (^_callbackGroupItem)(GroupItem *gi);
 
@@ -30,10 +30,10 @@ void (^_callbackGroupItem)(GroupItem *gi);
 
 -(void) userIsSignedInHandler: (FIRUser *) user
 {
-    _ref = [[[FIRDatabase database] reference] child:@"version_01"];
-    _notesRef = [_ref child: @"notes"];
-    _groupsRef = [_ref child: @"groups"];
-    
+    _version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    _notesTableRef = [_version01TableRef child: @"notes"];
+    _groupsTableRef = [_version01TableRef child: @"groups"];
+
     NSString *userID = [FIRAuth auth].currentUser.uid;
     NSString *name;
     NSString *email;
@@ -49,8 +49,8 @@ void (^_callbackGroupItem)(GroupItem *gi);
         NSLog(@"uid: %@", uid);
     }
     
-    _currentUserRef = [[_ref child:@"users"] child:userID];
-    [_currentUserRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+    _usersTableCurrentUser = [[_version01TableRef child:@"users"] child:userID];
+    [_usersTableCurrentUser observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
     {
         if ( ![snapshot exists] )  // we have a new user
         {
@@ -62,10 +62,10 @@ void (^_callbackGroupItem)(GroupItem *gi);
                                                    @"date-joined": [FIRServerValue timestamp],
                                                    @"date-last_visit": [FIRServerValue timestamp]
                                                    };
-            [[[_ref child:@"users"] child: userID] setValue: newUserBasicUserInfo];
+            [[[_version01TableRef child:@"users"] child: userID] setValue: newUserBasicUserInfo];
         } else {
             NSLog(@"%@", snapshot.value );
-            [[[_ref child:@"users"] child: userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
+            [[[_version01TableRef child:@"users"] child: userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
         }
         
     } withCancelBlock:^(NSError * _Nonnull error) {
@@ -75,8 +75,8 @@ void (^_callbackGroupItem)(GroupItem *gi);
 
 - (void) loadVisuallsForCurrentUser
 {
-    _visuallsRef = [_ref child: @"visualls"];
-    FIRDatabaseReference *visuallsPersonalRef =  [_currentUserRef child: @"visualls/personal"];
+    _visuallsTableRef = [_version01TableRef child: @"visualls"];
+    FIRDatabaseReference *visuallsPersonalRef =  [_usersTableCurrentUser child: @"visualls/personal"];
     
     [visuallsPersonalRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
      {
@@ -86,21 +86,24 @@ void (^_callbackGroupItem)(GroupItem *gi);
                                               @"title": @"My First Visuall",
                                               @"date-created": [FIRServerValue timestamp],
                                               @"created-by": [FIRAuth auth].currentUser.uid,
-                                              @"write-permission:" : @{ [FIRAuth auth].currentUser.uid : @"1" }
+                                              @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" }
                                               };
-             _currentVisuallRef = [_visuallsRef childByAutoId];
-             [_currentVisuallRef updateChildValues: visuallDictionary];
-             [visuallsPersonalRef updateChildValues: @{_currentVisuallRef.key: @"1"} ];
+             _visuallsTableCurrentVisuallRef = [_visuallsTableRef childByAutoId];
+             _currentVisuallKey = _visuallsTableCurrentVisuallRef.key;
+             [_visuallsTableCurrentVisuallRef updateChildValues: visuallDictionary];
+             [visuallsPersonalRef updateChildValues: @{_visuallsTableCurrentVisuallRef.key: @"1"} ];
          
          } else {  // run thru list of Visualls
             NSDictionary *visuallPersonalKeys = (NSDictionary *) snapshot.value;
              for (NSString *key in visuallPersonalKeys) {
-                 _visuallKey = key;
-                 _currentVisuallRef = [_visuallsRef child: key];
+                 _currentVisuallKey = key;
+                 _visuallsTableCurrentVisuallRef = [_visuallsTableRef child: key];
                  [self loadVisuallFromKey: key];
                  return; // TODO: early termination here only loading the 1st and only visuall
              }
          }
+//        [[FIRAuth auth].currentUser setValuesForKeysWithDictionary:@{@"currentVisuallKey" : _visuallKey}];
+
      }];
     
 }
@@ -117,8 +120,8 @@ void (^_callbackGroupItem)(GroupItem *gi);
 
 - (void) loadVisuallFromKey: (NSString *) key
 {
-    FIRDatabaseReference *listOfNoteKeysRef = [[_visuallsRef child:key] child: @"notes"];
-    FIRDatabaseReference *listOfGroupKeysRef = [[_visuallsRef child:key] child: @"groups"];
+    FIRDatabaseReference *listOfNoteKeysRef = [[_visuallsTableRef child:key] child: @"notes"];
+    FIRDatabaseReference *listOfGroupKeysRef = [[_visuallsTableRef child:key] child: @"groups"];
     [self loadListOfNotesFromRef: listOfNoteKeysRef];
     [self loadListOfGroupsFromRef: listOfGroupKeysRef];
 }
@@ -129,32 +132,44 @@ void (^_callbackGroupItem)(GroupItem *gi);
     [listOfNoteKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
          NSString *key = snapshot.key;
-         [self loadNoteFromRef: [_notesRef child:key]];
+         
+         if([self.notesCollection getNoteFromKey: key])  // If the note already exists in the collection
+         {
+             return;
+         }
+         
+         [self loadNoteFromRef: [_notesTableRef child:key]];
          
      } withCancelBlock:^(NSError *error)
      {
-         NSLog(@"%@", error.description);
+         NSLog(@"loadListOfNotesFromRef: %@", error.description);
      }];
 }
 
 - (void) loadListOfGroupsFromRef: (FIRDatabaseReference *) listOfGroupKeysRef
 {
     self.groupsCollection = [GroupsCollection new];
+    
     [listOfGroupKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
-     {
-         NSString *key = snapshot.key;
-         [self loadGroupFromRef: [_groupsRef child:key]];
+    {
+        if( [self.groupsCollection getGroupItemFromKey: listOfGroupKeysRef.key] )  // If the group already exists in the collection
+        {
+            return;
+        }
+        
+         [self loadGroupFromRef: [_groupsTableRef child:snapshot.key]];
          
      } withCancelBlock:^(NSError *error)
      {
-         NSLog(@"%@", error.description);
+         NSLog(@"loadListOfGroupsFromRef: %@", error.description);
      }];
 }
 
 -(void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
 {
-    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [noteRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
+
          if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
          {
              return;
@@ -195,42 +210,46 @@ void (^_callbackGroupItem)(GroupItem *gi);
  */
 - (void) setValueNote: (NoteItem2 *) ni
 {
-    FIRDatabaseReference *notesRef = [_ref child: @"notes"];
     NSMutableDictionary *noteDictionary = [@{
                                      @"data/title": ni.note.title,
                                      @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
                                      @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
                                      @"data/font-size": [NSString stringWithFormat:@"%.3f", ni.note.fontSize],
-                                     @"metadata/parent-visuall": _visuallKey,
+                                     @"metadata/parent-visuall": _currentVisuallKey,
                                      @"metadata/date-created": [FIRServerValue timestamp],
                                      @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
                                      @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
+                                     @"parent-visuall": _currentVisuallKey,
                                      } mutableCopy];
     [noteDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
-    FIRDatabaseReference *newNoteRef = [notesRef childByAutoId];
-    [newNoteRef updateChildValues: noteDictionary];
+    FIRDatabaseReference *newNoteRef = [_notesTableRef childByAutoId];
+//    NSLog(@"setValueNote, new note key: %@", newNoteRef.key);
+//    NSLog(@"setValueNote, parent-visuall: %@", _currentVisuallKey);
     ni.note.key = newNoteRef.key;
-    [[_currentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
+    [self.notesCollection addNote:ni withKey:newNoteRef.key];
+    [newNoteRef updateChildValues: noteDictionary];
+    [[_visuallsTableCurrentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
 }
 
 - (void) setValueGroup: (GroupItem *) gi
 {
-    FIRDatabaseReference *groupsRef = [_ref child: @"groups"];
+    FIRDatabaseReference *groupsRef = [_version01TableRef child: @"groups"];
     NSMutableDictionary *groupDictionary = [@{
                                       @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
                                       @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
                                       @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
                                       @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
-                                      @"metadata/parent-visuall": _visuallKey,
+                                      @"metadata/parent-visuall": _currentVisuallKey,
                                       @"metadata/date-created": [FIRServerValue timestamp],
                                       @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
                                       @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
                                       } mutableCopy];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
-    [newGroupRef updateChildValues: groupDictionary];
     gi.group.key = newGroupRef.key;
-    [[_currentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
+    [self.groupsCollection addGroup: gi withKey: newGroupRef.key];
+    [newGroupRef updateChildValues: groupDictionary];
+    [[_visuallsTableCurrentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
 }
 
 - (NSMutableDictionary *) getCommonUpdateParameters
@@ -247,9 +266,10 @@ void (^_callbackGroupItem)(GroupItem *gi);
     if ( [visualObject isNoteItem] )
     {
         NoteItem2 *ni = [visualObject getNoteItem];
-        FIRDatabaseReference *notesDataRef = [[_ref child: @"notes"] child: [ni.note.key stringByAppendingString:@"/data"]];
+        FIRDatabaseReference *notesDataRef = [[_version01TableRef child: @"notes"] child: ni.note.key];
+        NSString *localKey = [@"data/" stringByAppendingString: propertyName];
         NSMutableDictionary *noteDict = [@{
-                                           propertyName : [ni.note valueForKey:propertyName]
+                                           localKey : [ni.note valueForKey:propertyName]
                                            } mutableCopy];
         [noteDict addEntriesFromDictionary: [self getCommonUpdateParameters]];
         [notesDataRef updateChildValues: noteDict];
@@ -259,12 +279,12 @@ void (^_callbackGroupItem)(GroupItem *gi);
         if ( [propertyName isEqualToString:@"frame"] )
         {
             GroupItem *gi = [visualObject getGroupItem];
-            FIRDatabaseReference *groupDataRef = [[_ref child: @"groups"] child: [gi.group.key stringByAppendingString:@"/data"]];
+            FIRDatabaseReference *groupDataRef = [[_version01TableRef child: @"groups"] child: gi.group.key];
             NSMutableDictionary *groupDictionary = [@{
-                                              @"x": [NSString stringWithFormat:@"%.3f", gi.group.x],
-                                              @"y": [NSString stringWithFormat:@"%.3f", gi.group.y],
-                                              @"width": [NSString stringWithFormat:@"%.3f", gi.group.width],
-                                              @"height": [NSString stringWithFormat:@"%.3f", gi.group.height],
+                                              @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                              @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                              @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                              @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
                                               } mutableCopy];
             [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
             [groupDataRef updateChildValues: groupDictionary];
@@ -277,7 +297,7 @@ void (^_callbackGroupItem)(GroupItem *gi);
     
     if ( [visualObject isNoteItem] ) {
         NoteItem2 *ni = [visualObject getNoteItem];
-        FIRDatabaseReference *notesDataRef = [[_ref child: @"notes"] child: [ni.note.key stringByAppendingString:@"/data"]];
+        FIRDatabaseReference *notesDataRef = [[_version01TableRef child: @"notes"] child: [ni.note.key stringByAppendingString:@"/data"]];
         [notesDataRef updateChildValues: @{
                                   propertyName1 : [ni.note valueForKey:propertyName1],
                                   propertyName2 : [ni.note valueForKey:propertyName2],
@@ -286,10 +306,62 @@ void (^_callbackGroupItem)(GroupItem *gi);
     else if ([visualObject isKindOfClass: [GroupItem class]]) {  // TODO - simple method the check if it's a GroupItem
         GroupItem *gi = (GroupItem *) visualObject;
         NSString *groupUrl = [[@"groups/" stringByAppendingString: gi.group.key] stringByAppendingString:@"/data/"];
-        [_ref updateChildValues: @{
+        [_version01TableRef updateChildValues: @{
                                   [groupUrl stringByAppendingString:propertyName1] : [gi.group valueForKey:propertyName1],
                                   [groupUrl stringByAppendingString:propertyName2] : [gi.group valueForKey:propertyName2],
                                   }];
+    }
+}
+
+- (void) removeValue: (UIView *) view
+{
+    if( [view isNoteItem])
+    {
+        NoteItem2 *ni = [view getNoteItem];
+        FIRDatabaseReference *deleteNoteRef = [_notesTableRef child: ni.note.key];
+        [deleteNoteRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+            NSLog(@"error: %@", error);
+            NSLog(@"key: %@", ref.key);
+            if (error) {
+                NSLog(@"Note could NOT be removed.");
+            } else {
+                NSLog(@"Note removed successfully.");
+                [ni removeFromSuperview];
+//                [ni delete:nil];
+            }
+        }];
+        
+        FIRDatabaseReference *deleteNoteKeyFromVisuallRef = [[_visuallsTableCurrentVisuallRef child: @"notes"] child: ni.note.key];
+        [deleteNoteKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+            if (error) {
+                NSLog(@"Note key could not be removed.");
+            } else {
+                NSLog(@"Note key removed successfully.");
+            }
+        }];
+        
+    }
+    else if([view isGroupItem])
+    {
+        GroupItem *gi = [view getGroupItem];
+        FIRDatabaseReference *deleteGroupRef = [_groupsTableRef child: gi.group.key];
+        [deleteGroupRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+            if (error) {
+                NSLog(@"Group could not be removed.");
+            } else {
+                NSLog(@"Group removed successfully.");
+                [gi removeFromSuperview];
+            }
+        }];
+        
+        FIRDatabaseReference *deleteNoteKeyFromVisuallRef = [[_visuallsTableCurrentVisuallRef child: @"groups"] child: gi.group.key];
+        [deleteNoteKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+            if (error) {
+                NSLog(@"Group key could not be removed.");
+            } else {
+                NSLog(@"Group key removed successfully.");
+            }
+        }];
     }
 }
 

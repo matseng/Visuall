@@ -76,6 +76,8 @@
 
 - (void) GIDdisconnect;
 
+- (void) removeValue: (UIView *) view;
+
 @end
 
 

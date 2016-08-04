@@ -29,7 +29,7 @@
 
 // Overwrite this method to prevent jumpiness in the scroll view when entering text in a note
 // http://stackoverflow.com/questions/4585718/disable-uiscrollview-scrolling-when-uitextfield-becomes-first-responder
-- (void)scrollRectToVisible:(CGRect)rect animated:(BOOL)animated
+- (void) scrollRectToVisible:(CGRect)rect animated:(BOOL)animated
 {
     return;
 }

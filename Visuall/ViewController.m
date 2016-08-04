@@ -89,7 +89,8 @@
                     forControlEvents:UIControlEventEditingChanged];
     [[StateUtil sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
-        [self calculateTotalBounds: ni];
+//        [self calculateTotalBounds: ni];  // TODO - update so doest move window
+//        [self setSelectedObject: ni];
     }];
     [[StateUtil sharedManager] setCallbackGroupItem:^(GroupItem *gi) {
         [self addGestureRecognizersToGroup: gi];
@@ -97,7 +98,7 @@
         if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
         [self.groupsCollection addGroup: gi withKey: gi.group.key];
         //        [self refreshGroupView];
-        [self calculateTotalBounds: gi];
+//        [self calculateTotalBounds: gi];
     }];
     [[StateUtil sharedManager] loadVisuallsForCurrentUser];
     /*
@@ -341,6 +342,37 @@
                                         repeats:NO
          ];
         
+    }
+    if ( [button.currentTitle isEqualToString: @"trash"] )
+    {
+        [self trashButtonHandler];
+    }
+}
+
+- (void) trashButtonHandler
+{
+    if ([self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
+    {
+        if ([self.lastSelectedObject isNoteItem])
+        {
+            NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
+//            [self removeValue:ni];
+            [self.NotesCollection deleteNoteGivenKey: ni.note.key];
+        }
+        
+        else if ([self.lastSelectedObject isGroupItem])
+        {
+            GroupItem *gi = [self.lastSelectedObject getGroupItem];
+            //        [self removeValue:gi];
+            [self.groupsCollection deleteGroupGivenKey: gi.group.key];
+        }
+        
+//        [self.lastSelectedObject removeFromSuperview];
+        [[StateUtil sharedManager] removeValue: self.lastSelectedObject];  // TODO: add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
+        //        [self.lastSelectedObject delete:nil];  // TODO: untested
+        //        self.lastSelectedObject = nil;
+
+        [self normalizeTrashButton];
     }
 }
 
@@ -689,8 +721,8 @@
             [[StateUtil sharedManager] setValueGroup: currentGroupItem];
             [self addGestureRecognizersToGroup: currentGroupItem];
             [self.GroupsView addSubview: currentGroupItem];
-            if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
-            [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
+//            if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
+//            [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
             [self refreshGroupView];
             [self setSelectedObject:currentGroupItem];
         }
