@@ -220,7 +220,7 @@
     NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     self.BackgroundScrollView.contentSize = CGSizeMake(self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
-
+    self.BackgroundScrollView.backgroundColor = [UIColor greenColor];
     self.BackgroundScrollView.minimumZoomScale = 0.01;
     self.BackgroundScrollView.maximumZoomScale = 6.0;
     self.BackgroundScrollView.delegate = self;  // REQUIRED to enable pinch to zoom
@@ -285,24 +285,32 @@
     float contentsFrameOriginY = self.BoundsTiledLayerView.frame.origin.y;
     self.BackgroundScrollView.zoomScale = 1.0;
     self.BackgroundScrollView.contentOffset = CGPointZero;
+
     if ( self.totalBoundsRect.size.width == 0 )
     {
         self.totalBoundsRect = view.frame;
     }
-    self.totalBoundsRect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect toView: self.BoundsTiledLayerView];
-    CGRect viewRect = [self.BoundsTiledLayerView convertRect: view.frame toView: self.BoundsTiledLayerView];
-    self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, viewRect);
-//    self.totalBoundsRect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect toView: self.BackgroundScrollView];
+
+    CGRect purpleRect = [self.BoundsTiledLayerView convertRect: self.BoundsTiledLayerView.bounds toView: self.NotesView];
+    self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
-    self.VisualItemsView.frame = CGRectMake(-self.totalBoundsRect.origin.x, -self.totalBoundsRect.origin.y, 5, 5);
+    self.VisualItemsView.frame = CGRectMake(-self.totalBoundsRect.origin.x, -self.totalBoundsRect.origin.y, 50, 50);
     self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
+
+    if (view.frame.origin.x < purpleRect.origin.x)
+    {
+        contentsFrameOriginX = contentsFrameOriginX + (view.frame.origin.x - purpleRect.origin.x) * zoomScalePrevious;
+    }
+    
+    if (view.frame.origin.y < purpleRect.origin.y)
+    {
+        contentsFrameOriginY = contentsFrameOriginY + (view.frame.origin.y - purpleRect.origin.y) * zoomScalePrevious;
+    }
+    
     self.BackgroundScrollView.zoomScale = zoomScalePrevious;
-//    self.BackgroundScrollView.contentOffset = CGPointMake(contentOffsetX, contentOffsetY);
     self.BoundsTiledLayerView.frame = CGRectMake(contentsFrameOriginX, contentsFrameOriginY, self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
     
-//    self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
 }
-
 
 - (void) backButtonHandler
 {
