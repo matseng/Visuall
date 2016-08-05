@@ -114,7 +114,7 @@
         }
         if ( [self.activelySelectedObjectDuringPan isNoteItem] || [self.activelySelectedObjectDuringPan isGroupItem] )
         {
-            [self calculateTotalBounds: self.activelySelectedObjectDuringPan];
+            [self updateTotalBounds: self.activelySelectedObjectDuringPan];
         }
         [self setActivelySelectedObjectDuringPan: nil];
 

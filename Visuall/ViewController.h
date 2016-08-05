@@ -65,5 +65,7 @@
 
 - (void) calculateTotalBounds: (UIView *) view;
 
+- (void) updateTotalBounds: (UIView *) view;
+
 @end
 
