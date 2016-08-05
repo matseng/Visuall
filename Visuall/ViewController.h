@@ -63,5 +63,7 @@
 
 - (void) removeValue: (id) object;
 
+- (void) calculateTotalBounds: (UIView *) view;
+
 @end
 

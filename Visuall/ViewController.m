@@ -55,8 +55,8 @@
     [super viewDidLoad];
         
     self.BoundsTiledLayerView = [[TiledLayerView alloc] init];
-    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1000, 1000);
-    self.BoundsTiledLayerView.backgroundColor = [UIColor whiteColor];
+    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1, 1);
+    self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
     
 //    UITapGestureRecognizer *singleTapBoundsView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
 //    singleTapBoundsView.cancelsTouchesInView = YES;
@@ -89,7 +89,7 @@
                     forControlEvents:UIControlEventEditingChanged];
     [[StateUtil sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
-//        [self calculateTotalBounds: ni];  // TODO - update so doest move window
+        [self calculateTotalBounds: ni];  // TODO - update so doest move window
 //        [self setSelectedObject: ni];
     }];
     [[StateUtil sharedManager] setCallbackGroupItem:^(GroupItem *gi) {
@@ -98,7 +98,7 @@
         if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
         [self.groupsCollection addGroup: gi withKey: gi.group.key];
         //        [self refreshGroupView];
-//        [self calculateTotalBounds: gi];
+        [self calculateTotalBounds: gi];
     }];
     [[StateUtil sharedManager] loadVisuallsForCurrentUser];
     /*
@@ -197,7 +197,7 @@
     
     self.VisualItemsView.contentMode = UIViewContentModeRedraw;
 //    [self.NotesView setFrame: CGRectMake(0, 0, 600, 450)];
-    [self.VisualItemsView setFrame: CGRectMake(0, 0, 600, 450)];
+    [self.VisualItemsView setFrame: CGRectMake(0, 0, 1, 1)];
     [self.GroupsView setFrame: CGRectMake(0, 0, 100, 100)];
     [self.ArrowsView setFrame: CGRectMake(0, 0, 200, 200)];
     [self.NotesView setFrame: CGRectMake(0, 0, 300, 300)];
@@ -209,7 +209,7 @@
     
     CGRect rect = self.VisualItemsView.frame;
     rect = [[UIScreen mainScreen] bounds];
-    self.totalBoundsRect = self.BoundsTiledLayerView.frame;
+//    self.totalBoundsRect = self.BoundsTiledLayerView.frame;
     
     CALayer *sublayer = [CALayer layer];
     sublayer.backgroundColor = [UIColor clearColor].CGColor;
@@ -218,11 +218,6 @@
     sublayer.borderWidth = 100.0;
 //    [self.NotesView.layer addSublayer:sublayer];
     NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    
-//    self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
-//    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width / 2, self.totalBoundsRect.size.height / 2);
-//    self.BackgroundScrollView.contentInset = UIEdgeInsetsMake(self.totalBoundsRect.size.height / 2, self.totalBoundsRect.size.width / 2, 0, 0);
-//    self.BackgroundScrollView.contentSize = CGSizeMake(self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
     
     self.BackgroundScrollView.contentSize = CGSizeMake(self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
 
@@ -268,22 +263,46 @@
     NSLog(@"HERE in scrollViewWillBeginZooming");
 }
 
-- (void) calculateTotalBounds: (id) item
+- (void) __calculateTotalBounds: (UIView *) view
 {
-    if( [item isKindOfClass: [UIView class]] )
+//    self.BackgroundScrollView.zoomScale = 1.0;
+    self.BackgroundScrollView.contentOffset = CGPointZero;
+    if ( self.totalBoundsRect.size.width == 0 )
     {
-        self.BackgroundScrollView.zoomScale = 1.0;
-        self.BackgroundScrollView.contentOffset = CGPointZero;
-        
-        UIView *itemView = (UIView *) item;
-        self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, itemView.frame);
-        self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
-        self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
-        self.VisualItemsView.frame = CGRectMake(fabs(self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y), self.VisualItemsView.frame.size.width, self.VisualItemsView.frame.size.height);
-        self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
-
+        self.totalBoundsRect = view.frame;
     }
+    self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
+    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
+    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
+    self.VisualItemsView.frame = CGRectMake(fabs(self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y), self.VisualItemsView.frame.size.width, self.VisualItemsView.frame.size.height); // TODO: do I have to set this frame size, why?
+    self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
 }
+
+- (void) calculateTotalBounds: (UIView *) view
+{
+    float zoomScalePrevious = self.BackgroundScrollView.zoomScale;
+    float contentsFrameOriginX = self.BoundsTiledLayerView.frame.origin.x;
+    float contentsFrameOriginY = self.BoundsTiledLayerView.frame.origin.y;
+    self.BackgroundScrollView.zoomScale = 1.0;
+    self.BackgroundScrollView.contentOffset = CGPointZero;
+    if ( self.totalBoundsRect.size.width == 0 )
+    {
+        self.totalBoundsRect = view.frame;
+    }
+    self.totalBoundsRect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect toView: self.BoundsTiledLayerView];
+    CGRect viewRect = [self.BoundsTiledLayerView convertRect: view.frame toView: self.BoundsTiledLayerView];
+    self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, viewRect);
+//    self.totalBoundsRect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect toView: self.BackgroundScrollView];
+    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
+    self.VisualItemsView.frame = CGRectMake(-self.totalBoundsRect.origin.x, -self.totalBoundsRect.origin.y, 5, 5);
+    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
+    self.BackgroundScrollView.zoomScale = zoomScalePrevious;
+//    self.BackgroundScrollView.contentOffset = CGPointMake(contentOffsetX, contentOffsetY);
+    self.BoundsTiledLayerView.frame = CGRectMake(contentsFrameOriginX, contentsFrameOriginY, self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
+    
+//    self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
+}
+
 
 - (void) backButtonHandler
 {

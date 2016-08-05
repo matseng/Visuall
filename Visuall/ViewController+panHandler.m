@@ -112,7 +112,10 @@
             self.lastSelectedObject = nil;
             [self normalizeTrashButton];
         }
-        
+        if ( [self.activelySelectedObjectDuringPan isNoteItem] || [self.activelySelectedObjectDuringPan isGroupItem] )
+        {
+            [self calculateTotalBounds: self.activelySelectedObjectDuringPan];
+        }
         [self setActivelySelectedObjectDuringPan: nil];
 
         if ([viewHit isEqual:self.Background] || [viewHit isEqual: self.NotesView] || [viewHit isEqual: self.GroupsView])
