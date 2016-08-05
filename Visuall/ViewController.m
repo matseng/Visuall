@@ -65,7 +65,9 @@
     
     [self.BackgroundScrollView removeFromSuperview];
     self.BackgroundScrollView = [[ScrollViewMod alloc] init];
+    self.Background.frame = [[UIScreen mainScreen] bounds];
     [self.Background addSubview: self.BackgroundScrollView];
+    
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
 //    [self.GroupsView removeFromSuperview];
@@ -165,6 +167,7 @@
     float h0 = [[UIApplication sharedApplication] statusBarFrame].size.height;
     float h1 = self.navigationController.navigationBar.frame.size.height;
     float h2 = self.tabBarController.tabBar.frame.size.height;
+//    y = h0 + h1;
     height = height - h0 - h1 - h2;
     self.BackgroundScrollView.frame = CGRectMake(x, y, width, height);
     
@@ -299,12 +302,12 @@
 
     if (view.frame.origin.x < purpleRect.origin.x)
     {
-        contentsFrameOriginX = contentsFrameOriginX + (view.frame.origin.x - purpleRect.origin.x) * zoomScalePrevious;
+//        contentsFrameOriginX = contentsFrameOriginX + (view.frame.origin.x - purpleRect.origin.x) * zoomScalePrevious;
     }
     
     if (view.frame.origin.y < purpleRect.origin.y)
     {
-        contentsFrameOriginY = contentsFrameOriginY + (view.frame.origin.y - purpleRect.origin.y) * zoomScalePrevious;
+//        contentsFrameOriginY = contentsFrameOriginY + (view.frame.origin.y - purpleRect.origin.y) * zoomScalePrevious;
     }
     
     self.BackgroundScrollView.zoomScale = zoomScalePrevious;

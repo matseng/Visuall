@@ -159,7 +159,8 @@ BOOL alreadyAnimated = NO;
     
     //    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
-    
+    self.navigationController.navigationBar.backgroundColor = backgroundColor;
+    [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
 }
 
 - (void) addHorizontalScrollingButtonList
@@ -180,6 +181,7 @@ BOOL alreadyAnimated = NO;
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.frame = CGRectMake(0, - (h + 2 * padding), [[UIScreen mainScreen] bounds].size.width, h + 2 * paddingTop);
+//    scrollView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, h + 2 * paddingTop);
     scrollView.contentSize = CGSizeMake((w + padding) * n, h);
     scrollView.backgroundColor = backgroundColor;
     [scrollView setAutoresizingMask: UIViewAutoresizingFlexibleWidth];
@@ -397,6 +399,10 @@ BOOL alreadyAnimated = NO;
         [self.scrollViewButtonList setHidden: NO];
         
         CGRect rect = self.scrollViewButtonList.frame;
+        
+        float h0 = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        float h1 = self.navigationController.navigationBar.frame.size.height;
+        rect.origin.y = h0 + h1;
         rect.origin.y = 0;
         
         [UIView animateWithDuration:0.4

@@ -20,6 +20,7 @@
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
+		7161CF641D55202700B278EB /* MyVisuallsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */; };
 		716328B31D25F215009DF56B /* Paint Bucket-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B21D25F215009DF56B /* Paint Bucket-50.png */; };
 		716328B51D25F23E009DF56B /* photo-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B41D25F23E009DF56B /* photo-camera.png */; };
 		716328B71D25F244009DF56B /* Attach-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B61D25F244009DF56B /* Attach-50.png */; };
@@ -120,6 +121,8 @@
 		713D0D5F1CC6AE4F00878EAE /* Group2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group2.m; sourceTree = "<group>"; };
 		71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDownGestureRecognizer.h; sourceTree = "<group>"; };
 		71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDownGestureRecognizer.m; sourceTree = "<group>"; };
+		7161CF621D55202700B278EB /* MyVisuallsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVisuallsNavigationController.h; sourceTree = "<group>"; };
+		7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVisuallsNavigationController.m; sourceTree = "<group>"; };
 		716328B21D25F215009DF56B /* Paint Bucket-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Paint Bucket-50.png"; sourceTree = "<group>"; };
 		716328B41D25F23E009DF56B /* photo-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-camera.png"; sourceTree = "<group>"; };
 		716328B61D25F244009DF56B /* Attach-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Attach-50.png"; sourceTree = "<group>"; };
@@ -302,6 +305,8 @@
 				712EC95F1BEAF21500ED6803 /* ViewController.m */,
 				712682011D49997700A0A2F7 /* ScrollViewMod.h */,
 				712682021D49997700A0A2F7 /* ScrollViewMod.m */,
+				7161CF621D55202700B278EB /* MyVisuallsNavigationController.h */,
+				7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */,
 				71D96BC81D2C59AA00CD1C49 /* MyVisuallsViewController.h */,
 				71D96BC91D2C59AA00CD1C49 /* MyVisuallsViewController.m */,
 				71D96BCE1D2C66D000CD1C49 /* MyVisuallsDetailViewController.h */,
@@ -639,6 +644,7 @@
 				71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
+				7161CF641D55202700B278EB /* MyVisuallsNavigationController.m in Sources */,
 				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,
 				71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,
