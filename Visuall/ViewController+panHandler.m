@@ -60,9 +60,15 @@
                 [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
                 return YES;
             }
-        } else if ( ![viewHit isEqual: self.scrollViewButtonList] )
+        }
+        else
         {
-            return YES;
+            CGPoint translation = [gestureRecognizer translationInView: self.BackgroundScrollView];  // amount translated in the NotesView, which is effectively the user's screen
+            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            CGRect rect = self.BoundsTiledLayerView.frame;
+            rect.origin.x = rect.origin.x + translation.x;
+            rect.origin.y = rect.origin.y + translation.y;
+            self.BoundsTiledLayerView.frame = rect;
         }
         
         return NO;  // --> YES pan the background

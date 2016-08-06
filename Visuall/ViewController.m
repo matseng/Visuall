@@ -634,9 +634,18 @@
     {
         return YES;
     }
-
+    
+    CGSize boundsSize = self.BackgroundScrollView.bounds.size;
+    CGRect contentsFrame = self.BoundsTiledLayerView.frame;
+    if ([gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && (contentsFrame.size.width < boundsSize.width || contentsFrame.size.height < boundsSize.height) )
+    {
+        return YES;
+    }
+    
+    
     return NO;
 }
+
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
