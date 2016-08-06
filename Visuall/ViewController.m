@@ -255,11 +255,10 @@
     CGSize boundsSize = self.BackgroundScrollView.bounds.size;
     CGRect contentsFrame = self.BoundsTiledLayerView.frame;
     
-    CGRect rect = self.BackgroundScrollView.frame;
-        NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    rect = self.BackgroundScrollView.bounds;
-        NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    
+//    CGRect rect = self.BackgroundScrollView.frame;
+//        NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+//    rect = self.BackgroundScrollView.bounds;
+//        NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     if (contentsFrame.size.width < boundsSize.width) {
         contentsFrame.origin.x = contentsFrame.origin.x - self.BackgroundScrollView.bounds.origin.x;
@@ -312,8 +311,9 @@
     float zoomScalePrevious = self.BackgroundScrollView.zoomScale;
     float contentsFrameOriginX = self.BoundsTiledLayerView.frame.origin.x;
     float contentsFrameOriginY = self.BoundsTiledLayerView.frame.origin.y;
+    CGPoint contentOffsets = self.BackgroundScrollView.contentOffset;
     self.BackgroundScrollView.zoomScale = 1.0;
-    self.BackgroundScrollView.contentOffset = CGPointZero;
+//    self.BackgroundScrollView.contentOffset = CGPointZero;
 
     if ( self.totalBoundsRect.size.width == 0 )
     {
@@ -350,6 +350,7 @@
     }
     self.VisualItemsView.frame = CGRectMake(contentOriginX, contentOriginY, 50, 50);
     self.BackgroundScrollView.zoomScale = zoomScalePrevious;
+    self.BackgroundScrollView.contentOffset = contentOffsets;
     self.BoundsTiledLayerView.frame = CGRectMake(contentsFrameOriginX, contentsFrameOriginY, self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
     
 }
