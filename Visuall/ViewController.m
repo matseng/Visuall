@@ -74,7 +74,7 @@
         [self calculateTotalBounds: gi];
     }];
     
-    if ( self.tabBarController.selectedIndex == 0)  // Global tab
+    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
     {
         [[StateUtil sharedManager] loadOrCreatePublicVisuall: @"global"];
     }
@@ -98,8 +98,10 @@
 - (void) buildViewHierarchyAndMenus
 {
     [self.Background removeFromSuperview];
-    self.tabBarController.delegate = self;
- 
+    
+//    self.tabBarController.delegate = self;
+//    self.tabBarController.delegate = [StateUtil sharedManager];
+    
     self.Background = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     
     self.BackgroundScrollView = [[ScrollViewMod alloc] init];
@@ -138,16 +140,6 @@
             forControlEvents:UIControlEventEditingChanged];
     */
     [self.Background setNeedsDisplay];
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
-{
-    
-//    if (self.firebaseVisuallKeyToLoad)
-    if ( tabBarController.selectedIndex == 0)  // Global tab
-    {
-        [self.view setNeedsDisplay];  // resets the entire view and view controller
-    }
 }
 
 - (void) initializeBackgroundScrollView

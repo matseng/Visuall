@@ -7,6 +7,7 @@
 //
 
 #import "TabBarViewController.h"
+#import "StateUtil.h"
 
 @interface TabBarViewController () <UITabBarControllerDelegate>
 
@@ -16,8 +17,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    self.tabBarController.navigationItem.hidesBackButton=YES;
-    self.tabBarController.delegate = self;
+    self.delegate = self;  // NOTE: self.tabBarController.delegate = self; is redundant & wrong!!
 }
 
 
@@ -31,6 +31,16 @@
     //        tabBarController.moreNavigationController.delegate = self;
     //    }
 }
+
+//- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+//{
+//
+////    if (self.firebaseVisuallKeyToLoad)
+//    if ( tabBarController.selectedIndex == 0)  // Global tab
+//    {
+//        [self.view setNeedsDisplay];  // resets the entire view and view controller
+//    }
+//}
 
 @end
 
