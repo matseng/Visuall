@@ -97,78 +97,47 @@
  */
 - (void) buildViewHierarchyAndMenus
 {
+    [self.Background removeFromSuperview];
     self.tabBarController.delegate = self;
+ 
+    self.Background = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     
-    self.BoundsTiledLayerView = [[TiledLayerView alloc] init];
-    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1, 1);
-    self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
-    
-    //    UITapGestureRecognizer *singleTapBoundsView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
-    //    singleTapBoundsView.cancelsTouchesInView = YES;
-    //    singleTapBoundsView.delegate = self;
-    //    [self.BoundsTiledLayerView addGestureRecognizer:singleTapBoundsView];
-    
-    [self.BackgroundScrollView removeFromSuperview];
     self.BackgroundScrollView = [[ScrollViewMod alloc] init];
-    self.Background.frame = [[UIScreen mainScreen] bounds];
-    [self.Background addSubview: self.BackgroundScrollView];
-    
-    
-    [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
-    //    [self.GroupsView removeFromSuperview];
-    [self.VisualItemsView removeFromSuperview];
-    //    [self.BoundsTiledLayerView addSubview: self.GroupsView];
-    [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
-    
-    [self setBackgroundViewGestures];
-    
+    self.BackgroundScrollView.backgroundColor = [UIColor greenColor];
     [self initializeBackgroundScrollView];
     
-    self.GroupsView.tag = 999;
-    self.drawGroupView = [self initializeDrawGroupView];
+    self.BoundsTiledLayerView = [[TiledLayerView alloc] initWithFrame: self.BackgroundScrollView.frame];
+    self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
     
+    self.VisualItemsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    self.VisualItemsView.backgroundColor = [UIColor orangeColor];
+    self.VisualItemsView.contentMode = UIViewContentModeRedraw;
+
+    self.GroupsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    self.NotesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     self.NotesView.opaque = NO;
     //    self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
     
+    [self.view addSubview: self.Background];
+    [self.Background addSubview: self.BackgroundScrollView];
+    [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
+    [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
+    [self.VisualItemsView addSubview: self.GroupsView];
+    [self.VisualItemsView addSubview: self.ArrowsView];
+    [self.VisualItemsView addSubview: self.NotesView];
+    
+    self.drawGroupView = [self initializeDrawGroupView];
+    [self createTopMenu];
+    [self addHorizontalScrollingButtonList];
+    
+    /*
     self.fontSize.delegate = self;
     [self.fontSize addTarget:self
                       action:@selector(fontSizeEditingChangedHandler:)
             forControlEvents:UIControlEventEditingChanged];
-    
-    
-    [self createTopMenu];
-    
-    [self addHorizontalScrollingButtonList];
-}
-
-- (void) setBackgroundViewGestures
-{
-    UIPanGestureRecognizer *panBackground = [[UIPanGestureRecognizer alloc]
-                                             initWithTarget:self
-                                             action:@selector(panHandler:)];
-    self.panBackground = panBackground;
-//    [self.Background addGestureRecognizer: panBackground];
-    //    panBackground.delegate = self;  // NOTE: keep disabled for now
-    
-    UIPinchGestureRecognizer *pinchBackground = [[UIPinchGestureRecognizer alloc]
-                                                 initWithTarget:self
-                                                 action:@selector(handlePinchBackground:)];
-//    [self.Background addGestureRecognizer:pinchBackground];
-    
-//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
-//    tapGesture.numberOfTapsRequired = 1;
-//    [self.Background addGestureRecognizer:tapGesture];
-//    UITapGestureRecognizer *singleTapBackgroundView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
-//    singleTapBackgroundView.cancelsTouchesInView = NO;
-//    singleTapBackgroundView.delegate = self;
-//    [self.Background addGestureRecognizer:singleTapBackgroundView];
-
-    
-    
-    UITapGestureRecognizer *tapGestureDoubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    tapGestureDoubleTap.numberOfTapsRequired = 2;
-//    [self.Background addGestureRecognizer:tapGestureDoubleTap];
-    
+    */
+    [self.Background setNeedsDisplay];
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
@@ -183,6 +152,13 @@
 
 - (void) initializeBackgroundScrollView
 {
+    /*
+    UITapGestureRecognizer *tapGestureDoubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    tapGestureDoubleTap.numberOfTapsRequired = 2;
+    //    [self.Background addGestureRecognizer:tapGestureDoubleTap];
+     */
+    
+    
     float x = 0;
 //    float y = self.navigationController.navigationBar.frame.size.height;
     float y = 0;
@@ -221,33 +197,19 @@
 //    pinchBackground.cancelsTouchesInView = YES;
     [self.BackgroundScrollView addGestureRecognizer:pinchBackground];
     
-    
-    self.VisualItemsView.contentMode = UIViewContentModeRedraw;
-//    [self.NotesView setFrame: CGRectMake(0, 0, 600, 450)];
-    [self.VisualItemsView setFrame: CGRectMake(0, 0, 1, 1)];
-    [self.GroupsView setFrame: CGRectMake(0, 0, 100, 100)];
-    [self.ArrowsView setFrame: CGRectMake(0, 0, 200, 200)];
-    [self.NotesView setFrame: CGRectMake(0, 0, 300, 300)];
-    
-//    UITapGestureRecognizer *singleTapNotesView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
-//    singleTapNotesView.cancelsTouchesInView = NO;
-//    singleTapNotesView.delegate = self;
-//    [self.NotesView addGestureRecognizer:singleTapNotesView];
-    
+    /*
     CGRect rect = self.VisualItemsView.frame;
     rect = [[UIScreen mainScreen] bounds];
-//    self.totalBoundsRect = self.BoundsTiledLayerView.frame;
-    
     CALayer *sublayer = [CALayer layer];
     sublayer.backgroundColor = [UIColor clearColor].CGColor;
     sublayer.frame = rect;
     sublayer.borderColor = [UIColor blueColor].CGColor;
     sublayer.borderWidth = 100.0;
-//    [self.NotesView.layer addSublayer:sublayer];
+    [self.NotesView.layer addSublayer:sublayer];
     NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    */
     
     self.BackgroundScrollView.contentSize = CGSizeMake(self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
-    self.BackgroundScrollView.backgroundColor = [UIColor greenColor];
     self.BackgroundScrollView.minimumZoomScale = 0.01;
     self.BackgroundScrollView.maximumZoomScale = 6.0;
     self.BackgroundScrollView.delegate = self;  // REQUIRED to enable pinch to zoom
@@ -350,7 +312,6 @@
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
 
     self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
-
     float contentOriginX = -self.totalBoundsRect.origin.x;
     float contentOriginY = -self.totalBoundsRect.origin.y;
 //    if (self.totalBoundsRect.origin.x < totalBoundsRectPrevious.origin.x)
@@ -374,9 +335,13 @@
     }
     self.VisualItemsView.frame = CGRectMake(contentOriginX, contentOriginY, 50, 50);
     self.BackgroundScrollView.zoomScale = zoomScalePrevious;
-    self.BackgroundScrollView.contentOffset = contentOffsets;
-    self.BoundsTiledLayerView.frame = CGRectMake(contentsFrameOriginX, contentsFrameOriginY, self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
+//    self.BackgroundScrollView.contentOffset = contentOffsets;
+//    self.BoundsTiledLayerView.frame = CGRectMake(contentsFrameOriginX, contentsFrameOriginY, self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
     
+}
+
+- (void) updateTotalBounds: (UIView *) view
+{
 }
 
 //- (void) calculateTotalBounds: (UIView *) view
@@ -424,7 +389,7 @@
 //    //CGSizeMake(self.totalBoundsRect.origin.x, self.totalBoundsRect.origin.y);
 //}
 
-- (void) updateTotalBounds: (UIView *) view
+- (void) __updateTotalBounds: (UIView *) view
 {
 
     float zoomScalePrevious = self.BackgroundScrollView.zoomScale;
