@@ -292,38 +292,43 @@
     self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
 }
 
+/*
+ * Name: calculateTotalBounds
+ * Description: Calculate the total bounds of the view items upon INITIAL loading of data
+ */
 - (void) calculateTotalBounds: (UIView *) view
 {
-    float zoomScalePrevious = self.BackgroundScrollView.zoomScale;
-    float contentsFrameOriginX = self.BoundsTiledLayerView.frame.origin.x;
-    float contentsFrameOriginY = self.BoundsTiledLayerView.frame.origin.y;
-    CGPoint contentOffsets = self.BackgroundScrollView.contentOffset;
     self.BackgroundScrollView.zoomScale = 1.0;
-//    self.BackgroundScrollView.contentOffset = CGPointZero;
-
+    
     if ( self.totalBoundsRect.size.width == 0 )
     {
         self.totalBoundsRect = CGRectZero;
     }
 
-    CGRect purpleRect = [self.BoundsTiledLayerView convertRect: self.BoundsTiledLayerView.bounds toView: self.NotesView];
-    CGRect totalBoundsRectPrevious = self.totalBoundsRect;
     self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
 
     self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
     float contentOriginX = -self.totalBoundsRect.origin.x;
     float contentOriginY = -self.totalBoundsRect.origin.y;
-//    if (self.totalBoundsRect.origin.x < totalBoundsRectPrevious.origin.x)
-//    {
-//        float deltaOriginX = fabs(self.totalBoundsRect.origin.x - totalBoundsRectPrevious.origin.x);
-//        contentOriginX = contentOriginX - deltaOriginX;
-//    }
-//    if (self.totalBoundsRect.origin.y < totalBoundsRectPrevious.origin.y)
-//    {
-//        float deltaOriginY = fabs(self.totalBoundsRect.origin.y - totalBoundsRectPrevious.origin.y);
-//        contentOriginY = contentOriginY - deltaOriginY;
-//    }
+
+    self.VisualItemsView.frame = CGRectMake(contentOriginX, contentOriginY, 100, 100);
+}
+
+/*
+ * Name: updateTotalBounds
+ * Description: Re-calculate the total bounds of the view items when they change position or a new item is added. 
+ */
+- (void) updateTotalBounds: (UIView *) view
+{
+    float zoomScalePrevious = self.BackgroundScrollView.zoomScale;
+    float contentsFrameOriginX = self.BoundsTiledLayerView.frame.origin.x;
+    float contentsFrameOriginY = self.BoundsTiledLayerView.frame.origin.y;
+    CGPoint contentOffsets = self.BackgroundScrollView.contentOffset;
+    CGRect purpleRect = [self.BoundsTiledLayerView convertRect: self.BoundsTiledLayerView.bounds toView: self.NotesView];
+    
+    [self calculateTotalBounds: view];
+    
     if (view.frame.origin.x < purpleRect.origin.x)
     {
         contentsFrameOriginX = contentsFrameOriginX + (view.frame.origin.x - purpleRect.origin.x) * zoomScalePrevious;
@@ -333,15 +338,10 @@
     {
         contentsFrameOriginY = contentsFrameOriginY + (view.frame.origin.y - purpleRect.origin.y) * zoomScalePrevious;
     }
-    self.VisualItemsView.frame = CGRectMake(contentOriginX, contentOriginY, 50, 50);
-    self.BackgroundScrollView.zoomScale = zoomScalePrevious;
-//    self.BackgroundScrollView.contentOffset = contentOffsets;
-//    self.BoundsTiledLayerView.frame = CGRectMake(contentsFrameOriginX, contentsFrameOriginY, self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
     
-}
-
-- (void) updateTotalBounds: (UIView *) view
-{
+    self.BackgroundScrollView.zoomScale = zoomScalePrevious;
+    self.BackgroundScrollView.contentOffset = contentOffsets;
+    self.BoundsTiledLayerView.frame = CGRectMake(contentsFrameOriginX, contentsFrameOriginY, self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
 }
 
 //- (void) calculateTotalBounds: (UIView *) view
