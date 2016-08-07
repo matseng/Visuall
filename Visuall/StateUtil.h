@@ -78,6 +78,8 @@
 
 - (void) removeValue: (UIView *) view;
 
+- (void) loadOrCreatePublicVisuall: (NSString *) publicKey;
+
 @end
 
 

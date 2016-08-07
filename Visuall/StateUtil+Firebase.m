@@ -50,6 +50,8 @@ void (^_callbackGroupItem)(GroupItem *gi);
     }
     
     _usersTableCurrentUser = [[_version01TableRef child:@"users"] child:userID];
+    _visuallsTableRef = [_version01TableRef child: @"visualls"];
+    
     [_usersTableCurrentUser observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
     {
         if ( ![snapshot exists] )  // we have a new user
@@ -75,7 +77,7 @@ void (^_callbackGroupItem)(GroupItem *gi);
 
 - (void) loadVisuallsForCurrentUser
 {
-    _visuallsTableRef = [_version01TableRef child: @"visualls"];
+    
     FIRDatabaseReference *visuallsPersonalRef =  [_usersTableCurrentUser child: @"visualls/personal"];
     
     [visuallsPersonalRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
@@ -102,12 +104,33 @@ void (^_callbackGroupItem)(GroupItem *gi);
                  return; // TODO: early termination here only loading the 1st and only visuall
              }
          }
-//        [[FIRAuth auth].currentUser setValuesForKeysWithDictionary:@{@"currentVisuallKey" : _visuallKey}];
-
      }];
-    
 }
 
+- (void) loadOrCreatePublicVisuall: (NSString *) publicKey
+{
+    FIRDatabaseReference *visuallsTable_globalRef = [_visuallsTableRef child: publicKey];
+    [visuallsTable_globalRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+    {
+        if ( ![snapshot exists] )
+        {
+            NSDictionary *visuallDictionary = @{
+                                                @"title": @"Global Visuall",
+                                                @"date-created": [FIRServerValue timestamp],
+                                                @"created-by": [FIRAuth auth].currentUser.uid,
+                                                @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" },
+                                                @"public": @"1"
+                                                };
+            [visuallsTable_globalRef updateChildValues: visuallDictionary];
+        } else
+        {
+            // load public visuall
+        }
+    } withCancelBlock:^(NSError * _Nonnull error) {
+        NSLog(@"loadOrCreateGlobalVisuall: %@", error);
+    }];
+}
+     
 - (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackNoteItem
 {
     _callbackNoteItem = [callbackNoteItem copy];

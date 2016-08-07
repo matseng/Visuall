@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong) NSString *firebaseURL;
 
+@property (nonatomic, strong) NSString *firebaseVisuallKeyToLoad;
+
 @property (strong, nonatomic) IBOutlet UIView *Background;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *BackgroundScrollView;

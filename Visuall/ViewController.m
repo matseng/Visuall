@@ -23,7 +23,7 @@
 #import "StateUtil.h"
 #import "TouchDownGestureRecognizer.h"
 
-@interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate> {
+@interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
 }
 //@property (strong, nonatomic) IBOutlet UIView *Background;
@@ -53,15 +53,60 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
+    [self buildViewHierarchyAndMenus];
+    
+    NSLog(@"Firebase URL: %@", self.firebaseURL);
+    
+    
+    
+    [[StateUtil sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
+        [self addNoteToViewWithHandlers: ni];
+        [self calculateTotalBounds: ni];  // TODO - update so doest move window
+        //        [self setSelectedObject: ni];
+    }];
+    [[StateUtil sharedManager] setCallbackGroupItem:^(GroupItem *gi) {
+        [self addGestureRecognizersToGroup: gi];
+        [self.GroupsView addSubview: gi];
+        if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
+        [self.groupsCollection addGroup: gi withKey: gi.group.key];
+        //        [self refreshGroupView];
+        [self calculateTotalBounds: gi];
+    }];
+    
+    if ( self.tabBarController.selectedIndex == 0)  // Global tab
+    {
+        [[StateUtil sharedManager] loadOrCreatePublicVisuall: @"global"];
+    }
+    else
+    {
+        [[StateUtil sharedManager] loadVisuallsForCurrentUser];
+    }
+    
+}
+
+/*
+ * Name:
+ * Description:
+ *  - Background
+ *    - BackgroundScrollView
+ *      - BoundsTiledLayerView
+ *        - VisualItemsView
+ *          - GroupsView, ArrowsView, NotesView
+ *
+ */
+- (void) buildViewHierarchyAndMenus
+{
+    self.tabBarController.delegate = self;
+    
     self.BoundsTiledLayerView = [[TiledLayerView alloc] init];
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, 1, 1);
     self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
     
-//    UITapGestureRecognizer *singleTapBoundsView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
-//    singleTapBoundsView.cancelsTouchesInView = YES;
-//    singleTapBoundsView.delegate = self;
-//    [self.BoundsTiledLayerView addGestureRecognizer:singleTapBoundsView];
+    //    UITapGestureRecognizer *singleTapBoundsView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+    //    singleTapBoundsView.cancelsTouchesInView = YES;
+    //    singleTapBoundsView.delegate = self;
+    //    [self.BoundsTiledLayerView addGestureRecognizer:singleTapBoundsView];
     
     [self.BackgroundScrollView removeFromSuperview];
     self.BackgroundScrollView = [[ScrollViewMod alloc] init];
@@ -70,9 +115,9 @@
     
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
-//    [self.GroupsView removeFromSuperview];
+    //    [self.GroupsView removeFromSuperview];
     [self.VisualItemsView removeFromSuperview];
-//    [self.BoundsTiledLayerView addSubview: self.GroupsView];
+    //    [self.BoundsTiledLayerView addSubview: self.GroupsView];
     [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
     
     [self setBackgroundViewGestures];
@@ -83,48 +128,17 @@
     self.drawGroupView = [self initializeDrawGroupView];
     
     self.NotesView.opaque = NO;
-//    self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
+    //    self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
     
     self.fontSize.delegate = self;
     [self.fontSize addTarget:self
-                    action:@selector(fontSizeEditingChangedHandler:)
-                    forControlEvents:UIControlEventEditingChanged];
-    [[StateUtil sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
-        [self addNoteToViewWithHandlers: ni];
-        [self calculateTotalBounds: ni];  // TODO - update so doest move window
-//        [self setSelectedObject: ni];
-    }];
-    [[StateUtil sharedManager] setCallbackGroupItem:^(GroupItem *gi) {
-        [self addGestureRecognizersToGroup: gi];
-        [self.GroupsView addSubview: gi];
-        if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
-        [self.groupsCollection addGroup: gi withKey: gi.group.key];
-        //        [self refreshGroupView];
-        [self calculateTotalBounds: gi];
-    }];
-    [[StateUtil sharedManager] loadVisuallsForCurrentUser];
-    /*
-    [[StateUtil sharedManager] loadFirebaseNotes:^(NoteItem2 *ni) {
-        [self addNoteToViewWithHandlers: ni];
-        [self calculateTotalBounds: ni];
-    }];
-
-    [[StateUtil sharedManager] loadFirebaseGroups:^(GroupItem *gi) {
-        [self addGestureRecognizersToGroup: gi];
-        [self.GroupsView addSubview: gi];
-        if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
-        [self.groupsCollection addGroup: gi withKey: gi.group.key];
-//        [self refreshGroupView];
-        [self calculateTotalBounds: gi];
-    }];
-     */
+                      action:@selector(fontSizeEditingChangedHandler:)
+            forControlEvents:UIControlEventEditingChanged];
+    
     
     [self createTopMenu];
     
     [self addHorizontalScrollingButtonList];
-    
-    NSLog(@"Firebase URL: %@", self.firebaseURL);
-    
 }
 
 - (void) setBackgroundViewGestures
@@ -155,6 +169,16 @@
     tapGestureDoubleTap.numberOfTapsRequired = 2;
 //    [self.Background addGestureRecognizer:tapGestureDoubleTap];
     
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    
+//    if (self.firebaseVisuallKeyToLoad)
+    if ( tabBarController.selectedIndex == 0)  // Global tab
+    {
+        [self.view setNeedsDisplay];  // resets the entire view and view controller
+    }
 }
 
 - (void) initializeBackgroundScrollView

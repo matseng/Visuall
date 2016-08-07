@@ -57,4 +57,13 @@
     [tabBarItem3 setImage: alarmBell];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *) segue sender:(id)sender {
+//    if ([segue.identifier isEqualToString:@"showVisuallDetail"]) {
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        ViewController *destViewController = segue.destinationViewController;
+//        NSLog(@"prep fro Segue: %@", [recipes objectAtIndex:indexPath.row]);
+//        destViewController.firebaseURL = [recipes objectAtIndex:indexPath.row];
+//    }
+}
+
 @end
