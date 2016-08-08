@@ -252,6 +252,20 @@ void (^_callbackGroupItem)(GroupItem *gi);
     [self.notesCollection addNote:ni withKey:newNoteRef.key];
     [newNoteRef updateChildValues: noteDictionary];
     [[_visuallsTableCurrentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
+    FIRDatabaseReference *notesCounterRef = [_visuallsTableCurrentVisuallRef child: @"notes_counter"];
+    [self increaseOrDecreaseCounter: notesCounterRef byAmount:1];
+}
+
+- (void) increaseOrDecreaseCounter: (FIRDatabaseReference *) ref byAmount: (int) i
+{
+    [ref runTransactionBlock:^FIRTransactionResult * _Nonnull(FIRMutableData * _Nonnull currentData) {
+        NSNumber *value = currentData.value;
+        if (currentData.value == [NSNull null]) {
+            value = 0;
+        }
+        [currentData setValue:[NSNumber numberWithInt:(i + [value intValue])]];
+        return [FIRTransactionResult successWithValue: currentData];
+    }];
 }
 
 - (void) setValueGroup: (GroupItem *) gi
@@ -362,6 +376,9 @@ void (^_callbackGroupItem)(GroupItem *gi);
                 NSLog(@"Note key removed successfully.");
             }
         }];
+        
+        FIRDatabaseReference *notesCounterRef = [_visuallsTableCurrentVisuallRef child: @"notes_counter"];
+        [self increaseOrDecreaseCounter: notesCounterRef byAmount:-1];
         
     }
     else if([view isGroupItem])
