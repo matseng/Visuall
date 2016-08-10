@@ -16,7 +16,7 @@
 
 - (IBAction) skipThisStep:(id)sender;
 
-- (IBAction)signoutHandler:(id)sender;
+- (IBAction) signoutHandler:(id)sender;
 
 - (void) segueToNextView;
 

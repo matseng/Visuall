@@ -58,7 +58,7 @@
     
     NSLog(@"Firebase URL: %@", self.firebaseURL);
     
-    
+    [[StateUtil sharedManager] setBackgroundScrollView: self.BackgroundScrollView];
     
     [[StateUtil sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
@@ -209,26 +209,6 @@
 //    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
-- (void) __centerScrollViewContents {
-    CGSize boundsSize = self.BackgroundScrollView.bounds.size;
-    CGRect contentsFrame = self.BoundsTiledLayerView.frame;
-
-    CGRect rect = self.BackgroundScrollView.frame;
-//    NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    rect = self.BackgroundScrollView.bounds;
-//    NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    
-    
-    if (contentsFrame.size.width < boundsSize.width) {
-        contentsFrame.origin.x = contentsFrame.origin.x - self.BackgroundScrollView.bounds.origin.x;
-    }
-    
-    if (contentsFrame.size.height < boundsSize.height) {
-        contentsFrame.origin.y = contentsFrame.origin.y - self.BackgroundScrollView.bounds.origin.y;
-    }
-    self.BoundsTiledLayerView.frame = contentsFrame;
-}
-
 - (void) centerScrollViewContents {
     CGSize boundsSize = self.BackgroundScrollView.bounds.size;
     CGRect contentsFrame = self.BoundsTiledLayerView.frame;
@@ -251,12 +231,6 @@
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     [self centerScrollViewContents];
-//    CGRect rect = self.BackgroundScrollView.frame;
-//    CGRect rect = self.BoundsTiledLayerView.frame;
-//    NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-////    rect = self.BackgroundScrollView.bounds;
-//    rect = self.BoundsTiledLayerView.bounds;
-//    NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
@@ -267,21 +241,6 @@
 - (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
 {
     NSLog(@"HERE in scrollViewWillBeginZooming");
-}
-
-- (void) __calculateTotalBounds: (UIView *) view
-{
-//    self.BackgroundScrollView.zoomScale = 1.0;
-    self.BackgroundScrollView.contentOffset = CGPointZero;
-    if ( self.totalBoundsRect.size.width == 0 )
-    {
-        self.totalBoundsRect = view.frame;
-    }
-    self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
-    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
-    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
-    self.VisualItemsView.frame = CGRectMake(fabs(self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y), self.VisualItemsView.frame.size.width, self.VisualItemsView.frame.size.height); // TODO: do I have to set this frame size, why?
-    self.BackgroundScrollView.contentOffset = CGPointMake( fabs( self.totalBoundsRect.origin.x), fabs(self.totalBoundsRect.origin.y) );
 }
 
 /*

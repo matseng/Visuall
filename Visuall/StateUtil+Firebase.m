@@ -271,6 +271,7 @@ void (^_callbackGroupItem)(GroupItem *gi);
 - (void) setValueGroup: (GroupItem *) gi
 {
     FIRDatabaseReference *groupsRef = [_version01TableRef child: @"groups"];
+    if ( !groupsRef ) return;
     NSMutableDictionary *groupDictionary = [@{
                                       @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
                                       @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
@@ -300,6 +301,7 @@ void (^_callbackGroupItem)(GroupItem *gi);
 
 - (void) updateChildValue: (UIView *) visualObject Property: (NSString *) propertyName
 {
+    if ( !_currentVisuallKey ) return;
     if ( [visualObject isNoteItem] )
     {
         NoteItem2 *ni = [visualObject getNoteItem];

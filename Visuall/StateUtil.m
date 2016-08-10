@@ -295,5 +295,10 @@
     return NO;
 }
 
+- (float) getZoomScale
+{
+    return self.BackgroundScrollView.zoomScale;
+}
+
 @end
 

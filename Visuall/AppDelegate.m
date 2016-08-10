@@ -59,6 +59,7 @@ didSignInForUser:(GIDGoogleUser *)user
      withError:(NSError *)error {
     if (error == nil) {
         GIDAuthentication *authentication = user.authentication;
+        [FIRDatabase database].persistenceEnabled = YES;
         FIRAuthCredential *credential =
         [FIRGoogleAuthProvider credentialWithIDToken:authentication.idToken
                                          accessToken:authentication.accessToken];
@@ -74,10 +75,16 @@ didSignInForUser:(GIDGoogleUser *)user
                                            
                                       } else {
                                           // No user is signed in.
+                                        
                                       }
                                   }];
     } else {
         NSLog(@"%@", error.localizedDescription);
+        
+        // TODO: only temporary for testing
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        WelcomeViewController *rootViewController = (WelcomeViewController *) window.rootViewController;
+        [rootViewController segueToNextView];
     }
 }
 

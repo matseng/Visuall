@@ -15,6 +15,7 @@
 #import "GroupItem.h"
 #import "VisualItem.h"
 #import "GroupsCollection.h"
+#import "ScrollViewMod.h"
 
 @interface StateUtil : NSObject
 
@@ -31,6 +32,7 @@
 @property UIView *selectedVisualItem;
 @property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing
 @property BOOL editModeOn;
+@property ScrollViewMod *BackgroundScrollView;
 
 +(id)sharedManager;
 
@@ -79,6 +81,8 @@
 - (void) removeValue: (UIView *) view;
 
 - (void) loadOrCreatePublicVisuall: (NSString *) publicKey;
+
+- (float) getZoomScale;
 
 @end
 

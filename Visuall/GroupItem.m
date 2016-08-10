@@ -29,6 +29,8 @@
 @implementation GroupItem
 
 {
+    float _handleDiameter;
+    UIView *innerGroupView;
     UIView *handleTopLeft;
     UIView *handleTopRight;
     UIView *handleBottomLeft;
@@ -37,7 +39,7 @@
 //- (instancetype) initGroup:(Group *)group
 //{
 //    self = [super init];
-//    
+//
 //    if (self)
 //    {
 //        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -45,9 +47,9 @@
 //        self.group = group;
 //        [self renderGroup];
 //        [[TransformUtil sharedManager] transformGroupItem: self];
-// 
+//
 //    }
-//    
+//
 //    return self;
 //}
 
@@ -67,7 +69,7 @@
             group.width = [value[@"style"][@"width"] floatValue];
             group.height = [value[@"style"][@"height"] floatValue];
         }
-
+        
         [self setGroup: group];
         [self renderGroup];
         [self setViewAsNotSelected];
@@ -82,6 +84,7 @@
     
     if (self)
     {
+
         Group2 *group = [[Group2 alloc] init];
         group.key = nil;
         group.x = coordinate.x;
@@ -93,7 +96,7 @@
         [self setViewAsNotSelected];
         [[StateUtil sharedManager] transformGroupItem: self];
     }
-
+    
     return self;
 }
 
@@ -104,17 +107,19 @@
 
 - (void) renderGroup
 {
-    float scale = [[StateUtil sharedManager] zoom];
+    float scale = [[StateUtil sharedManager] getZoomScale];
+    
+    _handleDiameter = [self getHandleDiameter];
     
     [self setFrame: CGRectMake(
-                               (-self.group.width/2 - HANDLE_DIAMETER / 2) * scale,
-                               (-self.group.height / 2 - HANDLE_DIAMETER / 2) * scale,
-                               (self.group.width + HANDLE_DIAMETER),
-                               (self.group.height + HANDLE_DIAMETER) )];
+                               (-self.group.width/2 - _handleDiameter / 2) * scale,
+                               (-self.group.height / 2 - _handleDiameter / 2) * scale,
+                               (self.group.width + _handleDiameter),
+                               (self.group.height + _handleDiameter) )];
     self.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
     self.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
     
-    UIView *innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(HANDLE_DIAMETER / 2, HANDLE_DIAMETER / 2, self.group.width, self.group.height)];
+    innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
     
     [innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
     [innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
@@ -130,43 +135,42 @@
     float scale = [[StateUtil sharedManager] zoom];
     
     [self setFrame: CGRectMake(
-                               (-self.group.width/2 - HANDLE_DIAMETER / 2) * scale,
-                               (-self.group.height / 2 - HANDLE_DIAMETER / 2) * scale,
-                               (self.group.width + HANDLE_DIAMETER) * scale,
-                               (self.group.height + HANDLE_DIAMETER) * scale)];
+                               (-self.group.width/2 - _handleDiameter / 2) * scale,
+                               (-self.group.height / 2 - _handleDiameter / 2) * scale,
+                               (self.group.width + _handleDiameter) * scale,
+                               (self.group.height + _handleDiameter) * scale)];
     
-    [[self viewWithTag:100] setFrame:CGRectMake(HANDLE_DIAMETER / 2, HANDLE_DIAMETER / 2, self.group.width, self.group.height)];
+    [[self viewWithTag:100] setFrame:CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
     
-//    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER)];
+    //    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width, self.group.height, _handleDiameter, _handleDiameter)];
     [self updateHandles];
     
 }
 
 - (void) renderHandles
 {
-
-    handleBottomRight = [self makeHandle: CGRectMake(self.group.width, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER)];
-    [self addSubview:handleBottomRight];
+    handleBottomRight = [self makeHandle: CGRectMake(self.group.width, self.group.height, _handleDiameter, _handleDiameter)];
+    [self insertSubview:handleBottomRight belowSubview:self.subviews[0]];
     
-    handleTopLeft = [self makeHandle: CGRectMake(0, 0, HANDLE_DIAMETER, HANDLE_DIAMETER)];
-    [self addSubview:handleTopLeft];
-
-    handleTopRight = [self makeHandle: CGRectMake(self.group.width, 0, HANDLE_DIAMETER, HANDLE_DIAMETER)];
-    [self addSubview:handleTopRight];
+    handleTopLeft = [self makeHandle: CGRectMake(0, 0, _handleDiameter, _handleDiameter)];
+    [self insertSubview:handleTopLeft belowSubview:self.subviews[0]];
     
-    handleBottomLeft = [self makeHandle: CGRectMake(0, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER)];
-    [self addSubview:handleBottomLeft];
+    handleTopRight = [self makeHandle: CGRectMake(self.group.width, 0, _handleDiameter, _handleDiameter)];
+    [self insertSubview:handleTopRight belowSubview:self.subviews[0]];
+    
+    handleBottomLeft = [self makeHandle: CGRectMake(0, self.group.height, _handleDiameter, _handleDiameter)];
+    [self insertSubview:handleBottomLeft belowSubview:self.subviews[0]];
 }
 
 - (void) updateHandles
 {
-    handleBottomRight.frame = CGRectMake(self.group.width, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER);
+    handleBottomRight.frame = CGRectMake(self.group.width, self.group.height, _handleDiameter, _handleDiameter);
     
-    handleTopLeft.frame = CGRectMake(0, 0, HANDLE_DIAMETER, HANDLE_DIAMETER);
+    handleTopLeft.frame = CGRectMake(0, 0, _handleDiameter, _handleDiameter);
     
-    handleTopRight.frame = CGRectMake(self.group.width, 0, HANDLE_DIAMETER, HANDLE_DIAMETER);
+    handleTopRight.frame = CGRectMake(self.group.width, 0, _handleDiameter, _handleDiameter);
     
-    handleBottomLeft.frame = CGRectMake(0, self.group.height, HANDLE_DIAMETER, HANDLE_DIAMETER);
+    handleBottomLeft.frame = CGRectMake(0, self.group.height, _handleDiameter, _handleDiameter);
     
 }
 
@@ -174,10 +178,23 @@
 {
     UIView *circleView = [[UIView alloc] initWithFrame: rect];
     circleView.alpha = 0.5;
-    circleView.layer.cornerRadius = HANDLE_DIAMETER / 2;
+    circleView.layer.cornerRadius = _handleDiameter / 2;
     circleView.layer.backgroundColor = [HANDLE_COLOR CGColor];
     return circleView;
 }
+
+- (UIView *) __makeHandle: (CGRect) rect
+{
+    UIView *circleView = [[UIView alloc] initWithFrame: rect];
+    CALayer *sublayer = [CALayer layer];
+    sublayer.backgroundColor = [UIColor redColor].CGColor;
+    sublayer.frame = CGRectMake(_handleDiameter / 2, 0, _handleDiameter / 2, _handleDiameter);
+    [circleView.layer addSublayer:sublayer];
+    
+    return circleView;
+}
+
+
 
 - (BOOL) isHandle: (UIView *) subView
 {
@@ -207,8 +224,8 @@
             x = gi.group.x + translation.x;
             y = gi.group.y + translation.y;
             [gi.group setX: x andY: y];
-//            [gi.group setX: x];
-//            [gi.group setY: y];
+            //            [gi.group setX: x];
+            //            [gi.group setY: y];
             [[StateUtil sharedManager] transformGroupItem: gi];
         }
         
@@ -228,11 +245,11 @@
             float width = self.group.width + translation.x;
             float height = self.group.height + translation.y;
             //        [self.group setHeight:height andWidth:width];
-            if ( width > HANDLE_DIAMETER )
+            if ( width > _handleDiameter )
             {
                 [self.group setWidth: width];
             }
-            if (height > HANDLE_DIAMETER * 1 ) {
+            if (height > _handleDiameter * 1 ) {
                 [self.group setHeight: height];
             }
             [self updateGroupDimensions];
@@ -243,12 +260,12 @@
             [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
             float width = self.group.width - translation.x;
             float height = self.group.height - translation.y;
-            if ( width > HANDLE_DIAMETER )
+            if ( width > _handleDiameter )
             {
                 [self.group setWidth: width];
                 [self.group setX:self.group.x + translation.x];
             }
-            if (height > HANDLE_DIAMETER * 1 ) {
+            if (height > _handleDiameter * 1 ) {
                 [self.group setHeight: height];
                 [self.group setY:self.group.y + translation.y];
             }
@@ -260,12 +277,12 @@
             [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
             float width = self.group.width + translation.x;
             float height = self.group.height - translation.y;
-            if ( width > HANDLE_DIAMETER )
+            if ( width > _handleDiameter )
             {
                 [self.group setWidth: width];
                 [self.group setX:self.group.x];
             }
-            if (height > HANDLE_DIAMETER * 1 ) {
+            if (height > _handleDiameter * 1 ) {
                 [self.group setHeight: height];
                 [self.group setY:self.group.y + translation.y];
             }
@@ -277,12 +294,12 @@
             [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
             float width = self.group.width - translation.x;
             float height = self.group.height + translation.y;
-            if ( width > HANDLE_DIAMETER )
+            if ( width > _handleDiameter )
             {
                 [self.group setWidth: width];
                 [self.group setX:self.group.x + translation.x];
             }
-            if (height > HANDLE_DIAMETER * 1 ) {
+            if (height > _handleDiameter * 1 ) {
                 [self.group setHeight: height];
                 [self.group setY:self.group.y];
             }
@@ -301,7 +318,7 @@
 {
     CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
     CGPoint noteCenterPoint = CGPointMake(ni.note.x + ni.note.width/2, ni.note.y + ni.note.height/2);
-                                  
+    
     if ( CGRectContainsPoint(groupRect, noteCenterPoint))
     {
         return YES;
@@ -311,20 +328,20 @@
 
 - (BOOL) isTitleNote: (NoteItem2 *) ni
 {
-//    if ( [self isNoteInGroup: ni] )
-//    {
-//        if ( !self.group.titleNote )
-//        {
-//            self.group.titleNote = ni.note;
-//        } else if (ni.note.fontSize > self.group.titleNote.fontSize)
-//        {
-//            self.group.titleNote = ni.note;
-//        } else if (ni.note.fontSize == self.group.titleNote.fontSize &&
-//                   [ni.note getY] > [self.group.titleNote getY])
-//        {
-//            self.group.titleNote = ni.note;
-//        }
-//    }
+    //    if ( [self isNoteInGroup: ni] )
+    //    {
+    //        if ( !self.group.titleNote )
+    //        {
+    //            self.group.titleNote = ni.note;
+    //        } else if (ni.note.fontSize > self.group.titleNote.fontSize)
+    //        {
+    //            self.group.titleNote = ni.note;
+    //        } else if (ni.note.fontSize == self.group.titleNote.fontSize &&
+    //                   [ni.note getY] > [self.group.titleNote getY])
+    //        {
+    //            self.group.titleNote = ni.note;
+    //        }
+    //    }
     return NO;
 }
 
@@ -337,7 +354,7 @@
         return NO;
     }
     
-//    CGRect groupRect = CGRectMake([self.group.topX floatValue], [self.group.topY floatValue], [self.group.width floatValue], [self.group.height floatValue]);
+    //    CGRect groupRect = CGRectMake([self.group.topX floatValue], [self.group.topY floatValue], [self.group.width floatValue], [self.group.height floatValue]);
     CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
     float centerX = gi.group.x + gi.group.width / 2;
     float centerY = gi.group.y + gi.group.height / 2;
@@ -351,7 +368,7 @@
 
 - (float) getRadius
 {
-    return HANDLE_DIAMETER;
+    return _handleDiameter;
 }
 
 
@@ -390,7 +407,7 @@
     {
         return handleTopLeft;
     }
-
+    
     location = [gestureRecognizer locationInView: handleTopRight];
     result = [handleTopRight hitTest:location withEvent:nil];
     if (result == handleTopRight)
@@ -401,7 +418,7 @@
     return nil;
 }
 
-- (void) setViewAsSelected
+- (void) __setViewAsSelected
 {
     self.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
     if ( [[StateUtil sharedManager] editModeOn])
@@ -409,11 +426,42 @@
         handleTopLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
         handleTopRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
         handleBottomLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
-        handleBottomRight.layer.backgroundColor = [HANDLE_COLOR CGColor];        
+        handleBottomRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
     }
 }
 
-- (void) setViewAsNotSelected
+- (void) setViewAsSelected
+{
+    if ( [[StateUtil sharedManager] editModeOn])
+    {
+        [innerGroupView removeFromSuperview];
+        [self setViewAsNotSelected];
+        [self renderGroup];
+        [[StateUtil sharedManager] transformGroupItem: self];
+
+    }
+    self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / [[StateUtil sharedManager] getZoomScale]);
+}
+
+- (float) getHandleDiameter
+{
+    _handleDiameter = HANDLE_DIAMETER;
+//    _handleDiameter = HANDLE_DIAMETER / [[StateUtil sharedManager] getZoomScale];
+    float groupWidth = self.group.width;
+    float groupHeight = self.group.height;
+
+    if (groupWidth <= groupHeight && _handleDiameter > 1/3 * groupWidth)
+    {
+        return (.333 * groupWidth);  // TODO: what type if groupWidth... bc 1/3 * groupWidth doesnt work. ALSO, what scale are we at?
+    }
+    else if (groupHeight < groupWidth && _handleDiameter > 1/3 * groupHeight)
+    {
+        return (.333 * groupHeight);
+    }
+    return _handleDiameter;
+}
+
+- (void) __setViewAsNotSelected
 {
     self.layer.borderWidth = 0;
     handleTopLeft.layer.backgroundColor = [[UIColor clearColor] CGColor];
@@ -422,13 +470,24 @@
     handleBottomRight.layer.backgroundColor = [[UIColor clearColor] CGColor];
 }
 
+- (void) setViewAsNotSelected
+{
+    self.layer.borderWidth = 0;
+    [handleTopLeft removeFromSuperview];
+    [handleTopRight removeFromSuperview];
+    [handleBottomLeft removeFromSuperview];
+    [handleBottomRight removeFromSuperview];
+    
+}
+
+
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end

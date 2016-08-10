@@ -118,22 +118,23 @@
             self.lastSelectedObject = nil;
             [self normalizeTrashButton];
         }
-        if ( [self.activelySelectedObjectDuringPan isNoteItem] || [self.activelySelectedObjectDuringPan isGroupItem] )
+        else if ( [self.activelySelectedObjectDuringPan isNoteItem] )
         {
             [self updateTotalBounds: self.activelySelectedObjectDuringPan];
         }
-        [self setActivelySelectedObjectDuringPan: nil];
-
-        if ([viewHit isEqual:self.Background] || [viewHit isEqual: self.NotesView] || [viewHit isEqual: self.GroupsView])
+        else if ( [self.activelySelectedObjectDuringPan isGroupItem] )
         {
-            [self setTransformFirebase];
+            GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
+            if ( [gi isHandle: self.activelySelectedObjectDuringPan] )
+            {
+                [self refreshGroupView];  // TODO (Aug 10, 2016): Get this working again
+                [gi setViewAsSelected];  // To re-render the handles  // TODO (Aug 10, 2016): animate this step for a smoother transition
+            }
+            [self updateTotalBounds: gi];
         }
         
-        if ([self.lastSelectedObject isGroupItemSubview])
-        {
-            [self refreshGroupView];
-        }
-        return NO;
+        [self setActivelySelectedObjectDuringPan: nil];
+
     }
     return NO;
 }

@@ -19,7 +19,7 @@
     [GIDSignIn sharedInstance].uiDelegate = self;
     
     // Uncomment to automatically sign in the user.
-    [[GIDSignIn sharedInstance] signInSilently];
+//    [[GIDSignIn sharedInstance] signInSilently];
 }
 
 
@@ -30,6 +30,7 @@
 }
 
 - (IBAction)skipThisStep:(id)sender {
+//    [[StateUtil sharedManager] userIsSignedInHandler: user];
     [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
 }
 
