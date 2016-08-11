@@ -291,10 +291,7 @@
 				71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */,
 				71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */,
 				71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */,
-				71D96BFC1D34791100CD1C49 /* ViewController+panHandler.h */,
-				71D96BFD1D34791100CD1C49 /* ViewController+panHandler.m */,
-				71D96C051D35A9A400CD1C49 /* ViewController+TapHandler.h */,
-				71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */,
+				71710A801D5D00630038D883 /* GestureHandlers */,
 				71D96C021D359E0000CD1C49 /* ViewController+Group.h */,
 				71D96C031D359E0000CD1C49 /* ViewController+Group.m */,
 				885AFD651C00217800F89DE5 /* model */,
@@ -318,10 +315,7 @@
 				71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */,
 				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
 				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
-				71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */,
-				71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */,
-				716B04681BFC210300DA9451 /* StateUtil.h */,
-				716B04691BFC210300DA9451 /* StateUtil.m */,
+				71710A7F1D5CF6350038D883 /* StateUtil */,
 				713D0D5E1CC6AE4F00878EAE /* Group2.h */,
 				713D0D5F1CC6AE4F00878EAE /* Group2.m */,
 				210833161C0127AB00BA059F /* GroupItem.h */,
@@ -381,6 +375,28 @@
 				712EC9721BEAF21500ED6803 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		71710A7F1D5CF6350038D883 /* StateUtil */ = {
+			isa = PBXGroup;
+			children = (
+				716B04681BFC210300DA9451 /* StateUtil.h */,
+				716B04691BFC210300DA9451 /* StateUtil.m */,
+				71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */,
+				71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */,
+			);
+			name = StateUtil;
+			sourceTree = "<group>";
+		};
+		71710A801D5D00630038D883 /* GestureHandlers */ = {
+			isa = PBXGroup;
+			children = (
+				71D96BFC1D34791100CD1C49 /* ViewController+panHandler.h */,
+				71D96BFD1D34791100CD1C49 /* ViewController+panHandler.m */,
+				71D96C051D35A9A400CD1C49 /* ViewController+TapHandler.h */,
+				71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */,
+			);
+			name = GestureHandlers;
 			sourceTree = "<group>";
 		};
 		71B37E761C1924020048851A /* ViewControllers */ = {

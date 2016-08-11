@@ -110,7 +110,11 @@
     [groupItem setGroupsInGroup:groupsInGroup];
 }
 
-- (void) refreshGroupView
+/*
+ * Name: refreshGroupsView
+ * Description: Brute force method for sorting all the groups in GroupsView so that groups are ordered largest (back) and smallest (front)
+ */
+- (void) refreshGroupsView
 {
     // Sort by area of group view
     NSArray *sortedArray;
@@ -134,9 +138,11 @@
     
     for (NSString *key in sortedArray) {
         float area = [self.groupsCollection getGroupAreaFromKey:key];
-//        NSLog(@"Group area: %f", area);
-        [self.groupsCollection.groups2[key] removeFromSuperview];
-        [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
+        NSLog(@"Group area: %f", area);
+//        [self.groupsCollection.groups2[key] removeFromSuperview];
+//        [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
+        GroupItem *gi = [self.groupsCollection getGroupItemFromKey:key];
+        [self.GroupsView bringSubviewToFront: gi];
     }
     
     [self.drawGroupView setFrame:(CGRect){0,0,0,0}];

@@ -127,7 +127,7 @@
             GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
             if ( [gi isHandle: self.activelySelectedObjectDuringPan] )
             {
-                [self refreshGroupView];  // TODO (Aug 10, 2016): Get this working again
+                [self refreshGroupsView];  // TODO (Aug 10, 2016): Get this working again
                 [gi setViewAsSelected];  // To re-render the handles  // TODO (Aug 10, 2016): animate this step for a smoother transition
             }
             [self updateTotalBounds: gi];

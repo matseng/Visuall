@@ -790,6 +790,7 @@
     {
         // State began
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+            // TODO (Aug 11, 2016): && we're not starting on another group's handle
         {
             self.drawGroupViewStart = [gestureRecognizer locationInView: self.GroupsView];
             
@@ -810,9 +811,9 @@
             [[StateUtil sharedManager] setValueGroup: currentGroupItem];
             [self addGestureRecognizersToGroup: currentGroupItem];
             [self.GroupsView addSubview: currentGroupItem];
-//            if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
-//            [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
-            [self refreshGroupView];
+            if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
+            [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
+            [self refreshGroupsView];
             [self setSelectedObject:currentGroupItem];
         }
     }

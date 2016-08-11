@@ -16,7 +16,7 @@ FIRDatabaseReference *_version01TableRef;
 FIRDatabaseReference *_usersTableCurrentUser;
 NSString *_currentVisuallKey;
 FIRDatabaseReference *_visuallsTableRef;
-FIRDatabaseReference *_visuallsTableCurrentVisuallRef;
+FIRDatabaseReference *_visuallsTable_currentVisuallRef;
 FIRDatabaseReference *_notesTableRef;
 FIRDatabaseReference *_groupsTableRef;
 void (^_callbackNoteItem)(NoteItem2 *ni);
@@ -90,16 +90,16 @@ void (^_callbackGroupItem)(GroupItem *gi);
                                               @"created-by": [FIRAuth auth].currentUser.uid,
                                               @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" }
                                               };
-             _visuallsTableCurrentVisuallRef = [_visuallsTableRef childByAutoId];
-             _currentVisuallKey = _visuallsTableCurrentVisuallRef.key;
-             [_visuallsTableCurrentVisuallRef updateChildValues: visuallDictionary];
-             [visuallsPersonalRef updateChildValues: @{_visuallsTableCurrentVisuallRef.key: @"1"} ];
+             _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
+             _currentVisuallKey = _visuallsTable_currentVisuallRef.key;
+             [_visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
+             [visuallsPersonalRef updateChildValues: @{_visuallsTable_currentVisuallRef.key: @"1"} ];
          
          } else {  // run thru list of Visualls
             NSDictionary *visuallPersonalKeys = (NSDictionary *) snapshot.value;
              for (NSString *key in visuallPersonalKeys) {
                  _currentVisuallKey = key;
-                 _visuallsTableCurrentVisuallRef = [_visuallsTableRef child: key];
+                 _visuallsTable_currentVisuallRef = [_visuallsTableRef child: key];
                  [self loadVisuallFromKey: key];
                  return; // TODO: early termination here only loading the 1st and only visuall
              }
@@ -251,8 +251,8 @@ void (^_callbackGroupItem)(GroupItem *gi);
     ni.note.key = newNoteRef.key;
     [self.notesCollection addNote:ni withKey:newNoteRef.key];
     [newNoteRef updateChildValues: noteDictionary];
-    [[_visuallsTableCurrentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
-    FIRDatabaseReference *notesCounterRef = [_visuallsTableCurrentVisuallRef child: @"notes_counter"];
+    [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
+    FIRDatabaseReference *notesCounterRef = [_visuallsTable_currentVisuallRef child: @"notes_counter"];
     [self increaseOrDecreaseCounter: notesCounterRef byAmount:1];
 }
 
@@ -287,7 +287,10 @@ void (^_callbackGroupItem)(GroupItem *gi);
     gi.group.key = newGroupRef.key;
     [self.groupsCollection addGroup: gi withKey: newGroupRef.key];
     [newGroupRef updateChildValues: groupDictionary];
-    [[_visuallsTableCurrentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
+    [[_visuallsTable_currentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
+    FIRDatabaseReference *groupsCounterRef = [_visuallsTable_currentVisuallRef child: @"groups_counter"];
+    [self increaseOrDecreaseCounter: groupsCounterRef byAmount:1];
+
 }
 
 - (NSMutableDictionary *) getCommonUpdateParameters
@@ -352,10 +355,18 @@ void (^_callbackGroupItem)(GroupItem *gi);
     }
 }
 
+/*
+ * Name: removeValue
+ * Param: (UIView *) view that is a note or group item
+ * Description: Removes the item from its corresponding firebase table, removes the item's key from its visuall table, and decrements its counter
+ */
 - (void) removeValue: (UIView *) view
 {
     if( [view isNoteItem])
     {
+        // TODO (Aug 11, 2016): Consider changing operations below to nested callbacks or promises.
+        // Also need to delete note from NotesCollection and set note to nil via [ni delete:nil];
+        // Step 1 of 3: Delete note from notes table
         NoteItem2 *ni = [view getNoteItem];
         FIRDatabaseReference *deleteNoteRef = [_notesTableRef child: ni.note.key];
         [deleteNoteRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
@@ -366,11 +377,12 @@ void (^_callbackGroupItem)(GroupItem *gi);
             } else {
                 NSLog(@"Note removed successfully.");
                 [ni removeFromSuperview];
-//                [ni delete:nil];
+
             }
         }];
         
-        FIRDatabaseReference *deleteNoteKeyFromVisuallRef = [[_visuallsTableCurrentVisuallRef child: @"notes"] child: ni.note.key];
+        // Step 2 of 3: Delete note key from current visuall table
+        FIRDatabaseReference *deleteNoteKeyFromVisuallRef = [[_visuallsTable_currentVisuallRef child: @"notes"] child: ni.note.key];
         [deleteNoteKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
             if (error) {
                 NSLog(@"Note key could not be removed.");
@@ -379,12 +391,14 @@ void (^_callbackGroupItem)(GroupItem *gi);
             }
         }];
         
-        FIRDatabaseReference *notesCounterRef = [_visuallsTableCurrentVisuallRef child: @"notes_counter"];
+        // Step 3 of 3: Decrement notes counter in visuall table
+        FIRDatabaseReference *notesCounterRef = [_visuallsTable_currentVisuallRef child: @"notes_counter"];
         [self increaseOrDecreaseCounter: notesCounterRef byAmount:-1];
         
     }
     else if([view isGroupItem])
     {
+        // Step 1 of 3: Delete group from groups table
         GroupItem *gi = [view getGroupItem];
         FIRDatabaseReference *deleteGroupRef = [_groupsTableRef child: gi.group.key];
         [deleteGroupRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
@@ -396,14 +410,19 @@ void (^_callbackGroupItem)(GroupItem *gi);
             }
         }];
         
-        FIRDatabaseReference *deleteNoteKeyFromVisuallRef = [[_visuallsTableCurrentVisuallRef child: @"groups"] child: gi.group.key];
-        [deleteNoteKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+        // Step 2 of 3: Delete group key from current visuall table
+        FIRDatabaseReference *deleteGroupKeyFromVisuallRef = [[_visuallsTable_currentVisuallRef child: @"groups"] child: gi.group.key];
+        [deleteGroupKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
             if (error) {
                 NSLog(@"Group key could not be removed.");
             } else {
                 NSLog(@"Group key removed successfully.");
             }
         }];
+        
+        // Step 3 of 3: Decrement groups counter in visuall table
+        FIRDatabaseReference *groupsCounterRef = [_visuallsTable_currentVisuallRef child: @"groups_counter"];
+        [self increaseOrDecreaseCounter: groupsCounterRef byAmount:-1];
     }
 }
 
