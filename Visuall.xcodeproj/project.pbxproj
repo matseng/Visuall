@@ -30,6 +30,7 @@
 		716328BD1D260798009DF56B /* Archers-Arrowhead.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328BC1D260798009DF56B /* Archers-Arrowhead.png */; };
 		716B046A1BFC210300DA9451 /* StateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* StateUtil.m */; };
 		716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B51D51D36C2A40049A203 /* UIView+VisualItem.m */; };
+		71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */ = {isa = PBXBuildFile; fileRef = 71710A831D5D14660038D883 /* SegmentedControlMod.m */; };
 		7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBCE1D3D55E700F609DE /* TiledLayerView.m */; };
 		7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD11D4664BB00F609DE /* ArrowItem.m */; };
 		7195EBD51D46684500F609DE /* Arrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD41D46684500F609DE /* Arrow.m */; };
@@ -136,6 +137,8 @@
 		716B04691BFC210300DA9451 /* StateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StateUtil.m; sourceTree = "<group>"; };
 		716B51D41D36C2A40049A203 /* UIView+VisualItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VisualItem.h"; sourceTree = "<group>"; };
 		716B51D51D36C2A40049A203 /* UIView+VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VisualItem.m"; sourceTree = "<group>"; };
+		71710A821D5D14660038D883 /* SegmentedControlMod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedControlMod.h; sourceTree = "<group>"; };
+		71710A831D5D14660038D883 /* SegmentedControlMod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedControlMod.m; sourceTree = "<group>"; };
 		7195EBCD1D3D55E700F609DE /* TiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledLayerView.h; sourceTree = "<group>"; };
 		7195EBCE1D3D55E700F609DE /* TiledLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiledLayerView.m; sourceTree = "<group>"; };
 		7195EBD01D4664BB00F609DE /* ArrowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrowItem.h; sourceTree = "<group>"; };
@@ -285,10 +288,7 @@
 				71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */,
 				716B51D41D36C2A40049A203 /* UIView+VisualItem.h */,
 				716B51D51D36C2A40049A203 /* UIView+VisualItem.m */,
-				71D96BF91D342A4100CD1C49 /* ViewController+Menus.h */,
-				71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */,
-				71D96C081D35D22000CD1C49 /* UISegmentedControl+MyTitle.h */,
-				71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */,
+				71710A811D5D033C0038D883 /* Menus */,
 				71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */,
 				71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */,
 				71710A801D5D00630038D883 /* GestureHandlers */,
@@ -397,6 +397,19 @@
 				71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */,
 			);
 			name = GestureHandlers;
+			sourceTree = "<group>";
+		};
+		71710A811D5D033C0038D883 /* Menus */ = {
+			isa = PBXGroup;
+			children = (
+				71D96C081D35D22000CD1C49 /* UISegmentedControl+MyTitle.h */,
+				71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */,
+				71710A821D5D14660038D883 /* SegmentedControlMod.h */,
+				71710A831D5D14660038D883 /* SegmentedControlMod.m */,
+				71D96BF91D342A4100CD1C49 /* ViewController+Menus.h */,
+				71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */,
+			);
+			name = Menus;
 			sourceTree = "<group>";
 		};
 		71B37E761C1924020048851A /* ViewControllers */ = {
@@ -645,6 +658,7 @@
 				71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */,
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,
+				71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */,
 				7195EBD51D46684500F609DE /* Arrow.m in Sources */,
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
 				71D96BD01D2C66D000CD1C49 /* MyVisuallsDetailViewController.m in Sources */,

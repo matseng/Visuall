@@ -131,7 +131,8 @@
     
     self.drawGroupView = [self initializeDrawGroupView];
     [self createTopMenu];
-    [self addHorizontalScrollingButtonList];
+    [self addSubmenu];
+    [self addSecondSubmenu];
     
     /*
     self.fontSize.delegate = self;

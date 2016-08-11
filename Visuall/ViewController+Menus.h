@@ -12,7 +12,9 @@
 
 - (void) createTopMenu;
 
-- (void) addHorizontalScrollingButtonList;
+- (void) addSubmenu;
+
+- (void) addSecondSubmenu;
 
 - (BOOL) isEditModeOn;
 

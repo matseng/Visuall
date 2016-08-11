@@ -13,6 +13,7 @@
 #import "UISegmentedControl+MyTitle.h"
 #import "ViewController+panHandler.h"
 #import "StateUtil.h"
+#import "SegmentedControlMod.h"
 
 //@property UIScrollView *scrollViewButtonList;
 
@@ -23,11 +24,14 @@
 StateUtil *state;
 SevenSwitch *editSwitch;
 UISegmentedControl *segmentControlTopMenu;
-UISegmentedControl *segmentControlSubmenu;
+UISegmentedControl *__segmentControlSubmenu;
 UIButton *trashButton;
 UIImage *trashImg;
 UIImage *trashImgHilighted;
 BOOL alreadyAnimated = NO;
+UIScrollView *__submenuScrollView;
+UIScrollView *__secondSubmenuScrollView;
+UIColor *__backgroundColor;
 
 - (void) createTopMenu
 {
@@ -35,7 +39,7 @@ BOOL alreadyAnimated = NO;
     float h = 42;
     float w = 42;
     float padding = 10;
-    UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+    __backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     UIColor *blueButtonColor = self.view.tintColor;
     
     self.navigationItem.leftItemsSupplementBackButton = NO;
@@ -44,7 +48,7 @@ BOOL alreadyAnimated = NO;
     UIImage *backImg = [[UIImage imageNamed: @"back"] imageWithExtraPadding: .1];
     backImg = [UIImage imageWithCGImage:backImg.CGImage scale:2.4 orientation:backImg.imageOrientation];
     backImg = [backImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *backImgHilighted = [backImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: backgroundColor];
+    UIImage *backImgHilighted = [backImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: __backgroundColor];
     [backButton setImage:backImg forState:UIControlStateNormal];
     [backButton setImage:backImgHilighted forState:UIControlStateHighlighted];
     [backButton addTarget:self
@@ -79,7 +83,7 @@ BOOL alreadyAnimated = NO;
     mySwitch.offLabel.textColor = blueButtonColor;
     mySwitch.onTintColor = blueButtonColor;
     mySwitch.onLabel.text = @" Done";
-    mySwitch.onLabel.textColor = backgroundColor;
+    mySwitch.onLabel.textColor = __backgroundColor;
     NSLog(@"offlabel text width: %f", mySwitch.offLabel.frame.size.width);
     [mySwitch setOn:NO animated:YES];
     UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: mySwitch];
@@ -88,9 +92,9 @@ BOOL alreadyAnimated = NO;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
     segmentControlTopMenu = segmentControl;
     segmentControl.frame = CGRectMake(0, 0, w * i, h);
-    segmentControl.backgroundColor = backgroundColor;
+    segmentControl.backgroundColor = __backgroundColor;
     segmentControl.layer.cornerRadius = 0.0f;
-    segmentControl.layer.borderColor = backgroundColor.CGColor;
+    segmentControl.layer.borderColor = __backgroundColor.CGColor;
     segmentControl.layer.borderWidth = 2.0f;
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, segmentControl.frame.size.height), NO, 0.0);
     UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
@@ -120,7 +124,7 @@ BOOL alreadyAnimated = NO;
     UIImage *starImg = [UIImage imageNamed: @"Star-50"];
     starImg = [UIImage imageWithCGImage:starImg.CGImage scale:1.6 orientation:starImg.imageOrientation];
     starImg = [starImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *starImgHilighted = [starImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor:backgroundColor];
+    UIImage *starImgHilighted = [starImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor:__backgroundColor];
     [starButton setImage:starImg forState:UIControlStateNormal];
     [starButton setImage:starImgHilighted forState:UIControlStateHighlighted];
     [starButton addTarget:self
@@ -159,11 +163,11 @@ BOOL alreadyAnimated = NO;
     
     //    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
-    self.navigationController.navigationBar.backgroundColor = backgroundColor;
+    self.navigationController.navigationBar.backgroundColor = __backgroundColor;
     [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
 }
 
-- (void) addHorizontalScrollingButtonList
+- (void) addSubmenu
 {
     NSMutableArray *buttonList = [[NSMutableArray alloc] init];
     float h = 40;
@@ -222,7 +226,7 @@ BOOL alreadyAnimated = NO;
     // TODO create array of button model objects (e.g. name, image, tag number, action, visible)
     i = nLeftButtons;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
-    segmentControlSubmenu = segmentControl;
+    __segmentControlSubmenu = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
     
     segmentControl.frame = CGRectMake(padding * paddingCounter++ + w * (i + 0), paddingTop, w * nSegmentControl, h);
@@ -264,7 +268,9 @@ BOOL alreadyAnimated = NO;
     [scrollView addSubview: segmentControl];
     
     i = nLeftButtons + nSegmentControl;
-    UISegmentedControl *segmentControlFont = [[UISegmentedControl alloc] init];
+    SegmentedControlMod *segmentControlFont = [[SegmentedControlMod alloc] init];
+    [segmentControlFont addTarget:self action:@selector(segmentControlFontClicked:) forControlEvents:UIControlEventValueChanged];
+//    [segmentControlFont addTarget:self action:@selector(segmentControlFontTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     segmentControlFont.frame = CGRectMake(padding * (nLeftButtons + 2) + w * (i + 0), paddingTop, w * 2, h);
     segmentControlFont.backgroundColor = backgroundColor;
     segmentControlFont.layer.cornerRadius = 5.0;
@@ -274,9 +280,11 @@ BOOL alreadyAnimated = NO;
     
     UIImage *fontSize = [[UIImage imageNamed: @"fontSize"] imageWithExtraPadding: .1];
     [segmentControlFont setImage: fontSize forSegmentAtIndex: 0];
+    [segmentControlFont setMyTitle:@"fontSize" forSegmentAtIndex:0];
     
     UIImage *fontColor = [[UIImage imageNamed: @"Paint Bucket-50"] imageWithExtraPadding: .25];
     [segmentControlFont setImage: fontColor forSegmentAtIndex: 1];
+    [segmentControlFont setMyTitle:@"color" forSegmentAtIndex:1];
     
     [segmentControlFont setSelectedSegmentIndex:-1];
     [scrollView addSubview: segmentControlFont];
@@ -358,8 +366,40 @@ BOOL alreadyAnimated = NO;
     scrollView.contentOffset = CGPointMake(newContentOffset, 0);
     
     [self.Background addSubview: scrollView];
+    __submenuScrollView = scrollView;
     
     //    [scrollView setHidden:YES];
+}
+
+- (void) addSecondSubmenu
+{
+    __secondSubmenuScrollView = [[UIScrollView alloc] init];
+    __secondSubmenuScrollView.backgroundColor = __backgroundColor;
+    float h = 40;
+//    float w = 40;
+//    float padding = 10;
+    float paddingTop = 4;
+    
+    float h0 = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    float h1 = self.navigationController.navigationBar.frame.size.height;
+    float h2 = __submenuScrollView.frame.size.height;
+    float y = h0 * 0 + h1 * 0 + h2;
+    __secondSubmenuScrollView.frame = CGRectMake(0, -y, [[UIScreen mainScreen] bounds].size.width, h + 2 * paddingTop);
+    [self.Background addSubview: __secondSubmenuScrollView];
+}
+
+- (void) showSecondSubmenu
+{
+    CGRect rect = __secondSubmenuScrollView.frame;
+    rect.origin.y = fabs(rect.origin.y);
+    __secondSubmenuScrollView.frame = rect;
+}
+
+- (void) hideSecondSubmenu
+{
+    CGRect rect = __secondSubmenuScrollView.frame;
+    rect.origin.y = -fabs(rect.origin.y);
+    __secondSubmenuScrollView.frame = rect;
 }
 
 /*
@@ -394,6 +434,7 @@ BOOL alreadyAnimated = NO;
 {
     if([sender isOn]){
         // Execute any code when the switch is ON
+        NSLog(@"Switch is ON");
         state.editModeOn = YES;
         [self setSelectedObject: self.lastSelectedObject];
         [self.scrollViewButtonList setHidden: NO];
@@ -420,11 +461,18 @@ BOOL alreadyAnimated = NO;
                                                        delay:0.2
                                       usingSpringWithDamping:0.7
                                        initialSpringVelocity:3.6
-                                                     options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                                                     options:UIViewAnimationOptionCurveEaseInOut animations:
+                                                    ^{
                                                          self.scrollViewButtonList.contentOffset = CGPointMake(0, 0);
                                                      }
-                                                  completion:^(BOOL finished) {}
+                                                  completion:^(BOOL finished)
+                                                  {
+                                                      [self showSecondSubmenu];
+                                                  }
                                   ];
+                             } else
+                             {
+                                 [self showSecondSubmenu];
                              }
                          }
          ];
@@ -432,7 +480,8 @@ BOOL alreadyAnimated = NO;
         UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
         [self setNavigationBottomBorderColor: backgroundColor height: 0.5f];
         
-        NSLog(@"Switch is ON");
+        
+        
     } else{
         NSLog(@"Switch is OFF");
         state.editModeOn = NO;
@@ -454,6 +503,7 @@ BOOL alreadyAnimated = NO;
 //                             float newContentOffset = widthContent - width;
 //                             self.scrollViewButtonList.contentOffset = CGPointMake(newContentOffset, 0);
                          }];
+        [self hideSecondSubmenu];
     }
 }
 
@@ -473,9 +523,33 @@ BOOL alreadyAnimated = NO;
 -(void) segmentChangeViewValueChanged
 {
     
-    NSString *segmentSelectedTitle =  [segmentControlSubmenu getMyTitleForSegmentAtIndex: (int) segmentControlSubmenu.selectedSegmentIndex];
-    NSLog(@"segmentSelectedIndex: %li", segmentControlSubmenu.selectedSegmentIndex);
+    NSString *segmentSelectedTitle =  [__segmentControlSubmenu getMyTitleForSegmentAtIndex: (int) __segmentControlSubmenu.selectedSegmentIndex];
+    NSLog(@"segmentSelectedIndex: %li", __segmentControlSubmenu.selectedSegmentIndex);
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
+}
+
+- (void) segmentControlFontClicked: (id) sender
+{
+    // TODO (Aug 11, 2016): Deselect fontSize if it's already selected and hide the second submenu
+    UISegmentedControl *segmentedControlFont = (UISegmentedControl*) sender;
+    
+    NSString *segmentSelectedTitle =  [segmentedControlFont getMyTitleForSegmentAtIndex: (int) segmentedControlFont.selectedSegmentIndex];
+    NSLog(@"segmentSelectedIndex: %li", segmentedControlFont.selectedSegmentIndex);
+    NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
+
+    switch ([segmentedControlFont selectedSegmentIndex]) {
+        case 0:
+            // do something
+            break;
+        case 1:
+            // do something
+            break;
+        case UISegmentedControlNoSegment:
+            // do something
+            break;
+        default:
+            NSLog(@"No option for: %ld", (long)[segmentedControlFont selectedSegmentIndex]);
+    }
 }
 
 - (BOOL) isEditModeOn
@@ -485,22 +559,22 @@ BOOL alreadyAnimated = NO;
 
 - (BOOL) isDrawGroupButtonSelected
 {
-    return [editSwitch isOn] && [[segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
+    return [editSwitch isOn] && [[__segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
 }
 
 - (BOOL) isNoteButtonSelected
 {
-    return [editSwitch isOn] && [[segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"note"];
+    return [editSwitch isOn] && [[__segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"note"];
 }
 
 - (BOOL) isPointerButtonSelected
 {
-    return [editSwitch isOn] && [[segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
+    return [editSwitch isOn] && [[__segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
 }
 
 - (BOOL) isArrowButtonSelected
 {
-    return [editSwitch isOn] && [[segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
+    return [editSwitch isOn] && [[__segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
 }
 
 - (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture
