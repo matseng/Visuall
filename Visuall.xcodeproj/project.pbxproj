@@ -71,6 +71,8 @@
 		71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF611D4C278900B818A0 /* WelcomeViewController.m */; };
 		71E1AF651D4C325400B818A0 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF641D4C325400B818A0 /* TabBarViewController.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
+		71FD2EE01D5E7F5000CA5365 /* Decrease Font Filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71FD2EDE1D5E7F5000CA5365 /* Decrease Font Filled-50.png */; };
+		71FD2EE11D5E7F5000CA5365 /* Increase Font Filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71FD2EDF1D5E7F5000CA5365 /* Increase Font Filled-50.png */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
 		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; };
 		77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA71C011D5F00105BB5 /* linkarrow.png */; };
@@ -197,6 +199,8 @@
 		71E1AF641D4C325400B818A0 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
 		71FC72121BF2E881003B7F14 /* NotesCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesCollection.h; sourceTree = "<group>"; };
 		71FC72131BF2E881003B7F14 /* NotesCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesCollection.m; sourceTree = "<group>"; };
+		71FD2EDE1D5E7F5000CA5365 /* Decrease Font Filled-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Decrease Font Filled-50.png"; sourceTree = "<group>"; };
+		71FD2EDF1D5E7F5000CA5365 /* Increase Font Filled-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Increase Font Filled-50.png"; sourceTree = "<group>"; };
 		77E13DA11C011C1700105BB5 /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
 		77E13DA51C011CF200105BB5 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		77E13DA71C011D5F00105BB5 /* linkarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linkarrow.png; sourceTree = "<group>"; };
@@ -420,6 +424,7 @@
 		71C23F291D21EF9400D53E0C /* Button Icons */ = {
 			isa = PBXGroup;
 			children = (
+				71FD2EDD1D5E7F3600CA5365 /* Second Submenu */,
 				71D96BE81D301D7A00CD1C49 /* Globe-50.png */,
 				71D96BEB1D301D8600CD1C49 /* light-bulb.png */,
 				71D96BEE1D30347400CD1C49 /* light-bulb@2x.png */,
@@ -448,6 +453,15 @@
 				71C23F341D221A7800D53E0C /* Trash-50.png */,
 			);
 			name = "Button Icons";
+			sourceTree = "<group>";
+		};
+		71FD2EDD1D5E7F3600CA5365 /* Second Submenu */ = {
+			isa = PBXGroup;
+			children = (
+				71FD2EDE1D5E7F5000CA5365 /* Decrease Font Filled-50.png */,
+				71FD2EDF1D5E7F5000CA5365 /* Increase Font Filled-50.png */,
+			);
+			name = "Second Submenu";
 			sourceTree = "<group>";
 		};
 		885AFD651C00217800F89DE5 /* model */ = {
@@ -568,10 +582,12 @@
 				71D96BD21D2D974C00CD1C49 /* Reading-50.png in Resources */,
 				71D96BD61D2DA58000CD1C49 /* Info-50.png in Resources */,
 				712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */,
+				71FD2EE01D5E7F5000CA5365 /* Decrease Font Filled-50.png in Resources */,
 				716328B71D25F244009DF56B /* Attach-50.png in Resources */,
 				71D96BE91D301D7A00CD1C49 /* Globe-50.png in Resources */,
 				71C23F2F1D21F23200D53E0C /* pen.png in Resources */,
 				71C23F281D21EF4800D53E0C /* textLetter.png in Resources */,
+				71FD2EE11D5E7F5000CA5365 /* Increase Font Filled-50.png in Resources */,
 				71D96BD41D2D997500CD1C49 /* User Groups-50.png in Resources */,
 				71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,

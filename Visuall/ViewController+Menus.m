@@ -385,36 +385,26 @@ UIColor *__backgroundColor;
     __secondSubmenuScrollView.frame = CGRectMake(0, -y, [[UIScreen mainScreen] bounds].size.width, h + 2 * paddingTop);
     [self.Background addSubview: __secondSubmenuScrollView];
     
+    UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"Decrease Font Filled-50" andExtraPadding:0.5];
+    [decreaseFontSizeButton setTitle:@"decreaseFontSize" forState:UIControlStateNormal];
+    UIBarButtonItem *decreaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: decreaseFontSizeButton];
+    [decreaseFontSizeButton addTarget:self
+                   action:@selector(decreaseFontSizeHandler)
+         forControlEvents:UIControlEventTouchUpInside];
     
-    // TODO (Aug 12, 2016): Try using UIToolbar to make button layout of Increase and Decrease Font Size
-    
-    UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *undoImg = [[UIImage imageNamed: @"undo-arrow"] imageWithExtraPadding: .15];
-    undoImg = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *undoImgHilighted = [undoImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor: __backgroundColor];
-    
-    [undoButton setImage:undoImg forState:UIControlStateNormal];
-    [undoButton setImage:undoImgHilighted forState:UIControlStateHighlighted];
-    
-//    [undoButton addTarget:self
-//                   action:@selector(buttonTapped:)
-//         forControlEvents:UIControlEventTouchUpInside];
-    
-    [undoButton setTitle:@"undo" forState:UIControlStateNormal];
-//    undoButton.frame = CGRectMake(padding * (paddingCounter++) + ( (i-0) * w), paddingTop, w, h);
-    undoButton.frame = CGRectMake(0, 0, 42, 42);
-    undoButton.layer.cornerRadius = 5;
-    undoButton.tintColor = self.view.tintColor;
-    undoButton.layer.borderWidth = 1;
-    undoButton.layer.masksToBounds = YES;
-    [undoButton.layer setBorderColor: [self.view.tintColor CGColor]];
-    UIBarButtonItem *undoButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:undoButton];
+    UIButton *increaseFontSizeButton = [self makeButtonFromImage:@"increase Font Filled-50" andExtraPadding:0.5];
+    [increaseFontSizeButton setTitle:@"increaseFontSize" forState:UIControlStateNormal];
+    UIBarButtonItem *increaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: increaseFontSizeButton];
+    [increaseFontSizeButton addTarget:self
+                               action:@selector(increaseFontSizeHandler)
+                     forControlEvents:UIControlEventTouchUpInside];
     
     CGRect rect = __secondSubmenuScrollView.frame;
     rect.origin = CGPointZero;
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
-    [toolbar2 setItems:@[undoButtonBarItem]];
+    [toolbar2 setItems:@[decreaseFontSizeItem, increaseFontSizeItem]];
 
+    __secondSubmenuScrollView.delaysContentTouches = NO;
     [__secondSubmenuScrollView addSubview: toolbar2];
 //
 //    UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -426,6 +416,35 @@ UIColor *__backgroundColor;
 //    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 //    
 //    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
+}
+
+- (void) decreaseFontSizeHandler
+{
+    
+}
+
+- (void) increaseFontSizeHandler
+{
+    
+}
+
+- (UIButton *) makeButtonFromImage: (NSString *) imageName andExtraPadding: (float) padding
+{
+    UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *undoImg = [[UIImage imageNamed: imageName] imageWithExtraPadding: padding];
+//    UIImage *undoImg = [UIImage imageNamed: imageName];
+//    undoImg = [UIImage imageWithCGImage:undoImg.CGImage scale:1.5 orientation:undoImg.imageOrientation];
+    undoImg = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *undoImgHilighted = [undoImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor: __backgroundColor];
+    [undoButton setImage:undoImg forState:UIControlStateNormal];
+    [undoButton setImage:undoImgHilighted forState:UIControlStateHighlighted];
+    undoButton.frame = CGRectMake(0, 0, 42, 42);  // TODO (Aug 12, 2016): change to constants e.g. BUTTON_WIDTH BUTTON_HEIGHT
+    undoButton.layer.cornerRadius = 5;
+    undoButton.tintColor = self.view.tintColor;
+    undoButton.layer.borderWidth = 1;
+    undoButton.layer.masksToBounds = YES;
+    [undoButton.layer setBorderColor: [self.view.tintColor CGColor]];
+    return undoButton;
 }
 
 - (void) showSecondSubmenu
