@@ -10,6 +10,7 @@
 
 @implementation SegmentedControlMod
 
+BOOL __didValueChange;
 NSMutableDictionary *dict;
 
 - (void) setMyTitle: (NSString *) title forSegmentAtIndex: (NSUInteger) i
@@ -33,17 +34,26 @@ NSMutableDictionary *dict;
  * Name:
  * Description: Sends an event for tapping a segment that is already selected
  */
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    __didValueChange = YES;
     NSInteger previousSelectedSegmentIndex = self.selectedSegmentIndex;
     
     [super touchesEnded:touches withEvent:event];
     
     CGPoint locationPoint = [[touches anyObject] locationInView:self];
     CGPoint viewPoint = [self convertPoint:locationPoint fromView:self];
-    if ([self pointInside:viewPoint withEvent:event] && previousSelectedSegmentIndex == self.selectedSegmentIndex) {
-        self.selectedSegmentIndex = UISegmentedControlNoSegment;
+    if ([self pointInside:viewPoint withEvent:event] && previousSelectedSegmentIndex == self.selectedSegmentIndex)
+    {
+        __didValueChange = NO;
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
+    
+}
+
+- (BOOL) didValueChange
+{
+    return __didValueChange;
 }
 
 @end

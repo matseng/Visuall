@@ -18,4 +18,6 @@
 
 - (NSString *) getMyTitleForCurrentlySelectedSegment;
 
+- (BOOL) didValueChange;
+
 @end

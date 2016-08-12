@@ -22,8 +22,8 @@
 
 StateUtil *state;
 SevenSwitch *editSwitch;
-SegmentedControlMod *segmentControlTopMenu;
-SegmentedControlMod *__segmentControlSubmenu;
+SegmentedControlMod *__segmentControlVisualItem;
+SegmentedControlMod *__segmentControlFormattingOptions;
 UIButton *trashButton;
 UIImage *trashImg;
 UIImage *trashImgHilighted;
@@ -62,7 +62,6 @@ UIColor *__backgroundColor;
     backButton.clipsToBounds = YES;
     UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    
     UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,0, 85,44)];
     searchBar.placeholder = @"Search";
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
@@ -89,7 +88,6 @@ UIColor *__backgroundColor;
     
     int i = 3;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
-    segmentControlTopMenu = segmentControl;
     segmentControl.frame = CGRectMake(0, 0, w * i, h);
     segmentControl.backgroundColor = __backgroundColor;
     segmentControl.layer.cornerRadius = 0.0f;
@@ -225,7 +223,7 @@ UIColor *__backgroundColor;
     // TODO create array of button model objects (e.g. name, image, tag number, action, visible)
     i = nLeftButtons;
     SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
-    __segmentControlSubmenu = segmentControl;
+    __segmentControlVisualItem = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
     
     segmentControl.frame = CGRectMake(padding * paddingCounter++ + w * (i + 0), paddingTop, w * nSegmentControl, h);
@@ -268,6 +266,7 @@ UIColor *__backgroundColor;
     
     i = nLeftButtons + nSegmentControl;
     SegmentedControlMod *segmentControlFont = [[SegmentedControlMod alloc] init];
+    __segmentControlFormattingOptions = segmentControlFont;
     [segmentControlFont addTarget:self action:@selector(segmentControlFontClicked:) forControlEvents:UIControlEventValueChanged];
 //    [segmentControlFont addTarget:self action:@selector(segmentControlFontTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     segmentControlFont.frame = CGRectMake(padding * (nLeftButtons + 2) + w * (i + 0), paddingTop, w * 2, h);
@@ -385,6 +384,48 @@ UIColor *__backgroundColor;
     float y = h0 * 0 + h1 * 0 + h2;
     __secondSubmenuScrollView.frame = CGRectMake(0, -y, [[UIScreen mainScreen] bounds].size.width, h + 2 * paddingTop);
     [self.Background addSubview: __secondSubmenuScrollView];
+    
+    
+    // TODO (Aug 12, 2016): Try using UIToolbar to make button layout of Increase and Decrease Font Size
+    
+    UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *undoImg = [[UIImage imageNamed: @"undo-arrow"] imageWithExtraPadding: .15];
+    undoImg = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *undoImgHilighted = [undoImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor: __backgroundColor];
+    
+    [undoButton setImage:undoImg forState:UIControlStateNormal];
+    [undoButton setImage:undoImgHilighted forState:UIControlStateHighlighted];
+    
+//    [undoButton addTarget:self
+//                   action:@selector(buttonTapped:)
+//         forControlEvents:UIControlEventTouchUpInside];
+    
+    [undoButton setTitle:@"undo" forState:UIControlStateNormal];
+//    undoButton.frame = CGRectMake(padding * (paddingCounter++) + ( (i-0) * w), paddingTop, w, h);
+    undoButton.frame = CGRectMake(0, 0, 42, 42);
+    undoButton.layer.cornerRadius = 5;
+    undoButton.tintColor = self.view.tintColor;
+    undoButton.layer.borderWidth = 1;
+    undoButton.layer.masksToBounds = YES;
+    [undoButton.layer setBorderColor: [self.view.tintColor CGColor]];
+    UIBarButtonItem *undoButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:undoButton];
+    
+    CGRect rect = __secondSubmenuScrollView.frame;
+    rect.origin = CGPointZero;
+    UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
+    [toolbar2 setItems:@[undoButtonBarItem]];
+
+    [__secondSubmenuScrollView addSubview: toolbar2];
+//
+//    UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+//    [negativeSpacer30 setWidth:-30];
+//    UIBarButtonItem *negativeSpacer10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+//    [negativeSpacer10 setWidth:-10];
+//    UIBarButtonItem *negativeSpacer5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+//    [negativeSpacer5 setWidth:-5];
+//    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    
+//    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
 }
 
 - (void) showSecondSubmenu
@@ -466,12 +507,19 @@ UIColor *__backgroundColor;
                                                      }
                                                   completion:^(BOOL finished)
                                                   {
-                                                      [self showSecondSubmenu];
+                                                      if ( !(__segmentControlFormattingOptions.selectedSegmentIndex == UISegmentedControlNoSegment) )
+                                                      {
+                                                          [self showSecondSubmenu];
+                                                      }
+
                                                   }
                                   ];
                              } else
                              {
-                                 [self showSecondSubmenu];
+                                 if ( !(__segmentControlFormattingOptions.selectedSegmentIndex == UISegmentedControlNoSegment) )
+                                 {
+                                     [self showSecondSubmenu];
+                                 }
                              }
                          }
          ];
@@ -522,20 +570,28 @@ UIColor *__backgroundColor;
 -(void) segmentChangeViewValueChanged
 {
     
-    NSString *segmentSelectedTitle =  [__segmentControlSubmenu getMyTitleForSegmentAtIndex: (int) __segmentControlSubmenu.selectedSegmentIndex];
-    NSLog(@"segmentSelectedIndex: %li", __segmentControlSubmenu.selectedSegmentIndex);
+    NSString *segmentSelectedTitle =  [__segmentControlVisualItem getMyTitleForSegmentAtIndex: (int) __segmentControlVisualItem.selectedSegmentIndex];
+    NSLog(@"segmentSelectedIndex: %li", __segmentControlVisualItem.selectedSegmentIndex);
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
 }
 
 - (void) segmentControlFontClicked: (id) sender
 {
-    // TODO (Aug 11, 2016): Deselect fontSize if it's already selected and hide the second submenu
     SegmentedControlMod *segmentedControlFont = (SegmentedControlMod *) sender;
     
     NSString *segmentSelectedTitle =  [segmentedControlFont getMyTitleForSegmentAtIndex: (int) segmentedControlFont.selectedSegmentIndex];
     NSLog(@"segmentSelectedIndex: %li", segmentedControlFont.selectedSegmentIndex);
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
-
+    if ( [segmentedControlFont didValueChange] )
+    {
+        [self showSecondSubmenu];
+    }
+    else
+    {
+        segmentedControlFont.selectedSegmentIndex = UISegmentedControlNoSegment;
+        [self hideSecondSubmenu];
+    }
+    
     switch ([segmentedControlFont selectedSegmentIndex]) {
         case 0:
             // do something
@@ -558,22 +614,22 @@ UIColor *__backgroundColor;
 
 - (BOOL) isDrawGroupButtonSelected
 {
-    return [editSwitch isOn] && [[__segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
+    return [editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
 }
 
 - (BOOL) isNoteButtonSelected
 {
-    return [editSwitch isOn] && [[__segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"note"];
+    return [editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"note"];
 }
 
 - (BOOL) isPointerButtonSelected
 {
-    return [editSwitch isOn] && [[__segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
+    return [editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
 }
 
 - (BOOL) isArrowButtonSelected
 {
-    return [editSwitch isOn] && [[__segmentControlSubmenu getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
+    return [editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
 }
 
 - (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture
