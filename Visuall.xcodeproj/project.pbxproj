@@ -66,7 +66,6 @@
 		71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */; };
 		71D96C041D359E0000CD1C49 /* ViewController+Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C031D359E0000CD1C49 /* ViewController+Group.m */; };
 		71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */; };
-		71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */; };
 		71E1AF561D4AF7E700B818A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */; };
 		71E1AF5C1D4BDFF900B818A0 /* StateUtil+Firebase.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */; };
 		71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF611D4C278900B818A0 /* WelcomeViewController.m */; };
@@ -189,8 +188,6 @@
 		71D96C031D359E0000CD1C49 /* ViewController+Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Group.m"; sourceTree = "<group>"; };
 		71D96C051D35A9A400CD1C49 /* ViewController+TapHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+TapHandler.h"; sourceTree = "<group>"; };
 		71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+TapHandler.m"; sourceTree = "<group>"; };
-		71D96C081D35D22000CD1C49 /* UISegmentedControl+MyTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISegmentedControl+MyTitle.h"; sourceTree = "<group>"; };
-		71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+MyTitle.m"; sourceTree = "<group>"; };
 		71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StateUtil+Firebase.h"; sourceTree = "<group>"; };
 		71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StateUtil+Firebase.m"; sourceTree = "<group>"; };
@@ -402,8 +399,6 @@
 		71710A811D5D033C0038D883 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
-				71D96C081D35D22000CD1C49 /* UISegmentedControl+MyTitle.h */,
-				71D96C091D35D22000CD1C49 /* UISegmentedControl+MyTitle.m */,
 				71710A821D5D14660038D883 /* SegmentedControlMod.h */,
 				71710A831D5D14660038D883 /* SegmentedControlMod.m */,
 				71D96BF91D342A4100CD1C49 /* ViewController+Menus.h */,
@@ -655,7 +650,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */,
-				71D96C0A1D35D22000CD1C49 /* UISegmentedControl+MyTitle.m in Sources */,
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,
 				71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */,

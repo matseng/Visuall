@@ -10,7 +10,6 @@
 #import <UIKit/UIKit.h>
 #import "UIImage+Extras.h"
 #import "SevenSwitch.h"
-#import "UISegmentedControl+MyTitle.h"
 #import "ViewController+panHandler.h"
 #import "StateUtil.h"
 #import "SegmentedControlMod.h"
@@ -23,8 +22,8 @@
 
 StateUtil *state;
 SevenSwitch *editSwitch;
-UISegmentedControl *segmentControlTopMenu;
-UISegmentedControl *__segmentControlSubmenu;
+SegmentedControlMod *segmentControlTopMenu;
+SegmentedControlMod *__segmentControlSubmenu;
 UIButton *trashButton;
 UIImage *trashImg;
 UIImage *trashImgHilighted;
@@ -225,7 +224,7 @@ UIColor *__backgroundColor;
     
     // TODO create array of button model objects (e.g. name, image, tag number, action, visible)
     i = nLeftButtons;
-    UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
+    SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
     __segmentControlSubmenu = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
     
@@ -531,7 +530,7 @@ UIColor *__backgroundColor;
 - (void) segmentControlFontClicked: (id) sender
 {
     // TODO (Aug 11, 2016): Deselect fontSize if it's already selected and hide the second submenu
-    UISegmentedControl *segmentedControlFont = (UISegmentedControl*) sender;
+    SegmentedControlMod *segmentedControlFont = (SegmentedControlMod *) sender;
     
     NSString *segmentSelectedTitle =  [segmentedControlFont getMyTitleForSegmentAtIndex: (int) segmentedControlFont.selectedSegmentIndex];
     NSLog(@"segmentSelectedIndex: %li", segmentedControlFont.selectedSegmentIndex);

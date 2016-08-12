@@ -10,14 +10,12 @@
 
 @interface SegmentedControlMod : UISegmentedControl
 
-//- (void) setSelectedSegmentIndex:(NSInteger) toValue;
+// TODO (Aug 11, 2016): Move methods for UISegmentedControl+MyTitle.h to this new subclass
 
-//- (void) setMyTitle: (NSString *) title forSegmentAtIndex: (NSUInteger) i;
+- (void) setMyTitle: (NSString *) title forSegmentAtIndex: (NSUInteger) i;
 
-//- (NSString *) getMyTitleForSegmentAtIndex: (NSUInteger) i;
-//
-//- (NSString *) getMyTitleForCurrentlySelectedSegment;
-//
-//- (NSMutableDictionary *) dict;
+- (NSString *) getMyTitleForSegmentAtIndex: (NSUInteger) i;
+
+- (NSString *) getMyTitleForCurrentlySelectedSegment;
 
 @end
