@@ -131,6 +131,11 @@
     
     self.drawGroupView = [self initializeDrawGroupView];
     [self createTopMenu];
+//    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+//    self.navigationController.navigationBar.backgroundColor = [UIColor redColor];
+//    self.navigationController.navigationBar.tintColor = [UIColor redColor];
+//    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+//    self.navigationController.navigationBar.translucent = NO;  // NOTE: Changing this parameter affects positioning, weird.
     [self addSubmenu];
     [self addSecondSubmenu];
     

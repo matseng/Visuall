@@ -66,12 +66,6 @@ UIColor *__backgroundColor;
     searchBar.placeholder = @"Search";
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
     searchBarItem.tag = 123;
-     
-    /*
-    GIDSignInButton *signInButton = [[GIDSignInButton alloc] init];
-    UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:signInButton];
-    searchBarItem.tag = 123;
-     */
     
     SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
     editSwitch = mySwitch;
@@ -90,8 +84,10 @@ UIColor *__backgroundColor;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
     segmentControl.frame = CGRectMake(0, 0, w * i, h);
     segmentControl.backgroundColor = __backgroundColor;
+//    segmentControl.backgroundColor = [UIColor clearColor];
     segmentControl.layer.cornerRadius = 0.0f;
     segmentControl.layer.borderColor = __backgroundColor.CGColor;
+//    segmentControl.layer.borderColor = [UIColor clearColor].CGColor;
     segmentControl.layer.borderWidth = 2.0f;
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, segmentControl.frame.size.height), NO, 0.0);
     UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
@@ -101,7 +97,6 @@ UIColor *__backgroundColor;
                   rightSegmentState:UIControlStateNormal
                          barMetrics:UIBarMetricsDefault];
     
-    //    UIImage *reading = [self imageWithExtraPaddingFromImage:[UIImage imageNamed: @"Reading-50"] percentPadding: .1];
     UIImage *reading = [UIImage imageNamed: @"Reading-50"];
     reading = [UIImage imageWithCGImage:reading.CGImage scale:1.7 orientation:reading.imageOrientation];
     reading = [reading imageWithRoundedCornersSize:5.0f];
@@ -127,7 +122,6 @@ UIColor *__backgroundColor;
     [starButton addTarget:self
                    action:@selector(buttonTapped:)
          forControlEvents:UIControlEventTouchUpInside];
-    [starButton setTitle:@"star" forState:UIControlStateNormal];
     starButton.frame = CGRectMake(0, 0, w, h);
     starButton.layer.cornerRadius = 5;
     starButton.tintColor = self.view.tintColor;
@@ -136,11 +130,9 @@ UIColor *__backgroundColor;
     [starButton.layer setBorderColor: [self.view.tintColor CGColor]];
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
     
-    
-    //    float totalHeight = [[UIScreen mainScreen] bounds].size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-    //    NSLog(@"total height: %f", totalHeight);
-    
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
+    toolbar.backgroundColor = __backgroundColor;
+    toolbar.translucent = NO;
     
     UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer30 setWidth:-30];
@@ -150,18 +142,20 @@ UIColor *__backgroundColor;
     [negativeSpacer5 setWidth:-5];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    //    [toolbar setItems:@[backBarItem, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, negativeSpacer10, starBarItem] animated:YES];
     [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
     
-    //    toolbar.clipsToBounds = YES;
+//    [toolbar setItems:@[flexibleSpace, editBarItem, flexibleSpace] animated:YES];
+    
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
     
-    //    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
-    
-    //    self.navigationItem.leftBarButtonItems = @[negativeSpacer, negativeSpacer5, backBarItem, flexibleSpace, toolBarItem, flexibleSpace];
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
-    self.navigationController.navigationBar.backgroundColor = __backgroundColor;
+//    self.Background.backgroundColor = __backgroundColor;
+//    self.navigationController.navigationBar.backgroundColor = __backgroundColor;
     [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
+    
+//    UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
+//    self.navigationItem.titleView = toolbar;
+
 }
 
 - (void) addSubmenu
@@ -383,7 +377,10 @@ UIColor *__backgroundColor;
     float h2 = __submenuScrollView.frame.size.height;
     float y = h0 * 0 + h1 * 0 + h2;
     __secondSubmenuScrollView.frame = CGRectMake(0, -y, [[UIScreen mainScreen] bounds].size.width, h + 2 * paddingTop);
+    UIView *hack = [[UIView alloc] initWithFrame: __secondSubmenuScrollView.frame];
+    hack.backgroundColor = __backgroundColor;
     [self.Background addSubview: __secondSubmenuScrollView];
+    [self.Background addSubview: hack];
     
     UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"Decrease Font Filled-50" andExtraPadding:0.5];
     [decreaseFontSizeButton setTitle:@"decreaseFontSize" forState:UIControlStateNormal];
@@ -402,6 +399,9 @@ UIColor *__backgroundColor;
     CGRect rect = __secondSubmenuScrollView.frame;
     rect.origin = CGPointZero;
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
+//    toolbar2.barTintColor = __backgroundColor;
+    toolbar2.backgroundColor = __backgroundColor;
+    toolbar2.translucent = NO;
     [toolbar2 setItems:@[decreaseFontSizeItem, increaseFontSizeItem]];
 
     __secondSubmenuScrollView.delaysContentTouches = NO;
@@ -452,6 +452,10 @@ UIColor *__backgroundColor;
     CGRect rect = __secondSubmenuScrollView.frame;
     rect.origin.y = fabs(rect.origin.y);
     __secondSubmenuScrollView.frame = rect;
+//    self.navigationController.navigationBar.backgroundColor = __backgroundColor;
+//    self.navigationController.navigationBar.backgroundColor = [UIColor redColor];
+//    [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
+
 }
 
 - (void) hideSecondSubmenu
@@ -542,13 +546,9 @@ UIColor *__backgroundColor;
                              }
                          }
          ];
-        
-        UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
-        [self setNavigationBottomBorderColor: backgroundColor height: 0.5f];
-        
-        
-        
-    } else{
+    }
+    else
+    {
         NSLog(@"Switch is OFF");
         state.editModeOn = NO;
         [self setSelectedObject: self.lastSelectedObject];
@@ -574,7 +574,8 @@ UIColor *__backgroundColor;
 }
 
 
-- (void) setNavigationBottomBorderColor:(UIColor *)color height:(CGFloat) height {
+- (void) setNavigationBottomBorderColor:(UIColor *)color height:(CGFloat) height
+{
     UIView *oldBottomBorder = [self.navigationController.navigationBar viewWithTag:999];
     if (oldBottomBorder) {
         [oldBottomBorder removeFromSuperview];
@@ -610,20 +611,7 @@ UIColor *__backgroundColor;
         segmentedControlFont.selectedSegmentIndex = UISegmentedControlNoSegment;
         [self hideSecondSubmenu];
     }
-    
-    switch ([segmentedControlFont selectedSegmentIndex]) {
-        case 0:
-            // do something
-            break;
-        case 1:
-            // do something
-            break;
-        case UISegmentedControlNoSegment:
-            // do something
-            break;
-        default:
-            NSLog(@"No option for: %ld", (long)[segmentedControlFont selectedSegmentIndex]);
-    }
+
 }
 
 - (BOOL) isEditModeOn
