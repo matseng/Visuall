@@ -26,8 +26,10 @@ UIImage *trashImg;
 UIImage *trashImgHilighted;
 BOOL alreadyAnimated = NO;
 UIScrollView *__submenuScrollView;
+UIView *__submenu;
 UIScrollView *__secondSubmenuScrollView;
 UIColor *__backgroundColor;
+UIColor *__darkGrayBorderColor;
 
 - (void) createTopMenu
 {
@@ -39,6 +41,7 @@ UIColor *__backgroundColor;
     float w = 42;
     float padding = 10;
     __backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+    __darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
     UIColor *blueButtonColor = self.view.tintColor;
     
     self.navigationItem.leftItemsSupplementBackButton = NO;
@@ -144,8 +147,8 @@ UIColor *__backgroundColor;
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
     
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
-    toolbar.backgroundColor = __backgroundColor;
-//    toolbar.translucent = NO;
+//    toolbar.backgroundColor = __backgroundColor;
+    toolbar.translucent = NO;
     toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -155,9 +158,9 @@ UIColor *__backgroundColor;
     UIBarButtonItem *negativeSpacer5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer5 setWidth:-5];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    /*
-    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
-     */
+    
+//    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
+    
     [toolbar setItems:@[flexibleSpace, editBarItem, flexibleSpace] animated:YES];
     
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
@@ -375,15 +378,15 @@ UIColor *__backgroundColor;
 - (void) addSubmenu
 {
     NSMutableArray *buttonList = [[NSMutableArray alloc] init];
-    float unit = 42;
+    float height = 44;
+    float unit = 40;
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
-    UIColor *darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
     
     SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
 //    __segmentControlVisualItem = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
     segmentControl.frame = CGRectMake(0, 0, 3 * unit, unit);
-    segmentControl.backgroundColor = backgroundColor;
+//    segmentControl.backgroundColor = backgroundColor;
     UIBarButtonItem *segmentControlItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
 
     UIImage *cursorClick = [[UIImage imageNamed: @"cursorClick.png"] imageWithExtraPadding: .1];
@@ -399,36 +402,44 @@ UIColor *__backgroundColor;
     [segmentControl setMyTitle:@"group" forSegmentAtIndex:2];
     
     SegmentedControlMod *segmentControlFont = [[SegmentedControlMod alloc] init];
-//    [segmentControlFont.autoresizing
-//    __segmentControlFormattingOptions = segmentControlFont;
+    __segmentControlFormattingOptions = segmentControlFont;
     [segmentControlFont addTarget:self action:@selector(segmentControlFontClicked:) forControlEvents:UIControlEventValueChanged];
     segmentControlFont.frame = CGRectMake(0, 0, unit, unit);
-    segmentControlFont.backgroundColor = backgroundColor;
+//    segmentControlFont.backgroundColor = backgroundColor;
     segmentControlFont.layer.cornerRadius = 5.0;
     segmentControlFont.autoresizingMask = UIViewAutoresizingNone;
     UIBarButtonItem *segmentControlFontItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControlFont];
 
     UIImage *fontSize = [[UIImage imageNamed: @"fontSize"] imageWithExtraPadding: .1];
+    fontSize = [fontSize imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [segmentControlFont insertSegmentWithImage:fontSize atIndex:0 animated:YES];
     [segmentControlFont setMyTitle:@"fontSize" forSegmentAtIndex:0];
     
     __trashButton = [self makeButtonFromImage:@"Trash-50" andExtraPadding:0.25];
+    __trashButton.frame = CGRectMake(0, 0, unit, unit);
     [__trashButton addTarget:self
                     action:@selector(buttonTapped:)
           forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *trashButtonItem = [[UIBarButtonItem alloc] initWithCustomView: __trashButton];
     
-    CGRect rect = CGRectMake(0, unit * 3, [[UIScreen mainScreen] bounds].size.width, unit + 2);
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    CGRect rect = CGRectMake(0, -height, [[UIScreen mainScreen] bounds].size.width, height);
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.frame = CGRectMake(0.0f, toolbar2.frame.size.height - 1.0f, toolbar2.frame.size.width, 0.5f);
+    bottomBorder.backgroundColor = [__darkGrayBorderColor CGColor];
+//    [toolbar2.layer addSublayer:bottomBorder];
     toolbar2.autoresizesSubviews = NO;
     toolbar2.autoresizingMask = UIViewAutoresizingNone;
-//    toolbar2.backgroundColor = __backgroundColor;
-//    toolbar2.tintColor = [UIColor greenColor];
-    toolbar2.translucent = NO;
-    [toolbar2 setItems:@[segmentControlItem, trashButtonItem, segmentControlFontItem]];
+//    toolbar2.translucent = NO;
+    toolbar2.backgroundColor = [UIColor whiteColor];
+
+    [toolbar2 setItems:@[flexibleSpace, segmentControlItem, segmentControlFontItem, trashButtonItem, flexibleSpace]];
    
     [self.Background addSubview: toolbar2];
-//    __submenuScrollView = scrollView;
+    __submenu = toolbar2;
+    
     
     //    [scrollView setHidden:YES];
 }
@@ -445,13 +456,14 @@ UIColor *__backgroundColor;
     
     float h0 = [[UIApplication sharedApplication] statusBarFrame].size.height;
     float h1 = self.navigationController.navigationBar.frame.size.height;
-    float h2 = __submenuScrollView.frame.size.height;
+    float h2 = __submenu.frame.size.height;
     float y = h0 * 0 + h1 * 0 + h2;
-    __secondSubmenuScrollView.frame = CGRectMake(0, -y, [[UIScreen mainScreen] bounds].size.width, h + 2 * paddingTop);
-    UIView *hack = [[UIView alloc] initWithFrame: __secondSubmenuScrollView.frame];
-    hack.backgroundColor = __backgroundColor;
+    __secondSubmenuScrollView.frame = CGRectMake(0, -y * 2, [[UIScreen mainScreen] bounds].size.width, h + paddingTop);
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.frame = CGRectMake(0.0f, __secondSubmenuScrollView.frame.size.height - 0.5f, __secondSubmenuScrollView.frame.size.width, 0.5f);
+    bottomBorder.backgroundColor = [__darkGrayBorderColor CGColor];
+    [__secondSubmenuScrollView.layer addSublayer:bottomBorder];
     [self.Background addSubview: __secondSubmenuScrollView];
-    [self.Background addSubview: hack];  // TODO (Aug 14, 2016):
     
     UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"Decrease Font Filled-50" andExtraPadding:0.5];
     [decreaseFontSizeButton setTitle:@"decreaseFontSize" forState:UIControlStateNormal];
@@ -467,13 +479,16 @@ UIColor *__backgroundColor;
                                action:@selector(increaseFontSizeHandler)
                      forControlEvents:UIControlEventTouchUpInside];
     
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *spacer40 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [spacer40 setWidth:80];
+    
     CGRect rect = __secondSubmenuScrollView.frame;
     rect.origin = CGPointZero;
+    rect.size.height = rect.size.height - 0.5;
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
-//    toolbar2.barTintColor = __backgroundColor;
-    toolbar2.backgroundColor = __backgroundColor;
-    toolbar2.translucent = NO;
-    [toolbar2 setItems:@[decreaseFontSizeItem, increaseFontSizeItem]];
+//    toolbar2.translucent = NO;
+    [toolbar2 setItems:@[flexibleSpace, spacer40, decreaseFontSizeItem, increaseFontSizeItem, flexibleSpace]];
 
     __secondSubmenuScrollView.delaysContentTouches = NO;
     [__secondSubmenuScrollView addSubview: toolbar2];
@@ -524,6 +539,7 @@ UIColor *__backgroundColor;
 
 - (UIButton *) makeButtonFromImage: (NSString *) imageName andExtraPadding: (float) padding
 {
+    float unit = 40.0;
     UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *undoImg = [[UIImage imageNamed: imageName] imageWithExtraPadding: padding];
 //    UIImage *undoImg = [UIImage imageNamed: imageName];
@@ -532,7 +548,7 @@ UIColor *__backgroundColor;
     UIImage *undoImgHilighted = [undoImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor: __backgroundColor];
     [undoButton setImage:undoImg forState:UIControlStateNormal];
     [undoButton setImage:undoImgHilighted forState:UIControlStateHighlighted];
-    undoButton.frame = CGRectMake(0, 0, 42, 42);  // TODO (Aug 12, 2016): change to constants e.g. BUTTON_WIDTH BUTTON_HEIGHT
+    undoButton.frame = CGRectMake(0, 0, unit, unit);  // TODO (Aug 12, 2016): change to constants e.g. BUTTON_WIDTH BUTTON_HEIGHT
     undoButton.layer.cornerRadius = 5;
     undoButton.tintColor = self.view.tintColor;
     undoButton.layer.borderWidth = 1;
@@ -544,18 +560,15 @@ UIColor *__backgroundColor;
 - (void) showSecondSubmenu
 {
     CGRect rect = __secondSubmenuScrollView.frame;
-    rect.origin.y = fabs(rect.origin.y);
+//    rect.origin.y = fabs(rect.origin.y);
+    rect.origin.y = __submenu.frame.size.height;
     __secondSubmenuScrollView.frame = rect;
-//    self.navigationController.navigationBar.backgroundColor = __backgroundColor;
-//    self.navigationController.navigationBar.backgroundColor = [UIColor redColor];
-//    [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
-
 }
 
 - (void) hideSecondSubmenu
 {
     CGRect rect = __secondSubmenuScrollView.frame;
-    rect.origin.y = -fabs(rect.origin.y);
+    rect.origin.y = __submenu.frame.size.height * -2;
     __secondSubmenuScrollView.frame = rect;
 }
 
@@ -596,7 +609,7 @@ UIColor *__backgroundColor;
         [self setSelectedObject: self.lastSelectedObject];
         [self.scrollViewButtonList setHidden: NO];
         
-        CGRect rect = self.scrollViewButtonList.frame;
+        CGRect rect = __submenu.frame;
         
 //        float h0 = [[UIApplication sharedApplication] statusBarFrame].size.height;
 //        float h1 = self.navigationController.navigationBar.frame.size.height;
@@ -607,7 +620,7 @@ UIColor *__backgroundColor;
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:^(void) {
-                             [self.scrollViewButtonList setFrame: rect];
+                             [__submenu setFrame: rect];
                          }
                          completion:^(BOOL finished) {
                              //Completion Block
@@ -646,18 +659,17 @@ UIColor *__backgroundColor;
         NSLog(@"Switch is OFF");
         state.editModeOn = NO;
         [self setSelectedObject: self.lastSelectedObject];
-        CGRect rect = self.scrollViewButtonList.frame;
+        CGRect rect = __submenu.frame;
         rect.origin.y = -rect.size.height;
-        UIColor *darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
         
         [UIView animateWithDuration:0.3
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^(void) {
-                             [self.scrollViewButtonList setFrame: rect];
+                             [__submenu setFrame: rect];
                          }
                          completion:^(BOOL finished){
-                             [self setNavigationBottomBorderColor: darkGrayBorderColor height: 0.5f];
+                             [self setNavigationBottomBorderColor: __darkGrayBorderColor height: 0.5f];
 //                             float width = self.scrollViewButtonList.frame.size.width;
 //                             float widthContent = self.scrollViewButtonList.contentSize.width;
 //                             float newContentOffset = widthContent - width;
@@ -670,6 +682,7 @@ UIColor *__backgroundColor;
 
 - (void) setNavigationBottomBorderColor:(UIColor *)color height:(CGFloat) height
 {
+    return; // TODO (Aug 14, 2016): Figure out how to remove the built-in border from the nav bar
     UIView *oldBottomBorder = [self.navigationController.navigationBar viewWithTag:999];
     if (oldBottomBorder) {
         [oldBottomBorder removeFromSuperview];
