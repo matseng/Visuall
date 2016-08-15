@@ -98,15 +98,19 @@
 - (void) buildViewHierarchyAndMenus
 {
     [self.Background removeFromSuperview];
-    
-//    self.tabBarController.delegate = self;
-//    self.tabBarController.delegate = [StateUtil sharedManager];
-    
+
     self.Background = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
+    self.Background.backgroundColor = [UIColor redColor];
+    [self.Background setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview: self.Background];
+    [self constrainViewToSuperview: self.Background];
     
     self.BackgroundScrollView = [[ScrollViewMod alloc] init];
     self.BackgroundScrollView.backgroundColor = [UIColor greenColor];
     [self initializeBackgroundScrollView];
+    [self.BackgroundScrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.Background addSubview: self.BackgroundScrollView];
+    [self constrainViewToSuperview: self.BackgroundScrollView];
     
     self.BoundsTiledLayerView = [[TiledLayerView alloc] initWithFrame: self.BackgroundScrollView.frame];
     self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
@@ -121,8 +125,8 @@
     self.NotesView.opaque = NO;
     //    self.NotesView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
     
-    [self.view addSubview: self.Background];
-    [self.Background addSubview: self.BackgroundScrollView];
+    
+
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
     [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
     [self.VisualItemsView addSubview: self.GroupsView];
@@ -146,6 +150,35 @@
             forControlEvents:UIControlEventEditingChanged];
     */
     [self.Background setNeedsDisplay];
+}
+
+/*
+ * Name: constrainViewToSuperview
+ * Description: See http://matthewmorey.com/creating-uiviews-programmatically-with-auto-layout/
+ */
+- (void) constrainViewToSuperview: (UIView *) subView
+{
+    UIView *parent = [subView superview];
+    
+    NSLayoutConstraint *width =[NSLayoutConstraint
+                                 constraintWithItem:subView
+                                 attribute:NSLayoutAttributeWidth
+                                 relatedBy:NSLayoutRelationEqual
+                                 toItem:parent
+                                 attribute:NSLayoutAttributeWidth
+                                 multiplier:1.0f
+                                 constant:0.f];
+    [parent addConstraint:width];
+    
+    NSLayoutConstraint *height =[NSLayoutConstraint
+                                constraintWithItem:subView
+                                attribute:NSLayoutAttributeHeight
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:parent
+                                attribute:NSLayoutAttributeHeight
+                                multiplier:1.0f
+                                constant:0.f];
+    [parent addConstraint:height];
 }
 
 - (void) initializeBackgroundScrollView
