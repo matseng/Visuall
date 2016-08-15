@@ -14,14 +14,11 @@
 #import "StateUtil.h"
 #import "SegmentedControlMod.h"
 
-//@property UIScrollView *scrollViewButtonList;
-
-
 
 @implementation ViewController (Menus) 
 
 StateUtil *state;
-SevenSwitch *editSwitch;
+SevenSwitch *__editSwitch;
 SegmentedControlMod *__segmentControlVisualItem;
 SegmentedControlMod *__segmentControlFormattingOptions;
 UIButton *trashButton;
@@ -35,6 +32,9 @@ UIColor *__backgroundColor;
 - (void) createTopMenu
 {
     state = [StateUtil sharedManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resize) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
     float h = 42;
     float w = 42;
     float padding = 10;
@@ -60,24 +60,32 @@ UIColor *__backgroundColor;
     backButton.layer.masksToBounds = YES;
     [backButton.layer setBorderColor: [self.view.tintColor CGColor]];
     backButton.clipsToBounds = YES;
+    backButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,0, 85,44)];
+    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,0, 85, 44)];
     searchBar.placeholder = @"Search";
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
     searchBarItem.tag = 123;
     
     SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
-    editSwitch = mySwitch;
+//    SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, 32 * 0.75)];
+    __editSwitch = mySwitch;
     mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
     [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     mySwitch.offLabel.text = @"Edit";
     mySwitch.offLabel.textColor = blueButtonColor;
+//    mySwitch.thumbTintColor = self.view.tintColor;
+    mySwitch.inactiveColor = [UIColor colorWithRed: 227/255.0f green: 227/255.0f blue: 232/255.0f alpha:1.0f];
     mySwitch.onTintColor = blueButtonColor;
     mySwitch.onLabel.text = @" Done";
     mySwitch.onLabel.textColor = __backgroundColor;
+    mySwitch.shadowColor = [UIColor clearColor];
+
     NSLog(@"offlabel text width: %f", mySwitch.offLabel.frame.size.width);
     [mySwitch setOn:NO animated:YES];
+    mySwitch.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    
     UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: mySwitch];
     
     int i = 3;
@@ -96,6 +104,7 @@ UIColor *__backgroundColor;
                 forLeftSegmentState:UIControlStateNormal
                   rightSegmentState:UIControlStateNormal
                          barMetrics:UIBarMetricsDefault];
+    segmentControl.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
     UIImage *reading = [UIImage imageNamed: @"Reading-50"];
     reading = [UIImage imageWithCGImage:reading.CGImage scale:1.7 orientation:reading.imageOrientation];
@@ -128,11 +137,16 @@ UIColor *__backgroundColor;
     starButton.layer.borderWidth = 0;
     starButton.layer.masksToBounds = YES;
     [starButton.layer setBorderColor: [self.view.tintColor CGColor]];
+    
+    starButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    starButton.autoresizesSubviews = YES;
+    
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
     
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
     toolbar.backgroundColor = __backgroundColor;
-    toolbar.translucent = NO;
+//    toolbar.translucent = NO;
+    toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer30 setWidth:-30];
@@ -143,18 +157,11 @@ UIColor *__backgroundColor;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
-    
 //    [toolbar setItems:@[flexibleSpace, editBarItem, flexibleSpace] animated:YES];
-    
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
-    
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
-//    self.Background.backgroundColor = __backgroundColor;
-//    self.navigationController.navigationBar.backgroundColor = __backgroundColor;
+    //    self.navigationController.navigationBar.backgroundColor = __backgroundColor;
     [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
-    
-//    UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
-//    self.navigationItem.titleView = toolbar;
 
 }
 
@@ -418,6 +425,29 @@ UIColor *__backgroundColor;
 //    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
 }
 
+- (void) resize
+{
+    CGFloat navBarHeight = self.navigationController.navigationBar.intrinsicContentSize.height;
+
+    NSLog(@"\n here %f", navBarHeight);
+    
+    if ( [[UIScreen mainScreen] bounds].size.height < [[UIScreen mainScreen] bounds].size.width )  // landscape orientation
+    {
+
+//        float unit = self.navigationController.navigationBar.intrinsicContentSize.height;
+//        SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, 42 * 1.65, unit * 0.75)];
+//        __editSwitch;
+//        __editSwitch.autoresizesSubviews = YES;
+//        CGRect rect = __editSwitch.frame;
+//        rect.size.height = 42 * 0.75;
+//        __editSwitch.shadowColor = [UIColor clearColor];
+//        __editSwitch.thumbTintColor = self.view.tintColor;
+//        mySwitch.thumbTintColor = self.view.tintC
+//        __editSwitch.frame = rect;
+//        __editSwitch.transform = CGAffineTransformMakeScale(0.75, 0.75);
+    }
+}
+
 - (void) decreaseFontSizeHandler
 {
     
@@ -616,27 +646,27 @@ UIColor *__backgroundColor;
 
 - (BOOL) isEditModeOn
 {
-    return [editSwitch isOn];
+    return [__editSwitch isOn];
 }
 
 - (BOOL) isDrawGroupButtonSelected
 {
-    return [editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
+    return [__editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
 }
 
 - (BOOL) isNoteButtonSelected
 {
-    return [editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"note"];
+    return [__editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"note"];
 }
 
 - (BOOL) isPointerButtonSelected
 {
-    return [editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
+    return [__editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
 }
 
 - (BOOL) isArrowButtonSelected
 {
-    return [editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
+    return [__editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
 }
 
 - (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture
