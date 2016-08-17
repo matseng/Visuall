@@ -124,11 +124,11 @@
         {
             if ([self.activelySelectedObjectDuringPan isKindOfClass:[NoteItem2 class]]) {
                 NoteItem2 *ni = (NoteItem2 *)self.lastSelectedObject;
-                [self removeValue:ni];
+//                [self removeValue:ni];
                 [self.NotesCollection deleteNoteGivenKey: ni.note.key];
             } else if ([self.activelySelectedObjectDuringPan isKindOfClass:[GroupItem class]]) {
                 GroupItem *gi = (GroupItem *)self.lastSelectedObject;
-                [self removeValue:gi];
+//                [self removeValue:gi];
                 [self.groupsCollection deleteGroupGivenKey: gi.group.key];
             }
             [self.lastSelectedObject removeFromSuperview];

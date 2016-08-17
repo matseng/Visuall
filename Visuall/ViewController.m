@@ -475,19 +475,17 @@
         if ([self.lastSelectedObject isNoteItem])
         {
             NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
-//            [self removeValue:ni];
             [self.NotesCollection deleteNoteGivenKey: ni.note.key];
         }
         
         else if ([self.lastSelectedObject isGroupItem])
         {
             GroupItem *gi = [self.lastSelectedObject getGroupItem];
-            //        [self removeValue:gi];
             [self.groupsCollection deleteGroupGivenKey: gi.group.key];
         }
         
-//        [self.lastSelectedObject removeFromSuperview];
-        [[StateUtil sharedManager] removeValue: self.lastSelectedObject];  // TODO: add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
+        [self.lastSelectedObject removeFromSuperview];
+        [[StateUtil sharedManager] removeValue: self.lastSelectedObject];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
         //        [self.lastSelectedObject delete:nil];  // TODO: untested
         //        self.lastSelectedObject = nil;
 
@@ -986,11 +984,11 @@
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]]) {
                     NoteItem2 *ni = (NoteItem2 *)self.lastSelectedObject;
-                    [self removeValue:ni];
+//                    [self removeValue:ni];
                     [self.NotesCollection deleteNoteGivenKey: ni.note.key];
                 } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
                     GroupItem *gi = (GroupItem *)self.lastSelectedObject;
-                    [self removeValue:gi];
+//                    [self removeValue:gi];
                     [self.groupsCollection deleteGroupGivenKey: gi.group.key];
                 }
                 [self.lastSelectedObject removeFromSuperview];

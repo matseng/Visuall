@@ -420,6 +420,7 @@ UIColor *__darkGrayBorderColor;
     [segmentControlFont setMyTitle:@"fontSize" forSegmentAtIndex:0];
     
     __trashButton = [self makeButtonFromImage:@"Trash-50" buttonSize: unit andExtraPadding:0.25];
+    [__trashButton setTitle:@"trash" forState:UIControlStateNormal];
     __trashButton.frame = CGRectMake(0, 0, unit, unit);
     [__trashButton addTarget:self
                     action:@selector(buttonTapped:)

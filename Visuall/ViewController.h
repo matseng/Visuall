@@ -63,7 +63,7 @@
 
 - (void) addNoteToViewWithHandlers:(NoteItem2 *) noteItem;
 
-- (void) removeValue: (id) object;
+//- (void) removeValue: (id) object;
 
 - (void) calculateTotalBounds: (UIView *) view;
 
