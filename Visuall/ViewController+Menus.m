@@ -78,6 +78,9 @@ UIColor *__darkGrayBorderColor;
     [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     mySwitch.offLabel.text = @"Edit";
     mySwitch.offLabel.textColor = blueButtonColor;
+//    mySwitch.thumbTintColor = blueButtonColor;
+//    mySwitch.onThumbTintColor = [UIColor whiteColor];
+//    mySwitch.borderColor = blueButtonColor;
 //    mySwitch.thumbTintColor = self.view.tintColor;
     mySwitch.inactiveColor = [UIColor colorWithRed: 227/255.0f green: 227/255.0f blue: 232/255.0f alpha:1.0f];
     mySwitch.onTintColor = blueButtonColor;
@@ -383,7 +386,7 @@ UIColor *__darkGrayBorderColor;
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     
     SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
-//    __segmentControlVisualItem = segmentControl;
+    __segmentControlVisualItem = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
     segmentControl.frame = CGRectMake(0, 0, 3 * unit, unit);
 //    segmentControl.backgroundColor = backgroundColor;
@@ -392,6 +395,7 @@ UIColor *__darkGrayBorderColor;
     UIImage *cursorClick = [[UIImage imageNamed: @"cursorClick.png"] imageWithExtraPadding: .1];
     [segmentControl insertSegmentWithImage:cursorClick atIndex:0 animated:YES];
     [segmentControl setMyTitle:@"pointer" forSegmentAtIndex: 0];
+    [segmentControl setSelectedSegmentIndex: 0];
     
     UIImage *textLetter = [[UIImage imageNamed: @"textLetter.png"] imageWithExtraPadding: 0];
     [segmentControl insertSegmentWithImage:textLetter atIndex:1 animated:YES];
@@ -415,7 +419,7 @@ UIColor *__darkGrayBorderColor;
     [segmentControlFont insertSegmentWithImage:fontSize atIndex:0 animated:YES];
     [segmentControlFont setMyTitle:@"fontSize" forSegmentAtIndex:0];
     
-    __trashButton = [self makeButtonFromImage:@"Trash-50" andExtraPadding:0.25];
+    __trashButton = [self makeButtonFromImage:@"Trash-50" buttonSize: unit andExtraPadding:0.25];
     __trashButton.frame = CGRectMake(0, 0, unit, unit);
     [__trashButton addTarget:self
                     action:@selector(buttonTapped:)
@@ -449,7 +453,7 @@ UIColor *__darkGrayBorderColor;
 {
     __secondSubmenuScrollView = [[UIScrollView alloc] init];
     __secondSubmenuScrollView.backgroundColor = __backgroundColor;
-    float h = 40;
+    float h = 30;
 //    float w = 40;
 //    float padding = 10;
     float paddingTop = 4;
@@ -465,14 +469,14 @@ UIColor *__darkGrayBorderColor;
     [__secondSubmenuScrollView.layer addSublayer:bottomBorder];
     [self.Background addSubview: __secondSubmenuScrollView];
     
-    UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"Decrease Font Filled-50" andExtraPadding:0.5];
+    UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"Decrease Font Filled-50" buttonSize: h andExtraPadding:0.5];
     [decreaseFontSizeButton setTitle:@"decreaseFontSize" forState:UIControlStateNormal];
     UIBarButtonItem *decreaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: decreaseFontSizeButton];
     [decreaseFontSizeButton addTarget:self
                    action:@selector(decreaseFontSizeHandler)
          forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *increaseFontSizeButton = [self makeButtonFromImage:@"increase Font Filled-50" andExtraPadding:0.5];
+    UIButton *increaseFontSizeButton = [self makeButtonFromImage:@"increase Font Filled-50" buttonSize: h andExtraPadding:0.5];
     [increaseFontSizeButton setTitle:@"increaseFontSize" forState:UIControlStateNormal];
     UIBarButtonItem *increaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: increaseFontSizeButton];
     [increaseFontSizeButton addTarget:self
@@ -537,9 +541,9 @@ UIColor *__darkGrayBorderColor;
     
 }
 
-- (UIButton *) makeButtonFromImage: (NSString *) imageName andExtraPadding: (float) padding
+- (UIButton *) makeButtonFromImage: (NSString *) imageName buttonSize: (float) unit andExtraPadding: (float) padding
 {
-    float unit = 40.0;
+//    float unit = 40.0;
     UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *undoImg = [[UIImage imageNamed: imageName] imageWithExtraPadding: padding];
 //    UIImage *undoImg = [UIImage imageNamed: imageName];

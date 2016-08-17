@@ -68,6 +68,8 @@
 
 - (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
 
+- (void) userIsNotSignedInHandler;
+
 - (void) setValueNote: (NoteItem2 *) ni;
 
 - (void) setValueGroup: (GroupItem *) gi;

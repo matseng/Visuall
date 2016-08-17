@@ -8,26 +8,31 @@
 
 #import "SegmentedControlMod.h"
 
-@implementation SegmentedControlMod
+//@interface SegmentedControlMod : UISegmentedControl
+@interface SegmentedControlMod ()
 
-BOOL __didValueChange;
-NSMutableDictionary *dict;
+@property BOOL valueChange;
+@property NSMutableDictionary *dict;
+
+@end
+
+@implementation SegmentedControlMod
 
 - (void) setMyTitle: (NSString *) title forSegmentAtIndex: (NSUInteger) i
 {
-    if (!dict) dict = [[NSMutableDictionary alloc] init];
-    [dict setObject:title forKey: [NSNumber numberWithUnsignedInteger:i]];
+    if (!self.dict) self.dict = [[NSMutableDictionary alloc] init];
+    [self.dict setObject:title forKey: [NSNumber numberWithUnsignedInteger:i]];
 }
 //
 - (NSString *) getMyTitleForSegmentAtIndex: (NSUInteger) i
 {
-    return [dict objectForKey:[NSNumber numberWithUnsignedInteger:i]];
+    return [self.dict objectForKey:[NSNumber numberWithUnsignedInteger:i]];
 }
 
 - (NSString *) getMyTitleForCurrentlySelectedSegment
 {
     NSInteger i = self.selectedSegmentIndex;
-    return [dict objectForKey: [NSNumber numberWithInteger:i]];
+    return [self.dict objectForKey: [NSNumber numberWithInteger:i]];
 }
 
 /*
@@ -36,7 +41,7 @@ NSMutableDictionary *dict;
  */
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    __didValueChange = YES;
+    self.valueChange = YES;
     NSInteger previousSelectedSegmentIndex = self.selectedSegmentIndex;
     
     [super touchesEnded:touches withEvent:event];
@@ -45,7 +50,7 @@ NSMutableDictionary *dict;
     CGPoint viewPoint = [self convertPoint:locationPoint fromView:self];
     if ([self pointInside:viewPoint withEvent:event] && previousSelectedSegmentIndex == self.selectedSegmentIndex)
     {
-        __didValueChange = NO;
+        self.valueChange = NO;
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
     
@@ -53,7 +58,7 @@ NSMutableDictionary *dict;
 
 - (BOOL) didValueChange
 {
-    return __didValueChange;
+    return self.valueChange;
 }
 
 @end

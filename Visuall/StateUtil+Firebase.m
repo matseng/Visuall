@@ -75,6 +75,13 @@ void (^_callbackGroupItem)(GroupItem *gi);
     }];
 }
 
+- (void) userIsNotSignedInHandler
+{
+    _version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    _notesTableRef = [_version01TableRef child: @"notes"];
+    _groupsTableRef = [_version01TableRef child: @"groups"];
+}
+
 - (void) loadVisuallsForCurrentUser
 {
     
@@ -233,6 +240,9 @@ void (^_callbackGroupItem)(GroupItem *gi);
  */
 - (void) setValueNote: (NoteItem2 *) ni
 {
+    if ( !_currentVisuallKey) {
+        return;  // TODO (Aug 16, 2016): Unable to save a note bc user didn't log-in 2/2 no internet connection - possible to load data from local disk?
+    }
     NSMutableDictionary *noteDictionary = [@{
                                      @"data/title": ni.note.title,
                                      @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
@@ -271,7 +281,12 @@ void (^_callbackGroupItem)(GroupItem *gi);
 - (void) setValueGroup: (GroupItem *) gi
 {
     FIRDatabaseReference *groupsRef = [_version01TableRef child: @"groups"];
-    if ( !groupsRef ) return;
+    FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
+    gi.group.key = newGroupRef.key;
+    if ( !_currentVisuallKey )
+    {
+        return;
+    }
     NSMutableDictionary *groupDictionary = [@{
                                       @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
                                       @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
@@ -283,8 +298,6 @@ void (^_callbackGroupItem)(GroupItem *gi);
                                       @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
                                       } mutableCopy];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
-    FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
-    gi.group.key = newGroupRef.key;
     [self.groupsCollection addGroup: gi withKey: newGroupRef.key];
     [newGroupRef updateChildValues: groupDictionary];
     [[_visuallsTable_currentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];

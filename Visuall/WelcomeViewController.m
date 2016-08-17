@@ -30,7 +30,7 @@
 }
 
 - (IBAction)skipThisStep:(id)sender {
-//    [[StateUtil sharedManager] userIsSignedInHandler: user];
+    [[StateUtil sharedManager] userIsNotSignedInHandler];
     [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
 }
 
