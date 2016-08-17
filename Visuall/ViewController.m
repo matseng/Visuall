@@ -565,7 +565,8 @@
         [self setActivelySelectedObjectDuringPan: nv];
         //            [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
     }
-    else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isGroupItem])
+//    else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isGroupItem])
+    else if ( [self isEditModeOn] && [viewHit isGroupItem])
     {
         UIView *handleSelected = [[viewHit getGroupItem] hitTestOnHandles:gestureRecognizer];
         if ( handleSelected )
@@ -824,9 +825,29 @@
 }
 */
 
+
+
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
     {
+        GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
+        
+        if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [gi isHandle: self.activelySelectedObjectDuringPan] )
+        {
+            if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
+            {
+            
+                [gi resizeGroup: gestureRecognizer];
+                [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
+            }
+            else
+            {
+                [self setActivelySelectedObjectDuringPan: nil];
+            }
+            return;
+        }
+        
+        
         // State began
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
             // TODO (Aug 11, 2016): && we're not starting on another group's handle
@@ -854,6 +875,7 @@
             [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
             [self refreshGroupsView];
             [self setSelectedObject:currentGroupItem];
+            [self setActivelySelectedObjectDuringPan: nil];
         }
     }
 }

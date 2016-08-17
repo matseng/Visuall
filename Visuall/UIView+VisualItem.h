@@ -24,4 +24,6 @@
 
 - (BOOL) isGroupItemSubview;
 
+- (BOOL) isGroupHandle;
+
 @end

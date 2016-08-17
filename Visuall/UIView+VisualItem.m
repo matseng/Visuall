@@ -35,6 +35,19 @@
     return ( ![self isKindOfClass:[GroupItem class]]  && [ [self superview] isKindOfClass:[GroupItem class]] );
 }
 
+- (BOOL) isGroupHandle
+{
+    if ([self isGroupItem])
+    {
+        GroupItem *gi = [self getGroupItem];
+        if( [gi isHandle: self] )
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (GroupItem *) getGroupItem
 {
     if ( [self isKindOfClass:[GroupItem class]] )
