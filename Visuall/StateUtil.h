@@ -34,7 +34,7 @@
 @property BOOL editModeOn;
 @property ScrollViewMod *BackgroundScrollView;
 
-+(id)sharedManager;
++(id) sharedManager;
 
 -(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
 
@@ -59,6 +59,8 @@
 - (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;
 
 - (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem;
+
+- (void) loadVisuallsListForCurrentUser: (NSString *) userID;
 
 - (void) loadVisuallsForCurrentUser;
 

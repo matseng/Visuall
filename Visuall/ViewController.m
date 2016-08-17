@@ -21,6 +21,7 @@
 #import "ViewController+Group.h"
 #import "ScrollViewMod.h"
 #import "StateUtil.h"
+#import "UserUtil.h"
 #import "TouchDownGestureRecognizer.h"
 
 @interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate> {
@@ -74,12 +75,15 @@
         [self calculateTotalBounds: gi];
     }];
     
-    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
+//    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
+    if (self.tabBarController.selectedIndex == 0)  // Global tab
     {
         [[StateUtil sharedManager] loadOrCreatePublicVisuall: @"global"];
     }
     else
     {
+        NSString *userID = [[UserUtil sharedManager] userID];
+        [[StateUtil sharedManager] loadVisuallsListForCurrentUser:userID];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
         [[StateUtil sharedManager] loadVisuallsForCurrentUser];
     }
     

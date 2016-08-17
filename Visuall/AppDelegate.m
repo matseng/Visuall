@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "StateUtil.h"
+#import "UserUtil.h"
 #import "WelcomeViewController.h"
 
 @interface AppDelegate ()
@@ -67,7 +68,7 @@ didSignInForUser:(GIDGoogleUser *)user
                                   completion:^(FIRUser *user, NSError *error) {
                                       if (user != nil) {
                                           // User is signed in.
-                                          [[StateUtil sharedManager] userIsSignedInHandler: user];
+                                          [[UserUtil sharedManager] userIsSignedInHandler: user];
                                           
                                           UIWindow *window = [UIApplication sharedApplication].keyWindow;
                                           WelcomeViewController *rootViewController = (WelcomeViewController *) window.rootViewController;

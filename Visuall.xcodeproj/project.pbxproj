@@ -73,6 +73,7 @@
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
 		71FD2EE01D5E7F5000CA5365 /* Decrease Font Filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71FD2EDE1D5E7F5000CA5365 /* Decrease Font Filled-50.png */; };
 		71FD2EE11D5E7F5000CA5365 /* Increase Font Filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71FD2EDF1D5E7F5000CA5365 /* Increase Font Filled-50.png */; };
+		71FD2EEA1D6522BC00CA5365 /* UserUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EE91D6522BC00CA5365 /* UserUtil.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
 		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; };
 		77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA71C011D5F00105BB5 /* linkarrow.png */; };
@@ -201,6 +202,8 @@
 		71FC72131BF2E881003B7F14 /* NotesCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesCollection.m; sourceTree = "<group>"; };
 		71FD2EDE1D5E7F5000CA5365 /* Decrease Font Filled-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Decrease Font Filled-50.png"; sourceTree = "<group>"; };
 		71FD2EDF1D5E7F5000CA5365 /* Increase Font Filled-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Increase Font Filled-50.png"; sourceTree = "<group>"; };
+		71FD2EE81D6522BC00CA5365 /* UserUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserUtil.h; sourceTree = "<group>"; };
+		71FD2EE91D6522BC00CA5365 /* UserUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserUtil.m; sourceTree = "<group>"; };
 		77E13DA11C011C1700105BB5 /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
 		77E13DA51C011CF200105BB5 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		77E13DA71C011D5F00105BB5 /* linkarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linkarrow.png; sourceTree = "<group>"; };
@@ -290,8 +293,6 @@
 				716B51D41D36C2A40049A203 /* UIView+VisualItem.h */,
 				716B51D51D36C2A40049A203 /* UIView+VisualItem.m */,
 				71710A811D5D033C0038D883 /* Menus */,
-				71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */,
-				71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */,
 				71710A801D5D00630038D883 /* GestureHandlers */,
 				71D96C021D359E0000CD1C49 /* ViewController+Group.h */,
 				71D96C031D359E0000CD1C49 /* ViewController+Group.m */,
@@ -381,6 +382,8 @@
 		71710A7F1D5CF6350038D883 /* StateUtil */ = {
 			isa = PBXGroup;
 			children = (
+				71FD2EE81D6522BC00CA5365 /* UserUtil.h */,
+				71FD2EE91D6522BC00CA5365 /* UserUtil.m */,
 				716B04681BFC210300DA9451 /* StateUtil.h */,
 				716B04691BFC210300DA9451 /* StateUtil.m */,
 				71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */,
@@ -392,6 +395,8 @@
 		71710A801D5D00630038D883 /* GestureHandlers */ = {
 			isa = PBXGroup;
 			children = (
+				71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */,
+				71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */,
 				71D96BFC1D34791100CD1C49 /* ViewController+panHandler.h */,
 				71D96BFD1D34791100CD1C49 /* ViewController+panHandler.m */,
 				71D96C051D35A9A400CD1C49 /* ViewController+TapHandler.h */,
@@ -684,6 +689,7 @@
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,
 				713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */,
 				71B37E791C1924800048851A /* HomeViewController.m in Sources */,
+				71FD2EEA1D6522BC00CA5365 /* UserUtil.m in Sources */,
 				885AFD621C00215300F89DE5 /* Note.m in Sources */,
 				88ED06281C06237300C0486D /* Group+CoreDataProperties.m in Sources */,
 				713D0D601CC6AE4F00878EAE /* Group2.m in Sources */,

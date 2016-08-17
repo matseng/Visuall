@@ -9,6 +9,7 @@
 #import "StateUtil+Firebase.h"
 #import "UIView+VisualItem.h"
 #import <GoogleSignIn/GoogleSignIn.h>
+#import "UserUtil.h"
 
 @implementation StateUtil (Firebase)
 
@@ -28,27 +29,11 @@ void (^_callbackGroupItem)(GroupItem *gi);
     [[GIDSignIn sharedInstance] signOut];
 }
 
--(void) userIsSignedInHandler: (FIRUser *) user
+- (void) loadVisuallsListForCurrentUser: (NSString *) userID
 {
     _version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
     _notesTableRef = [_version01TableRef child: @"notes"];
     _groupsTableRef = [_version01TableRef child: @"groups"];
-
-    NSString *userID = [FIRAuth auth].currentUser.uid;
-    NSString *name;
-    NSString *email;
-    NSString *provider;
-    for ( id <FIRUserInfo> profile in user.providerData) {
-        NSString *providerID = profile.providerID;
-        NSString *uid = profile.uid;  // Provider-specific UID
-        name = profile.displayName;
-        email = profile.email;
-        //        provider = profile.email;
-        NSURL *photoURL = profile.photoURL;
-        NSLog(@"userID: %@", userID);
-        NSLog(@"uid: %@", uid);
-    }
-    
     _usersTableCurrentUser = [[_version01TableRef child:@"users"] child:userID];
     _visuallsTableRef = [_version01TableRef child: @"visualls"];
     
@@ -56,15 +41,7 @@ void (^_callbackGroupItem)(GroupItem *gi);
     {
         if ( ![snapshot exists] )  // we have a new user
         {
-            NSString *myUserName = snapshot.value[@"username"];
-            NSLog(@"username: %@", myUserName);
-            NSDictionary *newUserBasicUserInfo = @{
-                                                   @"full_name" : name,
-                                                   @"email": email,
-                                                   @"date-joined": [FIRServerValue timestamp],
-                                                   @"date-last_visit": [FIRServerValue timestamp]
-                                                   };
-            [[[_version01TableRef child:@"users"] child: userID] setValue: newUserBasicUserInfo];
+            [self setNewUser];
         } else {
             NSLog(@"%@", snapshot.value );
             [[[_version01TableRef child:@"users"] child: userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
@@ -73,6 +50,20 @@ void (^_callbackGroupItem)(GroupItem *gi);
     } withCancelBlock:^(NSError * _Nonnull error) {
         NSLog(@"%@", error.localizedDescription);
     }];
+}
+
+- (void) setNewUser
+{
+    FIRUser *user = [[UserUtil sharedManager] firebaseUser];
+    if ( user ) {
+        NSDictionary *newUserBasicUserInfo = @{
+                                               @"full_name" : user.displayName,
+                                               @"email": user.email,
+                                               @"date-joined": [FIRServerValue timestamp],
+                                               @"date-last_visit": [FIRServerValue timestamp]
+                                               };
+        [[[_version01TableRef child:@"users"] child: [FIRAuth auth].currentUser.uid] setValue: newUserBasicUserInfo];
+    }
 }
 
 - (void) userIsNotSignedInHandler
