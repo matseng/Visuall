@@ -465,7 +465,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dY6-NA-b0j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="495" y="2488"/>
+            <point key="canvasLocation" x="-481" y="2496"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="Vqq-Bm-7fx">
@@ -479,20 +479,17 @@
                     </tabBar>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="selectedIndex">
-                            <integer key="value" value="2"/>
+                            <integer key="value" value="1"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="Fbd-9Y-6CG" kind="relationship" relationship="viewControllers" id="lWO-Cx-rar"/>
-                        <segue destination="XSC-qm-bQ0" kind="relationship" relationship="viewControllers" id="lGr-PA-J9N"/>
                         <segue destination="LOH-1e-ScV" kind="relationship" relationship="viewControllers" id="Zgc-mf-6uD"/>
-                        <segue destination="mtn-Ch-Ad4" kind="relationship" relationship="viewControllers" id="EkO-v3-ieF"/>
-                        <segue destination="brj-Rv-45M" kind="relationship" relationship="viewControllers" id="Y9K-iR-JkL"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3sN-ap-FQp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="956" y="2486"/>
+            <point key="canvasLocation" x="68" y="2478"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qhL-Mo-6Ys">
@@ -507,7 +504,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x8N-Hn-uWN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-37" y="2488"/>
+            <point key="canvasLocation" x="-989" y="2488"/>
         </scene>
     </scenes>
 </document>
