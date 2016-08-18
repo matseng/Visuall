@@ -33,9 +33,7 @@
 @property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing
 @property BOOL editModeOn;
 @property ScrollViewMod *BackgroundScrollView;
-@property FIRDatabaseReference *version01TableRef;
 
-+(id) sharedManager;
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
 
@@ -47,39 +45,11 @@
 
 -(void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView: (UIView *) view;
 
-@end
-
-@protocol FirebaseUtilProtocolDelegate
-
-- (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;
-
-- (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem;
-
-- (void) loadVisuallsListForCurrentUser: (NSString *) userID;
-
-- (void) loadVisuallsForCurrentUser;
-
-- (void) loadFirebaseNotes: (void (^)(NoteItem2 *ni)) callback;
-
-- (void) loadFirebaseGroups: (void (^)(GroupItem *ni)) callback;
-
-- (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
-
-- (void) setValueNote: (NoteItem2 *) ni;
-
-- (void) setValueGroup: (GroupItem *) gi;
-
-- (void) updateChildValue: (UIView *) visualObject Property: (NSString *) propertyName;
-
-- (void) updateChildValues: (UIView *) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
-
-- (void) removeValue: (UIView *) view;
-
-- (void) loadOrCreatePublicVisuall: (NSString *) publicKey;
-
 - (float) getZoomScale;
 
 @end
+
+
 
 
 //@interface MyManager : NSObject {

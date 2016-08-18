@@ -20,7 +20,7 @@
 #import "ViewController+TapHandler.h"
 #import "ViewController+Group.h"
 #import "ScrollViewMod.h"
-#import "StateUtil.h"
+#import "StateUtilFirebase.h"
 #import "UserUtil.h"
 #import "TouchDownGestureRecognizer.h"
 
@@ -58,15 +58,18 @@
     [self buildViewHierarchyAndMenus];
     
     NSLog(@"Firebase URL: %@", self.firebaseURL);  // TODO (Aug 17, 2016): In the future this value will be populated from the previous selection of a Visuall
+
+    NSString *userID = [[UserUtil sharedManager] userID];
+    [[StateUtilFirebase sharedManager] setUserID: userID];
     
-    [[StateUtil sharedManager] setBackgroundScrollView: self.BackgroundScrollView];
+    [[StateUtilFirebase sharedManager] setBackgroundScrollView: self.BackgroundScrollView];
     
-    [[StateUtil sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
+    [[StateUtilFirebase sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
         [self calculateTotalBounds: ni];  // TODO - update so doest move window
         //        [self setSelectedObject: ni];
     }];
-    [[StateUtil sharedManager] setCallbackGroupItem:^(GroupItem *gi) {
+    [[StateUtilFirebase sharedManager] setCallbackGroupItem:^(GroupItem *gi) {
         [self addGestureRecognizersToGroup: gi];
         [self.GroupsView addSubview: gi];
         if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
@@ -78,13 +81,13 @@
 //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
     if (self.tabBarController.selectedIndex == 0)  // Global tab
     {
-        [[StateUtil sharedManager] loadOrCreatePublicVisuall: @"global"];
+        [[StateUtilFirebase sharedManager] loadOrCreatePublicVisuall: @"public"];
     }
     else
     {
-        NSString *userID = [[UserUtil sharedManager] userID];
-        [[StateUtil sharedManager] loadVisuallsListForCurrentUser:userID];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
-        [[StateUtil sharedManager] loadVisuallsForCurrentUser];
+
+        [[StateUtilFirebase sharedManager] loadVisuallsListForCurrentUser:userID];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
+        [[StateUtilFirebase sharedManager] loadVisuallsForCurrentUser];
     }
     
 }
@@ -489,7 +492,7 @@
         }
         
         [self.lastSelectedObject removeFromSuperview];
-        [[StateUtil sharedManager] removeValue: self.lastSelectedObject];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
+        [[StateUtilFirebase sharedManager] removeValue: self.lastSelectedObject];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
         //        [self.lastSelectedObject delete:nil];  // TODO: untested
         //        self.lastSelectedObject = nil;
 
@@ -504,7 +507,7 @@
         if (!view) {
             return;
         }
-        [[StateUtil sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
+        [[StateUtilFirebase sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
     }
 }
  
@@ -548,7 +551,7 @@
     {
         NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
         [ni setFontSize:fontSize];
-        [[StateUtil sharedManager] transformVisualItem: ni];
+        [[StateUtilFirebase sharedManager] transformVisualItem: ni];
     }
 }
 
@@ -840,7 +843,7 @@
             {
             
                 [gi resizeGroup: gestureRecognizer];
-                [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
+                [[StateUtilFirebase sharedManager] updateChildValue:gi Property:@"frame"];
             }
             else
             {
@@ -870,7 +873,7 @@
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
             self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
             GroupItem *currentGroupItem = [[GroupItem alloc] initWithRect: self.drawGroupView.frame];
-            [[StateUtil sharedManager] setValueGroup: currentGroupItem];
+            [[StateUtilFirebase sharedManager] setValueGroup: currentGroupItem];
             [self addGestureRecognizersToGroup: currentGroupItem];
             [self.GroupsView addSubview: currentGroupItem];
             if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
@@ -943,7 +946,7 @@
     [ni resizeToFit: textView.text];
     ni.note.title = textView.text;
 //    [[TransformUtil sharedManager] transformVisualItem: ni];
-    [[StateUtil sharedManager] updateChildValue:ni Property:@"title"];
+    [[StateUtilFirebase sharedManager] updateChildValue:ni Property:@"title"];
 }
 
 -(void) textViewDidChangeSelection:(UITextView *)textView

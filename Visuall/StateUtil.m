@@ -21,20 +21,20 @@
 
 @implementation StateUtil
 
-+(id)sharedManager {
-    
-    static StateUtil *sharedMyManager = nil;
-    
-    @synchronized(self) {
-        if (sharedMyManager == nil) {
-            sharedMyManager = [[self alloc] init];
-            sharedMyManager.zoom = 1.0;
-            sharedMyManager.pan = (CGPoint){0.0,0.0};
-            NSLog(@"RESET ZOOM and PAN");
-        }
-    }
-    return sharedMyManager;
-}
+//+(id)sharedManager {
+//    
+//    static StateUtil *sharedMyManager = nil;
+//    
+//    @synchronized(self) {
+//        if (sharedMyManager == nil) {
+//            sharedMyManager = [[self alloc] init];
+//            sharedMyManager.zoom = 1.0;
+//            sharedMyManager.pan = (CGPoint){0.0,0.0};
+//            NSLog(@"RESET ZOOM and PAN");
+//        }
+//    }
+//    return sharedMyManager;
+//}
 
 - (void) transfromAllItems
 {

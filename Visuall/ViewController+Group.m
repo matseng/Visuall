@@ -8,7 +8,7 @@
 
 #import "ViewController+Group.h"
 #import "ViewController+Menus.h"
-#import "StateUtil.h"
+#import "StateUtilFirebase.h"
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
@@ -39,7 +39,7 @@
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
         NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
 
-        [[[StateUtil sharedManager] notesCollection] myForIn:^(NoteItem2 *ni)
+        [[[StateUtilFirebase sharedManager] notesCollection] myForIn:^(NoteItem2 *ni)
          {
              if ( [groupItem isNoteInGroup:ni]) {
                  //                NSLog(@"Note name in group: %@", ni.note.title);
@@ -48,7 +48,7 @@
 
          }];
 
-        [[[StateUtil sharedManager] groupsCollection] myForIn:^(GroupItem *gi)
+        [[[StateUtilFirebase sharedManager] groupsCollection] myForIn:^(GroupItem *gi)
         {
             if ([groupItem isGroupInGroup:gi]) {
                 [groupsInGroup addObject:gi];
@@ -62,15 +62,15 @@
     {
         [groupItem handlePanGroup2:gestureRecognizer];
         
-        [[StateUtil sharedManager] updateChildValue:groupItem Property:@"frame"];
+        [[StateUtilFirebase sharedManager] updateChildValue:groupItem Property:@"frame"];
         
         for (NoteItem2 *ni in groupItem.notesInGroup)
         {
-            [[StateUtil sharedManager] updateChildValues: ni Property1:@"x" Property2:@"y"];
+            [[StateUtilFirebase sharedManager] updateChildValues: ni Property1:@"x" Property2:@"y"];
         }
         for (GroupItem *gi in groupItem.groupsInGroup)
         {
-            [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
+            [[StateUtilFirebase sharedManager] updateChildValue:gi Property:@"frame"];
             
         }
         

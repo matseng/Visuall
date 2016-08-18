@@ -7,7 +7,7 @@
 //
 
 #import "GroupItem.h"
-#import "StateUtil.h"
+#import "StateUtilFirebase.h"
 #import "AppDelegate.h"
 #import "NoteItem2.h"
 
@@ -107,7 +107,7 @@
 
 - (void) renderGroup
 {
-    float scale = [[StateUtil sharedManager] getZoomScale];
+    float scale = [[StateUtilFirebase sharedManager] getZoomScale];
     
     _handleDiameter = [self getHandleDiameter];
     
@@ -411,14 +411,14 @@
 
 - (void) setViewAsSelected
 {
-    if ( [[StateUtil sharedManager] editModeOn])
+    if ( [[StateUtilFirebase sharedManager] editModeOn])
     {
         [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
         [self renderGroup];
         [self updateFrame];
     }
-    self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / [[StateUtil sharedManager] getZoomScale]);
+    self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / [[StateUtilFirebase sharedManager] getZoomScale]);
 }
 
 - (float) getHandleDiameter

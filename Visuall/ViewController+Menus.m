@@ -11,7 +11,7 @@
 #import "UIImage+Extras.h"
 #import "SevenSwitch.h"
 #import "ViewController+panHandler.h"
-#import "StateUtil.h"
+#import "StateUtilFirebase.h"
 #import "SegmentedControlMod.h"
 
 
@@ -607,7 +607,7 @@ UIColor *__darkGrayBorderColor;
     if([sender isOn]){
         // Execute any code when the switch is ON
         NSLog(@"Switch is ON");
-        [[StateUtil sharedManager] setEditModeOn: YES];
+        [[StateUtilFirebase sharedManager] setEditModeOn: YES];
         [self setSelectedObject: self.lastSelectedObject];
         [self.scrollViewButtonList setHidden: NO];
         
@@ -659,7 +659,7 @@ UIColor *__darkGrayBorderColor;
     else
     {
         NSLog(@"Switch is OFF");
-        [[StateUtil sharedManager] setEditModeOn: NO];
+        [[StateUtilFirebase sharedManager] setEditModeOn: NO];
         [self setSelectedObject: self.lastSelectedObject];
         CGRect rect = __submenu.frame;
         rect.origin.y = -rect.size.height;

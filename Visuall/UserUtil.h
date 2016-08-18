@@ -21,6 +21,4 @@
 
 - (void) GIDdisconnect;
 
-- (void) userIsNotSignedInHandler;
-
 @end

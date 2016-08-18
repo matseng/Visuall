@@ -9,7 +9,7 @@
 #import "ViewController+TapHandler.h"
 #import "ViewController+ViewHit.h"
 #import "ViewController+Menus.h"
-#import "StateUtil.h"
+#import "StateUtilFirebase.h"
 #import "UIView+VisualItem.h"
 #import "ArrowItem.h"
 #import "UIBezierPath+arrowhead.h"
@@ -72,7 +72,7 @@ NoteItem2 *targetNoteForArrow;
             if ( [self isNoteButtonSelected] ) {  // new note button  //- (BOOL) isNoteButtonSelected
                 CGPoint point = [gestureRecognizer locationInView: self.NotesView];
                 NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
-                [[StateUtil sharedManager] setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
+                [[StateUtilFirebase sharedManager] setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
                 [self addNoteToViewWithHandlers:newNote];
                 [self setSelectedObject:newNote];
                 [newNote becomeFirstResponder];  // puts cursor on text field

@@ -10,7 +10,7 @@
 #import "ViewController+Menus.h"
 #import "NoteItem2.h"
 #import "GroupItem.h"
-#import "StateUtil.h"
+#import "StateUtilFirebase.h"
 #import "ViewController+ViewHit.h"
 #import "ViewController+Group.h"
 #import "UIView+VisualItem.h"
@@ -61,7 +61,7 @@
         {
             NoteItem2 *ni = [self.activelySelectedObjectDuringPan getNoteItem];
             [ni handlePan:gestureRecognizer];
-            [[StateUtil sharedManager] updateChildValues: ni Property1:@"x" Property2:@"y"];
+            [[StateUtilFirebase sharedManager] updateChildValues: ni Property1:@"x" Property2:@"y"];
             return YES;
         } else if ([self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isGroupItem])  // Pan or resize a group
         {
@@ -69,12 +69,12 @@
             if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [gi isHandle: self.activelySelectedObjectDuringPan] )
             {
                 [gi resizeGroup: gestureRecognizer];
-                [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
+                [[StateUtilFirebase sharedManager] updateChildValue:gi Property:@"frame"];
                 return YES;
             } else
             {
                 [self handlePanGroup: gestureRecognizer andGroupItem:gi];
-                [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
+                [[StateUtilFirebase sharedManager] updateChildValue:gi Property:@"frame"];
                 return YES;
             }
         }
