@@ -19,4 +19,8 @@
 
 - (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
 
+- (void) GIDdisconnect;
+
+- (void) userIsNotSignedInHandler;
+
 @end

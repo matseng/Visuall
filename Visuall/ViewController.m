@@ -916,8 +916,8 @@
     noteItem.noteTextView.editable = NO;
     
     [self.NotesView addSubview:noteItem];
-    [[StateUtil sharedManager] transformVisualItem: noteItem];
-//    self.lastSelectedObject = noteItem;
+//    [[StateUtil sharedManager] transformVisualItem: noteItem];
+    [noteItem transformVisualItem];
 
 }
 

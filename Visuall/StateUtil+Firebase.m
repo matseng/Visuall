@@ -8,7 +8,7 @@
 
 #import "StateUtil+Firebase.h"
 #import "UIView+VisualItem.h"
-#import <GoogleSignIn/GoogleSignIn.h>
+//#import <GoogleSignIn/GoogleSignIn.h>
 #import "UserUtil.h"
 
 @implementation StateUtil (Firebase)
@@ -22,19 +22,10 @@ FIRDatabaseReference *_groupsTableRef;
 void (^_callbackNoteItem)(NoteItem2 *ni);
 void (^_callbackGroupItem)(GroupItem *gi);
 
-- (void) GIDdisconnect
-{
-//    [[GIDSignIn sharedInstance] disconnect];
-    [[GIDSignIn sharedInstance] signOut];
-}
 
 - (void) loadVisuallsListForCurrentUser: (NSString *) userID
 {
-    self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
-    _notesTableRef = [self.version01TableRef child: @"notes"];
-    _groupsTableRef = [self.version01TableRef child: @"groups"];
-    _usersTableCurrentUser = [[self.version01TableRef child:@"users"] child:userID];
-    _visuallsTableRef = [self.version01TableRef child: @"visualls"];
+    [self loadTableRefs: userID];
     
     [_usersTableCurrentUser observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
     {
@@ -63,13 +54,26 @@ void (^_callbackGroupItem)(GroupItem *gi);
                                                };
         [[[self.version01TableRef child:@"users"] child: [FIRAuth auth].currentUser.uid] setValue: newUserBasicUserInfo];
     }
+    else{
+        [self userIsNotSignedInHandler];
+    }
+}
+
+- (void) loadTableRefs: (NSString *) userID
+{
+    self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    if ( userID )
+    {
+        _usersTableCurrentUser = [[self.version01TableRef child:@"users"] child:userID];
+    }
+    _notesTableRef = [self.version01TableRef child: @"notes"];
+    _groupsTableRef = [self.version01TableRef child: @"groups"];
+    _visuallsTableRef = [self.version01TableRef child: @"visualls"];
 }
 
 - (void) userIsNotSignedInHandler
 {
-    self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
-    _notesTableRef = [self.version01TableRef child: @"notes"];
-    _groupsTableRef = [self.version01TableRef child: @"groups"];
+    [self loadTableRefs: nil];  // TODO (Aug 17, 2016): Store the userID locally ie not in firebase
 }
 
 - (void) loadVisuallsForCurrentUser

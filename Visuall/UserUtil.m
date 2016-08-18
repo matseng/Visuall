@@ -7,6 +7,7 @@
 //
 
 #import "UserUtil.h"
+#import <GoogleSignIn/GoogleSignIn.h>
 
 @implementation UserUtil
 
@@ -42,6 +43,12 @@
         NSLog(@"userID: %@", self.userID);
         NSLog(@"uid: %@", uid);
     }
+}
+
+- (void) GIDdisconnect
+{
+    //    [[GIDSignIn sharedInstance] disconnect];
+    [[GIDSignIn sharedInstance] signOut];
 }
 
 @end

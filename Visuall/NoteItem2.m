@@ -89,9 +89,8 @@
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
-        float zoom = [[StateUtil sharedManager] zoom];
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-        [self translateTx: translation.x / zoom andTy: translation.y / zoom];  // scale translation
+        [self translateTx: translation.x andTy: translation.y];  // scale translation
     }
 }
 
@@ -147,7 +146,56 @@
     [self setX: x];
     [self setY: y];
     
-    [[StateUtil sharedManager] transformVisualItem: self];
+//    [[StateUtil sharedManager] transformVisualItem: self];
+    [self transformVisualItem];
+}
+
+-(void) transformVisualItem
+{
+    
+    VisualItem *visualItem = self;
+    CGRect frame = visualItem.frame;
+    CGAffineTransform matrix = visualItem.transform;
+//    matrix.a = self.zoom;
+//    matrix.d = self.zoom;
+    
+    /*
+    if ([visualItem isKindOfClass: [NoteItem2 class]]) {
+        NoteItem2 *ni = (NoteItem2 *) visualItem;
+        if (ni.note.isTitleOfParentGroup && self.zoom < 0.5) {
+            if (!self.noteTitleScale) self.noteTitleScale = self.zoom;
+            float noteWidthScaled = ni.note.width * self.noteTitleScale;
+            GroupItem *gi = [self.groupsCollection getGroupItemFromKey: ni.note.parentGroupKey];
+            float groupWidthScaled = gi.group.width * self.zoom;
+            if (noteWidthScaled < groupWidthScaled)
+            {
+                self.noteTitleScale = .5 + (.5 - self.zoom) / self.zoom;
+                matrix.a = self.noteTitleScale;  // TODO 1 of 2 fix jumpiness
+                matrix.d = self.noteTitleScale;
+            } else
+            {
+                matrix.a = groupWidthScaled / ni.note.width; // TODO 2 of 2 fix jumpiness
+                matrix.d = groupWidthScaled / ni.note.width;
+            }
+            [visualItem setTransform: matrix];
+            float centerDeltaX = (visualItem.width * matrix.a - visualItem.width * self.zoom) / 2;
+            frame.origin.x = visualItem.x * self.zoom + self.pan.x - centerDeltaX;
+            frame.origin.y = visualItem.y * self.zoom + self.pan.y;
+            frame.size.width = visualItem.width * matrix.a;
+            frame.size.height = visualItem.height * matrix.d;
+            [visualItem setFrame: frame];
+            return;
+        }
+    }
+     */
+    
+    [visualItem setTransform: matrix];
+    frame.origin.x = visualItem.x;
+    frame.origin.y = visualItem.y;
+    frame.size.width = visualItem.width;
+    frame.size.height = visualItem.height;
+    [visualItem setFrame: frame];
+    
 }
 
 - (void) setFontSize: (float) fontSize

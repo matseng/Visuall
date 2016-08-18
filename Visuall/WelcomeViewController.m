@@ -7,7 +7,7 @@
 //
 
 #import "WelcomeViewController.h"
-#import "StateUtil.h"
+#import "UserUtil.h"
 
 @implementation WelcomeViewController
 
@@ -29,8 +29,8 @@
     }
 }
 
-- (IBAction)skipThisStep:(id)sender {
-    [[StateUtil sharedManager] userIsNotSignedInHandler];
+- (IBAction)skipThisStep:(id)sender
+{
     [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
 }
 
@@ -40,7 +40,7 @@
         if (!error) {
             NSLog(@"Sign-out succeeded");
         }
-    [[StateUtil sharedManager] GIDdisconnect];
+    [[UserUtil sharedManager] GIDdisconnect];
 }
 
 - (void) segueToNextView

@@ -19,7 +19,6 @@
 
 //- (instancetype) initNote:(Note *) note;
 
-
 - (instancetype) initNote:(NSString *) title withPoint:(CGPoint) point;
 
 - (instancetype) initNoteFromFirebase: (NSString *) key andValue: (NSDictionary *) data;
@@ -39,5 +38,7 @@
 - (CGPoint) getCenterPoint;
 
 - (CGPoint) getRelativeCenterPoint;
+
+- (void) transformVisualItem;
 
 @end
