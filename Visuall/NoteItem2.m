@@ -9,7 +9,6 @@
 #import "NoteItem2.h"
 
 #import "Note+CoreDataProperties.h"
-#import "StateUtil.h"
 #import "AppDelegate.h"
 
 @interface NoteItem2()
@@ -146,7 +145,6 @@
     [self setX: x];
     [self setY: y];
     
-//    [[StateUtil sharedManager] transformVisualItem: self];
     [self transformVisualItem];
 }
 

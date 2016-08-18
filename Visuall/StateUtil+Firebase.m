@@ -13,6 +13,7 @@
 
 @implementation StateUtil (Firebase)
 
+
 FIRDatabaseReference *_usersTableCurrentUser;
 NSString *_currentVisuallKey;
 FIRDatabaseReference *_visuallsTableRef;

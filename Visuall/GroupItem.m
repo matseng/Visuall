@@ -30,7 +30,7 @@
 
 {
     float _handleDiameter;
-    UIView *innerGroupView;
+    UIView *__innerGroupView;
     UIView *handleTopLeft;
     UIView *handleTopRight;
     UIView *handleBottomLeft;
@@ -119,32 +119,31 @@
     self.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
     self.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
     
-    innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
+    __innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
     
-    [innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
-    [innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
-    [innerGroupView.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
-    innerGroupView.tag = 100;
-    self.innerGroupView = innerGroupView;
-    [self addSubview: innerGroupView];
+    [__innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
+    [__innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
+    [__innerGroupView.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+    __innerGroupView.tag = 100;
+    self.innerGroupView = __innerGroupView;
+    [self addSubview: __innerGroupView];
     [self renderHandles];
 }
 
+/*
+ * Name: updateGroupDimensions
+ * Description: Updates the view when the group handles are dragged
+ */
 - (void) updateGroupDimensions
 {
-    float scale = [[StateUtil sharedManager] zoom];
-    
     [self setFrame: CGRectMake(
-                               (-self.group.width/2 - _handleDiameter / 2) * scale,
-                               (-self.group.height / 2 - _handleDiameter / 2) * scale,
-                               (self.group.width + _handleDiameter) * scale,
-                               (self.group.height + _handleDiameter) * scale)];
+                               (-self.group.width/2 - _handleDiameter / 2),
+                               (-self.group.height / 2 - _handleDiameter / 2),
+                               (self.group.width + _handleDiameter),
+                               (self.group.height + _handleDiameter))];
     
     [[self viewWithTag:100] setFrame:CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
-    
-    //    [[self viewWithTag:777] setFrame:CGRectMake(self.group.width, self.group.height, _handleDiameter, _handleDiameter)];
     [self updateHandles];
-    
 }
 
 - (void) renderHandles
@@ -410,27 +409,14 @@
     return nil;
 }
 
-- (void) __setViewAsSelected
-{
-    self.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
-    if ( [[StateUtil sharedManager] editModeOn])
-    {
-        handleTopLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
-        handleTopRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
-        handleBottomLeft.layer.backgroundColor = [HANDLE_COLOR CGColor];
-        handleBottomRight.layer.backgroundColor = [HANDLE_COLOR CGColor];
-    }
-}
-
 - (void) setViewAsSelected
 {
     if ( [[StateUtil sharedManager] editModeOn])
     {
-        [innerGroupView removeFromSuperview];
+        [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
         [self renderGroup];
         [self updateFrame];
-
     }
     self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / [[StateUtil sharedManager] getZoomScale]);
 }
@@ -438,7 +424,6 @@
 - (float) getHandleDiameter
 {
     _handleDiameter = HANDLE_DIAMETER;
-//    _handleDiameter = HANDLE_DIAMETER / [[StateUtil sharedManager] getZoomScale];
     float groupWidth = self.group.width;
     float groupHeight = self.group.height;
 

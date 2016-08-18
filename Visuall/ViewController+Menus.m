@@ -17,7 +17,6 @@
 
 @implementation ViewController (Menus) 
 
-StateUtil *state;
 SevenSwitch *__editSwitch;
 SegmentedControlMod *__segmentControlVisualItem;
 SegmentedControlMod *__segmentControlFormattingOptions;
@@ -33,8 +32,6 @@ UIColor *__darkGrayBorderColor;
 
 - (void) createTopMenu
 {
-    state = [StateUtil sharedManager];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resize) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     float h = 42;
@@ -610,7 +607,7 @@ UIColor *__darkGrayBorderColor;
     if([sender isOn]){
         // Execute any code when the switch is ON
         NSLog(@"Switch is ON");
-        state.editModeOn = YES;
+        [[StateUtil sharedManager] setEditModeOn: YES];
         [self setSelectedObject: self.lastSelectedObject];
         [self.scrollViewButtonList setHidden: NO];
         
@@ -662,7 +659,7 @@ UIColor *__darkGrayBorderColor;
     else
     {
         NSLog(@"Switch is OFF");
-        state.editModeOn = NO;
+        [[StateUtil sharedManager] setEditModeOn: NO];
         [self setSelectedObject: self.lastSelectedObject];
         CGRect rect = __submenu.frame;
         rect.origin.y = -rect.size.height;

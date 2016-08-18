@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "StateUtil.h"
 #import "UserUtil.h"
 #import "WelcomeViewController.h"
 
