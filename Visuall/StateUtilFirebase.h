@@ -16,7 +16,7 @@
 
 - (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem;
 
-- (void) loadVisuallsListForCurrentUser: (NSString *) userID;
+- (void) loadVisuallsListForCurrentUser;
 
 - (void) loadVisuallsForCurrentUser;
 
@@ -35,6 +35,8 @@
 - (void) updateChildValues: (UIView *) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
 
 - (void) removeValue: (UIView *) view;
+
+- (void) loadPublicVisuallsList;
 
 - (void) loadOrCreatePublicVisuall: (NSString *) publicKey;
 

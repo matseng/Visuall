@@ -1,4 +1,4 @@
-//
+
 //  AppDelegate.m
 //  Visuall_CoreData
 //
@@ -59,7 +59,7 @@ didSignInForUser:(GIDGoogleUser *)user
      withError:(NSError *)error {
     if (error == nil) {
         GIDAuthentication *authentication = user.authentication;
-        [FIRDatabase database].persistenceEnabled = YES;
+//        [FIRDatabase database].persistenceEnabled = YES;
         FIRAuthCredential *credential =
         [FIRGoogleAuthProvider credentialWithIDToken:authentication.idToken
                                          accessToken:authentication.accessToken];
@@ -82,9 +82,9 @@ didSignInForUser:(GIDGoogleUser *)user
         NSLog(@"%@", error.localizedDescription);
         
         // TODO: only temporary for testing
-        UIWindow *window = [UIApplication sharedApplication].keyWindow;
-        WelcomeViewController *rootViewController = (WelcomeViewController *) window.rootViewController;
-        [rootViewController segueToNextView];
+//        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+//        WelcomeViewController *rootViewController = (WelcomeViewController *) window.rootViewController;
+//        [rootViewController segueToNextView];
     }
 }
 

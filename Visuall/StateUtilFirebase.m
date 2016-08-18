@@ -26,7 +26,7 @@
     FIRDatabaseReference *_visuallsTable_currentVisuallRef;
     FIRDatabaseReference *_notesTableRef;
     FIRDatabaseReference *_groupsTableRef;
-    // TODO (Aug 18, 2016): working on public table ref
+    FIRDatabaseReference *__publicVisuallsTableRef;
     void (^_callbackNoteItem)(NoteItem2 *ni);
     void (^_callbackGroupItem)(GroupItem *gi);
 }
@@ -49,12 +49,25 @@
 - (void) setUserID: (NSString *) userID
 {
     __userID = userID;
+    [self loadTableRefs];
 }
 
-- (void) loadVisuallsListForCurrentUser: (NSString *) userID
+- (void) loadTableRefs
 {
-    [self loadTableRefs: userID];
+    self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    if ( __userID )
+    {
+        _usersTableCurrentUser = [[self.version01TableRef child:@"users"] child: __userID];
+    }
+    _notesTableRef = [self.version01TableRef child: @"notes"];
+    _groupsTableRef = [self.version01TableRef child: @"groups"];
+    _visuallsTableRef = [self.version01TableRef child: @"visualls"];
+    __publicVisuallsTableRef = [self.version01TableRef child: @"public"];
     
+}
+
+- (void) loadVisuallsListForCurrentUser
+{
     [_usersTableCurrentUser observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
      {
          if ( ![snapshot exists] )  // we have a new user
@@ -62,7 +75,7 @@
              [self setNewUser];
          } else {
              NSLog(@"%@", snapshot.value );
-             [[[self.version01TableRef child:@"users"] child: userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
+             [[[self.version01TableRef child:@"users"] child: __userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
          }
          
      } withCancelBlock:^(NSError * _Nonnull error) {
@@ -87,22 +100,11 @@
     }
 }
 
-- (void) loadTableRefs: (NSString *) userID
-{
-    self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
-    if ( userID )
-    {
-        _usersTableCurrentUser = [[self.version01TableRef child:@"users"] child:userID];
-    }
-    _notesTableRef = [self.version01TableRef child: @"notes"];
-    _groupsTableRef = [self.version01TableRef child: @"groups"];
-    _visuallsTableRef = [self.version01TableRef child: @"visualls"];
-    
-}
+
 
 - (void) userIsNotSignedInHandler
 {
-    [self loadTableRefs: nil];  // TODO (Aug 17, 2016): Store the userID locally ie not in firebase
+    [self loadTableRefs];  // TODO (Aug 17, 2016): Store the userID locally ie not in firebase
 }
 
 - (void) loadVisuallsForCurrentUser
@@ -125,7 +127,8 @@
              [_visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
              [visuallsPersonalRef updateChildValues: @{_visuallsTable_currentVisuallRef.key: @"1"} ];
              
-         } else {  // run thru list of Visualls
+         } else
+         {  // run thru list of Visualls
              NSDictionary *visuallPersonalKeys = (NSDictionary *) snapshot.value;
              for (NSString *key in visuallPersonalKeys) {
                  _currentVisuallKey = key;
@@ -137,13 +140,46 @@
      }];
 }
 
+- (void) loadPublicVisuallsList
+{
+    
+    [__publicVisuallsTableRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+     {
+         if ( ![snapshot exists] )  // we need to create first public visual
+         {
+             NSDictionary *visuallDictionary = @{
+                                                 @"title": @"My First Global Visuall",
+                                                 @"date-created": [FIRServerValue timestamp],
+                                                 @"created-by-userID": [FIRAuth auth].currentUser.uid,
+                                                 @"admin" : @{ [FIRAuth auth].currentUser.uid : @"1" },
+                                                 @"public": @"1"
+                                                 };
+             _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
+             _currentVisuallKey = _visuallsTable_currentVisuallRef.key;
+             [_visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
+             [__publicVisuallsTableRef updateChildValues: @{_visuallsTable_currentVisuallRef.key: @"1"}];
+         }
+         {  // run thru list of Visualls
+             NSDictionary *visuallKeys = (NSDictionary *) snapshot.value;
+             for (NSString *key in visuallKeys) {
+                 _currentVisuallKey = key;
+                 _visuallsTable_currentVisuallRef = [_visuallsTableRef child: key];
+                 [self loadVisuallFromKey: key];
+                 return; // TODO: early termination here only loading the 1st and only visuall
+             }
+         }
+     } withCancelBlock:^(NSError * _Nonnull error) {
+         NSLog(@"%@", error.localizedDescription);
+     }];
+}
+
 - (void) loadOrCreatePublicVisuall: (NSString *) publicKey
 {
-    [self loadTableRefs: __userID];
-    _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
-    /*
-    FIRDatabaseReference *visuallsTable_globalRef = [_visuallsTableRef child: publicKey];
-    [visuallsTable_globalRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+/*
+//    _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
+    
+//    FIRDatabaseReference *visuallsTable_globalRef = [_visuallsTableRef child: publicKey];
+    [__publicTableRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
      {
          if ( ![snapshot exists] )
          {

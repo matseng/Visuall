@@ -81,12 +81,12 @@
 //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
     if (self.tabBarController.selectedIndex == 0)  // Global tab
     {
-        [[StateUtilFirebase sharedManager] loadOrCreatePublicVisuall: @"public"];
+        [[StateUtilFirebase sharedManager] loadPublicVisuallsList];
     }
     else
     {
 
-        [[StateUtilFirebase sharedManager] loadVisuallsListForCurrentUser:userID];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
+        [[StateUtilFirebase sharedManager] loadVisuallsListForCurrentUser];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
         [[StateUtilFirebase sharedManager] loadVisuallsForCurrentUser];
     }
     
