@@ -317,7 +317,7 @@
 				71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */,
 				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
 				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
-				71710A7F1D5CF6350038D883 /* StateUtil */,
+				71710A7F1D5CF6350038D883 /* Utilities */,
 				713D0D5E1CC6AE4F00878EAE /* Group2.h */,
 				713D0D5F1CC6AE4F00878EAE /* Group2.m */,
 				210833161C0127AB00BA059F /* GroupItem.h */,
@@ -379,7 +379,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		71710A7F1D5CF6350038D883 /* StateUtil */ = {
+		71710A7F1D5CF6350038D883 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				71FD2EE81D6522BC00CA5365 /* UserUtil.h */,
@@ -389,7 +389,7 @@
 				71E1AF5A1D4BDFF900B818A0 /* StateUtil+Firebase.h */,
 				71E1AF5B1D4BDFF900B818A0 /* StateUtil+Firebase.m */,
 			);
-			name = StateUtil;
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 		71710A801D5D00630038D883 /* GestureHandlers */ = {

@@ -13,7 +13,9 @@
 #import "TiledLayerView.h"
 
 
-@interface ViewController : UIViewController 
+@interface ViewController : UIViewController
+
+//@property (nonatomic, strong) state;
 
 @property (nonatomic, strong) NSString *firebaseURL;
 

@@ -73,7 +73,7 @@
         [self setGroup: group];
         [self renderGroup];
         [self setViewAsNotSelected];
-        [[StateUtil sharedManager] transformGroupItem: self];
+        [self updateFrame];
     }
     return self;
 }
@@ -94,7 +94,7 @@
         [self setGroup: group];
         [self renderGroup];
         [self setViewAsNotSelected];
-        [[StateUtil sharedManager] transformGroupItem: self];
+        [self updateFrame];
     }
     
     return self;
@@ -214,8 +214,7 @@
         float y = self.group.y + translation.y;
         [self.group setX: x];
         [self.group setY: y];
-        
-        [[StateUtil sharedManager] transformGroupItem: self];
+        [self updateFrame];
         
         for (NoteItem2 *ni in self.notesInGroup) {
             [ni translateTx: translation.x andTy:translation.y];
@@ -224,9 +223,7 @@
             x = gi.group.x + translation.x;
             y = gi.group.y + translation.y;
             [gi.group setX: x andY: y];
-            //            [gi.group setX: x];
-            //            [gi.group setY: y];
-            [[StateUtil sharedManager] transformGroupItem: gi];
+            [self updateFrame];
         }
         
         
@@ -252,8 +249,6 @@
             if (height > _handleDiameter * 1 ) {
                 [self.group setHeight: height];
             }
-            [self updateGroupDimensions];
-            [[StateUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleTopLeft)
         {
             CGPoint translation = [gestureRecognizer translationInView:self];
@@ -269,8 +264,6 @@
                 [self.group setHeight: height];
                 [self.group setY:self.group.y + translation.y];
             }
-            [self updateGroupDimensions];
-            [[StateUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleTopRight)
         {
             CGPoint translation = [gestureRecognizer translationInView:self];
@@ -286,8 +279,6 @@
                 [self.group setHeight: height];
                 [self.group setY:self.group.y + translation.y];
             }
-            [self updateGroupDimensions];
-            [[StateUtil sharedManager] transformGroupItem: self];
         } else if (self.handleSelected == handleBottomLeft)
         {
             CGPoint translation = [gestureRecognizer translationInView:self];
@@ -303,9 +294,10 @@
                 [self.group setHeight: height];
                 [self.group setY:self.group.y];
             }
-            [self updateGroupDimensions];
-            [[StateUtil sharedManager] transformGroupItem: self];
         }
+        
+        [self updateGroupDimensions];
+        [self updateFrame];
     }
 }
 
@@ -437,7 +429,7 @@
         [innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
         [self renderGroup];
-        [[StateUtil sharedManager] transformGroupItem: self];
+        [self updateFrame];
 
     }
     self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / [[StateUtil sharedManager] getZoomScale]);
@@ -480,6 +472,17 @@
     
 }
 
+- (void) updateFrame
+{
+    float radiusOffset = [self getRadius] / 2;
+    float tx = self.group.x - radiusOffset;
+    float ty = self.group.y - radiusOffset;
+    
+    CGRect frame = self.frame;
+    frame.origin.x = tx;
+    frame.origin.y = ty;
+    [self setFrame: frame];
+}
 
 
 /*

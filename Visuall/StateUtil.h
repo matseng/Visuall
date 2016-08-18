@@ -33,10 +33,11 @@
 @property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing
 @property BOOL editModeOn;
 @property ScrollViewMod *BackgroundScrollView;
+@property FIRDatabaseReference *version01TableRef;
 
 +(id) sharedManager;
 
--(void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
+- (void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
 
 //-(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NotesCollection *) Notes andGroups: (GroupsCollection *) Groups;
 

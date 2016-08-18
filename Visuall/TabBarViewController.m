@@ -8,6 +8,7 @@
 
 #import "TabBarViewController.h"
 #import "StateUtil.h"
+#import "ViewController.h"
 
 @interface TabBarViewController () <UITabBarControllerDelegate>
 
@@ -78,6 +79,9 @@
     UIImage *lightBulb = [UIImage imageNamed:@"light-bulb"];
     lightBulb = [UIImage imageWithCGImage:lightBulb.CGImage scale:2.1 orientation:lightBulb.imageOrientation];
     [tabBarItem1 setImage:lightBulb];
+    
+    [self setSelectedIndex: 1];
+//    ViewController *vc = self.viewControllers[1];
     
 }
 

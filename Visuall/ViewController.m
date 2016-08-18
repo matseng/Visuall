@@ -57,7 +57,7 @@
     
     [self buildViewHierarchyAndMenus];
     
-    NSLog(@"Firebase URL: %@", self.firebaseURL);
+    NSLog(@"Firebase URL: %@", self.firebaseURL);  // TODO (Aug 17, 2016): In the future this value will be populated from the previous selection of a Visuall
     
     [[StateUtil sharedManager] setBackgroundScrollView: self.BackgroundScrollView];
     
