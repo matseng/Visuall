@@ -39,8 +39,6 @@
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
 
-//-(void) handlePinchBackground: (UIPinchGestureRecognizer *) pinch withNotes: (NotesCollection *) Notes andGroups: (GroupsCollection *) Groups;
-
 -(void) transformGroupItem: (GroupItem *) groupItem;
 
 -(void) transformVisualItem: (VisualItem *) visualItem;
@@ -48,10 +46,6 @@
 -(CGPoint) getGlobalCoordinate: (CGPoint) point;
 
 -(void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView: (UIView *) view;
-
-
-
-//-(void) setNotesCollection: (NotesCollection *) nc andGroupsCollection: (GroupsCollection *) gc;
 
 @end
 
