@@ -17,18 +17,10 @@
 
 @implementation ViewController (Menus) 
 
-SevenSwitch *__editSwitch;
-SegmentedControlMod *__segmentControlVisualItem;
-SegmentedControlMod *__segmentControlFormattingOptions;
-UIButton *__trashButton;
 UIImage *trashImg;
 UIImage *trashImgHilighted;
-BOOL alreadyAnimated = NO;
-UIScrollView *__submenuScrollView;
-UIView *__submenu;
-UIScrollView *__secondSubmenuScrollView;
-UIColor *__backgroundColor;
-UIColor *__darkGrayBorderColor;
+UIColor *backgroundColor;
+UIColor *darkGrayBorderColor;
 
 - (void) createTopMenu
 {
@@ -37,8 +29,8 @@ UIColor *__darkGrayBorderColor;
     float h = 42;
     float w = 42;
     float padding = 10;
-    __backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
-    __darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
+    backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+    darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
     UIColor *blueButtonColor = self.view.tintColor;
     
     self.navigationItem.leftItemsSupplementBackButton = NO;
@@ -47,7 +39,7 @@ UIColor *__darkGrayBorderColor;
     UIImage *backImg = [[UIImage imageNamed: @"back"] imageWithExtraPadding: .1];
     backImg = [UIImage imageWithCGImage:backImg.CGImage scale:2.4 orientation:backImg.imageOrientation];
     backImg = [backImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *backImgHilighted = [backImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: __backgroundColor];
+    UIImage *backImgHilighted = [backImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: backgroundColor];
     [backButton setImage:backImg forState:UIControlStateNormal];
     [backButton setImage:backImgHilighted forState:UIControlStateHighlighted];
     [backButton addTarget:self
@@ -70,7 +62,7 @@ UIColor *__darkGrayBorderColor;
     
     SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
 //    SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, 32 * 0.75)];
-    __editSwitch = mySwitch;
+    self.editSwitch = mySwitch;
     mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
     [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     mySwitch.offLabel.text = @"Edit";
@@ -82,7 +74,7 @@ UIColor *__darkGrayBorderColor;
     mySwitch.inactiveColor = [UIColor colorWithRed: 227/255.0f green: 227/255.0f blue: 232/255.0f alpha:1.0f];
     mySwitch.onTintColor = blueButtonColor;
     mySwitch.onLabel.text = @" Done";
-    mySwitch.onLabel.textColor = __backgroundColor;
+    mySwitch.onLabel.textColor = backgroundColor;
     mySwitch.shadowColor = [UIColor clearColor];
 
     NSLog(@"offlabel text width: %f", mySwitch.offLabel.frame.size.width);
@@ -94,10 +86,10 @@ UIColor *__darkGrayBorderColor;
     int i = 3;
     UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
     segmentControl.frame = CGRectMake(0, 0, w * i, h);
-    segmentControl.backgroundColor = __backgroundColor;
+    segmentControl.backgroundColor = backgroundColor;
 //    segmentControl.backgroundColor = [UIColor clearColor];
     segmentControl.layer.cornerRadius = 0.0f;
-    segmentControl.layer.borderColor = __backgroundColor.CGColor;
+    segmentControl.layer.borderColor = backgroundColor.CGColor;
 //    segmentControl.layer.borderColor = [UIColor clearColor].CGColor;
     segmentControl.layer.borderWidth = 2.0f;
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, segmentControl.frame.size.height), NO, 0.0);
@@ -128,7 +120,7 @@ UIColor *__darkGrayBorderColor;
     UIImage *starImg = [UIImage imageNamed: @"Star-50"];
     starImg = [UIImage imageWithCGImage:starImg.CGImage scale:1.6 orientation:starImg.imageOrientation];
     starImg = [starImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *starImgHilighted = [starImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor:__backgroundColor];
+    UIImage *starImgHilighted = [starImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor:backgroundColor];
     [starButton setImage:starImg forState:UIControlStateNormal];
     [starButton setImage:starImgHilighted forState:UIControlStateHighlighted];
     [starButton addTarget:self
@@ -147,7 +139,7 @@ UIColor *__darkGrayBorderColor;
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
     
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
-//    toolbar.backgroundColor = __backgroundColor;
+//    toolbar.backgroundColor = self.backgroundColor;
     toolbar.translucent = NO;
     toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
@@ -165,7 +157,7 @@ UIColor *__darkGrayBorderColor;
     
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
-    //    self.navigationController.navigationBar.backgroundColor = __backgroundColor;
+    //    self.navigationController.navigationBar.backgroundColor = self.backgroundColor;
     [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
 
 }
@@ -229,7 +221,7 @@ UIColor *__darkGrayBorderColor;
     // TODO create array of button model objects (e.g. name, image, tag number, action, visible)
     i = nLeftButtons;
     SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
-    __segmentControlVisualItem = segmentControl;
+    self.segmentControlVisualItem = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
     
     segmentControl.frame = CGRectMake(padding * paddingCounter++ + w * (i + 0), paddingTop, w * nSegmentControl, h);
@@ -272,7 +264,7 @@ UIColor *__darkGrayBorderColor;
     
     i = nLeftButtons + nSegmentControl;
     SegmentedControlMod *segmentControlFont = [[SegmentedControlMod alloc] init];
-    __segmentControlFormattingOptions = segmentControlFont;
+    self.segmentControlFormattingOptions = segmentControlFont;
     [segmentControlFont addTarget:self action:@selector(segmentControlFontClicked:) forControlEvents:UIControlEventValueChanged];
 //    [segmentControlFont addTarget:self action:@selector(segmentControlFontTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     segmentControlFont.frame = CGRectMake(padding * (nLeftButtons + 2) + w * (i + 0), paddingTop, w * 2, h);
@@ -324,26 +316,26 @@ UIColor *__darkGrayBorderColor;
 //    [trashButton setImage:trashImg forState:UIControlStateNormal];
 //    [trashButton setImage:trashImgHilighted forState:UIControlStateHighlighted];
 //    
-    __trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
     trashImg = [[UIImage imageNamed: @"Trash-50"] imageWithExtraPadding: 0.25];
     trashImg = [UIImage imageWithCGImage:trashImg.CGImage scale:1.0 orientation:trashImg.imageOrientation];
     trashImg = [trashImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     trashImgHilighted = [trashImg  makeImageWithBackgroundColor:self.view.tintColor andForegroundColor: backgroundColor];
-    [__trashButton setImage:trashImg forState:UIControlStateNormal];
-    [__trashButton setImage:trashImgHilighted forState:UIControlStateHighlighted];
+    [self.trashButton setImage:trashImg forState:UIControlStateNormal];
+    [self.trashButton setImage:trashImgHilighted forState:UIControlStateHighlighted];
     
-    [__trashButton addTarget:self
+    [self.trashButton addTarget:self
                     action:@selector(buttonTapped:)
           forControlEvents:UIControlEventTouchUpInside];
     
-    [__trashButton setTitle:@"trash" forState:UIControlStateNormal];
-    __trashButton.frame = CGRectMake(padding * 5 + ( (i-0) * w), paddingTop, w, h);
-    __trashButton.layer.cornerRadius = 5;
-    __trashButton.tintColor = self.view.tintColor;
-    __trashButton.layer.borderWidth = 1;
-    __trashButton.layer.masksToBounds = YES;
-    [__trashButton.layer setBorderColor: [self.view.tintColor CGColor]];
-    [scrollView addSubview: __trashButton];
+    [self.trashButton setTitle:@"trash" forState:UIControlStateNormal];
+    self.trashButton.frame = CGRectMake(padding * 5 + ( (i-0) * w), paddingTop, w, h);
+    self.trashButton.layer.cornerRadius = 5;
+    self.trashButton.tintColor = self.view.tintColor;
+    self.trashButton.layer.borderWidth = 1;
+    self.trashButton.layer.masksToBounds = YES;
+    [self.trashButton.layer setBorderColor: [self.view.tintColor CGColor]];
+    [scrollView addSubview: self.trashButton];
     
     //    for (int i = nLeftButtons + nSegmentControl + 2 + 2; i < n; i++) {
     //        UIButton *button = [[UIButton alloc] init];
@@ -370,7 +362,7 @@ UIColor *__darkGrayBorderColor;
     scrollView.contentOffset = CGPointMake(newContentOffset, 0);
     
     [self.Background addSubview: scrollView];
-    __submenuScrollView = scrollView;
+    self.submenuScrollView = scrollView;
     
     //    [scrollView setHidden:YES];
 }
@@ -383,7 +375,7 @@ UIColor *__darkGrayBorderColor;
     UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     
     SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
-    __segmentControlVisualItem = segmentControl;
+    self.segmentControlVisualItem = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
     segmentControl.frame = CGRectMake(0, 0, 3 * unit, unit);
 //    segmentControl.backgroundColor = backgroundColor;
@@ -403,7 +395,7 @@ UIColor *__darkGrayBorderColor;
     [segmentControl setMyTitle:@"group" forSegmentAtIndex:2];
     
     SegmentedControlMod *segmentControlFont = [[SegmentedControlMod alloc] init];
-    __segmentControlFormattingOptions = segmentControlFont;
+    self.segmentControlFormattingOptions = segmentControlFont;
     [segmentControlFont addTarget:self action:@selector(segmentControlFontClicked:) forControlEvents:UIControlEventValueChanged];
     segmentControlFont.frame = CGRectMake(0, 0, unit, unit);
 //    segmentControlFont.backgroundColor = backgroundColor;
@@ -416,13 +408,13 @@ UIColor *__darkGrayBorderColor;
     [segmentControlFont insertSegmentWithImage:fontSize atIndex:0 animated:YES];
     [segmentControlFont setMyTitle:@"fontSize" forSegmentAtIndex:0];
     
-    __trashButton = [self makeButtonFromImage:@"Trash-50" buttonSize: unit andExtraPadding:0.25];
-    [__trashButton setTitle:@"trash" forState:UIControlStateNormal];
-    __trashButton.frame = CGRectMake(0, 0, unit, unit);
-    [__trashButton addTarget:self
+    self.trashButton = [self makeButtonFromImage:@"Trash-50" buttonSize: unit andExtraPadding:0.25];
+    [self.trashButton setTitle:@"trash" forState:UIControlStateNormal];
+    self.trashButton.frame = CGRectMake(0, 0, unit, unit);
+    [self.trashButton addTarget:self
                     action:@selector(buttonTapped:)
           forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *trashButtonItem = [[UIBarButtonItem alloc] initWithCustomView: __trashButton];
+    UIBarButtonItem *trashButtonItem = [[UIBarButtonItem alloc] initWithCustomView: self.trashButton];
     
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
@@ -430,7 +422,7 @@ UIColor *__darkGrayBorderColor;
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, toolbar2.frame.size.height - 1.0f, toolbar2.frame.size.width, 0.5f);
-    bottomBorder.backgroundColor = [__darkGrayBorderColor CGColor];
+    bottomBorder.backgroundColor = [darkGrayBorderColor CGColor];
 //    [toolbar2.layer addSublayer:bottomBorder];
     toolbar2.autoresizesSubviews = NO;
     toolbar2.autoresizingMask = UIViewAutoresizingNone;
@@ -440,7 +432,7 @@ UIColor *__darkGrayBorderColor;
     [toolbar2 setItems:@[flexibleSpace, segmentControlItem, segmentControlFontItem, trashButtonItem, flexibleSpace]];
    
     [self.Background addSubview: toolbar2];
-    __submenu = toolbar2;
+    self.submenu = toolbar2;
     
     
     //    [scrollView setHidden:YES];
@@ -449,8 +441,8 @@ UIColor *__darkGrayBorderColor;
 
 - (void) addSecondSubmenu
 {
-    __secondSubmenuScrollView = [[UIScrollView alloc] init];
-    __secondSubmenuScrollView.backgroundColor = __backgroundColor;
+    self.secondSubmenuScrollView = [[UIScrollView alloc] init];
+    self.secondSubmenuScrollView.backgroundColor = backgroundColor;
     float h = 30;
 //    float w = 40;
 //    float padding = 10;
@@ -458,14 +450,14 @@ UIColor *__darkGrayBorderColor;
     
     float h0 = [[UIApplication sharedApplication] statusBarFrame].size.height;
     float h1 = self.navigationController.navigationBar.frame.size.height;
-    float h2 = __submenu.frame.size.height;
+    float h2 = self.submenu.frame.size.height;
     float y = h0 * 0 + h1 * 0 + h2;
-    __secondSubmenuScrollView.frame = CGRectMake(0, -y * 2, [[UIScreen mainScreen] bounds].size.width, h + paddingTop);
+    self.secondSubmenuScrollView.frame = CGRectMake(0, -y * 2, [[UIScreen mainScreen] bounds].size.width, h + paddingTop);
     CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.frame = CGRectMake(0.0f, __secondSubmenuScrollView.frame.size.height - 0.5f, __secondSubmenuScrollView.frame.size.width, 0.5f);
-    bottomBorder.backgroundColor = [__darkGrayBorderColor CGColor];
-    [__secondSubmenuScrollView.layer addSublayer:bottomBorder];
-    [self.Background addSubview: __secondSubmenuScrollView];
+    bottomBorder.frame = CGRectMake(0.0f, self.secondSubmenuScrollView.frame.size.height - 0.5f, self.secondSubmenuScrollView.frame.size.width, 0.5f);
+    bottomBorder.backgroundColor = [darkGrayBorderColor CGColor];
+    [self.secondSubmenuScrollView.layer addSublayer:bottomBorder];
+    [self.Background addSubview: self.secondSubmenuScrollView];
     
     UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"Decrease Font Filled-50" buttonSize: h andExtraPadding:0.5];
     [decreaseFontSizeButton setTitle:@"decreaseFontSize" forState:UIControlStateNormal];
@@ -485,15 +477,15 @@ UIColor *__darkGrayBorderColor;
     UIBarButtonItem *spacer40 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [spacer40 setWidth:80];
     
-    CGRect rect = __secondSubmenuScrollView.frame;
+    CGRect rect = self.secondSubmenuScrollView.frame;
     rect.origin = CGPointZero;
     rect.size.height = rect.size.height - 0.5;
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
 //    toolbar2.translucent = NO;
     [toolbar2 setItems:@[flexibleSpace, spacer40, decreaseFontSizeItem, increaseFontSizeItem, flexibleSpace]];
 
-    __secondSubmenuScrollView.delaysContentTouches = NO;
-    [__secondSubmenuScrollView addSubview: toolbar2];
+    self.secondSubmenuScrollView.delaysContentTouches = NO;
+    [self.secondSubmenuScrollView addSubview: toolbar2];
 //
 //    UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 //    [negativeSpacer30 setWidth:-30];
@@ -517,15 +509,15 @@ UIColor *__darkGrayBorderColor;
 
 //        float unit = self.navigationController.navigationBar.intrinsicContentSize.height;
 //        SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, 42 * 1.65, unit * 0.75)];
-//        __editSwitch;
-//        __editSwitch.autoresizesSubviews = YES;
-//        CGRect rect = __editSwitch.frame;
+//        self.editSwitch;
+//        self.editSwitch.autoresizesSubviews = YES;
+//        CGRect rect = self.editSwitch.frame;
 //        rect.size.height = 42 * 0.75;
-//        __editSwitch.shadowColor = [UIColor clearColor];
-//        __editSwitch.thumbTintColor = self.view.tintColor;
+//        self.editSwitch.shadowColor = [UIColor clearColor];
+//        self.editSwitch.thumbTintColor = self.view.tintColor;
 //        mySwitch.thumbTintColor = self.view.tintC
-//        __editSwitch.frame = rect;
-//        __editSwitch.transform = CGAffineTransformMakeScale(0.75, 0.75);
+//        self.editSwitch.frame = rect;
+//        self.editSwitch.transform = CGAffineTransformMakeScale(0.75, 0.75);
     }
 }
 
@@ -547,7 +539,7 @@ UIColor *__darkGrayBorderColor;
 //    UIImage *undoImg = [UIImage imageNamed: imageName];
 //    undoImg = [UIImage imageWithCGImage:undoImg.CGImage scale:1.5 orientation:undoImg.imageOrientation];
     undoImg = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *undoImgHilighted = [undoImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor: __backgroundColor];
+    UIImage *undoImgHilighted = [undoImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor: backgroundColor];
     [undoButton setImage:undoImg forState:UIControlStateNormal];
     [undoButton setImage:undoImgHilighted forState:UIControlStateHighlighted];
     undoButton.frame = CGRectMake(0, 0, unit, unit);  // TODO (Aug 12, 2016): change to constants e.g. BUTTON_WIDTH BUTTON_HEIGHT
@@ -561,17 +553,17 @@ UIColor *__darkGrayBorderColor;
 
 - (void) showSecondSubmenu
 {
-    CGRect rect = __secondSubmenuScrollView.frame;
+    CGRect rect = self.secondSubmenuScrollView.frame;
 //    rect.origin.y = fabs(rect.origin.y);
-    rect.origin.y = __submenu.frame.size.height;
-    __secondSubmenuScrollView.frame = rect;
+    rect.origin.y = self.submenu.frame.size.height;
+    self.secondSubmenuScrollView.frame = rect;
 }
 
 - (void) hideSecondSubmenu
 {
-    CGRect rect = __secondSubmenuScrollView.frame;
-    rect.origin.y = __submenu.frame.size.height * -2;
-    __secondSubmenuScrollView.frame = rect;
+    CGRect rect = self.secondSubmenuScrollView.frame;
+    rect.origin.y = self.submenu.frame.size.height * -2;
+    self.secondSubmenuScrollView.frame = rect;
 }
 
 /*
@@ -611,7 +603,7 @@ UIColor *__darkGrayBorderColor;
         [self setSelectedObject: self.lastSelectedObject];
         [self.scrollViewButtonList setHidden: NO];
         
-        CGRect rect = __submenu.frame;
+        CGRect rect = self.submenu.frame;
         
 //        float h0 = [[UIApplication sharedApplication] statusBarFrame].size.height;
 //        float h1 = self.navigationController.navigationBar.frame.size.height;
@@ -622,13 +614,13 @@ UIColor *__darkGrayBorderColor;
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:^(void) {
-                             [__submenu setFrame: rect];
+                             [self.submenu setFrame: rect];
                          }
                          completion:^(BOOL finished) {
                              //Completion Block
-                             if ( !alreadyAnimated )
+                             if ( !self.alreadyAnimated )
                              {
-                                 alreadyAnimated = YES;
+                                 self.alreadyAnimated = YES;
                                  [UIView animateWithDuration:1.8
                                                        delay:0.2
                                       usingSpringWithDamping:0.7
@@ -639,7 +631,7 @@ UIColor *__darkGrayBorderColor;
                                                      }
                                                   completion:^(BOOL finished)
                                                   {
-                                                      if ( !(__segmentControlFormattingOptions.selectedSegmentIndex == UISegmentedControlNoSegment) )
+                                                      if ( !(self.segmentControlFormattingOptions.selectedSegmentIndex == UISegmentedControlNoSegment) )
                                                       {
                                                           [self showSecondSubmenu];
                                                       }
@@ -648,7 +640,7 @@ UIColor *__darkGrayBorderColor;
                                   ];
                              } else
                              {
-                                 if ( !(__segmentControlFormattingOptions.selectedSegmentIndex == UISegmentedControlNoSegment) )
+                                 if ( !(self.segmentControlFormattingOptions.selectedSegmentIndex == UISegmentedControlNoSegment) )
                                  {
                                      [self showSecondSubmenu];
                                  }
@@ -661,17 +653,17 @@ UIColor *__darkGrayBorderColor;
         NSLog(@"Switch is OFF");
         [self.visuallState setEditModeOn: NO];
         [self setSelectedObject: self.lastSelectedObject];
-        CGRect rect = __submenu.frame;
+        CGRect rect = self.submenu.frame;
         rect.origin.y = -rect.size.height;
         
         [UIView animateWithDuration:0.3
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^(void) {
-                             [__submenu setFrame: rect];
+                             [self.submenu setFrame: rect];
                          }
                          completion:^(BOOL finished){
-                             [self setNavigationBottomBorderColor: __darkGrayBorderColor height: 0.5f];
+                             [self setNavigationBottomBorderColor: darkGrayBorderColor height: 0.5f];
 //                             float width = self.scrollViewButtonList.frame.size.width;
 //                             float widthContent = self.scrollViewButtonList.contentSize.width;
 //                             float newContentOffset = widthContent - width;
@@ -699,8 +691,8 @@ UIColor *__darkGrayBorderColor;
 -(void) segmentChangeViewValueChanged
 {
     
-    NSString *segmentSelectedTitle =  [__segmentControlVisualItem getMyTitleForSegmentAtIndex: (int) __segmentControlVisualItem.selectedSegmentIndex];
-    NSLog(@"segmentSelectedIndex: %li", __segmentControlVisualItem.selectedSegmentIndex);
+    NSString *segmentSelectedTitle =  [self.segmentControlVisualItem getMyTitleForSegmentAtIndex: (int) self.segmentControlVisualItem.selectedSegmentIndex];
+    NSLog(@"segmentSelectedIndex: %li", self.segmentControlVisualItem.selectedSegmentIndex);
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
 }
 
@@ -725,42 +717,42 @@ UIColor *__darkGrayBorderColor;
 
 - (BOOL) isEditModeOn
 {
-    return [__editSwitch isOn];
+    return [self.editSwitch isOn];
 }
 
 - (BOOL) isDrawGroupButtonSelected
 {
-    return [__editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
+    return [self.editSwitch isOn] && [[self.segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"group"];
 }
 
 - (BOOL) isNoteButtonSelected
 {
-    return [__editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"note"];
+    return [self.editSwitch isOn] && [[self.segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"note"];
 }
 
 - (BOOL) isPointerButtonSelected
 {
-    return [__editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
+    return [self.editSwitch isOn] && [[self.segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"pointer"];
 }
 
 - (BOOL) isArrowButtonSelected
 {
-    return [__editSwitch isOn] && [[__segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
+    return [self.editSwitch isOn] && [[self.segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
 }
 
 - (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture
 {
-    return [__trashButton hitTest:[gesture locationInView: __trashButton] withEvent:NULL];
+    return [self.trashButton hitTest:[gesture locationInView: self.trashButton] withEvent:NULL];
 }
 
 - (void) highlightTrashButton
 {
-    [__trashButton setImage:trashImgHilighted forState:UIControlStateNormal];
+    [self.trashButton setImage:trashImgHilighted forState:UIControlStateNormal];
 }
 
 - (void) normalizeTrashButton
 {
-        [__trashButton setImage:trashImg forState:UIControlStateNormal];
+        [self.trashButton setImage:trashImg forState:UIControlStateNormal];
 //    [trashButton sendActionsForControlEvents:UIControlEventTouchDragExit];
 //    [trashButton sendActionsForControlEvents:UIControlEventTouchCancel];
 //        [trashButton sendActionsForControlEvents:UIControlEvent

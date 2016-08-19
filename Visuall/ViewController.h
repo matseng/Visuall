@@ -13,6 +13,8 @@
 #import "TiledLayerView.h"
 #import "StateUtilFirebase.h"
 #import "ScrollViewMod.h"
+#import "SegmentedControlMod.h"
+#import "SevenSwitch.h"
 
 
 @interface ViewController : UIViewController
@@ -48,6 +50,16 @@
 @property UIView *lastSelectedObject;
 
 @property UIView *activelySelectedObjectDuringPan;
+
+
+@property SevenSwitch *editSwitch;  // Utilized in ViewController+Menus.m [...]
+@property SegmentedControlMod *segmentControlVisualItem;
+@property SegmentedControlMod *segmentControlFormattingOptions;
+@property BOOL alreadyAnimated;
+@property UIScrollView *submenuScrollView;
+@property UIView *submenu;
+@property UIScrollView *secondSubmenuScrollView;
+@property UIButton *trashButton; // Utilized in ViewController+Menus.m
 
 - (BOOL) setSelectedObject:(UIView *) object;
 
