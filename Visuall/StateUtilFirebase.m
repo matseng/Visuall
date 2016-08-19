@@ -310,7 +310,8 @@
                                              @"data/title": ni.note.title,
                                              @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
                                              @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-                                             @"data/font-size": [NSString stringWithFormat:@"%.3f", ni.note.fontSize],
+//                                             @"data/font-size": [NSString stringWithFormat:@"%.1f", ni.note.fontSize],
+                                             @"data/fontSize": [ni.note valueForKey: @"fontSize"],
                                              @"metadata/parent-visuall": _currentVisuallKey,
                                              @"metadata/date-created": [FIRServerValue timestamp],
                                              @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?

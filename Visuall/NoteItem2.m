@@ -66,7 +66,11 @@
         }
         note.x = [value[@"data"][@"x"] floatValue];
         note.y = [value[@"data"][@"y"] floatValue];
-        note.fontSize = [value[@"data"][@"font-size"] floatValue];
+        if ( value[@"data"][@"fontSize"] ) {
+            note.fontSize = [value[@"data"][@"fontSize"] floatValue];
+        } else {
+            note.fontSize = 12.0;
+        }
         [self setNote: note];
         [self addTextView];
     }

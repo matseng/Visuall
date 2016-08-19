@@ -531,7 +531,7 @@
                 {
                     [gi.group setTitleNoteKey: ni.note.key];
                     [ni.note setIsTitleOfParentGroup:YES];
-                } else if ( ni.note.fontSize > [self.NotesCollection getNoteFontSizeFromKey:gi.group.titleNoteKey])
+                } else if ( ni.note.fontSize > [self.NotesCollection getNoteFontSizeFromKey: gi.group.titleNoteKey])
                 {
                     Note2 *oldTitleNote = [self.NotesCollection getNoteFromKey:gi.group.titleNoteKey];
                     if (oldTitleNote) [oldTitleNote setIsTitleOfParentGroup:NO];

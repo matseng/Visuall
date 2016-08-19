@@ -531,6 +531,7 @@ UIColor *darkGrayBorderColor;
     if ( (ni) && [self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
     {
         [ni decreaseFontSize];
+        [self.visuallState updateChildValue:ni Property: @"fontSize"];
     }
     
 }
@@ -542,6 +543,7 @@ UIColor *darkGrayBorderColor;
     if ( (ni) && [self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
     {
         [ni increaseFontSize];
+        [self.visuallState updateChildValue:ni Property: @"fontSize"];
     }
     
 }
