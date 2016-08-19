@@ -230,7 +230,7 @@
          {
              return;
          }
-         
+         self.childrenCountNotes = snapshot.childrenCount;
          [self loadNoteFromRef: [_notesTableRef child:key]];
          
      } withCancelBlock:^(NSError *error)

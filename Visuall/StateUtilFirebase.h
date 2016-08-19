@@ -11,6 +11,7 @@
 @interface StateUtilFirebase : StateUtil
 
 //+(id) sharedManager;
+@property NSInteger childrenCountNotes;
 
 - (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;
 

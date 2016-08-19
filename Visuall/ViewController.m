@@ -589,6 +589,10 @@
         }
         
     }
+    else
+    {
+        [self setActivelySelectedObjectDuringPan: nil];
+    }
     
 }
 
