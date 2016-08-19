@@ -13,6 +13,7 @@
 #import "ViewController+panHandler.h"
 #import "StateUtilFirebase.h"
 #import "SegmentedControlMod.h"
+#import "UIView+VisualItem.h"
 
 
 @implementation ViewController (Menus) 
@@ -521,16 +522,27 @@ UIColor *darkGrayBorderColor;
     }
 }
 
-- (void) decreaseFontSizeHandler: (id) sender
+- (void) decreaseFontSizeHandler: (UIButton *) button
 {
     // TODO (Aug 19, 2016): update note font size of currently selected note (double-check that it's viewable on screen) and save to firebase
-    UIButton *button = (UIButton *) sender;
+    
     NSLog(@"decreaseFontSizeButton title: %@", [button currentTitle]);
+    NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
+    if ( (ni) && [self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
+    {
+        [ni decreaseFontSize];
+    }
     
 }
 
-- (void) increaseFontSizeHandler
+- (void) increaseFontSizeHandler: (UIButton *) button
 {
+    NSLog(@"increaseFontSizeButton: %@", [button currentTitle]);
+    NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
+    if ( (ni) && [self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
+    {
+        [ni increaseFontSize];
+    }
     
 }
 

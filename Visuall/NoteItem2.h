@@ -33,6 +33,10 @@
 
 - (void) setFontSize: (float) fontSize;
 
+- (void) increaseFontSize;
+
+- (void) decreaseFontSize;
+
 - (void) scaleFontSize: (float) scalar;
 
 - (CGPoint) getCenterPoint;
