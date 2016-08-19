@@ -28,36 +28,15 @@
 {
     if ( [self isDrawGroupButtonSelected] )  // isGroupHandle
     {
-        
-            [self drawGroup: gestureRecognizer];
-            return NO;
-        
+        [self drawGroup: gestureRecognizer];
+        return NO;
     }
-    
-    
-    UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
-    NSLog(@"panHandler viewHit %@", [viewHit class]);
-    
-//    if (!viewHit) return NO;  // Delegate pan gesture does NOT receive touch, therefore the gesture is passed to UIScrollView's native pan... in short NO --> YES pan background scrollview
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-//        if ( [self isDrawGroupButtonSelected] )  // isGroupHandle
-//        {
-//            if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [viewHit isGroupHandle] )
-//            {
-//                GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
-//                [gi resizeGroup: gestureRecognizer];
-//                [[StateUtil sharedManager] updateChildValue:gi Property:@"frame"];
-//                return YES;
-//            }
-//            else {
-//                [self drawGroup: gestureRecognizer];
-//                return NO;
-//            }
-//        }
-
-        if ( [self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isNoteItem])  // Pan a note
+        UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
+        NSLog(@"panHandler viewHit %@", [viewHit class]);
+        if ( ([self isPointerButtonSelected] || [self isNoteButtonSelected]) && [self.activelySelectedObjectDuringPan isNoteItem])  // Pan a note
         {
             NoteItem2 *ni = [self.activelySelectedObjectDuringPan getNoteItem];
             [ni handlePan:gestureRecognizer];
