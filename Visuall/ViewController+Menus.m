@@ -463,14 +463,14 @@ UIColor *darkGrayBorderColor;
     [decreaseFontSizeButton setTitle:@"decreaseFontSize" forState:UIControlStateNormal];
     UIBarButtonItem *decreaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: decreaseFontSizeButton];
     [decreaseFontSizeButton addTarget:self
-                   action:@selector(decreaseFontSizeHandler)
+                               action:@selector(decreaseFontSizeHandler:)
          forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *increaseFontSizeButton = [self makeButtonFromImage:@"increase Font Filled-50" buttonSize: h andExtraPadding:0.5];
+    UIButton *increaseFontSizeButton = [self makeButtonFromImage:@"Increase Font Filled-50" buttonSize: h andExtraPadding:0.5];
     [increaseFontSizeButton setTitle:@"increaseFontSize" forState:UIControlStateNormal];
     UIBarButtonItem *increaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: increaseFontSizeButton];
     [increaseFontSizeButton addTarget:self
-                               action:@selector(increaseFontSizeHandler)
+                               action:@selector(increaseFontSizeHandler:)
                      forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -521,8 +521,11 @@ UIColor *darkGrayBorderColor;
     }
 }
 
-- (void) decreaseFontSizeHandler
+- (void) decreaseFontSizeHandler: (id) sender
 {
+    // TODO (Aug 19, 2016): update note font size of currently selected note (double-check that it's viewable on screen) and save to firebase
+    UIButton *button = (UIButton *) sender;
+    NSLog(@"decreaseFontSizeButton title: %@", [button currentTitle]);
     
 }
 
