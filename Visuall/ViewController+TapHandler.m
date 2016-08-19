@@ -72,7 +72,7 @@ NoteItem2 *targetNoteForArrow;
             if ( [self isNoteButtonSelected] ) {  // new note button  //- (BOOL) isNoteButtonSelected
                 CGPoint point = [gestureRecognizer locationInView: self.NotesView];
                 NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
-                [[StateUtilFirebase sharedManager] setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
+                [self.visuallState setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
                 [self addNoteToViewWithHandlers:newNote];
                 [self setSelectedObject:newNote];
                 [newNote becomeFirstResponder];  // puts cursor on text field

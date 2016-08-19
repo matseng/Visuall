@@ -11,11 +11,13 @@
 #import "NotesCollection.h"
 #import "GroupsCollection.h"
 #import "TiledLayerView.h"
+#import "StateUtilFirebase.h"
+#import "ScrollViewMod.h"
 
 
 @interface ViewController : UIViewController
 
-//@property (nonatomic, strong) state;
+@property (nonatomic, strong) StateUtilFirebase *visuallState;
 
 @property (nonatomic, strong) NSString *firebaseURL;
 
@@ -23,7 +25,7 @@
 
 @property (strong, nonatomic) IBOutlet UIView *Background;
 
-@property (strong, nonatomic) IBOutlet UIScrollView *BackgroundScrollView;
+@property (strong, nonatomic) IBOutlet ScrollViewMod *BackgroundScrollView;
 
 @property TiledLayerView *BoundsTiledLayerView;
 

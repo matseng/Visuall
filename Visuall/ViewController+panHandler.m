@@ -61,7 +61,7 @@
         {
             NoteItem2 *ni = [self.activelySelectedObjectDuringPan getNoteItem];
             [ni handlePan:gestureRecognizer];
-            [[StateUtilFirebase sharedManager] updateChildValues: ni Property1:@"x" Property2:@"y"];
+            [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
             return YES;
         } else if ([self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isGroupItem])  // Pan or resize a group
         {
@@ -69,12 +69,12 @@
             if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [gi isHandle: self.activelySelectedObjectDuringPan] )
             {
                 [gi resizeGroup: gestureRecognizer];
-                [[StateUtilFirebase sharedManager] updateChildValue:gi Property:@"frame"];
+                [self.visuallState updateChildValue:gi Property:@"frame"];
                 return YES;
             } else
             {
                 [self handlePanGroup: gestureRecognizer andGroupItem:gi];
-                [[StateUtilFirebase sharedManager] updateChildValue:gi Property:@"frame"];
+                [self.visuallState updateChildValue:gi Property:@"frame"];
                 return YES;
             }
         }
@@ -145,7 +145,7 @@
             if ( [gi isHandle: self.activelySelectedObjectDuringPan] )
             {
                 [self refreshGroupsView];  // TODO (Aug 10, 2016): Get this working again
-                [gi setViewAsSelected];  // To re-render the handles  // TODO (Aug 10, 2016): animate this step for a smoother transition
+                [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];  // To re-render the handles  // TODO (Aug 10, 2016): animate this step for a smoother transition
             }
             [self updateTotalBounds: gi];
         }

@@ -107,7 +107,8 @@
 
 - (void) renderGroup
 {
-    float scale = [[StateUtilFirebase sharedManager] getZoomScale];
+//    float scale = [self.visuallState getZoomScale];
+    float scale = 1.0;
     
     _handleDiameter = [self getHandleDiameter];
     
@@ -409,16 +410,30 @@
     return nil;
 }
 
+//- (void) setViewAsSelected: (StateUtilFirebase *) visuallState
 - (void) setViewAsSelected
 {
-    if ( [[StateUtilFirebase sharedManager] editModeOn])
+//    if ( [visuallState editModeOn])
+    if (YES)
     {
         [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
         [self renderGroup];
         [self updateFrame];
     }
-    self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / [[StateUtilFirebase sharedManager] getZoomScale]);
+//    self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / [self.visuallState getZoomScale]);
+}
+
+- (void) setViewAsSelectedForEditModeOn: (BOOL) editModeOn andZoomScale: (float) zoomScale
+{
+    if ( editModeOn )
+    {
+        [__innerGroupView removeFromSuperview];
+        [self setViewAsNotSelected];
+        [self renderGroup];
+        [self updateFrame];
+    }
+        self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / zoomScale);
 }
 
 - (float) getHandleDiameter

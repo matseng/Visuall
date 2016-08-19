@@ -10,6 +10,7 @@
 #import "Group.h"
 #import "NoteItem2.h"
 #import "Group2.h"
+//#import "StateUtilFirebase.h"
 
 @interface GroupItem : UIView
 
@@ -49,6 +50,8 @@
 - (UIView *) hitTestOnHandles: (UIGestureRecognizer *) gestureRecognizer;
 
 - (void) setViewAsSelected;
+
+- (void) setViewAsSelectedForEditModeOn: (BOOL) editModeOn andZoomScale: (float) zoomScale;
 
 - (void) setViewAsNotSelected;
 

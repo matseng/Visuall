@@ -19,7 +19,6 @@
 #import "ViewController+panHandler.h"
 #import "ViewController+TapHandler.h"
 #import "ViewController+Group.h"
-#import "ScrollViewMod.h"
 #import "StateUtilFirebase.h"
 #import "UserUtil.h"
 #import "TouchDownGestureRecognizer.h"
@@ -60,16 +59,19 @@
     NSLog(@"Firebase URL: %@", self.firebaseURL);  // TODO (Aug 17, 2016): In the future this value will be populated from the previous selection of a Visuall
 
     NSString *userID = [[UserUtil sharedManager] userID];
-    [[StateUtilFirebase sharedManager] setUserID: userID];
     
-    [[StateUtilFirebase sharedManager] setBackgroundScrollView: self.BackgroundScrollView];
+    self.visuallState = [[StateUtilFirebase alloc] init];
     
-    [[StateUtilFirebase sharedManager] setCallbackNoteItem:^(NoteItem2 *ni) {
+    [self.visuallState setUserID: userID];
+    
+    [self.visuallState setBackgroundScrollView: self.BackgroundScrollView];
+    
+    [self.visuallState setCallbackNoteItem:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
         [self calculateTotalBounds: ni];  // TODO - update so doest move window
         //        [self setSelectedObject: ni];
     }];
-    [[StateUtilFirebase sharedManager] setCallbackGroupItem:^(GroupItem *gi) {
+    [self.visuallState setCallbackGroupItem:^(GroupItem *gi) {
         [self addGestureRecognizersToGroup: gi];
         [self.GroupsView addSubview: gi];
         if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
@@ -81,13 +83,12 @@
 //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
     if (self.tabBarController.selectedIndex == 0)  // Global tab
     {
-        [[StateUtilFirebase sharedManager] loadPublicVisuallsList];
+        [self.visuallState loadPublicVisuallsList];
     }
     else
     {
-
-        [[StateUtilFirebase sharedManager] loadVisuallsListForCurrentUser];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
-        [[StateUtilFirebase sharedManager] loadVisuallsForCurrentUser];
+        [self.visuallState loadVisuallsListForCurrentUser];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
+        [self.visuallState loadVisuallsForCurrentUser];
     }
     
 }
@@ -492,7 +493,7 @@
         }
         
         [self.lastSelectedObject removeFromSuperview];
-        [[StateUtilFirebase sharedManager] removeValue: self.lastSelectedObject];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
+        [self.visuallState removeValue: self.lastSelectedObject];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
         //        [self.lastSelectedObject delete:nil];  // TODO: untested
         //        self.lastSelectedObject = nil;
 
@@ -507,7 +508,7 @@
         if (!view) {
             return;
         }
-        [[StateUtilFirebase sharedManager] handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
+        [self.visuallState handleDoubleTapToZoom: gestureRecognizer andTargetView: view];
     }
 }
  
@@ -551,7 +552,7 @@
     {
         NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
         [ni setFontSize:fontSize];
-        [[StateUtilFirebase sharedManager] transformVisualItem: ni];
+        [self.visuallState transformVisualItem: ni];
     }
 }
 
@@ -843,7 +844,7 @@
             {
             
                 [gi resizeGroup: gestureRecognizer];
-                [[StateUtilFirebase sharedManager] updateChildValue:gi Property:@"frame"];
+                [self.visuallState updateChildValue:gi Property:@"frame"];
             }
             else
             {
@@ -873,7 +874,7 @@
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
             self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
             GroupItem *currentGroupItem = [[GroupItem alloc] initWithRect: self.drawGroupView.frame];
-            [[StateUtilFirebase sharedManager] setValueGroup: currentGroupItem];
+            [self.visuallState setValueGroup: currentGroupItem];
             [self addGestureRecognizersToGroup: currentGroupItem];
             [self.GroupsView addSubview: currentGroupItem];
             if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
@@ -946,7 +947,7 @@
     [ni resizeToFit: textView.text];
     ni.note.title = textView.text;
 //    [[TransformUtil sharedManager] transformVisualItem: ni];
-    [[StateUtilFirebase sharedManager] updateChildValue:ni Property:@"title"];
+    [self.visuallState updateChildValue:ni Property:@"title"];
 }
 
 -(void) textViewDidChangeSelection:(UITextView *)textView
@@ -1074,7 +1075,7 @@
     
     if ([visualObject isGroupItem])
     {
-        [[visualObject getGroupItem] setViewAsSelected];
+        [[visualObject getGroupItem] setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];
     } else
     {
         visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;

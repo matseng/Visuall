@@ -607,7 +607,7 @@ UIColor *__darkGrayBorderColor;
     if([sender isOn]){
         // Execute any code when the switch is ON
         NSLog(@"Switch is ON");
-        [[StateUtilFirebase sharedManager] setEditModeOn: YES];
+        [self.visuallState setEditModeOn: YES];
         [self setSelectedObject: self.lastSelectedObject];
         [self.scrollViewButtonList setHidden: NO];
         
@@ -659,7 +659,7 @@ UIColor *__darkGrayBorderColor;
     else
     {
         NSLog(@"Switch is OFF");
-        [[StateUtilFirebase sharedManager] setEditModeOn: NO];
+        [self.visuallState setEditModeOn: NO];
         [self setSelectedObject: self.lastSelectedObject];
         CGRect rect = __submenu.frame;
         rect.origin.y = -rect.size.height;

@@ -10,7 +10,7 @@
 
 @interface StateUtilFirebase : StateUtil
 
-+(id) sharedManager;
+//+(id) sharedManager;
 
 - (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;
 

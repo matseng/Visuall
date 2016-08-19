@@ -101,7 +101,7 @@
 /* Begin PBXFileReference section */
 		0443F176CA71B830914C61C0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		210833161C0127AB00BA059F /* GroupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupItem.h; sourceTree = "<group>"; };
-		210833171C0127AB00BA059F /* GroupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupItem.m; sourceTree = "<group>"; };
+		210833171C0127AB00BA059F /* GroupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GroupItem.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		219E5FA31C00285E00CEE0D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		40A382F99E853FE4AB8D376B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		712682011D49997700A0A2F7 /* ScrollViewMod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewMod.h; sourceTree = "<group>"; };
@@ -182,15 +182,15 @@
 		71D96BEB1D301D8600CD1C49 /* light-bulb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light-bulb.png"; sourceTree = "<group>"; };
 		71D96BEE1D30347400CD1C49 /* light-bulb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light-bulb@2x.png"; sourceTree = "<group>"; };
 		71D96BF91D342A4100CD1C49 /* ViewController+Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+Menus.h"; sourceTree = "<group>"; };
-		71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Menus.m"; sourceTree = "<group>"; };
+		71D96BFA1D342A4100CD1C49 /* ViewController+Menus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "ViewController+Menus.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		71D96BFC1D34791100CD1C49 /* ViewController+panHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+panHandler.h"; sourceTree = "<group>"; };
-		71D96BFD1D34791100CD1C49 /* ViewController+panHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+panHandler.m"; sourceTree = "<group>"; };
+		71D96BFD1D34791100CD1C49 /* ViewController+panHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "ViewController+panHandler.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+ViewHit.h"; sourceTree = "<group>"; };
 		71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+ViewHit.m"; sourceTree = "<group>"; };
 		71D96C021D359E0000CD1C49 /* ViewController+Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+Group.h"; sourceTree = "<group>"; };
-		71D96C031D359E0000CD1C49 /* ViewController+Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Group.m"; sourceTree = "<group>"; };
+		71D96C031D359E0000CD1C49 /* ViewController+Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "ViewController+Group.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		71D96C051D35A9A400CD1C49 /* ViewController+TapHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+TapHandler.h"; sourceTree = "<group>"; };
-		71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+TapHandler.m"; sourceTree = "<group>"; };
+		71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "ViewController+TapHandler.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71E1AF601D4C278900B818A0 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		71E1AF611D4C278900B818A0 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };

@@ -39,7 +39,7 @@
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
         NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
 
-        [[[StateUtilFirebase sharedManager] notesCollection] myForIn:^(NoteItem2 *ni)
+        [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
          {
              if ( [groupItem isNoteInGroup:ni]) {
                  //                NSLog(@"Note name in group: %@", ni.note.title);
@@ -48,7 +48,7 @@
 
          }];
 
-        [[[StateUtilFirebase sharedManager] groupsCollection] myForIn:^(GroupItem *gi)
+        [[self.visuallState groupsCollection] myForIn:^(GroupItem *gi)
         {
             if ([groupItem isGroupInGroup:gi]) {
                 [groupsInGroup addObject:gi];
@@ -62,15 +62,15 @@
     {
         [groupItem handlePanGroup2:gestureRecognizer];
         
-        [[StateUtilFirebase sharedManager] updateChildValue:groupItem Property:@"frame"];
+        [self.visuallState updateChildValue:groupItem Property:@"frame"];
         
         for (NoteItem2 *ni in groupItem.notesInGroup)
         {
-            [[StateUtilFirebase sharedManager] updateChildValues: ni Property1:@"x" Property2:@"y"];
+            [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
         }
         for (GroupItem *gi in groupItem.groupsInGroup)
         {
-            [[StateUtilFirebase sharedManager] updateChildValue:gi Property:@"frame"];
+            [self.visuallState updateChildValue:gi Property:@"frame"];
             
         }
         
