@@ -62,10 +62,18 @@ NoteItem2 *targetNoteForArrow;
                 }
                 //            NSLog(@"Note key: %@", ni.note.key);
                 //            NSLog(@"Parent group key: %@", ni.note.parentGroupKey);
-                //            NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
+                            NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
                 //            NSLog(@"Note width: %f", ni.frame.size.width);
                 return;
-            } else {
+            }
+            else if ( [viewHit isGroupItem] )
+            {
+                GroupItem *gi = [viewHit getGroupItem];
+                NSString *titleNoteString = [self.visuallState.notesCollection getNoteTitleFromKey: [gi.group titleNoteKey]];
+                NSLog(@"Group title: %@", titleNoteString);
+                NSLog(@"Group key: %@", [gi.group key]);
+            }
+            else {
                 sourceNoteForArrow = nil;
             }
             
@@ -77,18 +85,8 @@ NoteItem2 *targetNoteForArrow;
                 [self setSelectedObject:newNote];
                 [newNote becomeFirstResponder];  // puts cursor on text field
                 [newNote.noteTextView selectAll:nil];  // highlights text
-            } else
-            {
-                [self setSelectedObject: viewHit];
-                //            if ([viewHit isKindOfClass: [GroupItem class]])
-                if (viewHit.tag == 100)
-                {
-                    GroupItem *gi = (GroupItem *) [viewHit superview];
-                    NSString *titleNoteString = [self.NotesCollection getNoteTitleFromKey: [gi.group titleNoteKey]];
-                    NSLog(@"Group title: %@", titleNoteString);
-                    NSLog(@"Group key: %@", [gi.group key]);
-                }
             }
+        [self setSelectedObject: viewHit];
         }
     }
     

@@ -280,6 +280,12 @@
     [self centerScrollViewContents];
 }
 
+- (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    [self findChildandTitleNotes];
+}
+
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.BoundsTiledLayerView;
@@ -515,25 +521,25 @@
 - (void) findChildandTitleNotes
 {
 
-    [self.NotesCollection myForIn:^(NoteItem2 *ni)
+    [_visuallState.notesCollection myForIn:^(NoteItem2 *ni)
      {
-         [self.groupsCollection myForIn:^(GroupItem *gi){
-            if( [gi isNoteInGroup:ni] )
+         [_visuallState.groupsCollection myForIn:^(GroupItem *gi){
+            if( [gi isNoteInGroup:ni] )  // note is within group bounds
             {
                 if (![ni.note parentGroupKey]) {
                     [ni.note setParentGroupKey: gi.group.key];
-                } else if ( [gi.group getArea] < [self.groupsCollection getGroupAreaFromKey:[ni.note parentGroupKey]] )  // current group is smaller than previously assigned parent
+                } else if ( [gi.group getArea] < [_visuallState.groupsCollection getGroupAreaFromKey:[ni.note parentGroupKey]] )  // current group is smaller than previously assigned parent
                 {
-                    [ni.note setParentGroupKey: gi.group.key];
+                    [ni.note setParentGroupKey: gi.group.key];  // set a note's most immediate parent
                 }
 
                 if ( !gi.group.titleNoteKey )
                 {
                     [gi.group setTitleNoteKey: ni.note.key];
                     [ni.note setIsTitleOfParentGroup:YES];
-                } else if ( ni.note.fontSize > [self.NotesCollection getNoteFontSizeFromKey: gi.group.titleNoteKey])
+                } else if ( ni.note.fontSize > [_visuallState.notesCollection getNoteFontSizeFromKey: gi.group.titleNoteKey])
                 {
-                    Note2 *oldTitleNote = [self.NotesCollection getNoteFromKey:gi.group.titleNoteKey];
+                    Note2 *oldTitleNote = [_visuallState.notesCollection getNoteFromKey:gi.group.titleNoteKey];
                     if (oldTitleNote) [oldTitleNote setIsTitleOfParentGroup:NO];
                     gi.group.titleNoteKey = ni.note.key;
                     [ni.note setIsTitleOfParentGroup: YES];
