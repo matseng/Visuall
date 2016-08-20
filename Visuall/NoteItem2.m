@@ -99,6 +99,7 @@
 
 - (void) resizeToFit: (NSString *) text;
 {
+    // TODO (Aug 19, 2016): Idea... set the matrix back to scale of 1.0... perform computation below... re-set the matrix back to the correct scale
     if (!text) {
         text = self.noteTextView.text;
     }
