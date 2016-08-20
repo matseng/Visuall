@@ -47,6 +47,8 @@
 
 - (float) getZoomScale;
 
+- (void) scaleNoteTitleSize: (NoteItem2 *) ni;
+
 @end
 
 

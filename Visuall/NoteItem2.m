@@ -104,9 +104,6 @@
     }
     
     CGRect frame = self.noteTextView.frame;
-//    CGSize tempSize = self.noteTextView.bounds.size;
-//    tempSize.width = CGRectInfinite.size.width;
-//    frame.size = tempSize;
     frame.size.width = CGRectInfinite.size.width;
     self.noteTextView.frame = frame;
     
@@ -116,19 +113,11 @@
     [self.noteTextView setScrollEnabled: NO];
 
     frame = self.noteTextView.frame;
-//    float x = self.note.x - (frame.size.width - self.note.width)/2;
-//    float y = self.note.y - (frame.size.height - self.note.height)/2;
-//    float x = self.note.x;
-//    float y = self.note.y;
+    if ( !self.fontSizeScaleFactor ) self.fontSizeScaleFactor = 1.0;
+    [self.note setWidth: frame.size.width / self.fontSizeScaleFactor];
+    [self.note setHeight: frame.size.height / self.fontSizeScaleFactor];
     
-    [self setX: self.note.x andY: self.note.y andWidth: frame.size.width andHeight: frame.size.height];
-//    [self.note setX: x];
-//    [self.note setY: y];
-    [self.note setWidth: frame.size.width];
-    [self.note setHeight: frame.size.height];
-    
-//    self.frame = frame;
-    self.frame = CGRectMake(self.note.x, self.note.y, frame.size.width, frame.size.height);
+    [self transformVisualItem];
 }
 
 - (void) saveToCoreData
@@ -155,9 +144,9 @@
 -(void) transformVisualItem
 {
     
-    VisualItem *visualItem = self;
-    CGRect frame = visualItem.frame;
-    CGAffineTransform matrix = visualItem.transform;
+//    VisualItem *visualItem = self;
+    CGRect frame = self.frame;
+//    CGAffineTransform matrix = visualItem.transform;
 //    matrix.a = self.zoom;
 //    matrix.d = self.zoom;
     
@@ -190,14 +179,21 @@
         }
     }
      */
+    float scaleFactor = self.fontSizeScaleFactor;
+    if ( !scaleFactor ) scaleFactor = 1.0;
+    CGAffineTransform matrix = self.transform;
+    matrix.a = scaleFactor;
+    matrix.d = scaleFactor;
+    [self setTransform: matrix];
     
-    [visualItem setTransform: matrix];
-    frame.origin.x = visualItem.x;
-    frame.origin.y = visualItem.y;
-    frame.size.width = visualItem.width;
-    frame.size.height = visualItem.height;
-    [visualItem setFrame: frame];
-    
+    float centerDeltaX = (self.note.width * scaleFactor - self.note.width) / 2;
+    frame.origin.x = self.note.x - centerDeltaX;
+    frame.origin.y = self.note.y;
+    frame.size.width = self.note.width * scaleFactor;
+    frame.size.height = self.note.height * scaleFactor;
+//    [self.noteTextView setFrame: frame];
+    [self setFrame: frame];
+
 }
 
 - (void) increaseFontSize

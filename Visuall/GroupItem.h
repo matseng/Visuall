@@ -43,6 +43,8 @@
 
 - (float) getRadius;
 
+- (float) getWidth;
+
 - (float) getArea;
 
 - (CGPoint) getCenterPoint;

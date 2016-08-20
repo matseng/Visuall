@@ -484,6 +484,10 @@
     [self setFrame: frame];
 }
 
+- (float) getWidth
+{
+    return __innerGroupView.frame.size.width;
+}
 
 /*
  // Only override drawRect: if you perform custom drawing.

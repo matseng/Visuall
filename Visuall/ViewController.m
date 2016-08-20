@@ -278,6 +278,14 @@
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     [self centerScrollViewContents];
+    [_visuallState.groupsCollection myForIn:^(GroupItem *gi) {
+        NSString *titleNoteKey = gi.group.titleNoteKey;
+        if ( titleNoteKey )
+        {
+            NoteItem2 *ni = [_visuallState.notesCollection getNoteItemFromKey: titleNoteKey];
+            [_visuallState scaleNoteTitleSize:ni];
+        }
+    }];
 }
 
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale

@@ -16,6 +16,7 @@
 
 @property Note2 *note;
 @property UITextView *noteTextView;
+@property float fontSizeScaleFactor;
 
 //- (instancetype) initNote:(Note *) note;
 

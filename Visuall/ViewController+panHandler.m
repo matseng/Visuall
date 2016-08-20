@@ -39,6 +39,7 @@
         if ( ([self isPointerButtonSelected] || [self isNoteButtonSelected]) && [self.activelySelectedObjectDuringPan isNoteItem])  // Pan a note
         {
             NoteItem2 *ni = [self.activelySelectedObjectDuringPan getNoteItem];
+            [self setSelectedObject:ni];
             [ni handlePan:gestureRecognizer];
             [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
             return YES;

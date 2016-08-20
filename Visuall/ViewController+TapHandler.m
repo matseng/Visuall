@@ -69,9 +69,11 @@ NoteItem2 *targetNoteForArrow;
             else if ( [viewHit isGroupItem] )
             {
                 GroupItem *gi = [viewHit getGroupItem];
-                NSString *titleNoteString = [self.visuallState.notesCollection getNoteTitleFromKey: [gi.group titleNoteKey]];
-                NSLog(@"Group title: %@", titleNoteString);
+                NoteItem2 *ni = [self.visuallState.notesCollection getNoteItemFromKey: gi.group.titleNoteKey];
+//                NSString *titleNoteString = [self.visuallState.notesCollection getNoteTitleFromKey: [gi.group titleNoteKey]];
+                NSLog(@"Group title: %@", ni.note.title);
                 NSLog(@"Group key: %@", [gi.group key]);
+                
             }
             else {
                 sourceNoteForArrow = nil;
