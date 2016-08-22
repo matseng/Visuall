@@ -964,8 +964,8 @@
     NoteItem2 *ni = (NoteItem2 *) textView.superview;
     [ni resizeToFit: textView.text];
     ni.note.title = textView.text;
-//    [[TransformUtil sharedManager] transformVisualItem: ni];
     [self.visuallState updateChildValue:ni Property:@"title"];
+    [ni transformVisualItem];
 }
 
 -(void) textViewDidChangeSelection:(UITextView *)textView

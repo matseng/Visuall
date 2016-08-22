@@ -85,6 +85,7 @@
     self.noteTextView.editable = NO;
     self.noteTextView.selectable = NO;
     [self addSubview: self.noteTextView];
+    [self transformVisualItem];
 }
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
@@ -115,10 +116,9 @@
 
     frame = self.noteTextView.frame;
     if ( !self.fontSizeScaleFactor ) self.fontSizeScaleFactor = 1.0;
+    
     [self.note setWidth: frame.size.width / self.fontSizeScaleFactor];
     [self.note setHeight: frame.size.height / self.fontSizeScaleFactor];
-    
-    [self transformVisualItem];
 }
 
 - (void) saveToCoreData
@@ -182,17 +182,14 @@
      */
     float scaleFactor = self.fontSizeScaleFactor;
     if ( !scaleFactor ) scaleFactor = 1.0;
-    CGAffineTransform matrix = self.transform;
-    matrix.a = scaleFactor;
-    matrix.d = scaleFactor;
-    [self setTransform: matrix];
+    [self.noteTextView setFont: [UIFont systemFontOfSize: self.note.fontSize * scaleFactor]];
+    [self resizeToFit: nil];
     
     float centerDeltaX = (self.note.width * scaleFactor - self.note.width) / 2;
     frame.origin.x = self.note.x - centerDeltaX;
     frame.origin.y = self.note.y;
     frame.size.width = self.note.width * scaleFactor;
     frame.size.height = self.note.height * scaleFactor;
-//    [self.noteTextView setFrame: frame];
     [self setFrame: frame];
 
 }
@@ -216,27 +213,28 @@
     [self.note setFontSize: fontSize];
     [self.noteTextView setFont: [UIFont systemFontOfSize:fontSize]];
     [self resizeToFit:nil];
+    [self transformVisualItem];
 }
 
-- (void) scaleFontSize: (float) scalar
-{
-    float newFontSize = self.note.fontSize * scalar;
-    [self.note setFontSize: newFontSize];
-    [self.noteTextView setFont: [UIFont systemFontOfSize: newFontSize]];
-    
-//    [self resizeToFit:nil];
-    NSString *text = self.noteTextView.text;
-    CGRect frame = self.noteTextView.frame;
-    CGSize tempSize = self.noteTextView.bounds.size;
-    tempSize.width = CGRectInfinite.size.width;
-    frame.size = tempSize;
-    [self.noteTextView setFrame: frame];
-    
-    [self.noteTextView setScrollEnabled: YES];
-    [self.noteTextView setText: text];
-    [self.noteTextView sizeToFit];
-    [self.noteTextView setScrollEnabled: NO];
-}
+//- (void) scaleFontSize: (float) scalar
+//{
+//    float newFontSize = self.note.fontSize * scalar;
+//    [self.note setFontSize: newFontSize];
+//    [self.noteTextView setFont: [UIFont systemFontOfSize: newFontSize]];
+//    
+////    [self resizeToFit:nil];
+//    NSString *text = self.noteTextView.text;
+//    CGRect frame = self.noteTextView.frame;
+//    CGSize tempSize = self.noteTextView.bounds.size;
+//    tempSize.width = CGRectInfinite.size.width;
+//    frame.size = tempSize;
+//    [self.noteTextView setFrame: frame];
+//    
+//    [self.noteTextView setScrollEnabled: YES];
+//    [self.noteTextView setText: text];
+//    [self.noteTextView sizeToFit];
+//    [self.noteTextView setScrollEnabled: NO];
+//}
 
 - (BOOL) isNote
 {

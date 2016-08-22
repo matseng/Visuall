@@ -259,16 +259,15 @@
     matrix.d = 1.0;
     float scaleFactor = 1.0;
     
-    if (zoom < 0.5) {
-        
-//        scaleFactor = .5 + (.5 - zoom) / zoom;
-        scaleFactor = 1.0 + (.5 - zoom) / zoom;
+    if (zoom < 0.2) {
+        scaleFactor = 1.0 + (.2 - zoom) / zoom;
         GroupItem *gi = [self.groupsCollection getGroupItemFromKey: ni.note.parentGroupKey];
         if ( ni.note.width * scaleFactor > gi.group.width )
         {
             scaleFactor = gi.group.width / ni.note.width;
         }
     }
+    
     ni.fontSizeScaleFactor = scaleFactor;
     [ni transformVisualItem];
 }
