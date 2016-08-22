@@ -278,6 +278,9 @@
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     [self centerScrollViewContents];
+    
+    return; // TODO (Aug 22, 2016): testing 
+    
     [_visuallState.groupsCollection myForIn:^(GroupItem *gi) {
         NSString *titleNoteKey = gi.group.titleNoteKey;
         if ( titleNoteKey )
@@ -968,7 +971,7 @@
     [ni transformVisualItem];
 }
 
--(void) textViewDidChangeSelection:(UITextView *)textView
+- (void) textViewDidChangeSelection:(UITextView *)textView
 {
     NoteItem2 *ni = [textView getNoteItem];
     [self setSelectedObject: ni];

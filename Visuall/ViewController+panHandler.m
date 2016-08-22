@@ -43,10 +43,10 @@
             [ni handlePan:gestureRecognizer];
             [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
             return YES;
-        } else if ([self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isGroupItem])  // Pan or resize a group
+        } else if ([self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isGroupItem] && ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem]) )  // Pan or resize a group
         {
             GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
-            if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [gi isHandle: self.activelySelectedObjectDuringPan] )
+            if ( [gi isHandle: self.activelySelectedObjectDuringPan] )
             {
                 [gi resizeGroup: gestureRecognizer];
                 [self.visuallState updateChildValue:gi Property:@"frame"];

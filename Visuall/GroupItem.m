@@ -223,10 +223,8 @@
             x = gi.group.x + translation.x;
             y = gi.group.y + translation.y;
             [gi.group setX: x andY: y];
-            [self updateFrame];
+            [gi updateFrame];
         }
-        
-        
     }
 }
 

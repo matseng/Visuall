@@ -196,14 +196,14 @@
 
 - (void) increaseFontSize
 {
-    float size = self.note.fontSize * 1.5;
+    float size = self.note.fontSize * 12 / 10;
     size = floorf(size * 10 + 0.5) / 10;  // round to nearest 1/10th e.g.
     [self setFontSize: size];
 }
 
 - (void) decreaseFontSize
 {
-    float size = self.note.fontSize * .666;
+    float size = self.note.fontSize * 10.0 / 12.0;
     size = floorf(size * 10 + 0.5) / 10;  // round to nearest 1/10th e.g.
     [self setFontSize: size];
 }
