@@ -10,6 +10,9 @@
 
 @interface GroupItemImage : GroupItem
 
-- (instancetype) initGroupWithImage: (UIImage *) img;
+@property UIImage *image;
+@property UIImage *thumbnail;
+
+- (instancetype) initGroupWithImage: (UIImage *) img andPoint: (CGPoint) point;
 
 @end

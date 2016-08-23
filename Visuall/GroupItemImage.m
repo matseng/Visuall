@@ -10,14 +10,14 @@
 
 @implementation GroupItemImage
 
-- (instancetype) initGroupWithImage: (UIImage *) img
+- (instancetype) initGroupWithImage: (UIImage *) img andPoint: (CGPoint) point
 //- (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float) width andHeight:(float)height
 {
     self = [super init];
     
     if (self)
     {
-        CGRect rect = CGRectMake(100, 100, 100, 100);
+        CGRect rect = CGRectMake(point.x, point.y, 100, 100);
         Group2 *group = [[Group2 alloc] init];
         group.key = nil;
         group.x = rect.origin.x;
@@ -28,6 +28,10 @@
         [self renderGroup];
         [self setViewAsNotSelected];
         [self updateFrame];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+        imageView.frame = CGRectMake(0, 0, 100, 100);
+        [self.innerGroupView addSubview: imageView];
     }
     return self;
 }

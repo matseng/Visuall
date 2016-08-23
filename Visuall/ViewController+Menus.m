@@ -764,8 +764,14 @@ UIColor *darkGrayBorderColor;
     UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
 //    self.mainImageView.image = chosenImage;
 //  create new note but insert with image instead of text
-    GroupItemImage *gii = [[GroupItemImage alloc] initGroupWithImage: chosenImage];
+    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
+    CGPoint pointInScreenCoords = CGPointMake( [[UIScreen mainScreen] bounds].size.width / 2, [[UIScreen mainScreen] bounds].size.height / 2);
+    CGPoint pointInWindowCoords = [mainWindow convertPoint:pointInScreenCoords fromWindow:nil];
+    CGPoint pointInViewCoords = [self.GroupsView convertPoint:pointInWindowCoords fromView:mainWindow];
+    
+    GroupItemImage *gii = [[GroupItemImage alloc] initGroupWithImage: chosenImage andPoint: pointInViewCoords];
     [self addGroupItemToMVC: gii];
+    [self.GroupsView addSubview: gii];
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self.segmentControlInsertMedia setSelectedSegmentIndex: -1];
 }
