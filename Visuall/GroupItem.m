@@ -119,9 +119,10 @@
     [__innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
     [__innerGroupView.layer setBorderWidth: 0];
     __innerGroupView.tag = 100;
+    __innerGroupView.autoresizesSubviews = YES;
     self.innerGroupView = __innerGroupView;
     [self addSubview: __innerGroupView];
-    [self renderHandles];
+//    [self renderHandles];
 }
 
 /*
@@ -175,19 +176,6 @@
     circleView.layer.backgroundColor = [HANDLE_COLOR CGColor];
     return circleView;
 }
-
-- (UIView *) __makeHandle: (CGRect) rect
-{
-    UIView *circleView = [[UIView alloc] initWithFrame: rect];
-    CALayer *sublayer = [CALayer layer];
-    sublayer.backgroundColor = [UIColor redColor].CGColor;
-    sublayer.frame = CGRectMake(_handleDiameter / 2, 0, _handleDiameter / 2, _handleDiameter);
-    [circleView.layer addSublayer:sublayer];
-    
-    return circleView;
-}
-
-
 
 - (BOOL) isHandle: (UIView *) subView
 {
@@ -409,7 +397,8 @@
     {
 //        [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
-        [self renderGroup];
+//        [self renderGroup];
+        [self renderHandles];
         [self updateFrame];
     }
     self.innerGroupView.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
@@ -421,7 +410,8 @@
     {
 //        [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
-        [self renderGroup];
+//        [self renderGroup];
+        [self renderHandles];
         [self updateFrame];
     }
     self.innerGroupView.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
