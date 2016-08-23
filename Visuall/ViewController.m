@@ -895,17 +895,23 @@
             CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
             self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
             GroupItem *currentGroupItem = [[GroupItem alloc] initWithRect: self.drawGroupView.frame];
-            [self.visuallState setValueGroup: currentGroupItem];
-            [self addGestureRecognizersToGroup: currentGroupItem];
-            [self.GroupsView addSubview: currentGroupItem];
-            if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
-            [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
-            [self refreshGroupsView];
-            [self setSelectedObject:currentGroupItem];
-            [self setActivelySelectedObjectDuringPan: nil];
+            [self addGroupItemToMVC: currentGroupItem];
         }
     }
 }
+
+- (void) addGroupItemToMVC: (GroupItem *) currentGroupItem
+{
+    [self.visuallState setValueGroup: currentGroupItem];
+    [self addGestureRecognizersToGroup: currentGroupItem];
+    [self.GroupsView addSubview: currentGroupItem];
+    if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
+    [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
+    [self refreshGroupsView];
+    [self setSelectedObject:currentGroupItem];
+    [self setActivelySelectedObjectDuringPan: nil];
+}
+
 
 - (void) handleTapGroup: (UITapGestureRecognizer *) gestureRecognizer
 {

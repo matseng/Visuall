@@ -12,6 +12,8 @@
 
 @interface UIView (VisualItem)
 
+-(void)setRoundedCorners:(UIRectCorner)corners radius:(CGFloat)radius;
+
 - (BOOL) isNoteItem;
 
 - (NoteItem2 *) getNoteItem;

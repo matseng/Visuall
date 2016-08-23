@@ -22,7 +22,7 @@
 
 @interface GroupItem ()
 @property NSManagedObjectContext *moc;
-@property UIView *innerGroupView;
+//@property UIView *innerGroupView;
 @end
 
 
@@ -117,14 +117,14 @@
                                (-self.group.height / 2 - _handleDiameter / 2) * scale,
                                (self.group.width + _handleDiameter),
                                (self.group.height + _handleDiameter) )];
-    self.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
-    self.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
+//    self.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+//    self.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
     
     __innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
     
     [__innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
     [__innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
-    [__innerGroupView.layer setBorderWidth:GROUP_VIEW_BORDER_WIDTH];
+    [__innerGroupView.layer setBorderWidth: 0];
     __innerGroupView.tag = 100;
     self.innerGroupView = __innerGroupView;
     [self addSubview: __innerGroupView];
@@ -419,7 +419,7 @@
         [self renderGroup];
         [self updateFrame];
     }
-//    self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / [self.visuallState getZoomScale]);
+    self.innerGroupView.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
 }
 
 - (void) setViewAsSelectedForEditModeOn: (BOOL) editModeOn andZoomScale: (float) zoomScale
@@ -431,8 +431,20 @@
         [self renderGroup];
         [self updateFrame];
     }
-        self.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / zoomScale);
+    self.innerGroupView.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
+    self.innerGroupView.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / zoomScale);
 }
+
+- (void) setViewAsNotSelected
+{
+    self.innerGroupView.layer.borderColor = [GROUP_VIEW_BORDER_COLOR CGColor];
+    [handleTopLeft removeFromSuperview];
+    [handleTopRight removeFromSuperview];
+    [handleBottomLeft removeFromSuperview];
+    [handleBottomRight removeFromSuperview];
+    
+}
+
 
 - (float) getHandleDiameter
 {
@@ -451,24 +463,7 @@
     return _handleDiameter;
 }
 
-- (void) __setViewAsNotSelected
-{
-    self.layer.borderWidth = 0;
-    handleTopLeft.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    handleTopRight.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    handleBottomLeft.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    handleBottomRight.layer.backgroundColor = [[UIColor clearColor] CGColor];
-}
 
-- (void) setViewAsNotSelected
-{
-    self.layer.borderWidth = 0;
-    [handleTopLeft removeFromSuperview];
-    [handleTopRight removeFromSuperview];
-    [handleBottomLeft removeFromSuperview];
-    [handleBottomRight removeFromSuperview];
-    
-}
 
 - (void) updateFrame
 {

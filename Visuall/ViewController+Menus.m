@@ -409,15 +409,32 @@ UIColor *darkGrayBorderColor;
     [segmentControlFont insertSegmentWithImage:fontSize atIndex:0 animated:YES];
     [segmentControlFont setMyTitle:@"fontSize" forSegmentAtIndex:0];
     
+    self.segmentControlInsertMedia = [[SegmentedControlMod alloc] init];
+    [self.segmentControlInsertMedia addTarget:self action:@selector(segmentControlInsertMediaHandler:) forControlEvents:UIControlEventValueChanged];
+    self.segmentControlInsertMedia.frame = CGRectMake(0, 0, 2 * unit, unit);
+    [self.segmentControlInsertMedia setSelectedSegmentIndex: -1];
+    UIBarButtonItem *segmentControlInsertMediaItem = [[UIBarButtonItem alloc] initWithCustomView: self.segmentControlInsertMedia];
+    
+    
+    UIImage *insertPhoto = [[UIImage imageNamed: @"picture"] imageWithExtraPadding: .25];
+    [self.segmentControlInsertMedia insertSegmentWithImage:insertPhoto atIndex:0 animated:YES];
+    [self.segmentControlInsertMedia setMyTitle:@"insertPhoto" forSegmentAtIndex: 0];
+    
+    UIImage *camera = [[UIImage imageNamed: @"photo-camera"] imageWithExtraPadding: .25];
+    [self.segmentControlInsertMedia insertSegmentWithImage: camera atIndex:1 animated:YES];
+    [self.segmentControlInsertMedia setMyTitle:@"camera" forSegmentAtIndex: 1];
+    
     self.trashButton = [self makeButtonFromImage:@"Trash-50" buttonSize: unit andExtraPadding:0.25];
     [self.trashButton setTitle:@"trash" forState:UIControlStateNormal];
     self.trashButton.frame = CGRectMake(0, 0, unit, unit);
     [self.trashButton addTarget:self
-                    action:@selector(buttonTapped:)
-          forControlEvents:UIControlEventTouchUpInside];
+                         action:@selector(buttonTapped:)
+               forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *trashButtonItem = [[UIBarButtonItem alloc] initWithCustomView: self.trashButton];
     
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [negativeSpacer30 setWidth:-10];
     
     CGRect rect = CGRectMake(0, -height, [[UIScreen mainScreen] bounds].size.width, height);
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
@@ -430,7 +447,8 @@ UIColor *darkGrayBorderColor;
 //    toolbar2.translucent = NO;
     toolbar2.backgroundColor = [UIColor whiteColor];
 
-    [toolbar2 setItems:@[flexibleSpace, segmentControlItem, segmentControlFontItem, trashButtonItem, flexibleSpace]];
+    
+    [toolbar2 setItems:@[flexibleSpace, segmentControlItem, segmentControlFontItem, segmentControlInsertMediaItem, trashButtonItem, flexibleSpace]];
    
     [self.Background addSubview: toolbar2];
     self.submenu = toolbar2;
@@ -713,6 +731,43 @@ UIColor *darkGrayBorderColor;
     NSString *segmentSelectedTitle =  [self.segmentControlVisualItem getMyTitleForSegmentAtIndex: (int) self.segmentControlVisualItem.selectedSegmentIndex];
     NSLog(@"segmentSelectedIndex: %li", self.segmentControlVisualItem.selectedSegmentIndex);
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
+}
+
+- (void) segmentControlInsertMediaHandler: (SegmentedControlMod *) segmentedControl
+{
+    
+    NSString *segmentSelectedTitle =  [segmentedControl getMyTitleForSegmentAtIndex: (int) segmentedControl.selectedSegmentIndex];
+    NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
+    if ( [segmentSelectedTitle isEqualToString: @"insertPhoto"])
+    {
+
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.delegate = self;
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            [self presentViewController: picker animated:YES completion:nil];
+        
+    }
+    else if ( [segmentSelectedTitle isEqualToString: @"camera"] )
+    {
+        
+    }
+}
+
+-(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self.segmentControlInsertMedia setSelectedSegmentIndex: -1];
+}
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+//    self.mainImageView.image = chosenImage;
+//  create new note but insert with image instead of text
+    GroupItemImage *gii = [[GroupItemImage alloc] initGroupWithImage: chosenImage];
+    [self addGroupItemToMVC: gii];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self.segmentControlInsertMedia setSelectedSegmentIndex: -1];
 }
 
 - (void) segmentControlFontClicked: (id) sender

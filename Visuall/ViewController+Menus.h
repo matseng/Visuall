@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController (Menus) <UIScrollViewDelegate>
+@interface ViewController (Menus) <UIScrollViewDelegate, UIImagePickerControllerDelegate>
 
 - (void) createTopMenu;
 

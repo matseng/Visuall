@@ -74,6 +74,7 @@
 		71FD2EE11D5E7F5000CA5365 /* Increase Font Filled-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 71FD2EDF1D5E7F5000CA5365 /* Increase Font Filled-50.png */; };
 		71FD2EEA1D6522BC00CA5365 /* UserUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EE91D6522BC00CA5365 /* UserUtil.m */; };
 		71FD2EED1D662F8300CA5365 /* StateUtilFirebase.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EEC1D662F8300CA5365 /* StateUtilFirebase.m */; };
+		71FD2EF31D6BE66400CA5365 /* GroupItemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
 		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; };
 		77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA71C011D5F00105BB5 /* linkarrow.png */; };
@@ -204,6 +205,8 @@
 		71FD2EE91D6522BC00CA5365 /* UserUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserUtil.m; sourceTree = "<group>"; };
 		71FD2EEB1D662F8300CA5365 /* StateUtilFirebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateUtilFirebase.h; sourceTree = "<group>"; };
 		71FD2EEC1D662F8300CA5365 /* StateUtilFirebase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StateUtilFirebase.m; sourceTree = "<group>"; };
+		71FD2EF11D6BE66400CA5365 /* GroupItemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupItemImage.h; sourceTree = "<group>"; };
+		71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupItemImage.m; sourceTree = "<group>"; };
 		77E13DA11C011C1700105BB5 /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
 		77E13DA51C011CF200105BB5 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		77E13DA71C011D5F00105BB5 /* linkarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linkarrow.png; sourceTree = "<group>"; };
@@ -322,6 +325,8 @@
 				713D0D5F1CC6AE4F00878EAE /* Group2.m */,
 				210833161C0127AB00BA059F /* GroupItem.h */,
 				210833171C0127AB00BA059F /* GroupItem.m */,
+				71FD2EF11D6BE66400CA5365 /* GroupItemImage.h */,
+				71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */,
 				71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */,
 				71B0EF001CB83CCE009D8F5C /* VisualItem.m */,
 				713D0D5B1CC18CAB00878EAE /* Note2.h */,
@@ -672,6 +677,7 @@
 			files = (
 				7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */,
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
+				71FD2EF31D6BE66400CA5365 /* GroupItemImage.m in Sources */,
 				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,
 				71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */,
 				7195EBD51D46684500F609DE /* Arrow.m in Sources */,

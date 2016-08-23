@@ -21,6 +21,8 @@
 
 @property (strong) NSMutableArray *groupsInGroup;
 
+@property UIView *innerGroupView;
+
 @property UIView *handleSelected;
 
 //- (instancetype) initGroup:(Group *)group;
@@ -58,5 +60,9 @@
 - (void) setViewAsNotSelected;
 
 - (BOOL) isHandle: (UIView *) subView;
+
+- (void) renderGroup;
+
+- (void) updateFrame;
 
 @end

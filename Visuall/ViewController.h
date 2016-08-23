@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GroupItem.h"
+#import "GroupItemImage.h"
 #import "NotesCollection.h"
 #import "GroupsCollection.h"
 #import "TiledLayerView.h"
@@ -59,6 +60,7 @@
 @property UIScrollView *submenuScrollView;
 @property UIView *submenu;
 @property UIScrollView *secondSubmenuScrollView;
+@property SegmentedControlMod *segmentControlInsertMedia;
 @property UIButton *trashButton; // Utilized in ViewController+Menus.m
 
 - (BOOL) setSelectedObject:(UIView *) object;
@@ -84,6 +86,8 @@
 - (void) calculateTotalBounds: (UIView *) view;
 
 - (void) updateTotalBounds: (UIView *) view;
+
+- (void) addGroupItemToMVC: (GroupItem *) currentGroupItem;
 
 @end
 
