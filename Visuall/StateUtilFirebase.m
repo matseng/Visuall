@@ -19,6 +19,8 @@
 
 @implementation StateUtilFirebase
 {
+    FIRStorage *__storage;
+    FIRStorageReference *__imagesRef;
     NSString *__userID;
     FIRDatabaseReference *_usersTableCurrentUser;
     NSString *_currentVisuallKey;
@@ -63,6 +65,9 @@
     _groupsTableRef = [self.version01TableRef child: @"groups"];
     _visuallsTableRef = [self.version01TableRef child: @"visualls"];
     __publicVisuallsTableRef = [self.version01TableRef child: @"public"];
+    __storage = [FIRStorage storage];
+    FIRStorageReference *storageRef = [__storage referenceForURL:@"gs://visuall-2f878.appspot.com"];
+    __imagesRef = [storageRef child:@"images"];
     
 }
 

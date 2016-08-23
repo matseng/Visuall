@@ -7,6 +7,8 @@ platform :ios, '8.0'
 
 pod 'Firebase', '>= 2.5.1'
 
+pod 'Firebase/Storage'
+
 pod 'SevenSwitch', '~> 1.4' 
 
 pod 'Firebase/Auth'

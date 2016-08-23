@@ -287,44 +287,18 @@
 		712EC9561BEAF21500ED6803 /* Visuall */ = {
 			isa = PBXGroup;
 			children = (
-				7195EBD61D47035400F609DE /* UIBezierPath+arrowhead.h */,
-				7195EBD71D47035400F609DE /* UIBezierPath+arrowhead.m */,
-				7195EBCD1D3D55E700F609DE /* TiledLayerView.h */,
-				7195EBCE1D3D55E700F609DE /* TiledLayerView.m */,
-				71D96BDF1D2F030200CD1C49 /* UIImage+Extras.h */,
-				71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */,
-				716B51D41D36C2A40049A203 /* UIView+VisualItem.h */,
-				716B51D51D36C2A40049A203 /* UIView+VisualItem.m */,
-				71710A811D5D033C0038D883 /* Menus */,
-				71710A801D5D00630038D883 /* GestureHandlers */,
-				71D96C021D359E0000CD1C49 /* ViewController+Group.h */,
-				71D96C031D359E0000CD1C49 /* ViewController+Group.m */,
-				885AFD651C00217800F89DE5 /* model */,
 				712EC95B1BEAF21500ED6803 /* AppDelegate.h */,
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
-				71FD2EF61D6CB76300CA5365 /* ViewConroller */,
+				71FD2EF81D6D0D5E00CA5365 /* ViewMods */,
+				71710A801D5D00630038D883 /* GestureRelated */,
+				71FD2EF61D6CB76300CA5365 /* ViewController */,
+				71710A811D5D033C0038D883 /* Menus */,
 				71FD2EF51D6CB71D00CA5365 /* OtherViewControllers */,
-				712682011D49997700A0A2F7 /* ScrollViewMod.h */,
-				712682021D49997700A0A2F7 /* ScrollViewMod.m */,
-				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
-				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
 				71FD2EF41D6CB6FD00CA5365 /* Groups */,
 				71710A7F1D5CF6350038D883 /* Utilities */,
-				71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */,
-				71B0EF001CB83CCE009D8F5C /* VisualItem.m */,
-				713D0D5B1CC18CAB00878EAE /* Note2.h */,
-				713D0D5C1CC18CAB00878EAE /* Note2.m */,
-				71B0EF021CB83E6D009D8F5C /* NoteItem2.h */,
-				71B0EF031CB83E6D009D8F5C /* NoteItem2.m */,
-				7195EBD31D46684500F609DE /* Arrow.h */,
-				7195EBD41D46684500F609DE /* Arrow.m */,
-				7195EBD01D4664BB00F609DE /* ArrowItem.h */,
-				7195EBD11D4664BB00F609DE /* ArrowItem.m */,
-				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
-				71FC72131BF2E881003B7F14 /* NotesCollection.m */,
-				88ED06201C05567E00C0486D /* GroupsCollection.h */,
-				88ED06211C05567E00C0486D /* GroupsCollection.m */,
-				71B37E761C1924020048851A /* ViewControllers */,
+				71FD2EF71D6D0D0B00CA5365 /* VisualItems */,
+				885AFD651C00217800F89DE5 /* OLD_model */,
+				71B37E761C1924020048851A /* OLD__ViewControllers */,
 				712EC9611BEAF21500ED6803 /* Main.storyboard */,
 				885AFD781C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld */,
 				712EC9641BEAF21500ED6803 /* Images.xcassets */,
@@ -380,9 +354,11 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
-		71710A801D5D00630038D883 /* GestureHandlers */ = {
+		71710A801D5D00630038D883 /* GestureRelated */ = {
 			isa = PBXGroup;
 			children = (
+				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
+				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
 				71D96BFF1D35736400CD1C49 /* ViewController+ViewHit.h */,
 				71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */,
 				71D96BFC1D34791100CD1C49 /* ViewController+panHandler.h */,
@@ -390,7 +366,7 @@
 				71D96C051D35A9A400CD1C49 /* ViewController+TapHandler.h */,
 				71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */,
 			);
-			name = GestureHandlers;
+			name = GestureRelated;
 			sourceTree = "<group>";
 		};
 		71710A811D5D033C0038D883 /* Menus */ = {
@@ -404,13 +380,13 @@
 			name = Menus;
 			sourceTree = "<group>";
 		};
-		71B37E761C1924020048851A /* ViewControllers */ = {
+		71B37E761C1924020048851A /* OLD__ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				71B37E771C1924800048851A /* HomeViewController.h */,
 				71B37E781C1924800048851A /* HomeViewController.m */,
 			);
-			name = ViewControllers;
+			name = OLD__ViewControllers;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -489,16 +465,56 @@
 			name = OtherViewControllers;
 			sourceTree = "<group>";
 		};
-		71FD2EF61D6CB76300CA5365 /* ViewConroller */ = {
+		71FD2EF61D6CB76300CA5365 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
 				712EC95E1BEAF21500ED6803 /* ViewController.h */,
 				712EC95F1BEAF21500ED6803 /* ViewController.m */,
+				71D96C021D359E0000CD1C49 /* ViewController+Group.h */,
+				71D96C031D359E0000CD1C49 /* ViewController+Group.m */,
 			);
-			name = ViewConroller;
+			name = ViewController;
 			sourceTree = "<group>";
 		};
-		885AFD651C00217800F89DE5 /* model */ = {
+		71FD2EF71D6D0D0B00CA5365 /* VisualItems */ = {
+			isa = PBXGroup;
+			children = (
+				71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */,
+				71B0EF001CB83CCE009D8F5C /* VisualItem.m */,
+				713D0D5B1CC18CAB00878EAE /* Note2.h */,
+				713D0D5C1CC18CAB00878EAE /* Note2.m */,
+				71B0EF021CB83E6D009D8F5C /* NoteItem2.h */,
+				71B0EF031CB83E6D009D8F5C /* NoteItem2.m */,
+				7195EBD31D46684500F609DE /* Arrow.h */,
+				7195EBD41D46684500F609DE /* Arrow.m */,
+				7195EBD01D4664BB00F609DE /* ArrowItem.h */,
+				7195EBD11D4664BB00F609DE /* ArrowItem.m */,
+				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
+				71FC72131BF2E881003B7F14 /* NotesCollection.m */,
+				88ED06201C05567E00C0486D /* GroupsCollection.h */,
+				88ED06211C05567E00C0486D /* GroupsCollection.m */,
+			);
+			name = VisualItems;
+			sourceTree = "<group>";
+		};
+		71FD2EF81D6D0D5E00CA5365 /* ViewMods */ = {
+			isa = PBXGroup;
+			children = (
+				7195EBD61D47035400F609DE /* UIBezierPath+arrowhead.h */,
+				7195EBD71D47035400F609DE /* UIBezierPath+arrowhead.m */,
+				7195EBCD1D3D55E700F609DE /* TiledLayerView.h */,
+				7195EBCE1D3D55E700F609DE /* TiledLayerView.m */,
+				71D96BDF1D2F030200CD1C49 /* UIImage+Extras.h */,
+				71D96BE01D2F030200CD1C49 /* UIImage+Extras.m */,
+				716B51D41D36C2A40049A203 /* UIView+VisualItem.h */,
+				716B51D51D36C2A40049A203 /* UIView+VisualItem.m */,
+				712682011D49997700A0A2F7 /* ScrollViewMod.h */,
+				712682021D49997700A0A2F7 /* ScrollViewMod.m */,
+			);
+			name = ViewMods;
+			sourceTree = "<group>";
+		};
+		885AFD651C00217800F89DE5 /* OLD_model */ = {
 			isa = PBXGroup;
 			children = (
 				88ED06261C06237300C0486D /* Group+CoreDataProperties.h */,
@@ -510,7 +526,7 @@
 				885AFD5B1C00215300F89DE5 /* Note.h */,
 				885AFD5C1C00215300F89DE5 /* Note.m */,
 			);
-			name = model;
+			name = OLD_model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
