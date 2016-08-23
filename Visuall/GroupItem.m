@@ -113,8 +113,8 @@
 - (void) renderGroup
 {
     _handleDiameter = [self getHandleDiameter];
-    if ( !__innerGroupView ) __innerGroupView = [[UIView alloc] init];
-    [self setFrames];
+    [self setFrame: CGRectMake(0, 0, (self.group.width + _handleDiameter), (self.group.height + _handleDiameter) )];
+    if ( !__innerGroupView ) __innerGroupView = [[UIView alloc] initWithFrame: CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
     [__innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
     [__innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
     [__innerGroupView.layer setBorderWidth: 0];
@@ -123,19 +123,6 @@
     [self addSubview: __innerGroupView];
     [self renderHandles];
 }
-
-- (void) setFrames
-{
-    
-    [self setFrame: CGRectMake(
-                               (-self.group.width/2 - _handleDiameter / 2),
-                               (-self.group.height / 2 - _handleDiameter / 2),
-                               (self.group.width + _handleDiameter),
-                               (self.group.height + _handleDiameter) )];
-    
-    __innerGroupView.frame = CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height);
-}
-
 
 /*
  * Name: updateGroupDimensions
