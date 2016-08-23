@@ -302,31 +302,14 @@
 				885AFD651C00217800F89DE5 /* model */,
 				712EC95B1BEAF21500ED6803 /* AppDelegate.h */,
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
-				71E1AF601D4C278900B818A0 /* WelcomeViewController.h */,
-				71E1AF611D4C278900B818A0 /* WelcomeViewController.m */,
-				71E1AF631D4C325400B818A0 /* TabBarViewController.h */,
-				71E1AF641D4C325400B818A0 /* TabBarViewController.m */,
-				712EC95E1BEAF21500ED6803 /* ViewController.h */,
-				712EC95F1BEAF21500ED6803 /* ViewController.m */,
+				71FD2EF61D6CB76300CA5365 /* ViewConroller */,
+				71FD2EF51D6CB71D00CA5365 /* OtherViewControllers */,
 				712682011D49997700A0A2F7 /* ScrollViewMod.h */,
 				712682021D49997700A0A2F7 /* ScrollViewMod.m */,
-				7161CF651D556C6E00B278EB /* GlobalViewController.h */,
-				7161CF661D556C6E00B278EB /* GlobalViewController.m */,
-				7161CF621D55202700B278EB /* MyVisuallsNavigationController.h */,
-				7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */,
-				71D96BC81D2C59AA00CD1C49 /* MyVisuallsViewController.h */,
-				71D96BC91D2C59AA00CD1C49 /* MyVisuallsViewController.m */,
-				71D96BCE1D2C66D000CD1C49 /* MyVisuallsDetailViewController.h */,
-				71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */,
 				71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */,
 				71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */,
+				71FD2EF41D6CB6FD00CA5365 /* Groups */,
 				71710A7F1D5CF6350038D883 /* Utilities */,
-				713D0D5E1CC6AE4F00878EAE /* Group2.h */,
-				713D0D5F1CC6AE4F00878EAE /* Group2.m */,
-				210833161C0127AB00BA059F /* GroupItem.h */,
-				210833171C0127AB00BA059F /* GroupItem.m */,
-				71FD2EF11D6BE66400CA5365 /* GroupItemImage.h */,
-				71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */,
 				71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */,
 				71B0EF001CB83CCE009D8F5C /* VisualItem.m */,
 				713D0D5B1CC18CAB00878EAE /* Note2.h */,
@@ -472,6 +455,47 @@
 				71FD2EDF1D5E7F5000CA5365 /* Increase Font Filled-50.png */,
 			);
 			name = "Second Submenu";
+			sourceTree = "<group>";
+		};
+		71FD2EF41D6CB6FD00CA5365 /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				713D0D5E1CC6AE4F00878EAE /* Group2.h */,
+				713D0D5F1CC6AE4F00878EAE /* Group2.m */,
+				210833161C0127AB00BA059F /* GroupItem.h */,
+				210833171C0127AB00BA059F /* GroupItem.m */,
+				71FD2EF11D6BE66400CA5365 /* GroupItemImage.h */,
+				71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */,
+			);
+			name = Groups;
+			sourceTree = "<group>";
+		};
+		71FD2EF51D6CB71D00CA5365 /* OtherViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				71E1AF601D4C278900B818A0 /* WelcomeViewController.h */,
+				71E1AF611D4C278900B818A0 /* WelcomeViewController.m */,
+				71E1AF631D4C325400B818A0 /* TabBarViewController.h */,
+				71E1AF641D4C325400B818A0 /* TabBarViewController.m */,
+				7161CF651D556C6E00B278EB /* GlobalViewController.h */,
+				7161CF661D556C6E00B278EB /* GlobalViewController.m */,
+				7161CF621D55202700B278EB /* MyVisuallsNavigationController.h */,
+				7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */,
+				71D96BC81D2C59AA00CD1C49 /* MyVisuallsViewController.h */,
+				71D96BC91D2C59AA00CD1C49 /* MyVisuallsViewController.m */,
+				71D96BCE1D2C66D000CD1C49 /* MyVisuallsDetailViewController.h */,
+				71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */,
+			);
+			name = OtherViewControllers;
+			sourceTree = "<group>";
+		};
+		71FD2EF61D6CB76300CA5365 /* ViewConroller */ = {
+			isa = PBXGroup;
+			children = (
+				712EC95E1BEAF21500ED6803 /* ViewController.h */,
+				712EC95F1BEAF21500ED6803 /* ViewController.m */,
+			);
+			name = ViewConroller;
 			sourceTree = "<group>";
 		};
 		885AFD651C00217800F89DE5 /* model */ = {

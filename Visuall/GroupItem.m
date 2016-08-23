@@ -36,6 +36,11 @@
     UIView *handleBottomLeft;
     UIView *handleBottomRight;
 }
+
+//static StateUtilFirebase *visuallState;
+//
+//+ (StateUtilFirebase *) visuallState {return visuallState;}
+
 //- (instancetype) initGroup:(Group *)group
 //{
 //    self = [super init];
@@ -107,21 +112,9 @@
 
 - (void) renderGroup
 {
-//    float scale = [self.visuallState getZoomScale];
-    float scale = 1.0;
-    
     _handleDiameter = [self getHandleDiameter];
-    
-    [self setFrame: CGRectMake(
-                               (-self.group.width/2 - _handleDiameter / 2) * scale,
-                               (-self.group.height / 2 - _handleDiameter / 2) * scale,
-                               (self.group.width + _handleDiameter),
-                               (self.group.height + _handleDiameter) )];
-//    self.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
-//    self.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
-    
-    __innerGroupView = [[UIView alloc] initWithFrame:CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
-    
+    if ( !__innerGroupView ) __innerGroupView = [[UIView alloc] init];
+    [self setFrames];
     [__innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
     [__innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
     [__innerGroupView.layer setBorderWidth: 0];
@@ -130,6 +123,19 @@
     [self addSubview: __innerGroupView];
     [self renderHandles];
 }
+
+- (void) setFrames
+{
+    
+    [self setFrame: CGRectMake(
+                               (-self.group.width/2 - _handleDiameter / 2),
+                               (-self.group.height / 2 - _handleDiameter / 2),
+                               (self.group.width + _handleDiameter),
+                               (self.group.height + _handleDiameter) )];
+    
+    __innerGroupView.frame = CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height);
+}
+
 
 /*
  * Name: updateGroupDimensions
@@ -414,7 +420,7 @@
 //    if ( [visuallState editModeOn])
     if (YES)
     {
-        [__innerGroupView removeFromSuperview];
+//        [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
         [self renderGroup];
         [self updateFrame];
@@ -426,7 +432,7 @@
 {
     if ( editModeOn )
     {
-        [__innerGroupView removeFromSuperview];
+//        [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
         [self renderGroup];
         [self updateFrame];
