@@ -1045,8 +1045,9 @@
 {
     if (self.lastSelectedObject == object)
     {
-        return NO;
+        return NO;  // view is already selected, so we don't need to re-select it
     }
+    
     if (self.lastSelectedObject) {
         if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]])
         {
@@ -1072,42 +1073,22 @@
             noteToSet.noteTextView.editable = YES;
             noteToSet.noteTextView.selectable = YES;
         }
-        
-    } else if ([object isKindOfClass:[GroupItem class]]) {
-        GroupItem *groupToSet = (GroupItem *) object;
-        self.lastSelectedObject = groupToSet;
-        visualObject = groupToSet;
-        [[self.view window] endEditing:YES];
-    } else if (object.tag == 100)
+        visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
+        visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
+    }
+    else if ( [object isGroupItem] )
     {
-        self.lastSelectedObject = [object superview];
-        visualObject = (GroupItem *) [object superview];
+        GroupItem *gi = [object getGroupItem];
+        [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];
         [[self.view window] endEditing:YES];
-        
-    } else if ([object isGroupItemSubview])
-    {
-        self.lastSelectedObject = object;
-        visualObject = [object getGroupItem];
-        [[self.view window] endEditing:YES];
-    } else
+        self.lastSelectedObject = gi;
+    }
+    else
     {
         self.lastSelectedObject = nil;
         [[self.view window] endEditing:YES];
     }
-    
-    if ( [visualObject isGroupItem] )
-    {
-        // check and swap negative lengths
-    }
-    
-    if ([visualObject isGroupItem])
-    {
-        [[visualObject getGroupItem] setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];
-    } else
-    {
-        visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
-        visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
-    }
+
     return YES;
 }
 
