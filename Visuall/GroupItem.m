@@ -474,12 +474,12 @@
 - (void) updateFrame
 {
     float radiusOffset = [self getRadius] / 2;
-    float tx = self.group.x - radiusOffset;
-    float ty = self.group.y - radiusOffset;
+    
+    __innerGroupView.frame = CGRectMake(radiusOffset, radiusOffset, self.group.width, self.group.height);
     
     CGRect frame = self.frame;
-    frame.origin.x = tx;
-    frame.origin.y = ty;
+    frame.origin.x = self.group.x - radiusOffset;
+    frame.origin.y = self.group.y - radiusOffset;
     [self setFrame: frame];
 }
 
