@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NoteItem2.h"
 #import "GroupItem.h"
+#import "GroupItemImage.h"
 
 @interface UIView (VisualItem)
 
@@ -27,5 +28,9 @@
 - (BOOL) isGroupItemSubview;
 
 - (BOOL) isGroupHandle;
+
+- (BOOL) isImage;
+
+- (GroupItemImage *) getGroupItemImage;
 
 @end

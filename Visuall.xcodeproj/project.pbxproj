@@ -295,8 +295,8 @@
 				71710A811D5D033C0038D883 /* Menus */,
 				71FD2EF51D6CB71D00CA5365 /* OtherViewControllers */,
 				71FD2EF41D6CB6FD00CA5365 /* Groups */,
-				71710A7F1D5CF6350038D883 /* Utilities */,
 				71FD2EF71D6D0D0B00CA5365 /* VisualItems */,
+				71710A7F1D5CF6350038D883 /* Utilities */,
 				885AFD651C00217800F89DE5 /* OLD_model */,
 				71B37E761C1924020048851A /* OLD__ViewControllers */,
 				712EC9611BEAF21500ED6803 /* Main.storyboard */,
@@ -887,7 +887,7 @@
 				INFOPLIST_FILE = Visuall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.Visuall;
+				PRODUCT_BUNDLE_IDENTIFIER = matseng.Visuall;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -903,7 +903,7 @@
 				INFOPLIST_FILE = Visuall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.Visuall;
+				PRODUCT_BUNDLE_IDENTIFIER = matseng.Visuall;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

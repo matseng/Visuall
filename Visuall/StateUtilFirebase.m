@@ -9,6 +9,7 @@
 #import "StateUtilFirebase.h"
 #import "UIView+VisualItem.h"
 #import "UserUtil.h"
+#import "GroupItemImage.h"
 
 @interface StateUtilFirebase()
 
@@ -20,7 +21,7 @@
 @implementation StateUtilFirebase
 {
     FIRStorage *__storage;
-    FIRStorageReference *__imagesRef;
+    FIRStorageReference *__storageImagesRef;
     NSString *__userID;
     FIRDatabaseReference *_usersTableCurrentUser;
     NSString *_currentVisuallKey;
@@ -67,7 +68,7 @@
     __publicVisuallsTableRef = [self.version01TableRef child: @"public"];
     __storage = [FIRStorage storage];
     FIRStorageReference *storageRef = [__storage referenceForURL:@"gs://visuall-2f878.appspot.com"];
-    __imagesRef = [storageRef child:@"images"];
+    __storageImagesRef = [storageRef child:@"images"];
     
 }
 
@@ -259,6 +260,7 @@
          
      } withCancelBlock:^(NSError *error)
      {
+         NSLog(@"\n Ignore the following error if deleting a group.");
          NSLog(@"loadListOfGroupsFromRef: %@", error.description);
      }];
 }
@@ -279,7 +281,7 @@
          
      } withCancelBlock:^(NSError *error)
      {
-         NSLog(@"%@", error.description);
+         NSLog(@"loadNoteFromRef %@", error.description);
      }];
 }
 
@@ -291,9 +293,27 @@
          {
              return;
          }
-         GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
-         [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-         _callbackGroupItem(newGroup);
+         if( [snapshot.value[@"data"][@"image"] boolValue] )
+         {
+             NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
+             FIRStorageReference *islandRef = [__storageImagesRef child: fileName];
+             [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
+                 if (error != nil) {
+                     
+                 } else {
+                    UIImage *islandImage = [UIImage imageWithData:data];
+                     CGPoint point = CGPointMake([snapshot.value[@"data"][@"x"] floatValue], [snapshot.value[@"data"][@"y"] floatValue]);
+                     GroupItemImage *newGroup = [[GroupItemImage alloc] initGroupWithImage:islandImage andPoint:point];
+                     [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+                     _callbackGroupItem(newGroup);
+                 }
+             }];
+             
+         } else{
+             GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
+             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+             _callbackGroupItem(newGroup);
+         }
          
      } withCancelBlock:^(NSError *error)
      {
@@ -347,8 +367,9 @@
     }];
 }
 
-- (void) setValueGroup: (GroupItem *) gi
+- (void) setValueGroup: (VisualItem *) vi
 {
+    GroupItem *gi = (GroupItem *) vi;
     FIRDatabaseReference *groupsRef = [self.version01TableRef child: @"groups"];
     FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
     gi.group.key = newGroupRef.key;
@@ -361,19 +382,48 @@
                                               @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
                                               @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
                                               @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
+                                              @"data/image": ([vi isImage]) ? @"1" : @"0",
                                               @"metadata/parent-visuall": _currentVisuallKey,
                                               @"metadata/date-created": [FIRServerValue timestamp],
                                               @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
                                               @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
                                               } mutableCopy];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
-    [self.groupsCollection addGroup: gi withKey: newGroupRef.key];
+    [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
     [newGroupRef updateChildValues: groupDictionary];
     [[_visuallsTable_currentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
+    if ( [vi isImage] )
+    {
+        [[_visuallsTable_currentVisuallRef child: @"images"] updateChildValues: @{newGroupRef.key: @"1"}];
+        [self uploadImage: [vi getGroupItemImage]];
+
+    }
     FIRDatabaseReference *groupsCounterRef = [_visuallsTable_currentVisuallRef child: @"groups_counter"];
     [self increaseOrDecreaseCounter: groupsCounterRef byAmount:1];
     
 }
+
+/*
+ * Name:
+ * Description:
+ // TODO (Aug 23, 2016): "You can also put this code inside a GCD block and execute in another thread, showing an UIActivityIndicatorView during the process[...]"
+ */
+
+- (void) uploadImage: (GroupItemImage *) gii
+{
+    FIRStorageReference *riversRef = [__storageImagesRef child: [gii.group.key stringByAppendingString:@".jpg"]];
+    NSData *data = UIImageJPEGRepresentation(gii.thumbnail, 1.0);
+    FIRStorageUploadTask *uploadTask = [riversRef putData:data metadata:nil completion:^(FIRStorageMetadata *metadata, NSError *error) {
+        if (error != nil) {
+            NSLog(@"\n Uh-oh, an error occurred!");
+        } else {
+            // Metadata contains file metadata such as size, content-type, and download URL.
+            NSURL *downloadURL = metadata.downloadURL;
+        }
+    }];
+    
+}
+
 
 - (NSMutableDictionary *) getCommonUpdateParameters
 {

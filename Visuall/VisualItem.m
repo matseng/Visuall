@@ -7,6 +7,7 @@
 //
 
 #import "VisualItem.h"
+//#import "GroupItemImage.h"
 
 @implementation VisualItem
 

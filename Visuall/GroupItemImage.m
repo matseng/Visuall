@@ -7,6 +7,7 @@
 //
 
 #import "GroupItemImage.h"
+#import "UIImage+Extras.h"
 
 #define THUMBNAIL_WIDTH 292.0
 
@@ -20,7 +21,9 @@
     
     if (self)
     {
+        self.image = img;
         thumbnailHeight = THUMBNAIL_WIDTH / img.size.width * img.size.height;
+        self.thumbnail = [img imageByScalingAndCroppingForSize: CGSizeMake(THUMBNAIL_WIDTH, thumbnailHeight)];
         CGRect rect = CGRectMake(point.x, point.y, THUMBNAIL_WIDTH, thumbnailHeight);
         Group2 *group = [[Group2 alloc] init];
         group.key = nil;

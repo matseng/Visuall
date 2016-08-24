@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+//#import "GroupItemImage.h"
 
 @interface VisualItem : UIView
 
@@ -19,6 +19,10 @@
 - (void) setX:(float)x andY:(float) y andWidth: (float) width andHeight:(float) height;
 
 - (BOOL) isNote;
+
+- (BOOL) isImage;
+
+//- (GroupItemImage *) getGroupItemImage;
 
 - (NSString *) getKey; // NOTE: my naive implementatin of a protocol declaration - see NoteItem2.m for 'delegate' implementation
 

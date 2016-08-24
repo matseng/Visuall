@@ -113,4 +113,22 @@
     return YES;
 }
 
+- (BOOL) isImage
+{
+    if ( [self isKindOfClass: [GroupItemImage class]] )
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (GroupItemImage *) getGroupItemImage
+{
+    if ( [self isImage] )
+    {
+        return (GroupItemImage *) self;
+    }
+    return nil;
+}
+
 @end

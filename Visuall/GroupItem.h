@@ -10,8 +10,11 @@
 #import "Group.h"
 #import "NoteItem2.h"
 #import "Group2.h"
+//#import "VisualItem.h"
 
-@interface GroupItem : UIView
+//@interface GroupItem : UIView
+
+@interface GroupItem : VisualItem
 
 //+ (StateUtilFirebase) *visuallState;
 
