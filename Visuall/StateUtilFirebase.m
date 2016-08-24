@@ -287,7 +287,7 @@
 
 -(void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
 {
-    [groupRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
          if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )  // If the group already exists in the collection
          {
@@ -303,7 +303,7 @@
                  } else {
                     UIImage *islandImage = [UIImage imageWithData:data];
                      CGPoint point = CGPointMake([snapshot.value[@"data"][@"x"] floatValue], [snapshot.value[@"data"][@"y"] floatValue]);
-                     GroupItemImage *newGroup = [[GroupItemImage alloc] initGroupWithImage:islandImage andPoint:point];
+                     GroupItemImage *newGroup = [[GroupItemImage alloc] initGroupWithImage:islandImage andPoint:point];  // TODO (Aug 24, 2016): Write new method to load a GroupItemImage from Firebase, one feature is the scale the image to the size of the group as saved in Firebase
                      [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
                      _callbackGroupItem(newGroup);
                  }
@@ -317,7 +317,7 @@
          
      } withCancelBlock:^(NSError *error)
      {
-         NSLog(@"%@", error.description);
+         NSLog(@"loadGroupFromRef: %@", error.description);
      }];
 }
 
@@ -555,7 +555,22 @@
         // Step 3 of 3: Decrement groups counter in visuall table
         FIRDatabaseReference *groupsCounterRef = [_visuallsTable_currentVisuallRef child: @"groups_counter"];
         [self increaseOrDecreaseCounter: groupsCounterRef byAmount:-1];
+        
+        // Step 4: Delete an image if group contains an image)
+        if ( [gi isImage] )
+        {
+            NSString *fileName = [gi.group.key stringByAppendingString: @".jpg"];
+            FIRStorageReference *deleteImageRef = [__storageImagesRef child: fileName];
+            [deleteImageRef deleteWithCompletion:^(NSError *error){
+                if (error != nil) {
+                    NSLog(@"Image could NOT be removed.");
+                } else {
+                    NSLog(@"Image removed successfully.");
+                }
+            }];
+        }
     }
+    
 }
 
 /*
