@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController (Menus) <UIScrollViewDelegate, UIImagePickerControllerDelegate>
+@interface ViewController (Menus) <UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>  // added UINavigationControllerDelegate to suppress a warning
 
 - (void) createTopMenu;
 

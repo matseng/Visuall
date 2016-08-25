@@ -744,6 +744,7 @@ UIColor *darkGrayBorderColor;
             UIImagePickerController *picker = [[UIImagePickerController alloc] init];
             picker.delegate = self;
             picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            picker.modalPresentationStyle = UIModalPresentationOverCurrentContext;
             [self presentViewController: picker animated:YES completion:nil];
         
     }
