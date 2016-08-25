@@ -14,7 +14,7 @@
 #import "StateUtilFirebase.h"
 #import "SegmentedControlMod.h"
 #import "UIView+VisualItem.h"
-
+#import "UIBezierPath+arrowhead.h"
 
 @implementation ViewController (Menus) 
 
@@ -378,7 +378,7 @@ UIColor *darkGrayBorderColor;
     SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
     self.segmentControlVisualItem = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
-    segmentControl.frame = CGRectMake(0, 0, 3 * unit, unit);
+    segmentControl.frame = CGRectMake(0, 0, 4 * unit, unit);
 //    segmentControl.backgroundColor = backgroundColor;
     UIBarButtonItem *segmentControlItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
 
@@ -394,6 +394,10 @@ UIColor *darkGrayBorderColor;
     UIImage *groupRectangle = [[UIImage imageNamed: @"groupRectangle"] imageWithExtraPadding: .15];
     [segmentControl insertSegmentWithImage:groupRectangle atIndex:2 animated:YES];
     [segmentControl setMyTitle:@"group" forSegmentAtIndex:2];
+    
+    UIImage *arrow = [[UIImage imageNamed: @"Archers-Arrowhead"] imageWithExtraPadding: .15];
+    [segmentControl insertSegmentWithImage:arrow atIndex:3 animated:YES];
+    [segmentControl setMyTitle:@"arrow" forSegmentAtIndex:3];
     
     SegmentedControlMod *segmentControlFont = [[SegmentedControlMod alloc] init];
     self.segmentControlFormattingOptions = segmentControlFont;
@@ -731,7 +735,44 @@ UIColor *darkGrayBorderColor;
     NSString *segmentSelectedTitle =  [self.segmentControlVisualItem getMyTitleForSegmentAtIndex: (int) self.segmentControlVisualItem.selectedSegmentIndex];
     NSLog(@"segmentSelectedIndex: %li", self.segmentControlVisualItem.selectedSegmentIndex);
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
+    if ( [segmentSelectedTitle isEqualToString:@"arrow"] )
+    {
+        [self makeArrow];
+    }
 }
+
+- (void) makeArrow
+{
+    CGPoint startPoint;
+    CGPoint endPoint;
+    CGFloat tailWidth;
+    CGFloat headWidth;
+    CGFloat headLength;
+    UIBezierPath *path;
+    
+    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
+    CGPoint pointInScreenCoords = CGPointMake( [[UIScreen mainScreen] bounds].size.width / 2, [[UIScreen mainScreen] bounds].size.height / 2);
+    CGPoint pointInWindowCoords = [mainWindow convertPoint:pointInScreenCoords fromWindow:nil];
+    startPoint = [self.GroupsView convertPoint:pointInWindowCoords fromView:mainWindow];
+    endPoint = CGPointMake( startPoint.x + 100, startPoint.y + 100 );
+    
+    [[UIColor redColor] setStroke];
+    tailWidth = 4;
+    headWidth = 8 * 3;
+    headLength = 8 * 3;
+    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)startPoint
+                                                  toPoint:(CGPoint)endPoint
+                                                tailWidth:(CGFloat)tailWidth
+                                                headWidth:(CGFloat)headWidth
+                                               headLength:(CGFloat)headLength];
+    [path setLineWidth:2.0];
+    [path stroke];
+    
+    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
+    [shapeView setPath: path.CGPath];
+    [self.ArrowsView.layer addSublayer: shapeView];
+}
+
 
 - (void) segmentControlInsertMediaHandler: (SegmentedControlMod *) segmentedControl
 {
@@ -759,7 +800,7 @@ UIColor *darkGrayBorderColor;
                                                         otherButtonTitles: nil];
             
             [myAlertView show];
-            
+            [self.segmentControlInsertMedia setSelectedSegmentIndex: -1];
         } else
         {
             UITabBarController * tabBarController = (UITabBarController*) self.tabBarController;
