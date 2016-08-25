@@ -740,21 +740,41 @@ UIColor *darkGrayBorderColor;
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
     if ( [segmentSelectedTitle isEqualToString: @"insertPhoto"])
     {
-
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.delegate = self;
-            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            picker.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-            [self presentViewController: picker animated:YES completion:nil];
+        UITabBarController * tabBarController = (UITabBarController*) self.tabBarController;
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        picker.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [tabBarController presentViewController: picker animated:YES completion:nil];
         
     }
     else if ( [segmentSelectedTitle isEqualToString: @"camera"] )
     {
+        if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            
+            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                  message:@"Device has no camera"
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+            
+            [myAlertView show];
+            
+        } else
+        {
+            UITabBarController * tabBarController = (UITabBarController*) self.tabBarController;
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.delegate = self;
+//            picker.allowsEditing = YES;
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            picker.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+            [tabBarController presentViewController:picker animated:YES completion:nil];
+        }
         
     }
 }
 
--(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self.segmentControlInsertMedia setSelectedSegmentIndex: -1];
