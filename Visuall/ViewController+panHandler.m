@@ -13,8 +13,10 @@
 #import "StateUtilFirebase.h"
 #import "ViewController+ViewHit.h"
 #import "ViewController+Group.h"
+#import "ViewController+Arrow.h"
 #import "UIView+VisualItem.h"
 #import "TiledLayerView.h"
+#import "ArrowItem.h"
 
 @implementation ViewController (panHandler)
 
@@ -24,12 +26,17 @@
  * @return {type}
  * Notes:
  */
-- (BOOL) panHandler: (UIPanGestureRecognizer *) gestureRecognizer
+- (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer
 {
     if ( [self isDrawGroupButtonSelected] )  // isGroupHandle
     {
         [self drawGroup: gestureRecognizer];
-        return NO;
+        return;
+    } else if ([self isArrowButtonSelected] )
+    {
+//        [ArrowItem drawArrow: gestureRecognizer];
+        [self panHandlerForDrawArrow: gestureRecognizer];
+        return;
     }
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
@@ -42,7 +49,7 @@
             [self setSelectedObject:ni];
             [ni handlePan:gestureRecognizer];
             [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
-            return YES;
+            return;
         } else if ([self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isGroupItem] && ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem]) )  // Pan or resize a group
         {
             GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
@@ -50,12 +57,12 @@
             {
                 [gi resizeGroup: gestureRecognizer];
                 [self.visuallState updateChildValue:gi Property:@"frame"];
-                return YES;
+                return;
             } else
             {
                 [self handlePanGroup: gestureRecognizer andGroupItem:gi];
                 [self.visuallState updateChildValue:gi Property:@"frame"];
-                return YES;
+                return;
             }
         }
         else
@@ -68,7 +75,7 @@
             self.BoundsTiledLayerView.frame = rect;
         }
         
-        return NO;  // --> YES pan the background
+        return;  // --> YES pan the background
 
         // TODO:
         if ( self.activelySelectedObjectDuringPan && [viewHit isEqual: self.scrollViewButtonList] )
@@ -133,7 +140,7 @@
         [self setActivelySelectedObjectDuringPan: nil];
 
     }
-    return NO;
+    return;
 }
 
 - (void) panHandlerForScrollViewButtonList: (UIPanGestureRecognizer *) gestureRecognizer

@@ -15,6 +15,14 @@
 
 @property Arrow *arrow;
 
++ (void) setStartPoint: (CGPoint) aPoint;
+
++ (CGPoint) getStartPoint;
+
+- (instancetype) initArrowFromStartPointToEndPoint: (CGPoint) endPoint;
+
+- (instancetype) initArrowWithPoints: (CGPoint) pointA and: (CGPoint) pointB;
+
 - (instancetype) initArrowWithSourceNoteItem: (NoteItem2*) ni0 andTargetNoteItem: (NoteItem2*) ni1;
 
 @end

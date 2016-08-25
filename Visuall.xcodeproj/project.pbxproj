@@ -75,6 +75,7 @@
 		71FD2EEA1D6522BC00CA5365 /* UserUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EE91D6522BC00CA5365 /* UserUtil.m */; };
 		71FD2EED1D662F8300CA5365 /* StateUtilFirebase.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EEC1D662F8300CA5365 /* StateUtilFirebase.m */; };
 		71FD2EF31D6BE66400CA5365 /* GroupItemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */; };
+		71FD2EFB1D6FAF9E00CA5365 /* ViewController+Arrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EFA1D6FAF9E00CA5365 /* ViewController+Arrow.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
 		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; };
 		77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA71C011D5F00105BB5 /* linkarrow.png */; };
@@ -207,6 +208,8 @@
 		71FD2EEC1D662F8300CA5365 /* StateUtilFirebase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StateUtilFirebase.m; sourceTree = "<group>"; };
 		71FD2EF11D6BE66400CA5365 /* GroupItemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupItemImage.h; sourceTree = "<group>"; };
 		71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupItemImage.m; sourceTree = "<group>"; };
+		71FD2EF91D6FAF9E00CA5365 /* ViewController+Arrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+Arrow.h"; sourceTree = "<group>"; };
+		71FD2EFA1D6FAF9E00CA5365 /* ViewController+Arrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Arrow.m"; sourceTree = "<group>"; };
 		77E13DA11C011C1700105BB5 /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
 		77E13DA51C011CF200105BB5 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		77E13DA71C011D5F00105BB5 /* linkarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linkarrow.png; sourceTree = "<group>"; };
@@ -294,7 +297,7 @@
 				71710A811D5D033C0038D883 /* Menus */,
 				71FD2EF81D6D0D5E00CA5365 /* ViewMods */,
 				71710A801D5D00630038D883 /* GestureRelated */,
-				71FD2EF41D6CB6FD00CA5365 /* Groups */,
+				71FD2EF41D6CB6FD00CA5365 /* Groups and Images */,
 				71FD2EF71D6D0D0B00CA5365 /* VisualItems */,
 				71710A7F1D5CF6350038D883 /* Utilities */,
 				885AFD651C00217800F89DE5 /* OLD_model */,
@@ -433,7 +436,7 @@
 			name = "Second Submenu";
 			sourceTree = "<group>";
 		};
-		71FD2EF41D6CB6FD00CA5365 /* Groups */ = {
+		71FD2EF41D6CB6FD00CA5365 /* Groups and Images */ = {
 			isa = PBXGroup;
 			children = (
 				713D0D5E1CC6AE4F00878EAE /* Group2.h */,
@@ -443,7 +446,7 @@
 				71FD2EF11D6BE66400CA5365 /* GroupItemImage.h */,
 				71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */,
 			);
-			name = Groups;
+			name = "Groups and Images";
 			sourceTree = "<group>";
 		};
 		71FD2EF51D6CB71D00CA5365 /* OtherViewControllers */ = {
@@ -472,6 +475,8 @@
 				712EC95F1BEAF21500ED6803 /* ViewController.m */,
 				71D96C021D359E0000CD1C49 /* ViewController+Group.h */,
 				71D96C031D359E0000CD1C49 /* ViewController+Group.m */,
+				71FD2EF91D6FAF9E00CA5365 /* ViewController+Arrow.h */,
+				71FD2EFA1D6FAF9E00CA5365 /* ViewController+Arrow.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -742,6 +747,7 @@
 				71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
+				71FD2EFB1D6FAF9E00CA5365 /* ViewController+Arrow.m in Sources */,
 				7161CF641D55202700B278EB /* MyVisuallsNavigationController.m in Sources */,
 				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,
 				71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */,

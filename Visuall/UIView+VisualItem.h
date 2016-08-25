@@ -33,4 +33,8 @@
 
 - (GroupItemImage *) getGroupItemImage;
 
+- (UIViewController *) firstAvailableUIViewController;
+
+- (id) traverseResponderChainForUIViewController;
+
 @end

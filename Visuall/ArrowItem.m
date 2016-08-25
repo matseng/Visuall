@@ -9,6 +9,9 @@
 #import "ArrowItem.h"
 #import "NoteItem2.h"
 #import "UIBezierPath+arrowhead.h"
+#import "UIView+VisualItem.m"
+
+static CGPoint __startPoint;
 
 @implementation ArrowItem
 
@@ -21,16 +24,83 @@
 */
 
 {
-    CGPoint startPoint;
-    CGPoint endPoint;
+//    CGPoint startPoint;
+//    CGPoint endPoint;
+//    CGFloat tailWidth;
+//    CGFloat headWidth;
+//    CGFloat headLength;
+//    UIBezierPath *path;
+}
+
++ (void) setStartPoint: (CGPoint) aPoint
+{
+    __startPoint = aPoint;
+}
+
++ (CGPoint) getStartPoint
+{
+    return __startPoint;
+}
+
+//- (instancetype) initArrowFromPoint: (CGPoint) startPoint toPoint: (CGPoint) endPoint
+- (instancetype) initArrowFromStartPointToEndPoint: (CGPoint) endPoint
+{
+    self = [super init];
+    if (self) {
+//    CGPoint startPoint;
+//    CGPoint endPoint;
     CGFloat tailWidth;
     CGFloat headWidth;
     CGFloat headLength;
     UIBezierPath *path;
+        
+    CGRect rect = [self createGroupViewRect: __startPoint withEndPoint: endPoint];
+    self.frame = rect;
+        self.backgroundColor = [UIColor redColor];
     
+//    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
+//    CGPoint pointInScreenCoords = CGPointMake( [[UIScreen mainScreen] bounds].size.width / 2, [[UIScreen mainScreen] bounds].size.height / 2);
+//    CGPoint pointInWindowCoords = [mainWindow convertPoint:pointInScreenCoords fromWindow:nil];
+//    startPoint = [self.ArrowsView convertPoint:pointInWindowCoords fromView:mainWindow];
+//    endPoint = CGPointMake( startPoint.x + 100, startPoint.y + 100 );
+    
+    [[UIColor redColor] setStroke];
+    tailWidth = 4;
+    headWidth = 8 * 3;
+    headLength = 8 * 3;
+    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)CGPointZero
+                                              toPoint:(CGPoint)endPoint
+                                            tailWidth:(CGFloat)tailWidth
+                                            headWidth:(CGFloat)headWidth
+                                           headLength:(CGFloat)headLength];
+    [path setLineWidth:2.0];
+    [path stroke];
+    
+    
+
+        
+    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
+    [shapeView setPath: path.CGPath];
+//    [self.layer addSublayer: shapeView];
+    }
+    return self;
 }
 
-- (instancetype) initArrowWithSourceNoteItem: (NoteItem2*) ni0 andTargetNoteItem: (NoteItem2*) ni1
+- (CGRect) createGroupViewRect:(CGPoint)start withEndPoint:(CGPoint)end {
+    float x1 = start.x < end.x ? start.x : end.x;
+    float y1 = start.y < end.y ? start.y : end.y;
+    
+    float x2 = start.x < end.x ? end.x : start.x;
+    float y2 = start.y < end.y ? end.y : start.y;
+    
+    float width = x2 - x1;
+    float height = y2 - y1;
+    
+    return CGRectMake(x1, y1, width, height);
+}
+
+/*
+- (instancetype) __initArrowWithSourceNoteItem: (NoteItem2*) ni0 andTargetNoteItem: (NoteItem2*) ni1
 // http://stackoverflow.com/questions/13528898/how-can-i-draw-an-arrow-using-core-graphics
 //http://stackoverflow.com/questions/13528898/how-can-i-draw-an-arrow-using-core-graphics
 {
@@ -75,7 +145,7 @@
 //        lines.bounds = CGPathGetBoundingBox(lines.path);
 //        lines.bounds = self.frame;
         lines.strokeColor = [UIColor whiteColor].CGColor;
-        lines.fillColor = [UIColor redColor].CGColor; /*if you just want lines*/
+        lines.fillColor = [UIColor redColor].CGColor; // if you just want lines
         lines.lineWidth = 3;
         [self.layer addSublayer:lines];
 //        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
@@ -111,5 +181,6 @@
     [path stroke];
     
 }
+*/
 
 @end

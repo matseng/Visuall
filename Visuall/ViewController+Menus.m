@@ -737,7 +737,7 @@ UIColor *darkGrayBorderColor;
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
     if ( [segmentSelectedTitle isEqualToString:@"arrow"] )
     {
-        [self makeArrow];
+//        [self makeArrow];
     }
 }
 
@@ -753,7 +753,7 @@ UIColor *darkGrayBorderColor;
     UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
     CGPoint pointInScreenCoords = CGPointMake( [[UIScreen mainScreen] bounds].size.width / 2, [[UIScreen mainScreen] bounds].size.height / 2);
     CGPoint pointInWindowCoords = [mainWindow convertPoint:pointInScreenCoords fromWindow:nil];
-    startPoint = [self.GroupsView convertPoint:pointInWindowCoords fromView:mainWindow];
+    startPoint = [self.ArrowsView convertPoint:pointInWindowCoords fromView:mainWindow];
     endPoint = CGPointMake( startPoint.x + 100, startPoint.y + 100 );
     
     [[UIColor redColor] setStroke];
@@ -768,11 +768,27 @@ UIColor *darkGrayBorderColor;
     [path setLineWidth:2.0];
     [path stroke];
     
+    
+    CGRect rect = [self createGroupViewRect: startPoint withEnd: endPoint];
+    UIView *arrowView = [[UIView alloc] initWithFrame: rect];
+    
     CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
     [shapeView setPath: path.CGPath];
     [self.ArrowsView.layer addSublayer: shapeView];
 }
 
+- (CGRect) createGroupViewRect:(CGPoint)start withEnd:(CGPoint)end {
+    float x1 = start.x < end.x ? start.x : end.x;
+    float y1 = start.y < end.y ? start.y : end.y;
+    
+    float x2 = start.x < end.x ? end.x : start.x;
+    float y2 = start.y < end.y ? end.y : start.y;
+    
+    float width = x2 - x1;
+    float height = y2 - y1;
+    
+    return CGRectMake(x1, y1, width, height);
+}
 
 - (void) segmentControlInsertMediaHandler: (SegmentedControlMod *) segmentedControl
 {
