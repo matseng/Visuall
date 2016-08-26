@@ -8,6 +8,7 @@
 
 #import "ViewController+Arrow.h"
 #import "ArrowItem.h"
+#import "UserUtil.h"
 
 @implementation ViewController (Arrow)
 
@@ -17,7 +18,8 @@
         // State began
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
         {
-            [ArrowItem setStartPoint: [gestureRecognizer locationInView: self.ArrowsView]];
+//            [ArrowItem setStartPoint: [gestureRecognizer locationInView: self.ArrowsView]];
+            [ArrowItem setStartPoint:[[[UserUtil sharedManager] getState] touchDownPoint]];
         }
         
         

@@ -65,9 +65,8 @@
     [self.visuallState setUserID: userID];
     
     [self.visuallState setBackgroundScrollView: self.BackgroundScrollView];
-    
     [self.visuallState setBoundsTiledLayerView: self.BoundsTiledLayerView];
-    
+    [self.visuallState setVisualItemsView: self.VisualItemsView];
     [self.visuallState setArrowsView: self.ArrowsView];
     
     [self.visuallState setCallbackNoteItem:^(NoteItem2 *ni) {
@@ -283,12 +282,12 @@
     
     return; // TODO (Aug 22, 2016): testing 
     
-    [_visuallState.groupsCollection myForIn:^(GroupItem *gi) {
+    [self.visuallState.groupsCollection myForIn:^(GroupItem *gi) {
         NSString *titleNoteKey = gi.group.titleNoteKey;
         if ( titleNoteKey )
         {
-            NoteItem2 *ni = [_visuallState.notesCollection getNoteItemFromKey: titleNoteKey];
-            [_visuallState scaleNoteTitleSize:ni];
+            NoteItem2 *ni = [self.visuallState.notesCollection getNoteItemFromKey: titleNoteKey];
+            [self.visuallState scaleNoteTitleSize:ni];
         }
     }];
 }
@@ -534,14 +533,14 @@
 - (void) findChildandTitleNotes
 {
 
-    [_visuallState.notesCollection myForIn:^(NoteItem2 *ni)
+    [self.visuallState.notesCollection myForIn:^(NoteItem2 *ni)
      {
-         [_visuallState.groupsCollection myForIn:^(GroupItem *gi){
+         [self.visuallState.groupsCollection myForIn:^(GroupItem *gi){
             if( [gi isNoteInGroup:ni] )  // note is within group bounds
             {
                 if (![ni.note parentGroupKey]) {
                     [ni.note setParentGroupKey: gi.group.key];
-                } else if ( [gi.group getArea] < [_visuallState.groupsCollection getGroupAreaFromKey:[ni.note parentGroupKey]] )  // current group is smaller than previously assigned parent
+                } else if ( [gi.group getArea] < [self.visuallState.groupsCollection getGroupAreaFromKey:[ni.note parentGroupKey]] )  // current group is smaller than previously assigned parent
                 {
                     [ni.note setParentGroupKey: gi.group.key];  // set a note's most immediate parent
                 }
@@ -550,9 +549,9 @@
                 {
                     [gi.group setTitleNoteKey: ni.note.key];
                     [ni.note setIsTitleOfParentGroup:YES];
-                } else if ( ni.note.fontSize > [_visuallState.notesCollection getNoteFontSizeFromKey: gi.group.titleNoteKey])
+                } else if ( ni.note.fontSize > [self.visuallState.notesCollection getNoteFontSizeFromKey: gi.group.titleNoteKey])
                 {
-                    Note2 *oldTitleNote = [_visuallState.notesCollection getNoteFromKey:gi.group.titleNoteKey];
+                    Note2 *oldTitleNote = [self.visuallState.notesCollection getNoteFromKey:gi.group.titleNoteKey];
                     if (oldTitleNote) [oldTitleNote setIsTitleOfParentGroup:NO];
                     gi.group.titleNoteKey = ni.note.key;
                     [ni.note setIsTitleOfParentGroup: YES];
@@ -577,7 +576,8 @@
 
 -(void) handleTouchDown:(TouchDownGestureRecognizer *) gestureRecognizer {
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
-    NSLog(@"handleTouchDown viewHit %@", [viewHit class]);
+    self.visuallState.touchDownPoint = [gestureRecognizer locationInView: self.visuallState.VisualItemsView];
+    NSLog(@"\n handleTouchDown viewHit %@", [viewHit class]);
     
     if ( [viewHit isEqual: self.scrollViewButtonList] )
     {

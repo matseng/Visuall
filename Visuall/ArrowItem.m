@@ -14,7 +14,7 @@
 #import "UserUtil.h"
 #import "StateUtilFirebase.h"
 
-static CGPoint __startPoint;
+static CGPoint __startPoint;  // class variables http://rypress.com/tutorials/objective-c/classes
 static CGPoint __endPoint;
 static CAShapeLayer *__tempShapeLayer;
 
@@ -35,8 +35,7 @@ static CAShapeLayer *__tempShapeLayer;
 //    CGFloat headWidth;
 //    CGFloat headLength;
 //    UIBezierPath *path;
-    NoteItem2 *startNote;
-    NoteItem2 *endNote;
+
     
 }
 
@@ -84,6 +83,19 @@ static CAShapeLayer *__tempShapeLayer;
 {
     self = [super init];
     if (self) {
+        
+        NoteItem2 *ni = [self hitTestOnNotes: __startPoint];
+        NoteItem2 *ni2 = [self hitTestOnNotes: __endPoint];
+        if ( ni  && ni2 )  // arrows must have a start note and end note
+        {
+            self.startNote = ni;
+            self.endNote = ni2;
+        } else
+        {
+            return nil;
+        }
+        
+        
         //    CGPoint startPoint;
         //    CGPoint endPoint;
         CGFloat tailWidth;
@@ -99,7 +111,6 @@ static CAShapeLayer *__tempShapeLayer;
         
         UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
         
-        [self hitTestOnNotes: __startPoint];
         
         CGRect rect = [self createGroupViewRect: __startPoint withEndPoint: __endPoint];
         
@@ -117,7 +128,6 @@ static CAShapeLayer *__tempShapeLayer;
             if (rect.size.height < 2 * headWidth)
             {
                 rect.origin.y = rect.origin.y - 0.5 * headWidth;
-//                rect.size.height = rect.size.height + headWidth;
                 rect.size.height = 2 * headWidth;
             } else {
                 rect.origin.y = rect.origin.y - 0.25 * headWidth;
@@ -153,7 +163,7 @@ static CAShapeLayer *__tempShapeLayer;
 //    return [viewController.BoundsTiledLayerView hitTestOnNotes: point withEvent:nil];
 //}
 
-- (UIView *) hitTestOnNotes: (CGPoint) point
+- (NoteItem2 *) hitTestOnNotes: (CGPoint) point
 {
     NoteItem2 *ni;
     StateUtilFirebase *state = [[UserUtil sharedManager] getState];
@@ -161,7 +171,7 @@ static CAShapeLayer *__tempShapeLayer;
     UIView *view = [[state BoundsTiledLayerView] hitTestOnNotes: convertedPoint withEvent:nil];
     if ( view ) {
         ni = [view getNoteItem];
-        NSLog(@"\n hitTestOnNotes, startNote: %@", ni.note.title);
+        NSLog(@"\n hitTestOnNotes: %@", ni.note.title);
     }
 
     return ni;

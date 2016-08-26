@@ -20,9 +20,7 @@
 
 @interface StateUtil : NSObject
 
-@property FIRUser *firebaseUser;
-@property TiledLayerView *BoundsTiledLayerView;
-@property UIView *ArrowsView;
+
 @property CGPoint translation;
 @property float scale;
 @property float scaleTest;
@@ -31,11 +29,17 @@
 @property float _relativeScale;
 @property NotesCollection *notesCollection;
 @property GroupsCollection *groupsCollection;
+
 // New state properties (moving away from ViewController)
+@property FIRUser *firebaseUser;
+@property ScrollViewMod *BackgroundScrollView;
+@property TiledLayerView *BoundsTiledLayerView;
+@property UIView *VisualItemsView;
+@property UIView *ArrowsView;
 @property UIView *selectedVisualItem;
 @property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing
 @property BOOL editModeOn;
-@property ScrollViewMod *BackgroundScrollView;
+@property CGPoint touchDownPoint;
 
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
