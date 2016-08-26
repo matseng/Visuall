@@ -22,6 +22,8 @@
 
 + (CGPoint) getStartPoint;
 
++ (CAShapeLayer *) makeArrowFromStartPointToEndPoint: (CGPoint) endPoint;
+
 - (instancetype) initArrowFromStartPointToEndPoint;
 
 @end

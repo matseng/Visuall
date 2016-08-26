@@ -68,6 +68,8 @@
     
     [self.visuallState setBoundsTiledLayerView: self.BoundsTiledLayerView];
     
+    [self.visuallState setArrowsView: self.ArrowsView];
+    
     [self.visuallState setCallbackNoteItem:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
         [self calculateTotalBounds: ni];  // TODO - update so doest move window

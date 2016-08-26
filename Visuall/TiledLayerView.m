@@ -53,7 +53,7 @@
 {
     UIView *NotesView = self.subviews[0].subviews[2];  // TODO: Create singleton to hold views
     for (UIView *subview in [NotesView.subviews reverseObjectEnumerator]) {
-        CGPoint convertedPoint = [subview convertPoint:point fromView:self];
+        CGPoint convertedPoint = [subview convertPoint:point fromView: self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
         {
             self.hitTestView = [subview hitTest:convertedPoint withEvent:event];

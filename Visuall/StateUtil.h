@@ -22,6 +22,7 @@
 
 @property FIRUser *firebaseUser;
 @property TiledLayerView *BoundsTiledLayerView;
+@property UIView *ArrowsView;
 @property CGPoint translation;
 @property float scale;
 @property float scaleTest;

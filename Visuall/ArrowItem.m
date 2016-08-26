@@ -29,8 +29,8 @@ static CAShapeLayer *__tempShapeLayer;
 */
 
 {
-    CGPoint __startPoint;
-    CGPoint __endPoint;
+//    CGPoint __startPoint;
+//    CGPoint __endPoint;
 //    CGFloat tailWidth;
 //    CGFloat headWidth;
 //    CGFloat headLength;
@@ -50,6 +50,36 @@ static CAShapeLayer *__tempShapeLayer;
     return __startPoint;
 }
 
++ (CAShapeLayer *) makeArrowFromStartPointToEndPoint: (CGPoint) endPoint
+{
+    CGFloat tailWidth;
+    CGFloat headWidth;
+    CGFloat headLength;
+    UIBezierPath *path;
+    
+    if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
+    
+    UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
+    
+    [[UIColor redColor] setStroke];
+    tailWidth = 4;
+    headWidth = 8 * 3;
+    headLength = 8 * 3;
+    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)__startPoint
+                                              toPoint:(CGPoint)endPoint
+                                            tailWidth:(CGFloat)tailWidth
+                                            headWidth:(CGFloat)headWidth
+                                           headLength:(CGFloat)headLength];
+    [path setLineWidth:2.0];
+    [path stroke];
+    
+    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
+    [shapeView setPath: path.CGPath];
+    __endPoint = endPoint;
+    __tempShapeLayer = shapeView;
+    return shapeView;
+}
+
 - (instancetype) initArrowFromStartPointToEndPoint
 {
     self = [super init];
@@ -66,6 +96,8 @@ static CAShapeLayer *__tempShapeLayer;
         headLength = 8 * 3;
         
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
+        
+        UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
         
         [self hitTestOnNotes: __startPoint];
         
@@ -123,8 +155,16 @@ static CAShapeLayer *__tempShapeLayer;
 
 - (UIView *) hitTestOnNotes: (CGPoint) point
 {
+    NoteItem2 *ni;
     StateUtilFirebase *state = [[UserUtil sharedManager] getState];
-    return [[state BoundsTiledLayerView] hitTestOnNotes: point withEvent:nil];
+    CGPoint convertedPoint = [[state BoundsTiledLayerView] convertPoint:point fromView: [state ArrowsView]];
+    UIView *view = [[state BoundsTiledLayerView] hitTestOnNotes: convertedPoint withEvent:nil];
+    if ( view ) {
+        ni = [view getNoteItem];
+        NSLog(@"\n hitTestOnNotes, startNote: %@", ni.note.title);
+    }
+
+    return ni;
 }
 
 //- (UIView *) hitTestOnNotes:(CGPoint)point withEvent:(UIEvent *)event

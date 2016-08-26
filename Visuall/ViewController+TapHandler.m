@@ -54,9 +54,9 @@ NoteItem2 *targetNoteForArrow;
                         sourceNoteForArrow = ni;
                     } else {
                         // init arrow, draw arrow view, save arrow to firebase and get key, cross-share note and arrow keys
-                        ArrowItem *ai = [[ArrowItem alloc] initArrowWithSourceNoteItem:sourceNoteForArrow andTargetNoteItem: ni];
-                        [self.ArrowsView addSubview: ai];
-                        sourceNoteForArrow = nil;
+//                        ArrowItem *ai = [[ArrowItem alloc] initArrowWithSourceNoteItem:sourceNoteForArrow andTargetNoteItem: ni];
+//                        [self.ArrowsView addSubview: ai];
+//                        sourceNoteForArrow = nil;
                     }
                     
                 }
