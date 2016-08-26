@@ -16,10 +16,12 @@
 #import "VisualItem.h"
 #import "GroupsCollection.h"
 #import "ScrollViewMod.h"
+#import "TiledLayerView.h"
 
 @interface StateUtil : NSObject
 
 @property FIRUser *firebaseUser;
+@property TiledLayerView *BoundsTiledLayerView;
 @property CGPoint translation;
 @property float scale;
 @property float scaleTest;

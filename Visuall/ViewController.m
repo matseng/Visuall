@@ -66,6 +66,8 @@
     
     [self.visuallState setBackgroundScrollView: self.BackgroundScrollView];
     
+    [self.visuallState setBoundsTiledLayerView: self.BoundsTiledLayerView];
+    
     [self.visuallState setCallbackNoteItem:^(NoteItem2 *ni) {
         [self addNoteToViewWithHandlers: ni];
         [self calculateTotalBounds: ni];  // TODO - update so doest move window

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @import Firebase;
+#import "StateUtilFirebase.h"
 
 @interface UserUtil : NSObject
 
@@ -20,5 +21,7 @@
 - (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
 
 - (void) GIDdisconnect;
+
+- (StateUtilFirebase *) getState;
 
 @end

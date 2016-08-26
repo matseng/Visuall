@@ -10,6 +10,9 @@
 #import "NoteItem2.h"
 #import "UIBezierPath+arrowhead.h"
 #import "UIView+VisualItem.m"
+#import "ViewController.h"
+#import "UserUtil.h"
+#import "StateUtilFirebase.h"
 
 static CGPoint __startPoint;
 static CGPoint __endPoint;
@@ -26,12 +29,14 @@ static CAShapeLayer *__tempShapeLayer;
 */
 
 {
-//    CGPoint startPoint;
-//    CGPoint endPoint;
+    CGPoint __startPoint;
+    CGPoint __endPoint;
 //    CGFloat tailWidth;
 //    CGFloat headWidth;
 //    CGFloat headLength;
 //    UIBezierPath *path;
+    NoteItem2 *startNote;
+    NoteItem2 *endNote;
     
 }
 
@@ -43,36 +48,6 @@ static CAShapeLayer *__tempShapeLayer;
 + (CGPoint) getStartPoint
 {
     return __startPoint;
-}
-
-+ (CAShapeLayer *) makeArrowFromStartPointToEndPoint: (CGPoint) endPoint
-{
-    CGFloat tailWidth;
-    CGFloat headWidth;
-    CGFloat headLength;
-    UIBezierPath *path;
-    
-    if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
-    
-    UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
-    
-    [[UIColor redColor] setStroke];
-    tailWidth = 4;
-    headWidth = 8 * 3;
-    headLength = 8 * 3;
-    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)__startPoint
-                                              toPoint:(CGPoint)endPoint
-                                            tailWidth:(CGFloat)tailWidth
-                                            headWidth:(CGFloat)headWidth
-                                           headLength:(CGFloat)headLength];
-    [path setLineWidth:2.0];
-    [path stroke];
-    
-    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
-    [shapeView setPath: path.CGPath];
-    __endPoint = endPoint;
-    __tempShapeLayer = shapeView;
-    return shapeView;
 }
 
 - (instancetype) initArrowFromStartPointToEndPoint
@@ -91,6 +66,8 @@ static CAShapeLayer *__tempShapeLayer;
         headLength = 8 * 3;
         
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
+        
+        [self hitTestOnNotes: __startPoint];
         
         CGRect rect = [self createGroupViewRect: __startPoint withEndPoint: __endPoint];
         
@@ -119,8 +96,6 @@ static CAShapeLayer *__tempShapeLayer;
         self.backgroundColor = [UIColor redColor];
 
         CGPoint localStartPoint = CGPointMake(__startPoint.x - rect.origin.x, __startPoint.y - rect.origin.y);
-
-//        CGPoint localEndPoint = CGPointMake(endPoint.x - __startPoint.x, endPoint.y - __startPoint.y);
         CGPoint localEndPoint = CGPointMake(__endPoint.x - rect.origin.x, __endPoint.y - rect.origin.y);
         
         [[UIColor redColor] setStroke];
@@ -140,77 +115,19 @@ static CAShapeLayer *__tempShapeLayer;
     return self;
 }
 
-- (CAShapeLayer *) __makeArrowFromStartPointToEndPoint: (CGPoint) endPoint
+//- (UIView *) hitTestOnNotes: (CGPoint) point withViewController: (ViewController *) viewController
+//{
+//    
+//    return [viewController.BoundsTiledLayerView hitTestOnNotes: point withEvent:nil];
+//}
+
+- (UIView *) hitTestOnNotes: (CGPoint) point
 {
-    CGFloat tailWidth;
-    CGFloat headWidth;
-    CGFloat headLength;
-    UIBezierPath *path;
-    
-    if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
-    
-    UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
-    
-    [[UIColor redColor] setStroke];
-    tailWidth = 4;
-    headWidth = 8 * 3;
-    headLength = 8 * 3;
-    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)__startPoint
-                                              toPoint:(CGPoint)endPoint
-                                            tailWidth:(CGFloat)tailWidth
-                                            headWidth:(CGFloat)headWidth
-                                           headLength:(CGFloat)headLength];
-    [path setLineWidth:2.0];
-    [path stroke];
-    
-    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
-    [shapeView setPath: path.CGPath];
-    __tempShapeLayer = shapeView;
-    return shapeView;
+    StateUtilFirebase *state = [[UserUtil sharedManager] getState];
+    return [[state BoundsTiledLayerView] hitTestOnNotes: point withEvent:nil];
 }
 
-- (instancetype) initArrowFromStartPointToEndPoint: (CGPoint) endPoint
-{
-    self = [super init];
-    if (self) {
-        //    CGPoint startPoint;
-        //    CGPoint endPoint;
-        CGFloat tailWidth;
-        CGFloat headWidth;
-        CGFloat headLength;
-        UIBezierPath *path;
-        
-        CGRect rect = [self createGroupViewRect: __startPoint withEndPoint: endPoint];
-        self.frame = rect;
-        self.backgroundColor = [UIColor redColor];
-        
-        //    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
-        //    CGPoint pointInScreenCoords = CGPointMake( [[UIScreen mainScreen] bounds].size.width / 2, [[UIScreen mainScreen] bounds].size.height / 2);
-        //    CGPoint pointInWindowCoords = [mainWindow convertPoint:pointInScreenCoords fromWindow:nil];
-        //    startPoint = [self.ArrowsView convertPoint:pointInWindowCoords fromView:mainWindow];
-        //    endPoint = CGPointMake( startPoint.x + 100, startPoint.y + 100 );
-        CGPoint localEndPoint = CGPointMake(endPoint.x - __startPoint.x, endPoint.y - __startPoint.y);
-        [[UIColor redColor] setStroke];
-        tailWidth = 4;
-        headWidth = 8 * 3;
-        headLength = 8 * 3;
-        path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)CGPointZero
-                                                  toPoint:(CGPoint)localEndPoint
-                                                tailWidth:(CGFloat)tailWidth
-                                                headWidth:(CGFloat)headWidth
-                                               headLength:(CGFloat)headLength];
-        [path setLineWidth:2.0];
-        [path stroke];
-        
-        
-        
-        
-        CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
-        [shapeView setPath: path.CGPath];
-        [self.layer addSublayer: shapeView];
-    }
-    return self;
-}
+//- (UIView *) hitTestOnNotes:(CGPoint)point withEvent:(UIEvent *)event
 
 - (CGRect) createGroupViewRect:(CGPoint)start withEndPoint:(CGPoint)end {
     float x1 = start.x < end.x ? start.x : end.x;

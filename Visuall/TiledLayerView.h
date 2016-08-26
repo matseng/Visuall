@@ -13,4 +13,6 @@
 
 @property UIView *hitTestView;
 
+- (UIView *) hitTestOnNotes:(CGPoint)point withEvent:(UIEvent *) event;
+
 @end
