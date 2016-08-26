@@ -30,23 +30,12 @@
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
     NSLog(@"TiledLayerView point %f, %f", point.x, point.y);
-    UIView *NotesView = self.subviews[0].subviews[2];  // TODO: Create singleton to hold views
+
     UIView *GroupsView = self.subviews[0].subviews[0];
     UIView *target = nil;
     
-    for (UIView *subview in [NotesView.subviews reverseObjectEnumerator]) {
-        CGPoint convertedPoint = [subview convertPoint:point fromView:self];
-        if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
-        {
-            self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
-            NSLog(@"TiledLayerView viewHit %@", [self.hitTestView class]);
-            return self.hitTestView;
-//            target = [subview hitTest:convertedPoint withEvent:event];
-            
-//            return target;
-            
-        }
-    }
+    if ( [self hitTestOnNotes: point withEvent: event] ) return self.hitTestView;
+    
     for (UIView *subview in [GroupsView.subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isGroupItem])
@@ -57,6 +46,21 @@
     }
     self.hitTestView = nil;
     NSLog(@"TiledLayerView viewHit %@", [target class]);
+    return nil;
+}
+
+- (UIView *) hitTestOnNotes:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *NotesView = self.subviews[0].subviews[2];  // TODO: Create singleton to hold views
+    for (UIView *subview in [NotesView.subviews reverseObjectEnumerator]) {
+        CGPoint convertedPoint = [subview convertPoint:point fromView:self];
+        if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
+        {
+            self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
+            NSLog(@"TiledLayerView viewHit %@", [self.hitTestView class]);
+            return self.hitTestView;
+        }
+    }
     return nil;
 }
 

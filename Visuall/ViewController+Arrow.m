@@ -13,27 +13,7 @@
 
 - (void) panHandlerForDrawArrow: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    {
-        /*
-        GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
-        
-        if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [gi isHandle: self.activelySelectedObjectDuringPan] )
-        {
-            if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
-            {
-                
-                [gi resizeGroup: gestureRecognizer];
-                [self.visuallState updateChildValue:gi Property:@"frame"];
-            }
-            else
-            {
-                [self setActivelySelectedObjectDuringPan: nil];
-            }
-            return;
-        }
-         */
-        
-        
+    
         // State began
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
         {
@@ -44,21 +24,22 @@
         // State changed
         if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
             CGPoint endPoint = [gestureRecognizer locationInView: self.ArrowsView];
-//            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
-//            NSLog(@"\n handlePanArrow: %f, %f", [ArrowItem getStartPoint].x, [ArrowItem getStartPoint].y);
-            ArrowItem *ai = [[ArrowItem alloc] initArrowFromStartPointToEndPoint: endPoint];
-            [self.ArrowsView addSubview: ai];
+            [self.NotesView.layer addSublayer:[ArrowItem makeArrowFromStartPointToEndPoint: endPoint]];  // temporarily added arrow to NotesView for aesthetics only
         }
-        /*
+    
         // State ended
         if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
-            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
-            GroupItem *currentGroupItem = [[GroupItem alloc] initWithRect: self.drawGroupView.frame];
-            [self addGroupItemToMVC: currentGroupItem];
+            ArrowItem *ai = [[ArrowItem alloc] initArrowFromStartPointToEndPoint];
+            [self.ArrowsView addSubview: ai];
+            // TODO (Aug 25, 2016): draw the arrow in arrows view, save the arrow in firebase, add handlers... and more?
+//            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
+//            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
+//            GroupItem *currentGroupItem = [[GroupItem alloc] initWithRect: self.drawGroupView.frame];
+//            [self addGroupItemToMVC: currentGroupItem];
+            
         }
-         */
-    }
+    
+    
 }
 
 

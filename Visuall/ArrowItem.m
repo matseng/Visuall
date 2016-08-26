@@ -12,6 +12,8 @@
 #import "UIView+VisualItem.m"
 
 static CGPoint __startPoint;
+static CGPoint __endPoint;
+static CAShapeLayer *__tempShapeLayer;
 
 @implementation ArrowItem
 
@@ -30,6 +32,7 @@ static CGPoint __startPoint;
 //    CGFloat headWidth;
 //    CGFloat headLength;
 //    UIBezierPath *path;
+    
 }
 
 + (void) setStartPoint: (CGPoint) aPoint
@@ -42,33 +45,22 @@ static CGPoint __startPoint;
     return __startPoint;
 }
 
-//- (instancetype) initArrowFromPoint: (CGPoint) startPoint toPoint: (CGPoint) endPoint
-- (instancetype) initArrowFromStartPointToEndPoint: (CGPoint) endPoint
++ (CAShapeLayer *) makeArrowFromStartPointToEndPoint: (CGPoint) endPoint
 {
-    self = [super init];
-    if (self) {
-//    CGPoint startPoint;
-//    CGPoint endPoint;
     CGFloat tailWidth;
     CGFloat headWidth;
     CGFloat headLength;
     UIBezierPath *path;
-        
-    CGRect rect = [self createGroupViewRect: __startPoint withEndPoint: endPoint];
-    self.frame = rect;
-        self.backgroundColor = [UIColor redColor];
     
-//    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
-//    CGPoint pointInScreenCoords = CGPointMake( [[UIScreen mainScreen] bounds].size.width / 2, [[UIScreen mainScreen] bounds].size.height / 2);
-//    CGPoint pointInWindowCoords = [mainWindow convertPoint:pointInScreenCoords fromWindow:nil];
-//    startPoint = [self.ArrowsView convertPoint:pointInWindowCoords fromView:mainWindow];
-//    endPoint = CGPointMake( startPoint.x + 100, startPoint.y + 100 );
+    if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
+    
+    UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
     
     [[UIColor redColor] setStroke];
     tailWidth = 4;
     headWidth = 8 * 3;
     headLength = 8 * 3;
-    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)CGPointZero
+    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)__startPoint
                                               toPoint:(CGPoint)endPoint
                                             tailWidth:(CGFloat)tailWidth
                                             headWidth:(CGFloat)headWidth
@@ -76,12 +68,146 @@ static CGPoint __startPoint;
     [path setLineWidth:2.0];
     [path stroke];
     
-    
-
-        
     CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
     [shapeView setPath: path.CGPath];
-//    [self.layer addSublayer: shapeView];
+    __endPoint = endPoint;
+    __tempShapeLayer = shapeView;
+    return shapeView;
+}
+
+- (instancetype) initArrowFromStartPointToEndPoint
+{
+    self = [super init];
+    if (self) {
+        //    CGPoint startPoint;
+        //    CGPoint endPoint;
+        CGFloat tailWidth;
+        CGFloat headWidth;
+        CGFloat headLength;
+        UIBezierPath *path;
+        
+        tailWidth = 4;
+        headWidth = 8 * 3;
+        headLength = 8 * 3;
+        
+        if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
+        
+        CGRect rect = [self createGroupViewRect: __startPoint withEndPoint: __endPoint];
+        
+        if ( rect.size.width < rect.size.height)  // TODO (Aug 25, 2016): Instead of augmenting the size of box, rotate the view instead via a transform
+        {
+            if (rect.size.width < 2 * headWidth)
+            {
+                rect.origin.x = rect.origin.x - 0.5 * headWidth;
+                rect.size.width = 2 * headWidth;
+            } else {
+                rect.origin.x = rect.origin.x - 0.25 * headWidth;
+                rect.size.width = rect.size.width + 0.5 * headWidth;
+            }
+        } else {
+            if (rect.size.height < 2 * headWidth)
+            {
+                rect.origin.y = rect.origin.y - 0.5 * headWidth;
+//                rect.size.height = rect.size.height + headWidth;
+                rect.size.height = 2 * headWidth;
+            } else {
+                rect.origin.y = rect.origin.y - 0.25 * headWidth;
+                rect.size.height = rect.size.height + 0.5 * headWidth;
+            }
+        }
+        self.frame = rect;
+        self.backgroundColor = [UIColor redColor];
+
+        CGPoint localStartPoint = CGPointMake(__startPoint.x - rect.origin.x, __startPoint.y - rect.origin.y);
+
+//        CGPoint localEndPoint = CGPointMake(endPoint.x - __startPoint.x, endPoint.y - __startPoint.y);
+        CGPoint localEndPoint = CGPointMake(__endPoint.x - rect.origin.x, __endPoint.y - rect.origin.y);
+        
+        [[UIColor redColor] setStroke];
+
+        path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)localStartPoint
+                                                  toPoint:(CGPoint)localEndPoint
+                                                tailWidth:(CGFloat)tailWidth
+                                                headWidth:(CGFloat)headWidth
+                                               headLength:(CGFloat)headLength];
+        [path setLineWidth:2.0];
+        [path stroke];
+        
+        CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
+        [shapeView setPath: path.CGPath];
+        [self.layer addSublayer: shapeView];
+    }
+    return self;
+}
+
+- (CAShapeLayer *) __makeArrowFromStartPointToEndPoint: (CGPoint) endPoint
+{
+    CGFloat tailWidth;
+    CGFloat headWidth;
+    CGFloat headLength;
+    UIBezierPath *path;
+    
+    if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
+    
+    UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
+    
+    [[UIColor redColor] setStroke];
+    tailWidth = 4;
+    headWidth = 8 * 3;
+    headLength = 8 * 3;
+    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)__startPoint
+                                              toPoint:(CGPoint)endPoint
+                                            tailWidth:(CGFloat)tailWidth
+                                            headWidth:(CGFloat)headWidth
+                                           headLength:(CGFloat)headLength];
+    [path setLineWidth:2.0];
+    [path stroke];
+    
+    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
+    [shapeView setPath: path.CGPath];
+    __tempShapeLayer = shapeView;
+    return shapeView;
+}
+
+- (instancetype) initArrowFromStartPointToEndPoint: (CGPoint) endPoint
+{
+    self = [super init];
+    if (self) {
+        //    CGPoint startPoint;
+        //    CGPoint endPoint;
+        CGFloat tailWidth;
+        CGFloat headWidth;
+        CGFloat headLength;
+        UIBezierPath *path;
+        
+        CGRect rect = [self createGroupViewRect: __startPoint withEndPoint: endPoint];
+        self.frame = rect;
+        self.backgroundColor = [UIColor redColor];
+        
+        //    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
+        //    CGPoint pointInScreenCoords = CGPointMake( [[UIScreen mainScreen] bounds].size.width / 2, [[UIScreen mainScreen] bounds].size.height / 2);
+        //    CGPoint pointInWindowCoords = [mainWindow convertPoint:pointInScreenCoords fromWindow:nil];
+        //    startPoint = [self.ArrowsView convertPoint:pointInWindowCoords fromView:mainWindow];
+        //    endPoint = CGPointMake( startPoint.x + 100, startPoint.y + 100 );
+        CGPoint localEndPoint = CGPointMake(endPoint.x - __startPoint.x, endPoint.y - __startPoint.y);
+        [[UIColor redColor] setStroke];
+        tailWidth = 4;
+        headWidth = 8 * 3;
+        headLength = 8 * 3;
+        path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)CGPointZero
+                                                  toPoint:(CGPoint)localEndPoint
+                                                tailWidth:(CGFloat)tailWidth
+                                                headWidth:(CGFloat)headWidth
+                                               headLength:(CGFloat)headLength];
+        [path setLineWidth:2.0];
+        [path stroke];
+        
+        
+        
+        
+        CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
+        [shapeView setPath: path.CGPath];
+        [self.layer addSublayer: shapeView];
     }
     return self;
 }
