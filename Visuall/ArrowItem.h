@@ -15,6 +15,7 @@
 
 @property Arrow *arrow;
 
+@property NSString *key;
 @property NoteItem2 *startNote;
 @property NoteItem2 *endNote;
 @property CGPoint startPoint;
@@ -31,5 +32,7 @@
 + (CAShapeLayer *) makeArrowFromStartPointToEndPoint: (CGPoint) endPoint;
 
 - (instancetype) initArrowFromStartPointToEndPoint;
+
+- (instancetype) initArrowFromFirebase: (NSString *) key andValue: (NSDictionary *) value;
 
 @end

@@ -10,6 +10,7 @@
 #import "UIView+VisualItem.h"
 #import "UserUtil.h"
 #import "GroupItemImage.h"
+#import "ArrowItem.h"
 
 @interface StateUtilFirebase()
 
@@ -29,6 +30,7 @@
     FIRDatabaseReference *_visuallsTable_currentVisuallRef;
     FIRDatabaseReference *_notesTableRef;
     FIRDatabaseReference *_groupsTableRef;
+    FIRDatabaseReference *__arrowsTableRef;
     FIRDatabaseReference *__publicVisuallsTableRef;
     void (^_callbackNoteItem)(NoteItem2 *ni);
     void (^_callbackGroupItem)(GroupItem *gi);
@@ -62,9 +64,10 @@
     {
         _usersTableCurrentUser = [[self.version01TableRef child:@"users"] child: __userID];
     }
+    _visuallsTableRef = [self.version01TableRef child: @"visualls"];
     _notesTableRef = [self.version01TableRef child: @"notes"];
     _groupsTableRef = [self.version01TableRef child: @"groups"];
-    _visuallsTableRef = [self.version01TableRef child: @"visualls"];
+    __arrowsTableRef = [self.version01TableRef child: @"arrows"];
     __publicVisuallsTableRef = [self.version01TableRef child: @"public"];
     __storage = [FIRStorage storage];
     FIRStorageReference *storageRef = [__storage referenceForURL:@"gs://visuall-2f878.appspot.com"];
@@ -221,8 +224,10 @@
 {
     FIRDatabaseReference *listOfNoteKeysRef = [[_visuallsTableRef child:key] child: @"notes"];
     FIRDatabaseReference *listOfGroupKeysRef = [[_visuallsTableRef child:key] child: @"groups"];
+    FIRDatabaseReference *listOfArrowKeysRef = [[_visuallsTableRef child:key] child: @"arrows"];
     [self loadListOfNotesFromRef: listOfNoteKeysRef];
     [self loadListOfGroupsFromRef: listOfGroupKeysRef];
+    [self loadListOfArrowsFromRef: listOfArrowKeysRef];
 }
 
 - (void) loadListOfNotesFromRef: (FIRDatabaseReference *) listOfNoteKeysRef
@@ -262,6 +267,26 @@
      {
          NSLog(@"\n Ignore the following error if deleting a group.");
          NSLog(@"loadListOfGroupsFromRef: %@", error.description);
+     }];
+}
+
+- (void) loadListOfArrowsFromRef: (FIRDatabaseReference *) listOfArrowKeysRef
+{
+//    self.groupsCollection = [GroupsCollection new];
+    
+    [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+//         if( [self.groupsCollection getGroupItemFromKey: listOfGroupKeysRef.key] )  // If the group already exists in the collection
+//         {
+//             return;
+//         }
+         
+         [self loadArrowFromRef: [__arrowsTableRef child:snapshot.key]];
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"\n Ignore the following error if deleting an arrow.");
+         NSLog(@"loadListOfArrowsFromRef: %@", error.description);
      }];
 }
 
@@ -321,6 +346,29 @@
      }];
 }
 
+/*
+ * Name:
+ * Description:
+ */
+-(void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef
+{
+    [arrowRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         
+//         if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
+//         {
+//             return;
+//         }
+         
+         ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
+//         [self.notesCollection addNote:newNote withKey:snapshot.key];
+//         _callbackNoteItem(newNote);
+         [self.ArrowsView addSubview: ai];
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"loadNoteFromRef %@", error.description);
+     }];
+}
 
 /*
  * Name: setValueNote
@@ -400,7 +448,35 @@
     }
     FIRDatabaseReference *groupsCounterRef = [_visuallsTable_currentVisuallRef child: @"groups_counter"];
     [self increaseOrDecreaseCounter: groupsCounterRef byAmount:1];
-    
+}
+
+- (void) setValueArrow: (VisualItem *) vi
+{
+    ArrowItem *ai = (ArrowItem *) vi;
+    FIRDatabaseReference *arrowsRef = [self.version01TableRef child: @"arrows"];
+    FIRDatabaseReference *newArrowRef = [arrowsRef childByAutoId];
+    ai.key = newArrowRef.key;
+    if ( !_currentVisuallKey )
+    {
+        return;
+    }
+    NSMutableDictionary *arrowDictionary = [@{
+                                              @"data/startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
+                                              @"data/startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
+                                              @"data/endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
+                                              @"data/endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
+                                              @"data/startNoteKey": ai.startNote.note.key,
+                                              @"data/endNoteKey": ai.endNote.note.key,
+                                              @"data/tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
+                                              @"data/headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
+                                              @"data/headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
+                                              } mutableCopy];
+    [arrowDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
+    [arrowDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
+    [newArrowRef updateChildValues: arrowDictionary];
+    [[_visuallsTable_currentVisuallRef child: @"arrows"] updateChildValues: @{newArrowRef.key: @"1"}];
+    FIRDatabaseReference *arrowsCounterRef = [_visuallsTable_currentVisuallRef child: @"arrows_counter"];
+    [self increaseOrDecreaseCounter: arrowsCounterRef byAmount:1];
 }
 
 /*
@@ -424,7 +500,17 @@
     
 }
 
+- (NSMutableDictionary  *) getGenericSetValueParameters
+    {
+        return [@{
 
+                  @"metadata/parent-visuall": _currentVisuallKey,
+                  @"metadata/date-created": [FIRServerValue timestamp],
+                  @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,
+                  @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
+                  } mutableCopy];
+    }
+     
 - (NSMutableDictionary *) getCommonUpdateParameters
 {
     return [@{

@@ -77,6 +77,22 @@ static CAShapeLayer *__tempShapeLayer;
     return shapeView;
 }
 
+- (instancetype) initArrowFromFirebase: (NSString *) key andValue: (NSDictionary *) value
+{
+    self = [super init];
+    if (self) {
+        self.startNote = [[[[UserUtil sharedManager] getState] notesCollection] getNoteItemFromKey:value[@"data"][@"startNoteKey"]];
+        self.endNote = [[[[UserUtil sharedManager] getState] notesCollection] getNoteItemFromKey:value[@"data"][@"endNoteKey"]];;
+        self.startPoint = CGPointMake( [value[@"data"][@"startX"] floatValue], [value[@"data"][@"startY"] floatValue]);
+        self.endPoint = CGPointMake( [value[@"data"][@"endX"] floatValue], [value[@"data"][@"endY"] floatValue]);
+        self.tailWidth = [value[@"data"][@"tailWidth"] floatValue];
+        self.headWidth = [value[@"data"][@"headWidth"] floatValue];
+        self.headLength = [value[@"data"][@"headLength"] floatValue];
+        [self addArrowSublayer];
+    }
+    return self;
+}
+
 - (instancetype) initArrowFromStartPointToEndPoint
 {
     self = [super init];
@@ -100,33 +116,38 @@ static CAShapeLayer *__tempShapeLayer;
         
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
 
-        UIBezierPath *path;
-        
-        UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
-        
-        CGRect rect = [self createGroupViewRect: __startPoint withEndPoint: __endPoint];
-        rect = [self augmentRectSize: rect];
-        self.frame = rect;
-        self.backgroundColor = [UIColor redColor];
-
-        CGPoint localStartPoint = CGPointMake(__startPoint.x - rect.origin.x, __startPoint.y - rect.origin.y);
-        CGPoint localEndPoint = CGPointMake(__endPoint.x - rect.origin.x, __endPoint.y - rect.origin.y);
-        
-        [[UIColor redColor] setStroke];
-
-        path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)localStartPoint
-                                                  toPoint:(CGPoint)localEndPoint
-                                                tailWidth:(CGFloat)self.tailWidth
-                                                headWidth:(CGFloat)self.headWidth
-                                               headLength:(CGFloat)self.headLength];
-        [path setLineWidth:2.0];
-        [path stroke];
-        
-        CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
-        [shapeView setPath: path.CGPath];
-        [self.layer addSublayer: shapeView];
+        [self addArrowSublayer];
     }
     return self;
+}
+
+- (void) addArrowSublayer
+{
+    UIBezierPath *path;
+    
+    UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
+    
+    CGRect rect = [self createGroupViewRect: self.startPoint withEndPoint: self.endPoint];
+    rect = [self augmentRectSize: rect];
+    self.frame = rect;
+    self.backgroundColor = [UIColor redColor];
+    
+    CGPoint localStartPoint = CGPointMake(self.startPoint.x - rect.origin.x, self.startPoint.y - rect.origin.y);
+    CGPoint localEndPoint = CGPointMake(self.endPoint.x - rect.origin.x, self.endPoint.y - rect.origin.y);
+    
+    [[UIColor redColor] setStroke];
+    
+    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)localStartPoint
+                                              toPoint:(CGPoint)localEndPoint
+                                            tailWidth:(CGFloat)self.tailWidth
+                                            headWidth:(CGFloat)self.headWidth
+                                           headLength:(CGFloat)self.headLength];
+    [path setLineWidth:2.0];
+    [path stroke];
+    
+    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
+    [shapeView setPath: path.CGPath];
+    [self.layer addSublayer: shapeView];
 }
 
 - (NoteItem2 *) hitTestOnNotes: (CGPoint) point

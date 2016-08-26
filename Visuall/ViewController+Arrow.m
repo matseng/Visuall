@@ -33,6 +33,8 @@
         if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
             ArrowItem *ai = [[ArrowItem alloc] initArrowFromStartPointToEndPoint];
             [self.ArrowsView addSubview: ai];
+            if (ai) [[[UserUtil sharedManager] getState] setValueArrow: ai];
+            
             // TODO (Aug 25, 2016): draw the arrow in arrows view, save the arrow in firebase, add handlers... and more?
 //            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
 //            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];

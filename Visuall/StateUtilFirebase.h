@@ -31,6 +31,8 @@
 
 - (void) setValueGroup: (GroupItem *) gi;
 
+- (void) setValueArrow: (VisualItem *) vi;
+
 - (void) updateChildValue: (UIView *) visualObject Property: (NSString *) propertyName;
 
 - (void) updateChildValues: (UIView *) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
