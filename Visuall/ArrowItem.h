@@ -17,6 +17,12 @@
 
 @property NoteItem2 *startNote;
 @property NoteItem2 *endNote;
+@property CGPoint startPoint;
+@property CGPoint endPoint;
+@property CGFloat tailWidth;
+@property CGFloat headWidth;
+@property CGFloat headLength;
+//@property CGFloat headInnerLength;  // TODO (Aug 26, 2016): make arrow trapezoid-like if tail and head substantially different sizes
 
 + (void) setStartPoint: (CGPoint) aPoint;
 
