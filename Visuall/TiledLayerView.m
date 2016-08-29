@@ -9,8 +9,10 @@
 #import "TiledLayerView.h"
 #import "NoteItem2.h"
 #import "UIView+VisualItem.h"
+#import "UserUtil.h"
 
 @implementation TiledLayerView
+
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -51,7 +53,7 @@
 
 - (UIView *) hitTestOnNotes:(CGPoint)point withEvent:(UIEvent *)event
 {
-    UIView *NotesView = self.subviews[0].subviews[2];  // TODO: Create singleton to hold views
+    UIView *NotesView = self.subviews[0].subviews[1];  // TODO: Create singleton to hold views
     for (UIView *subview in [NotesView.subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView: self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])

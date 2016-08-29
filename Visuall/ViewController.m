@@ -131,16 +131,16 @@
     self.VisualItemsView.contentMode = UIViewContentModeRedraw;
 
     self.GroupsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-    self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-    self.ArrowsView.backgroundColor = [UIColor redColor];
     self.NotesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     self.NotesView.opaque = NO;
+    self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    self.ArrowsView.backgroundColor = [UIColor redColor];
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
     [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
     [self.VisualItemsView addSubview: self.GroupsView];
-    [self.VisualItemsView addSubview: self.ArrowsView];
     [self.VisualItemsView addSubview: self.NotesView];
+    [self.VisualItemsView addSubview: self.ArrowsView];
     
     self.drawGroupView = [self initializeDrawGroupView];
     [self createTopMenu];
