@@ -81,8 +81,10 @@ static CAShapeLayer *__tempShapeLayer;
 {
     self = [super init];
     if (self) {
-        self.startNote = [[[[UserUtil sharedManager] getState] notesCollection] getNoteItemFromKey:value[@"data"][@"startNoteKey"]];
-        self.endNote = [[[[UserUtil sharedManager] getState] notesCollection] getNoteItemFromKey:value[@"data"][@"endNoteKey"]];;
+//        self.startNote = [[[[UserUtil sharedManager] getState] notesCollection] getNoteItemFromKey:value[@"data"][@"startNoteKey"]];
+//        self.endNote = [[[[UserUtil sharedManager] getState] notesCollection] getNoteItemFromKey:value[@"data"][@"endNoteKey"]];
+        self.startItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"startItemKey"]];
+        self.startItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"endItemKey"]];
         self.startPoint = CGPointMake( [value[@"data"][@"startX"] floatValue], [value[@"data"][@"startY"] floatValue]);
         self.endPoint = CGPointMake( [value[@"data"][@"endX"] floatValue], [value[@"data"][@"endY"] floatValue]);
         self.tailWidth = [value[@"data"][@"tailWidth"] floatValue];
@@ -93,27 +95,22 @@ static CAShapeLayer *__tempShapeLayer;
     return self;
 }
 
+//- (void)
+
 - (instancetype) initArrowFromStartPointToEndPoint
 {
     self = [super init];
     if (self) {
         
-        NoteItem2 *ni = [self hitTestOnNotes: __startPoint];
-        NoteItem2 *ni2 = [self hitTestOnNotes: __endPoint];
-//        if (/* DISABLES CODE */ (YES) || (ni && ni2) )  // arrows must have a start note and end note
-        if ( ni && ni2 )  // arrows must have a start note and end note
-        {
-            self.startNote = ni;
-            self.endNote = ni2;
+        self.startItem = [self hitTestOnNotesAndGroups: __startPoint];
+        self.endItem = [self hitTestOnNotesAndGroups: __endPoint];
+
             self.startPoint = __startPoint;
             self.endPoint = __endPoint;
             self.tailWidth = TAIL_WIDTH;
             self.headWidth = HEAD_WIDTH;
             self.headLength = HEAD_LENGTH;
-        } else
-        {
-            return nil;
-        }
+
         
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
 
@@ -151,18 +148,15 @@ static CAShapeLayer *__tempShapeLayer;
     [self.layer addSublayer: shapeView];
 }
 
-- (NoteItem2 *) hitTestOnNotes: (CGPoint) point
+- (id) hitTestOnNotesAndGroups: (CGPoint) point
 {
-    NoteItem2 *ni;
     StateUtilFirebase *state = [[UserUtil sharedManager] getState];
     CGPoint convertedPoint = [[state BoundsTiledLayerView] convertPoint:point fromView: [state ArrowsView]];
-    UIView *view = [[state BoundsTiledLayerView] hitTestOnNotes: convertedPoint withEvent:nil];
-    if ( view ) {
-        ni = [view getNoteItem];
-        NSLog(@"\n hitTestOnNotes: %@", ni.note.title);
-    }
+    UIView *view = [[state BoundsTiledLayerView] hitTest: convertedPoint withEvent:nil];
+    if( [view isNoteItem]) return [view getNoteItem];
+    if( [view isGroupItem]) return [view getGroupItem];
+    return nil;
 
-    return ni;
 }
 
 - (CGRect) createGroupViewRect:(CGPoint)start withEndPoint:(CGPoint)end {

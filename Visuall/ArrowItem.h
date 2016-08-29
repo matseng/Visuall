@@ -16,8 +16,8 @@
 @property Arrow *arrow;
 
 @property NSString *key;
-@property NoteItem2 *startNote;
-@property NoteItem2 *endNote;
+@property NoteItem2 *startItem;
+@property NoteItem2 *endItem;
 @property CGPoint startPoint;
 @property CGPoint endPoint;
 @property CGFloat tailWidth;

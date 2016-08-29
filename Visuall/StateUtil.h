@@ -56,6 +56,8 @@
 
 - (void) scaleNoteTitleSize: (NoteItem2 *) ni;
 
+-(id) getItemFromKey: (NSString *) key;
+
 @end
 
 

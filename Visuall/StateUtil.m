@@ -323,5 +323,19 @@
     return self.BackgroundScrollView.zoomScale;
 }
 
+-(id) getItemFromKey: (NSString *) key
+{
+    if ([self.notesCollection getNoteFromKey: key])
+    {
+        return [self.notesCollection getNoteFromKey: key];
+    }
+    if ([self.groupsCollection getGroupItemFromKey: key])
+    {
+        return [self.groupsCollection getGroupItemFromKey: key];
+    }
+    return nil;
+}
+
+
 @end
 
