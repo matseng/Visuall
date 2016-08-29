@@ -41,6 +41,7 @@
         self.groups2 = [[NSMutableDictionary alloc] init];
     }
     newGroup.group.key = key;
+    newGroup.key = key;
     self.groups2[key] = newGroup;
 }
 

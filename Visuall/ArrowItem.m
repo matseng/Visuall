@@ -84,7 +84,7 @@ static CAShapeLayer *__tempShapeLayer;
 //        self.startNote = [[[[UserUtil sharedManager] getState] notesCollection] getNoteItemFromKey:value[@"data"][@"startNoteKey"]];
 //        self.endNote = [[[[UserUtil sharedManager] getState] notesCollection] getNoteItemFromKey:value[@"data"][@"endNoteKey"]];
         self.startItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"startItemKey"]];
-        self.startItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"endItemKey"]];
+        self.endItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"endItemKey"]];
         self.startPoint = CGPointMake( [value[@"data"][@"startX"] floatValue], [value[@"data"][@"startY"] floatValue]);
         self.endPoint = CGPointMake( [value[@"data"][@"endX"] floatValue], [value[@"data"][@"endY"] floatValue]);
         self.tailWidth = [value[@"data"][@"tailWidth"] floatValue];
@@ -153,8 +153,14 @@ static CAShapeLayer *__tempShapeLayer;
     StateUtilFirebase *state = [[UserUtil sharedManager] getState];
     CGPoint convertedPoint = [[state BoundsTiledLayerView] convertPoint:point fromView: [state ArrowsView]];
     UIView *view = [[state BoundsTiledLayerView] hitTest: convertedPoint withEvent:nil];
-    if( [view isNoteItem]) return [view getNoteItem];
-    if( [view isGroupItem]) return [view getGroupItem];
+    if( [view isNoteItem])
+    {
+        return [view getNoteItem];
+    }
+    if( [view isGroupItem] )
+    {
+        return [view getGroupItem];
+    }
     return nil;
 
 }

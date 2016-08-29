@@ -24,7 +24,7 @@
     if ( !self.Notes2) {
         self.Notes2 = [[NSMutableDictionary alloc] init];
     }
-    
+    newNote.key = key;
     self.Notes2[key] = newNote;
 }
 
