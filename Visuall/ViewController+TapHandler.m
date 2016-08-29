@@ -87,6 +87,7 @@ NoteItem2 *targetNoteForArrow;
                 [self setSelectedObject:newNote];
                 [newNote becomeFirstResponder];  // puts cursor on text field
                 [newNote.noteTextView selectAll:nil];  // highlights text
+                return;
             }
         [self setSelectedObject: viewHit];
         }
