@@ -318,27 +318,29 @@
          {
              return;
          }
-         if( [snapshot.value[@"data"][@"image"] boolValue] )
-         {
-             NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
-             FIRStorageReference *islandRef = [__storageImagesRef child: fileName];
-             [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
-                 if (error != nil) {
-                     
-                 } else {
+
+        if( [snapshot.value[@"data"][@"image"] boolValue] )
+        {
+            GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
+            [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+            _callbackGroupItem(newGroup);
+            NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
+            FIRStorageReference *islandRef = [__storageImagesRef child: fileName];
+            [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
+                if (error != nil) {
+                    NSLog(@"\n loadGroupFromRef: error loading an image: %@", error.description);
+                } else {
                     UIImage *islandImage = [UIImage imageWithData:data];
-                     CGPoint point = CGPointMake([snapshot.value[@"data"][@"x"] floatValue], [snapshot.value[@"data"][@"y"] floatValue]);
-                     GroupItemImage *newGroup = [[GroupItemImage alloc] initGroupWithImage:islandImage andPoint:point];  // TODO (Aug 24, 2016): Write new method to load a GroupItemImage from Firebase, one feature is the scale the image to the size of the group as saved in Firebase
-                     [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-                     _callbackGroupItem(newGroup);
-                 }
-             }];
-             
-         } else{
-             GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
-             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-             _callbackGroupItem(newGroup);
-         }
+                    [newGroup addImage: islandImage];
+                }
+            }];
+        }
+        else
+        {
+            GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
+            [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+            _callbackGroupItem(newGroup);
+        }
          
      } withCancelBlock:^(NSError *error)
      {

@@ -76,6 +76,7 @@
 		71FD2EED1D662F8300CA5365 /* StateUtilFirebase.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EEC1D662F8300CA5365 /* StateUtilFirebase.m */; };
 		71FD2EF31D6BE66400CA5365 /* GroupItemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */; };
 		71FD2EFB1D6FAF9E00CA5365 /* ViewController+Arrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EFA1D6FAF9E00CA5365 /* ViewController+Arrow.m */; };
+		71FD2EFE1D74DDF900CA5365 /* Collection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FD2EFD1D74DDF900CA5365 /* Collection.m */; };
 		77E13DA21C011C1700105BB5 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA11C011C1700105BB5 /* compass.png */; };
 		77E13DA61C011CF200105BB5 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA51C011CF200105BB5 /* folder.png */; };
 		77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E13DA71C011D5F00105BB5 /* linkarrow.png */; };
@@ -210,6 +211,8 @@
 		71FD2EF21D6BE66400CA5365 /* GroupItemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupItemImage.m; sourceTree = "<group>"; };
 		71FD2EF91D6FAF9E00CA5365 /* ViewController+Arrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+Arrow.h"; sourceTree = "<group>"; };
 		71FD2EFA1D6FAF9E00CA5365 /* ViewController+Arrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Arrow.m"; sourceTree = "<group>"; };
+		71FD2EFC1D74DDF900CA5365 /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
+		71FD2EFD1D74DDF900CA5365 /* Collection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Collection.m; sourceTree = "<group>"; };
 		77E13DA11C011C1700105BB5 /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
 		77E13DA51C011CF200105BB5 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		77E13DA71C011D5F00105BB5 /* linkarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linkarrow.png; sourceTree = "<group>"; };
@@ -494,6 +497,8 @@
 				7195EBD41D46684500F609DE /* Arrow.m */,
 				7195EBD01D4664BB00F609DE /* ArrowItem.h */,
 				7195EBD11D4664BB00F609DE /* ArrowItem.m */,
+				71FD2EFC1D74DDF900CA5365 /* Collection.h */,
+				71FD2EFD1D74DDF900CA5365 /* Collection.m */,
 				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
 				71FC72131BF2E881003B7F14 /* NotesCollection.m */,
 				88ED06201C05567E00C0486D /* GroupsCollection.h */,
@@ -731,6 +736,7 @@
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */,
+				71FD2EFE1D74DDF900CA5365 /* Collection.m in Sources */,
 				716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */,
 				7161CF671D556C6E00B278EB /* GlobalViewController.m in Sources */,
 				71E1AF651D4C325400B818A0 /* TabBarViewController.m in Sources */,

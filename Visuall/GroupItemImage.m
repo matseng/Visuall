@@ -44,4 +44,12 @@
     return self;
 }
 
+- (void) addImage: (UIImage *) img
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+    imageView.frame = CGRectMake(0, 0, self.group.width, self.group.height);
+    [imageView setAutoresizingMask: UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    [self.innerGroupView addSubview: imageView];
+}
+
 @end

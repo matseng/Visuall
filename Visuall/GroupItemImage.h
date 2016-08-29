@@ -15,4 +15,6 @@
 
 - (instancetype) initGroupWithImage: (UIImage *) img andPoint: (CGPoint) point;
 
+- (void) addImage: (UIImage *) img;
+
 @end

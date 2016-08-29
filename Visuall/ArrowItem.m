@@ -100,7 +100,8 @@ static CAShapeLayer *__tempShapeLayer;
         
         NoteItem2 *ni = [self hitTestOnNotes: __startPoint];
         NoteItem2 *ni2 = [self hitTestOnNotes: __endPoint];
-        if ( ni  && ni2 )  // arrows must have a start note and end note
+//        if (/* DISABLES CODE */ (YES) || (ni && ni2) )  // arrows must have a start note and end note
+        if ( ni && ni2 )  // arrows must have a start note and end note
         {
             self.startNote = ni;
             self.endNote = ni2;

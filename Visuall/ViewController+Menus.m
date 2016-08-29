@@ -849,7 +849,6 @@ UIColor *darkGrayBorderColor;
     
     GroupItemImage *gii = [[GroupItemImage alloc] initGroupWithImage: chosenImage andPoint: pointInViewCoords];
     [self addGroupItemToMVC: gii];
-//    [self.GroupsView addSubview: gii];
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self.segmentControlInsertMedia setSelectedSegmentIndex: -1];
 }

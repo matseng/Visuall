@@ -11,6 +11,7 @@
 
 @interface VisualItem : UIView
 
+@property NSString *key;
 @property float x;
 @property float y;
 @property float width;
