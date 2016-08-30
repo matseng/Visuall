@@ -64,6 +64,11 @@
     return NO;
 }
 
+- (BOOL) isArrowItem
+{
+    return [self isKindOfClass:[ArrowItem class]];
+}
+
 - (GroupItem *) getGroupItem
 {
     if ( [self isKindOfClass:[GroupItem class]] )

@@ -10,6 +10,7 @@
 #import "NoteItem2.h"
 #import "GroupItem.h"
 #import "GroupItemImage.h"
+#import "ArrowItem.h"
 
 @interface UIView (VisualItem)
 
@@ -22,6 +23,8 @@
 - (BOOL) isGroupItem;
 
 - (GroupItem *) getGroupItem;
+
+- (BOOL) isArrowItem;
 
 - (BOOL) isInBoundsOfView: (UIView *) parentView;
 

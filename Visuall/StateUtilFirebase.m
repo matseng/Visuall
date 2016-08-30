@@ -272,14 +272,14 @@
 
 - (void) loadListOfArrowsFromRef: (FIRDatabaseReference *) listOfArrowKeysRef
 {
-//    self.groupsCollection = [GroupsCollection new];
+    self.arrowsCollection = [Collection new];
     
     [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
-//         if( [self.groupsCollection getGroupItemFromKey: listOfGroupKeysRef.key] )  // If the group already exists in the collection
-//         {
-//             return;
-//         }
+         if( [self.arrowsCollection getItemFromKey: listOfArrowKeysRef.key] )  // If the group already exists in the collection
+         {
+             return;
+         }
          
          [self loadArrowFromRef: [__arrowsTableRef child:snapshot.key]];
          
@@ -357,13 +357,13 @@
     [arrowRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
          
-//         if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
-//         {
-//             return;
-//         }
+         if([self.arrowsCollection getItemFromKey: snapshot.key])  // If the note already exists in the collection
+         {
+             return;
+         }
          
          ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
-//         [self.notesCollection addNote:newNote withKey:snapshot.key];
+         [self.arrowsCollection addItem: ai withKey: arrowRef.key];
 //         _callbackNoteItem(newNote);
          [self.ArrowsView addSubview: ai];
      } withCancelBlock:^(NSError *error)

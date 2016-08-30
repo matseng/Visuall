@@ -17,6 +17,7 @@
 #import "GroupsCollection.h"
 #import "ScrollViewMod.h"
 #import "TiledLayerView.h"
+#import "Collection.h"
 
 @interface StateUtil : NSObject
 
@@ -29,6 +30,7 @@
 @property float _relativeScale;
 @property NotesCollection *notesCollection;
 @property GroupsCollection *groupsCollection;
+@property Collection *arrowsCollection;
 
 // New state properties (moving away from ViewController)
 @property FIRUser *firebaseUser;
