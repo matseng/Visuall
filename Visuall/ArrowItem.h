@@ -35,4 +35,6 @@
 
 - (instancetype) initArrowFromFirebase: (NSString *) key andValue: (NSDictionary *) value;
 
+- (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer;
+
 @end

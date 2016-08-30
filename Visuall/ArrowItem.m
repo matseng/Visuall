@@ -208,5 +208,13 @@ static CAShapeLayer *__tempShapeLayer;
     return rect;
 }
 
+- (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
+{
+    CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
+    self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
+    self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
+    [super handlePan: gestureRecognizer];    
+}
+
 
 @end

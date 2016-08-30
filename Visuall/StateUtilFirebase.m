@@ -552,12 +552,31 @@
             [groupDataRef updateChildValues: groupDictionary];
         }
     }
+    else if ( [visualObject isArrowItem] )
+    {
+        ArrowItem *ai = [visualObject getArrowItem];
+        FIRDatabaseReference *arrowDataRef = [[self.version01TableRef child: @"arrows"] child: ai.key];
+        NSMutableDictionary *arrowDictionary = [@{
+                                                  @"data/startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
+                                                  @"data/startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
+                                                  @"data/endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
+                                                  @"data/endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
+                                                  @"data/startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
+                                                  @"data/endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
+                                                  @"data/tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
+                                                  @"data/headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
+                                                  @"data/headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
+                                                  } mutableCopy];
+        [arrowDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
+        [arrowDataRef updateChildValues: arrowDictionary];
+    }
 }
 
 - (void) updateChildValues: (UIView *) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2
 {
     
-    if ( [visualObject isNoteItem] ) {
+    if ( [visualObject isNoteItem] )
+    {
         NoteItem2 *ni = [visualObject getNoteItem];
         FIRDatabaseReference *notesDataRef = [[self.version01TableRef child: @"notes"] child: [ni.note.key stringByAppendingString:@"/data"]];
         [notesDataRef updateChildValues: @{
@@ -565,13 +584,34 @@
                                            propertyName2 : [ni.note valueForKey:propertyName2],
                                            }];
     }
-    else if ([visualObject isKindOfClass: [GroupItem class]]) {  // TODO - simple method the check if it's a GroupItem
+    else if ( [visualObject isGroupItem] )
+    {
         GroupItem *gi = (GroupItem *) visualObject;
         NSString *groupUrl = [[@"groups/" stringByAppendingString: gi.group.key] stringByAppendingString:@"/data/"];
         [self.version01TableRef updateChildValues: @{
                                                      [groupUrl stringByAppendingString:propertyName1] : [gi.group valueForKey:propertyName1],
                                                      [groupUrl stringByAppendingString:propertyName2] : [gi.group valueForKey:propertyName2],
                                                      }];
+    }
+    else if ( [visualObject isArrowItem] )
+    {
+        ArrowItem *ai = [visualObject getArrowItem];
+        FIRDatabaseReference *arrowsDataRef = [[self.version01TableRef child: @"arrows"] child: [ai.key stringByAppendingString:@"/data"]];
+        if ([propertyName1 isEqualToString:@"x"] && [propertyName2 isEqualToString:@"y"])
+        {
+            [arrowsDataRef updateChildValues: @{
+                                                @"startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
+                                                @"startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
+                                                @"endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
+                                                @"endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
+                                                }];
+        } else
+        {
+        [arrowsDataRef updateChildValues: @{
+                                           propertyName1 : [ai valueForKey:propertyName1],
+                                           propertyName2 : [ai valueForKey:propertyName2],
+                                           }];
+        }
     }
 }
 
