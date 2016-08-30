@@ -104,22 +104,72 @@ static CAShapeLayer *__tempShapeLayer;
         
         self.startItem = [self hitTestOnNotesAndGroups: __startPoint];
         self.endItem = [self hitTestOnNotesAndGroups: __endPoint];
-
-            self.startPoint = __startPoint;
-            self.endPoint = __endPoint;
-            self.tailWidth = TAIL_WIDTH;
-            self.headWidth = HEAD_WIDTH;
-            self.headLength = HEAD_LENGTH;
-
+        self.startPoint = __startPoint;
+        self.endPoint = __endPoint;
+        self.tailWidth = TAIL_WIDTH;
+        self.headWidth = HEAD_WIDTH;
+        self.headLength = HEAD_LENGTH;
         
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
-
+        
         [self addArrowSublayer];
     }
     return self;
 }
 
 - (void) addArrowSublayer
+{
+    UIBezierPath *path;
+    float length;
+    float theta;
+    
+    CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
+    length = sqrtf( powf(point.x, 2) + powf(point.y, 2));
+//    CGPoint localStartPoint = CGPointMake(0, self.headWidth/2);
+//    CGPoint localEndPoint = CGPointMake(length, self.headWidth/2);
+    CGPoint localStartPoint = CGPointMake(length, self.headWidth/2);
+    CGPoint localEndPoint = CGPointMake(length * 2, self.headWidth/2);
+
+    
+    CGRect rect = CGRectMake(0 + self.startPoint.x - length, -self.headWidth/2 + self.startPoint.y, length * 2, self.headWidth);
+//    CGRect rect = CGRectMake(-length/2, -self.headWidth/2, length, self.headWidth);
+    self.frame = rect;
+    self.x = rect.origin.x;
+    self.y = rect.origin.y;
+    self.backgroundColor = [UIColor greenColor];
+    self.alpha = 0.5;
+    
+    [[UIColor redColor] setStroke];
+    
+
+    
+    path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)localStartPoint
+                                              toPoint:(CGPoint)localEndPoint
+                                            tailWidth:(CGFloat)self.tailWidth
+                                            headWidth:(CGFloat)self.headWidth
+                                           headLength:(CGFloat)self.headLength];
+    [path setLineWidth:2.0];
+    [path stroke];
+    
+    
+    
+    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
+    [shapeView setStrokeColor: [UIColor redColor].CGColor];
+    [shapeView setPath: path.CGPath];
+    
+    
+    [self.layer addSublayer: shapeView];
+    
+    theta = atan2( point.y, point.x );
+    self.transform = CGAffineTransformMakeRotation( theta );
+//    self.transform = CGAffineTransformTranslate(self.transform, self.startPoint.x, self.startPoint.y);
+    
+//    rect = self.frame;
+//    rect = CGRectMake( rect.origin.x + self.startPoint.x, rect.origin.y + self.startPoint.y, rect.size.width, rect.size.height);
+//    self.frame = rect;
+}
+
+- (void) __addArrowSublayer
 {
     UIBezierPath *path;
     
