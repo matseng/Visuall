@@ -32,54 +32,33 @@ NoteItem2 *targetNoteForArrow;
     
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
         {
-            
-            //        NSLog(@"tapHandler called HERE");
-            
-            //        UIView *viewHit = gestureRecognizer.view;
             CGPoint point = [gestureRecognizer locationInView: self.BoundsTiledLayerView];
             UIView *viewHit = [self.BoundsTiledLayerView hitTest:point withEvent:nil];
             NSLog(@"tapHandler viewHit %@", [viewHit class]);
-            //        NSLog(@"tag %ld", (long)viewHit.tag);
-            //        NSLog(@"gestureRecognizer %@", [gestureRecognizer.view class]);
             
-            if ( [viewHit isNoteItem] )
-            {
-                NoteItem2 *ni = [viewHit getNoteItem];
-                [self setSelectedObject:ni];
-                
-                if ( [self isArrowButtonSelected] )
-                {
-                    if ( !sourceNoteForArrow )
-                    {
-                        sourceNoteForArrow = ni;
-                    } else {
-                        // init arrow, draw arrow view, save arrow to firebase and get key, cross-share note and arrow keys
-//                        ArrowItem *ai = [[ArrowItem alloc] initArrowWithSourceNoteItem:sourceNoteForArrow andTargetNoteItem: ni];
-//                        [self.ArrowsView addSubview: ai];
-//                        sourceNoteForArrow = nil;
-                    }
-                    
-                }
-                //            NSLog(@"Note key: %@", ni.note.key);
-                //            NSLog(@"Parent group key: %@", ni.note.parentGroupKey);
-                            NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
-                //            NSLog(@"Note width: %f", ni.frame.size.width);
-                return;
-            }
-            else if ( [viewHit isGroupItem] )
-            {
-                GroupItem *gi = [viewHit getGroupItem];
-                NoteItem2 *ni = [self.visuallState.notesCollection getNoteItemFromKey: gi.group.titleNoteKey];
-//                NSString *titleNoteString = [self.visuallState.notesCollection getNoteTitleFromKey: [gi.group titleNoteKey]];
-                NSLog(@"Group title: %@", ni.note.title);
-                NSLog(@"Group key: %@", [gi.group key]);
-                
-            }
-            else {
-                sourceNoteForArrow = nil;
-            }
+//            if ( [viewHit isNoteItem] )
+//            {
+//                NoteItem2 *ni = [viewHit getNoteItem];
+//                [self setSelectedObject:ni];
+//                NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
+//                return;
+//            }
+//            else if ( [viewHit isGroupItem] )
+//            {
+//                GroupItem *gi = [viewHit getGroupItem];
+//                NoteItem2 *ni = [self.visuallState.notesCollection getNoteItemFromKey: gi.group.titleNoteKey];
+//                NSLog(@"Group title: %@", ni.note.title);
+//                NSLog(@"Group key: %@", [gi.group key]);
+//                
+//            }
+//            else if ( [viewHit isArrowItem] )
+//            {
+//                ArrowItem *ai = [viewHit getArrowItem];
+//                [ai setViewAsSelected];
+//            }
             
-            if ( [self isNoteButtonSelected] ) {  // new note button  //- (BOOL) isNoteButtonSelected
+            if ( [self isNoteButtonSelected] && ![viewHit isNoteItem])
+            {
                 CGPoint point = [gestureRecognizer locationInView: self.NotesView];
                 NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
                 [self.visuallState setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
@@ -89,7 +68,10 @@ NoteItem2 *targetNoteForArrow;
                 [newNote.noteTextView selectAll:nil];  // highlights text
                 return;
             }
-        [self setSelectedObject: viewHit];
+            else
+            {
+                [self setSelectedObject: viewHit];
+            }
         }
     }
     

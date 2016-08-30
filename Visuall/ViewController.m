@@ -994,6 +994,9 @@
         } else if ([self.lastSelectedObject isGroupItem])
         {
             [[self.lastSelectedObject getGroupItem] setViewAsNotSelected];
+        } else if ( [self.lastSelectedObject isArrowItem] )
+        {
+            [[self.lastSelectedObject getArrowItem] setViewAsNotSelected];
         }
     }
     
@@ -1002,7 +1005,6 @@
     if ( [object isNoteItem] )
     {
         NoteItem2 *noteToSet = [object getNoteItem];
-        self.lastSelectedObject = noteToSet;
         visualObject = noteToSet;
         if ( [self isEditModeOn] )
         {
@@ -1011,6 +1013,7 @@
         }
         visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
         visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
+        self.lastSelectedObject = noteToSet;
     }
     else if ( [object isGroupItem] )
     {
@@ -1018,6 +1021,13 @@
         [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];
         [[self.view window] endEditing:YES];
         self.lastSelectedObject = gi;
+    }
+    else if ( [object isArrowItem] )
+    {
+        ArrowItem *ai = [object getArrowItem];
+        self.lastSelectedObject = ai;  // TODO (Aug 30, 2016): Stop using this property and instead use self.visuallState as below
+        self.visuallState.selectedVisualItem = ai;
+        [ai setViewAsSelected];
     }
     else
     {

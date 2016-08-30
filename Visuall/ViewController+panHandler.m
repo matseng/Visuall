@@ -68,7 +68,7 @@
         else if ( ([self isPointerButtonSelected] || [self isArrowButtonSelected]) && [self.activelySelectedObjectDuringPan isArrowItem])
         {
             ArrowItem *ai = [self.activelySelectedObjectDuringPan getArrowItem];
-//            [self setSelectedObject: ai];
+            [self setSelectedObject: ai];
             [ai handlePan: gestureRecognizer];
 //            [self.visuallState updateChildValues: ai Property1:@"x" Property2:@"y"];
             [self.visuallState updateChildValue: ai Property: nil];

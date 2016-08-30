@@ -41,6 +41,9 @@
     [self.ArrowsView addSubview: ai];
     if (ai) [[[UserUtil sharedManager] getState] setValueArrow: ai];
     [[[[UserUtil sharedManager] getState] arrowsCollection] addItem: ai withKey: ai.key];
+    [self setSelectedObject: ai];
+    [[[UserUtil sharedManager] getState] setSelectedVisualItem: ai];
+    [self setActivelySelectedObjectDuringPan: nil];
 }
 
 @end

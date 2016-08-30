@@ -22,6 +22,15 @@ static CGPoint __startPoint;  // class variables http://rypress.com/tutorials/ob
 static CGPoint __endPoint;
 static CAShapeLayer *__tempShapeLayer;
 
+
+@interface ArrowItem ()
+
+@property CAShapeLayer *arrowLayer;
+@property UIColor *borderColor;
+
+@end
+
+
 @implementation ArrowItem
 
 /*
@@ -58,7 +67,8 @@ static CAShapeLayer *__tempShapeLayer;
     
     UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
     
-    [[UIColor redColor] setStroke];
+//    [[UIColor redColor] setStroke];
+    
     tailWidth = 4;
     headWidth = 8 * 3;
     headLength = 8 * 3;
@@ -90,6 +100,7 @@ static CAShapeLayer *__tempShapeLayer;
         self.tailWidth = [value[@"data"][@"tailWidth"] floatValue];
         self.headWidth = [value[@"data"][@"headWidth"] floatValue];
         self.headLength = [value[@"data"][@"headLength"] floatValue];
+        self.borderColor = [UIColor whiteColor];
         [self addArrowSublayer];
     }
     return self;
@@ -107,9 +118,10 @@ static CAShapeLayer *__tempShapeLayer;
         self.tailWidth = TAIL_WIDTH;
         self.headWidth = HEAD_WIDTH;
         self.headLength = HEAD_LENGTH;
+        self.borderColor = [UIColor blueColor];
         
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
-        
+        [[[UserUtil sharedManager] getState] setSelectedVisualItem: self];
         [self addArrowSublayer];
     }
     return self;
@@ -120,6 +132,7 @@ static CAShapeLayer *__tempShapeLayer;
     UIBezierPath *path;
     float length;
     float theta;
+    self.transform = CGAffineTransformIdentity;
     
     CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
     length = sqrtf( powf(point.x, 2) + powf(point.y, 2));
@@ -132,10 +145,8 @@ static CAShapeLayer *__tempShapeLayer;
     self.frame = rect;
     self.x = rect.origin.x;
     self.y = rect.origin.y;
-    self.backgroundColor = [UIColor greenColor];
-    self.alpha = 0.5;
-    
-    [[UIColor redColor] setStroke];
+//    self.backgroundColor = [UIColor greenColor];
+    self.alpha = 1.0;
     
     path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)localStartPoint
                                               toPoint:(CGPoint)localEndPoint
@@ -145,16 +156,26 @@ static CAShapeLayer *__tempShapeLayer;
     [path setLineWidth:2.0];
     [path stroke];
     
-    CAShapeLayer *shapeView = [[CAShapeLayer alloc] init];
-    [shapeView setStrokeColor: [UIColor redColor].CGColor];
-    [shapeView setPath: path.CGPath];
+    CAShapeLayer *arrowLayer = [[CAShapeLayer alloc] init];
+    [arrowLayer setFillColor: [UIColor blackColor].CGColor];
+//    if ( [[[UserUtil sharedManager] getState] selectedVisualItem] == self )
+//    {
+//        [arrowLayer setStrokeColor: [UIColor blueColor].CGColor];
+//    } else {
+//        [arrowLayer setStrokeColor: [UIColor whiteColor].CGColor];
+//    }
+    [arrowLayer setStrokeColor: self.borderColor.CGColor];
     
-    [self.layer addSublayer: shapeView];
+    [arrowLayer setPath: path.CGPath];
+    
+    [self.layer addSublayer: arrowLayer];
+    self.arrowLayer = arrowLayer;
     
     theta = atan2( point.y, point.x );
     self.transform = CGAffineTransformMakeRotation( theta );
 }
 
+/*
 - (void) __addArrowSublayer
 {
     UIBezierPath *path;
@@ -166,7 +187,7 @@ static CAShapeLayer *__tempShapeLayer;
     self.frame = rect;
     self.x = rect.origin.x;
     self.y = rect.origin.y;
-    self.backgroundColor = [UIColor greenColor];
+//    self.backgroundColor = [UIColor greenColor];
     self.alpha = 0.5;
     
     CGPoint localStartPoint = CGPointMake(self.startPoint.x - rect.origin.x, self.startPoint.y - rect.origin.y);
@@ -188,6 +209,7 @@ static CAShapeLayer *__tempShapeLayer;
     [shapeView setPath: path.CGPath];
     [self.layer addSublayer: shapeView];
 }
+ */
 
 - (id) hitTestOnNotesAndGroups: (CGPoint) point
 {
@@ -258,5 +280,32 @@ static CAShapeLayer *__tempShapeLayer;
     [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
 }
 
+- (void) setViewAsSelected
+{
+//    if ( editModeOn )
+//    {
+//        [self setViewAsNotSelected];
+//        [self renderHandles];
+//        [self updateFrame];
+//    }
+//    self.innerGroupView.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
+//    self.innerGroupView.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / zoomScale);
+    [self.arrowLayer removeFromSuperlayer];
+    self.borderColor = [UIColor blueColor];
+    [self addArrowSublayer];
+//    self.backgroundColor = [UIColor greenColor];
+}
+
+- (void) setViewAsNotSelected
+{
+//    self.innerGroupView.layer.borderColor = [GROUP_VIEW_BORDER_COLOR CGColor];
+//    [handleTopLeft removeFromSuperview];
+//    [handleTopRight removeFromSuperview];
+//    [handleBottomLeft removeFromSuperview];
+//    [handleBottomRight removeFromSuperview];
+    [self.arrowLayer removeFromSuperlayer];
+    self.borderColor = [UIColor whiteColor];
+    [self addArrowSublayer];
+}
 
 @end
