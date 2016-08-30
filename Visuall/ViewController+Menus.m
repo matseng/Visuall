@@ -15,6 +15,7 @@
 #import "SegmentedControlMod.h"
 #import "UIView+VisualItem.h"
 #import "UIBezierPath+arrowhead.h"
+#import "ViewController+Group.h"
 
 @implementation ViewController (Menus) 
 

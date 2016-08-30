@@ -425,7 +425,6 @@
     [handleTopRight removeFromSuperview];
     [handleBottomLeft removeFromSuperview];
     [handleBottomRight removeFromSuperview];
-    
 }
 
 

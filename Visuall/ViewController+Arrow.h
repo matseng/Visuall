@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController (Arrow)
+@interface ViewController (Arrow) <ArrowsController>
 
 - (void) panHandlerForDrawArrow: (UIPanGestureRecognizer *) gestureRecognizer;
 

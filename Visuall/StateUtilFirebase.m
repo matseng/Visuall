@@ -11,6 +11,7 @@
 #import "UserUtil.h"
 #import "GroupItemImage.h"
 #import "ArrowItem.h"
+#import "ViewController+Arrow.h"
 
 @interface StateUtilFirebase()
 

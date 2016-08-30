@@ -200,7 +200,6 @@
 - (void) addGroupItemToMVC: (GroupItem *) currentGroupItem
 {
     [self.visuallState setValueGroup: currentGroupItem];
-    //    [self addGestureRecognizersToGroup: currentGroupItem];
     [self.GroupsView addSubview: currentGroupItem];
     if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
     [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];

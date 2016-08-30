@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController (Group)
+@interface ViewController (Group) <GroupsController>
 
 - (UIView *) initializeDrawGroupView;
 

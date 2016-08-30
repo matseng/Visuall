@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GroupItem.h"
+#import "ArrowItem.h"
 #import "GroupItemImage.h"
 #import "NotesCollection.h"
 #import "GroupsCollection.h"
@@ -17,6 +18,18 @@
 #import "SegmentedControlMod.h"
 #import "SevenSwitch.h"
 
+
+@protocol GroupsController  // implemented in ViewController+Group.h
+
+- (void) addGroupItemToMVC: (GroupItem *) currentGroupItem;
+
+@end
+
+@protocol ArrowsController  // implemented in ViewController+Group.h
+
+- (void) addArrowToMVC: (ArrowItem *) arrow;
+
+@end
 
 @interface ViewController : UIViewController
 
