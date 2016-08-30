@@ -27,6 +27,21 @@
     self.height = height;
 }
 
+- (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
+        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
+        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+        self.x = self.x + translation.x;
+        self.y = self.y + translation.y;
+        CGRect rect = self.frame;
+        rect.origin.x = self.x;
+        rect.origin.y = self.y;
+        self.frame = rect;
+    }
+}
+
 - (BOOL) isNote  // Note: This method is overwritten in NoteItem2.m
 {
     return NO;

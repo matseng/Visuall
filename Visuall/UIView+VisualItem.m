@@ -95,6 +95,18 @@
     return ni;
 }
 
+- (ArrowItem *) getArrowItem
+{
+    if ( [self isKindOfClass:[ArrowItem class]] )
+    {
+        return (ArrowItem *) self;
+    } else if ( [[self superview] isKindOfClass:[GroupItem class]] )
+    {
+        return (ArrowItem *) [self superview];
+    }
+    return nil;
+}
+
 - (BOOL) isInBoundsOfView: (UIView *) parentView
 {
     CGRect rect = self.frame;

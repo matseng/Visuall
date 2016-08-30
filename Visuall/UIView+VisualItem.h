@@ -26,6 +26,8 @@
 
 - (BOOL) isArrowItem;
 
+- (ArrowItem *) getArrowItem;
+
 - (BOOL) isInBoundsOfView: (UIView *) parentView;
 
 - (BOOL) isGroupItemSubview;

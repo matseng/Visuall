@@ -586,7 +586,6 @@
     else if ( [viewHit isNoteItem] )
     {
         NoteItem2 *nv = [viewHit getNoteItem];
-        //            [self setSelectedObject:nv];
         [self setActivelySelectedObjectDuringPan: nv];
         //            [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
     }
@@ -596,7 +595,6 @@
         UIView *handleSelected = [[viewHit getGroupItem] hitTestOnHandles:gestureRecognizer];
         if ( handleSelected )
         {
-            //                [self setSelectedObject:handleSelected];  // TODO, still should highlight current group
             [self setActivelySelectedObjectDuringPan: handleSelected];
             [[viewHit getGroupItem] setHandleSelected: handleSelected];
         } else if ([viewHit isInBoundsOfView:self.BackgroundScrollView])
@@ -606,7 +604,10 @@
             //                [self setSelectedObject:gi];
             //                [self setItemsInGroup:gi];
         }
-        
+    }
+    else if ( [viewHit isArrowItem] )
+    {
+        [self setActivelySelectedObjectDuringPan: [viewHit getArrowItem]];
     }
     else
     {
@@ -633,6 +634,10 @@
     }
     if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] &&
         [self.BoundsTiledLayerView.hitTestView isGroupItem] && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
+    {
+        return YES;
+    }
+    if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isArrowItem])
     {
         return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
     }

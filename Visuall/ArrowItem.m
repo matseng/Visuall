@@ -128,11 +128,14 @@ static CAShapeLayer *__tempShapeLayer;
     CGRect rect = [self createGroupViewRect: self.startPoint withEndPoint: self.endPoint];
     rect = [self augmentRectSize: rect];
     self.frame = rect;
+    self.x = rect.origin.x;
+    self.y = rect.origin.y;
     self.backgroundColor = [UIColor greenColor];
     self.alpha = 0.5;
     
     CGPoint localStartPoint = CGPointMake(self.startPoint.x - rect.origin.x, self.startPoint.y - rect.origin.y);
     CGPoint localEndPoint = CGPointMake(self.endPoint.x - rect.origin.x, self.endPoint.y - rect.origin.y);
+
     
     [[UIColor redColor] setStroke];
     

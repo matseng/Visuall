@@ -27,10 +27,12 @@
 
 - (NSString *) getKey; // NOTE: my naive implementatin of a protocol declaration - see NoteItem2.m for 'delegate' implementation
 
+- (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer;
+
 //- (void) setSelected;
 
 //- (void) setNotSelected;
 
-- (void) updateView;
+//- (void) updateView;
 
 @end
