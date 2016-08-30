@@ -29,7 +29,6 @@
 //@property (strong, nonatomic) IBOutlet UIView *Background;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
-@property CGPoint drawGroupViewStart;
 @property UIGestureRecognizer *panBackground;
 @property NSManagedObjectContext *moc;
 //@property (strong, nonatomic) IBOutlet UIView *GestureView;
@@ -757,19 +756,6 @@
 }
 
 
-- (CGRect) createGroupViewRect:(CGPoint)start withEnd:(CGPoint)end {
-    float x1 = start.x < end.x ? start.x : end.x;
-    float y1 = start.y < end.y ? start.y : end.y;
-    
-    float x2 = start.x < end.x ? end.x : start.x;
-    float y2 = start.y < end.y ? end.y : start.y;
-    
-    float width = x2 - x1;
-    float height = y2 - y1;
-    
-    return CGRectMake(x1, y1, width, height);
-}
-
 /*
 - (void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
 {
@@ -862,67 +848,6 @@
     }
 }
 */
-
-
-
-- (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer
-{
-    {
-        GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
-        
-        if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [gi isHandle: self.activelySelectedObjectDuringPan] )
-        {
-            if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
-            {
-            
-                [gi resizeGroup: gestureRecognizer];
-                [self.visuallState updateChildValue:gi Property:@"frame"];
-            }
-            else
-            {
-                [self setActivelySelectedObjectDuringPan: nil];
-            }
-            return;
-        }
-        
-        
-        // State began
-        if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
-            // TODO (Aug 11, 2016): && we're not starting on another group's handle
-        {
-            self.drawGroupViewStart = [gestureRecognizer locationInView: self.GroupsView];
-            
-            [self.GroupsView addSubview: self.drawGroupView];
-        }
-        
-        // State changed
-        if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
-            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
-        }
-        
-        // State ended
-        if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
-            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
-            GroupItem *currentGroupItem = [[GroupItem alloc] initWithRect: self.drawGroupView.frame];
-            [self addGroupItemToMVC: currentGroupItem];
-        }
-    }
-}
-
-- (void) addGroupItemToMVC: (GroupItem *) currentGroupItem
-{
-    [self.visuallState setValueGroup: currentGroupItem];
-//    [self addGestureRecognizersToGroup: currentGroupItem];
-    [self.GroupsView addSubview: currentGroupItem];
-    if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
-    [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
-    [self refreshGroupsView];
-    [self setSelectedObject: currentGroupItem];
-    [self setActivelySelectedObjectDuringPan: nil];
-}
-
 
 - (void) handleTapGroup: (UITapGestureRecognizer *) gestureRecognizer
 {

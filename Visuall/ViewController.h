@@ -52,6 +52,7 @@
 
 @property UIView *activelySelectedObjectDuringPan;
 
+@property CGPoint drawGroupViewStart;  // Used in ViewController+Group.m
 
 @property SevenSwitch *editSwitch;  // Utilized in ViewController+Menus.m [...]
 @property SegmentedControlMod *segmentControlVisualItem;
@@ -87,7 +88,7 @@
 
 - (void) updateTotalBounds: (UIView *) view;
 
-- (void) addGroupItemToMVC: (GroupItem *) currentGroupItem;
 
 @end
+
 
