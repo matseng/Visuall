@@ -263,13 +263,11 @@ static CAShapeLayer *__tempShapeLayer;
     CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
     self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
     self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
-//    [super handlePan: gestureRecognizer];
-//    self.transform = CGAffineTransformTranslate( self.transform, translation.x, translation.y);
-        self.transform = CGAffineTransformTranslate( CGAffineTransformIdentity, self.transform.tx + translation.x, self.transform.ty + translation.y);
+    self.transform = CGAffineTransformTranslate( CGAffineTransformIdentity, self.transform.tx + translation.x, self.transform.ty + translation.y);
     
-//    CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
-//    float theta = atan2( point.y, point.x );
-//    self.transform = CGAffineTransformRotate(self.transform, theta);
+    CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
+    float theta = atan2( point.y, point.x );
+    self.transform = CGAffineTransformRotate(self.transform, theta);
     
     [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
 }
