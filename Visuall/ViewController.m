@@ -612,7 +612,9 @@
     }
     else if ( [viewHit isArrowItem] )
     {
-        [self setActivelySelectedObjectDuringPan: [viewHit getArrowItem]];
+//        [self setActivelySelectedObjectDuringPan: [viewHit getArrowItem]];
+        [self setActivelySelectedObjectDuringPan: viewHit];
+        [self.visuallState setSelectedVisualItemSubview: viewHit];
     }
     else
     {

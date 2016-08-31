@@ -156,19 +156,10 @@ static CAShapeLayer *__tempShapeLayer;
                                            headLength:(CGFloat)self.headLength];
     [path setLineWidth:2.0];
     [path stroke];
-    
     CAShapeLayer *arrowLayer = [[CAShapeLayer alloc] init];
     [arrowLayer setFillColor: [UIColor blackColor].CGColor];
-//    if ( [[[UserUtil sharedManager] getState] selectedVisualItem] == self )
-//    {
-//        [arrowLayer setStrokeColor: [UIColor blueColor].CGColor];
-//    } else {
-//        [arrowLayer setStrokeColor: [UIColor whiteColor].CGColor];
-//    }
     [arrowLayer setStrokeColor: self.borderColor.CGColor];
-    
     [arrowLayer setPath: path.CGPath];
-    
     [self.layer addSublayer: arrowLayer];
     self.arrowLayer = arrowLayer;
     
@@ -270,26 +261,33 @@ static CAShapeLayer *__tempShapeLayer;
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
 {
     CGPoint translation = [gestureRecognizer translationInView: [[[UserUtil sharedManager] getState] ArrowsView]];
-    self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
-    self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
-    self.transform = CGAffineTransformTranslate( CGAffineTransformIdentity, self.transform.tx + translation.x, self.transform.ty + translation.y);
     
-    CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
-    float theta = atan2( point.y, point.x );
-    self.transform = CGAffineTransformRotate(self.transform, theta);
-    
+    if ( [[[UserUtil sharedManager] getState] selectedVisualItemSubview] == self.headHandle )
+    {
+        [self.arrowLayer removeFromSuperlayer];
+        self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
+        [self addArrowSublayer];
+        [self updateHandlePosition];
+    }
+    else
+    {
+        self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
+        self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
+        self.transform = CGAffineTransformTranslate( CGAffineTransformIdentity, self.transform.tx + translation.x, self.transform.ty + translation.y);
+        
+        CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
+        float theta = atan2( point.y, point.x );
+        self.transform = CGAffineTransformRotate(self.transform, theta);
+    }
+
     [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
 }
 
 - (void) addHandles
 {
-    UIView *handle = [self makeHandle];
-    self.headHandle = handle;
-    CGRect rect = handle.frame;
-    rect.origin.x = (self.length - self.headLength/2) - rect.size.width/2;
-    rect.origin.y = self.headWidth / 2 - rect.size.height /2;
-    handle.frame = rect;
-    [self addSubview: handle];
+    self.headHandle = [self makeHandle];
+    [self updateHandlePosition];
+    [self addSubview: self.headHandle];
     
 }
 
@@ -304,9 +302,18 @@ static CAShapeLayer *__tempShapeLayer;
     return circleView;
 }
 
+- (void) updateHandlePosition
+{
+    CGRect rect = self.headHandle.frame;
+    rect.origin.x = (self.length - self.headLength/2) - rect.size.width/2;
+    rect.origin.y = self.headWidth / 2 - rect.size.height /2;
+    self.headHandle.frame = rect;
+}
+
 - (void) setViewAsSelected
 {
-    [self setViewAsNotSelected];
+//    [self setViewAsNotSelected];
+    [self.arrowLayer removeFromSuperlayer];
     self.borderColor = [UIColor blueColor];
     if ( [[[UserUtil sharedManager] getState] editModeOn] )
     {
