@@ -28,7 +28,6 @@ NoteItem2 *targetNoteForArrow;
 - (void) tapHandler:(UITapGestureRecognizer *) gestureRecognizer
 {
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
-    NSLog(@"panHandler viewHit %@", [viewHit class]);
     
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
         {

@@ -31,7 +31,7 @@
 // TODO - move hitTest into ScrollViewMod
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
-    NSLog(@"TiledLayerView point %f, %f", point.x, point.y);
+//    NSLog(@"TiledLayerView point %f, %f", point.x, point.y);
 
     UIView *GroupsView = self.subviews[0].subviews[0];
     UIView *target = nil;
@@ -72,7 +72,27 @@
 
 - (UIView *) hitTestOnArrows:(CGPoint)point withEvent:(UIEvent *)event
 {
+    UIView *result;
     UIView *ArrowsView = self.subviews[0].subviews[2];
+    for (ArrowItem *ai in [ArrowsView.subviews reverseObjectEnumerator]) {
+        CGPoint convertedPoint = [ai convertPoint:point fromView: self];
+        result = [ai hitTestWithHandles:convertedPoint];
+        if (result) {
+            NSLog(@"TiledLayerView viewHit %@", [self.hitTestView class]);
+            self.hitTestView = result;
+            return self.hitTestView;
+        }
+    }
+    return nil;
+}
+
+/*
+- (UIView *) hitTestOnArrows:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *ArrowsView = self.subviews[0].subviews[2];
+    
+    NSLog(@"\n %lu", (unsigned long)[ArrowsView.subviews count]);
+    
     for (UIView *subview in [ArrowsView.subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView: self];
         if ( [subview pointInside:convertedPoint withEvent:event] && [subview isArrowItem] )
@@ -84,5 +104,6 @@
     }
     return nil;
 }
+ */
 
 @end

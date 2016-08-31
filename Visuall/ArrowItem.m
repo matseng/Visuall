@@ -25,6 +25,7 @@ static CAShapeLayer *__tempShapeLayer;
 @interface ArrowItem ()
 
 @property float length;
+@property UIView *arrowSubview;
 @property CAShapeLayer *arrowLayer;
 @property UIColor *borderColor;
 @property UIView *headHandle;
@@ -148,7 +149,7 @@ static CAShapeLayer *__tempShapeLayer;
     self.x = rect.origin.x;
     self.y = rect.origin.y;
 //    self.backgroundColor = [UIColor greenColor];
-    self.alpha = 1.0;
+    self.alpha = 0.9;
     
     path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)localStartPoint
                                               toPoint:(CGPoint)localEndPoint
@@ -270,6 +271,13 @@ static CAShapeLayer *__tempShapeLayer;
         [self addArrowSublayer];
         [self updateHandlePosition];
     }
+    else if ( [[[UserUtil sharedManager] getState] selectedVisualItemSubview] == self.tailHandle )  // move the arrow tail
+    {
+        [self.arrowLayer removeFromSuperlayer];
+        self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
+        [self addArrowSublayer];
+        [self updateHandlePosition];
+    }
     else  // move the entire arrow
     {
         [self translateArrowByDelta: translation];
@@ -311,14 +319,18 @@ static CAShapeLayer *__tempShapeLayer;
 
 - (void) updateHandlePosition
 {
+    float diameter = self.headHandle.frame.size.width;
+    
     CGRect rect = self.headHandle.frame;
-    rect.origin.x = (self.length - self.headLength/2) - rect.size.width/2;
-    rect.origin.y = self.headWidth / 2 - rect.size.height /2;
+//    rect.origin.x = self.length - diameter / 2;
+    rect.origin.x = self.length - diameter * 0.9;
+    rect.origin.y = self.headWidth / 2 - diameter /2;
     self.headHandle.frame = rect;
     
     CGRect rectTail = self.tailHandle.frame;
-    rectTail.origin.x = -self.headLength/2;
-    rectTail.origin.y = self.headWidth / 2 - rect.size.height /2;
+    rectTail.origin.x = -diameter/2;
+//    rectTail.origin.x = 0;
+    rectTail.origin.y = self.headWidth / 2 - diameter /2;
     self.tailHandle.frame = rectTail;
 }
 
@@ -339,7 +351,7 @@ static CAShapeLayer *__tempShapeLayer;
         [self addHandles];
     }
     [self addArrowSublayer];
-//    self.backgroundColor = [UIColor greenColor];
+//    self.backgroundColor = [UIColor greenColor];  // for debugging shapes
 }
 
 - (void) setViewAsNotSelected
@@ -350,5 +362,59 @@ static CAShapeLayer *__tempShapeLayer;
     self.borderColor = [UIColor whiteColor];
     [self addArrowSublayer];
 }
+
+/*
+ * Name:
+ * Description: point should be given in local coordinates (i.e. already converted)
+ */
+
+- (UIView *) hitTestWithHandles: (CGPoint) point
+{
+    UIView *result;
+    if (self.headHandle)
+    {
+        CGPoint convertedPoint = [self.headHandle convertPoint:point fromView: self];
+        result = [self.headHandle hitTest:convertedPoint withEvent:nil];
+        if (result) return result;
+    }
+    if (self.tailHandle)
+    {
+        CGPoint convertedPoint = [self.tailHandle convertPoint:point fromView: self];
+//        result = [self.tailHandle hitTest:convertedPoint withEvent:nil];
+        if (CGRectContainsPoint(self.tailHandle.frame, convertedPoint))
+        {
+            return self.tailHandle;
+        }
+    }
+    
+    result = [self hitTest: point withEvent:nil];
+    return result;
+}
+
+
+//- (UIView *) hitTestWithHandles: (CGPoint) point
+//{
+//    if (self.headHandle)
+//    {
+//        CGPoint convertedPoint = [self.headHandle convertPoint:point fromView: self];
+//        if ( [self.headHandle pointInside: convertedPoint withEvent:nil])
+//        {
+//            return self.headHandle;
+//        }
+//    }
+//    else if (self.tailHandle)
+//    {
+//        CGPoint convertedPoint = [self.tailHandle convertPoint:point fromView: self];
+//        if ( [self.tailHandle pointInside: convertedPoint withEvent:nil])
+//        {
+//            return self.tailHandle;
+//        }
+//    }
+//    else if ( [self pointInside:point withEvent: nil] )
+//    {
+//        return self;
+//    }
+//    return nil;
+//}
 
 @end

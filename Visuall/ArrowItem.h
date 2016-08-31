@@ -45,4 +45,6 @@
 
 - (BOOL) isHandle: (UIView*) handle;
 
+- (UIView *) hitTestWithHandles: (CGPoint) point;
+
 @end
