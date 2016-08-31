@@ -41,4 +41,6 @@
 
 - (void) setViewAsNotSelected;
 
+- (void) translateArrowByDelta: (CGPoint) translation;
+
 @end

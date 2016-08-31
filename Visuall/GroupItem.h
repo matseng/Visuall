@@ -10,6 +10,7 @@
 #import "Group.h"
 #import "NoteItem2.h"
 #import "Group2.h"
+#import "ArrowItem.h"
 //#import "VisualItem.h"
 
 //@interface GroupItem : UIView
@@ -24,6 +25,8 @@
 @property (strong) NSMutableArray *notesInGroup;
 
 @property (strong) NSMutableArray *groupsInGroup;
+
+@property (strong) NSMutableArray *arrowsInGroup;
 
 @property UIView *innerGroupView;
 
@@ -44,6 +47,8 @@
 - (void) saveToCoreData;
 
 - (BOOL) isGroupInGroup: (GroupItem *) gi;
+
+- (BOOL) isArrowInGroup: (ArrowItem *) ai;
 
 - (void) resizeGroup: (UIPanGestureRecognizer *) gestureRecognizer;
 

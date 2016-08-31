@@ -19,7 +19,7 @@
     self.items[key] = vi;
 }
 
-- (void) myForIn: (void (^)(VisualItem *vi)) myFunction
+- (void) myForIn: (void (^)(id vi)) myFunction
 {
     for (NSString *key in self.items) {
         VisualItem *vi = self.items[key];

@@ -16,7 +16,7 @@
 
 - (void) addItem:(VisualItem *) vi withKey: (NSString *) key;
 
-- (void) myForIn: (void (^)(VisualItem *vi)) myFunction;
+- (void) myForIn: (void (^)(id vi)) myFunction;
 
 - (VisualItem *) getItemFromKey: (NSString *) key;
 

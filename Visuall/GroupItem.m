@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "NoteItem2.h"
 
+
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [UIColor blackColor]
 #define GROUP_VIEW_BORDER_WIDTH 1.0
@@ -206,6 +207,9 @@
             [gi.group setX: x andY: y];
             [gi updateFrame];
         }
+        for (ArrowItem *ai in self.arrowsInGroup) {
+            [ai translateArrowByDelta: translation];
+        }
     }
 }
 
@@ -291,6 +295,17 @@
     CGPoint noteCenterPoint = CGPointMake(ni.note.x + ni.note.width/2, ni.note.y + ni.note.height/2);
     
     if ( CGRectContainsPoint(groupRect, noteCenterPoint))
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL) isArrowInGroup: (ArrowItem *) ai
+{
+    CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
+    
+    if ( CGRectContainsPoint(groupRect, ai.startPoint) && CGRectContainsPoint(groupRect, ai.endPoint))
     {
         return YES;
     }

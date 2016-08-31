@@ -271,17 +271,23 @@ static CAShapeLayer *__tempShapeLayer;
     }
     else  // move the entire arrow
     {
-        self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
-        self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
-        self.transform = CGAffineTransformTranslate( CGAffineTransformIdentity, self.transform.tx + translation.x, self.transform.ty + translation.y);
-        
-        CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
-        float theta = atan2( point.y, point.x );
-        self.transform = CGAffineTransformRotate(self.transform, theta);
+        [self translateArrowByDelta: translation];
     }
 
     [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
 }
+
+- (void) translateArrowByDelta: (CGPoint) translation
+{
+    self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
+    self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
+    self.transform = CGAffineTransformTranslate( CGAffineTransformIdentity, self.transform.tx + translation.x, self.transform.ty + translation.y);
+    
+    CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
+    float theta = atan2( point.y, point.x );
+    self.transform = CGAffineTransformRotate(self.transform, theta);
+}
+
 
 - (void) addHandles
 {

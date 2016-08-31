@@ -10,6 +10,8 @@
 #import "ViewController+Menus.h"
 #import "StateUtilFirebase.h"
 #import "UIView+VisualItem.h"
+#import "UserUtil.h"
+#import "ArrowItem.h"
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
@@ -39,6 +41,7 @@
         [self setSelectedObject:groupItem];
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
         NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
+        NSMutableArray *arrowsInGroup = [[NSMutableArray alloc]init];
 
         [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
          {
@@ -55,9 +58,16 @@
                 [groupsInGroup addObject:gi];
             }
         }];
+        
+        [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai){
+            if ([groupItem isArrowInGroup: ai]) {
+                [arrowsInGroup addObject:ai];
+            }
+        }];
          
         [groupItem setNotesInGroup: notesInGroup];
-        [groupItem setGroupsInGroup:groupsInGroup];
+        [groupItem setGroupsInGroup: groupsInGroup];
+        [groupItem setArrowsInGroup: arrowsInGroup];
     }
     else if ( gestureRecognizer.state == UIGestureRecognizerStateChanged )
     {
@@ -81,7 +91,8 @@
 - (void) setItemsInGroup: (GroupItem *) groupItem
 {
     NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
-    NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
+    NSMutableArray *groupsInGroup = [[NSMutableArray alloc] init];
+    NSMutableArray *arrowsInGroup = [[NSMutableArray alloc] init];
     
     //    for (NoteItem *ni in self.NotesCollection.Notes) {
     //        if ([groupItem isNoteInGroup:ni]) {
@@ -106,9 +117,16 @@
             [groupsInGroup addObject:gi];
         }
     }];
+
+    [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai){
+        if ([groupItem isArrowInGroup: ai]) {
+            [arrowsInGroup addObject:ai];
+        }
+    }];
     
     [groupItem setNotesInGroup: notesInGroup];
     [groupItem setGroupsInGroup:groupsInGroup];
+    [groupItem setArrowsInGroup: arrowsInGroup];
 }
 
 /*
