@@ -262,14 +262,14 @@ static CAShapeLayer *__tempShapeLayer;
 {
     CGPoint translation = [gestureRecognizer translationInView: [[[UserUtil sharedManager] getState] ArrowsView]];
     
-    if ( [[[UserUtil sharedManager] getState] selectedVisualItemSubview] == self.headHandle )
+    if ( [[[UserUtil sharedManager] getState] selectedVisualItemSubview] == self.headHandle )  // move the arrow head
     {
         [self.arrowLayer removeFromSuperlayer];
         self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
         [self addArrowSublayer];
         [self updateHandlePosition];
     }
-    else
+    else  // move the entire arrow
     {
         self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
         self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
