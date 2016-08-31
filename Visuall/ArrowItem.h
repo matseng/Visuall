@@ -43,4 +43,6 @@
 
 - (void) translateArrowByDelta: (CGPoint) translation;
 
+- (BOOL) isHandle: (UIView*) handle;
+
 @end

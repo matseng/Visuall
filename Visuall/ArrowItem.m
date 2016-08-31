@@ -28,6 +28,7 @@ static CAShapeLayer *__tempShapeLayer;
 @property CAShapeLayer *arrowLayer;
 @property UIColor *borderColor;
 @property UIView *headHandle;
+@property UIView *tailHandle;
 
 @end
 
@@ -288,13 +289,13 @@ static CAShapeLayer *__tempShapeLayer;
     self.transform = CGAffineTransformRotate(self.transform, theta);
 }
 
-
 - (void) addHandles
 {
     self.headHandle = [self makeHandle];
+    self.tailHandle = [self makeHandle];
     [self updateHandlePosition];
     [self addSubview: self.headHandle];
-    
+    [self addSubview: self.tailHandle];
 }
 
 - (UIView *) makeHandle
@@ -314,12 +315,24 @@ static CAShapeLayer *__tempShapeLayer;
     rect.origin.x = (self.length - self.headLength/2) - rect.size.width/2;
     rect.origin.y = self.headWidth / 2 - rect.size.height /2;
     self.headHandle.frame = rect;
+    
+    CGRect rectTail = self.tailHandle.frame;
+    rectTail.origin.x = -self.headLength/2;
+    rectTail.origin.y = self.headWidth / 2 - rect.size.height /2;
+    self.tailHandle.frame = rectTail;
+}
+
+- (BOOL) isHandle: (UIView*) handle
+{
+    return (handle == self.headHandle || handle == self.tailHandle);
 }
 
 - (void) setViewAsSelected
 {
 //    [self setViewAsNotSelected];
     [self.arrowLayer removeFromSuperlayer];
+    [self.headHandle removeFromSuperview];
+    [self.tailHandle removeFromSuperview];
     self.borderColor = [UIColor blueColor];
     if ( [[[UserUtil sharedManager] getState] editModeOn] )
     {
@@ -333,6 +346,7 @@ static CAShapeLayer *__tempShapeLayer;
 {
     [self.arrowLayer removeFromSuperlayer];
     [self.headHandle removeFromSuperview];
+    [self.tailHandle removeFromSuperview];
     self.borderColor = [UIColor whiteColor];
     [self addArrowSublayer];
 }
