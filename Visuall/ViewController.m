@@ -912,6 +912,15 @@
     return NO;
 }
 
+- (void) textViewDidBeginEditing:(UITextView *)textView
+{
+        if ([textView.text isEqualToString: @"text..."])
+        {
+            [[textView getNoteItem] becomeFirstResponder];
+            [textView selectAll: nil];  // selects all text
+        }
+}
+
 - (void) textViewDidChange:(UITextView *) textView
 {
     NoteItem2 *ni = (NoteItem2 *) textView.superview;
@@ -924,7 +933,10 @@
 - (void) textViewDidChangeSelection:(UITextView *)textView
 {
     NoteItem2 *ni = [textView getNoteItem];
-    [self setSelectedObject: ni];
+    if (self.lastSelectedObject != ni)
+    {
+        [self setSelectedObject: ni];
+    }
 }
 
 - (IBAction)onDeletePressed:(UIBarButtonItem *)sender {

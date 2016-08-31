@@ -35,13 +35,14 @@ NoteItem2 *targetNoteForArrow;
             UIView *viewHit = [self.BoundsTiledLayerView hitTest:point withEvent:nil];
             NSLog(@"tapHandler viewHit %@", [viewHit class]);
             
-//            if ( [viewHit isNoteItem] )
-//            {
-//                NoteItem2 *ni = [viewHit getNoteItem];
+            if ( [viewHit isNoteItem] )
+            {
+                NoteItem2 *ni = [viewHit getNoteItem];
 //                [self setSelectedObject:ni];
 //                NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
 //                return;
-//            }
+                [ni.noteTextView becomeFirstResponder];
+            }
 //            else if ( [viewHit isGroupItem] )
 //            {
 //                GroupItem *gi = [viewHit getGroupItem];
@@ -64,7 +65,7 @@ NoteItem2 *targetNoteForArrow;
                 [self addNoteToViewWithHandlers:newNote];
                 [self setSelectedObject:newNote];
                 [newNote becomeFirstResponder];  // puts cursor on text field
-                [newNote.noteTextView selectAll:nil];  // highlights text
+                [newNote.noteTextView selectAll:nil];  // selects all text
                 return;
             }
             else
