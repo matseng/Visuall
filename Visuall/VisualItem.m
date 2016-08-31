@@ -8,6 +8,7 @@
 
 #import "VisualItem.h"
 //#import "GroupItemImage.h"
+#import "UserUtil.h"
 
 @implementation VisualItem
 
@@ -51,5 +52,26 @@
 {
     return nil;
 }
+
+//@property NSMutableDictionary *items;
+- (NSMutableDictionary*) findOverlappingItems: (Collection *) collection
+{
+    
+    /*
+    if (CGRectIntersectsRect(CGRect rectOne, CGRect rectTwo))
+    {
+        // Rects intersect...
+    }
+     */
+    
+    NSMutableDictionary *items;
+    [[[[UserUtil sharedManager] getState] notesCollection] myForIn:^(NoteItem2 *ni) {
+        
+    }];
+    
+    return items;
+}
+
+
 
 @end
