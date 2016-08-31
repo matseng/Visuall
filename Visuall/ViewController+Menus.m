@@ -642,6 +642,8 @@ UIColor *darkGrayBorderColor;
         // Execute any code when the switch is ON
         NSLog(@"Switch is ON");
         [self.visuallState setEditModeOn: YES];
+//        UIView *temp = [self lastSelectedObject];
+//        [self setSelectedObject: nil];
         [self setSelectedObject: self.lastSelectedObject];
         [self.scrollViewButtonList setHidden: NO];
         

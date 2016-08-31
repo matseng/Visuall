@@ -987,11 +987,6 @@
 
 - (BOOL) setSelectedObject:(UIView *) object
 {
-    if (self.lastSelectedObject == object)
-    {
-        return NO;  // view is already selected, so we don't need to re-select it
-    }
-    
     if (self.lastSelectedObject) {
         if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]])
         {
