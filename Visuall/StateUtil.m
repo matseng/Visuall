@@ -36,111 +36,111 @@
 //    return sharedMyManager;
 //}
 
-- (void) transfromAllItems
-{
-    for (NSString *key in self.notesCollection.Notes2) {
-        [self transformVisualItem: self.notesCollection.Notes2[key]];
-    }
-    
-    for (NSString *key in self.groupsCollection.groups2) {
-        [self transformGroupItem: self.groupsCollection.groups2[key] ];
-    }
-}
+//- (void) transfromAllItems
+//{
+//    for (NSString *key in self.notesCollection.Notes2) {
+//        [self transformVisualItem: self.notesCollection.Notes2[key]];
+//    }
+//    
+//    for (NSString *key in self.groupsCollection.groups2) {
+//        [self transformGroupItem: self.groupsCollection.groups2[key] ];
+//    }
+//}
 
--(void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
-                 withNotes:(NotesCollection *) Notes
-                 withGroups: (GroupsCollection *) groupsCollection
-{
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
-        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-//        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
-//        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
-        CGPoint translation = [gestureRecognizer translationInView: self.rootView];
-        [gestureRecognizer setTranslation:CGPointZero inView: self.rootView];
-        float panX = self.pan.x + translation.x;
-        float panY = self.pan.y + translation.y;
-        self.pan = CGPointMake(panX, panY);  // these coordinates exists in transformed space
-
-        for (NSString *key in Notes.Notes2) {
-            [self transformVisualItem: Notes.Notes2[key]];
-        }
-        
-        for (NSString *key in groupsCollection.groups2) {
-            [self transformGroupItem: groupsCollection.groups2[key] ];
-        }
-    }
-}
-
-
--(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NotesCollection *) Notes andGroups: (GroupsCollection *) groupsCollection
-{
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-
-        float zoom = self.zoom * gestureRecognizer.scale;
-        CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
-        float deltaX = gesturePoint.x - gesturePoint.x / self.zoom * zoom;
-        float deltaY = gesturePoint.y - gesturePoint.y / self.zoom * zoom;
-        
-        CGFloat tx = self.pan.x / self.zoom * zoom + deltaX;
-        CGFloat ty = self.pan.y / self.zoom * zoom + deltaY;
-        self.pan = CGPointMake(tx, ty);
-        
-//        self.zoomPreviousValue = self.zoom;
-        self.zoom = zoom;
-        
-        for (NSString *key in Notes.Notes2) {
-            [self transformVisualItem: Notes.Notes2[key]];
-        }
-        
-        for (NSString *key in groupsCollection.groups2) {
-            [self transformGroupItem: groupsCollection.groups2[key] ];
-        }
-        
-        [gestureRecognizer setScale:1.0];
-    }
-}
-
-- (void) zoomToValue: (float) zoom atPoint: (CGPoint) point
-{
-    float deltaX = point.x - point.x / self.zoom * zoom;
-    float deltaY = point.y - point.y / self.zoom * zoom;
-    
-    CGFloat tx = self.pan.x / self.zoom * zoom + deltaX;
-    CGFloat ty = self.pan.y / self.zoom * zoom + deltaY;
-    self.pan = CGPointMake(tx, ty);
-    
-    self.zoom = zoom;
-    
-    for (NSString *key in self.notesCollection.Notes2) {
-        [self transformVisualItem: self.notesCollection.Notes2[key]];
-    }
-    
-    for (NSString *key in self.groupsCollection.groups2) {
-        [self transformGroupItem: self.groupsCollection.groups2[key] ];
-    }
-}
-
--(void)onTick:(NSTimer *) timer {
+//-(void) handlePanBackground: (UIPanGestureRecognizer *) gestureRecognizer
+//                 withNotes:(NotesCollection *) Notes
+//                 withGroups: (GroupsCollection *) groupsCollection
+//{
+//    if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
+//        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+////        CGPoint translation = [gestureRecognizer translationInView:gestureRecognizer.view];
+////        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+//        CGPoint translation = [gestureRecognizer translationInView: self.rootView];
+//        [gestureRecognizer setTranslation:CGPointZero inView: self.rootView];
+//        float panX = self.pan.x + translation.x;
+//        float panY = self.pan.y + translation.y;
+//        self.pan = CGPointMake(panX, panY);  // these coordinates exists in transformed space
+//
+//        for (NSString *key in Notes.Notes2) {
+//            [self transformVisualItem: Notes.Notes2[key]];
+//        }
+//        
+//        for (NSString *key in groupsCollection.groups2) {
+//            [self transformGroupItem: groupsCollection.groups2[key] ];
+//        }
+//    }
+//}
 
 
-    if (self.timeElapsed >= self.timerThreshold) {
-        self.timeElapsed = 0.0;
-        [timer invalidate];
-        return;
-    }
-    
-    self.timeElapsed = self.timeElapsed + 0.1;
-    float slope = [timer.userInfo[@"slope"] floatValue];
-    float yIntercept = [timer.userInfo[@"yIntercept"] floatValue];
-    //    NSLog(@"timer on blast, %f", [zoom floatValue]);
-    CGPoint gesturePoint = [timer.userInfo[@"gesturePointValue"] CGPointValue];
-    float zoom = slope * self.timeElapsed + yIntercept;
-    [self zoomToValue:zoom atPoint: gesturePoint];
-    
-    NSLog(@"New zoom value: ,%f", slope * self.timeElapsed + yIntercept);
-    
-}
+//-(void) handlePinchBackground: (UIPinchGestureRecognizer *) gestureRecognizer withNotes:(NotesCollection *) Notes andGroups: (GroupsCollection *) groupsCollection
+//{
+//    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+//    } else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+//
+//        float zoom = self.zoom * gestureRecognizer.scale;
+//        CGPoint gesturePoint = [gestureRecognizer locationInView:gestureRecognizer.view];
+//        float deltaX = gesturePoint.x - gesturePoint.x / self.zoom * zoom;
+//        float deltaY = gesturePoint.y - gesturePoint.y / self.zoom * zoom;
+//        
+//        CGFloat tx = self.pan.x / self.zoom * zoom + deltaX;
+//        CGFloat ty = self.pan.y / self.zoom * zoom + deltaY;
+//        self.pan = CGPointMake(tx, ty);
+//        
+////        self.zoomPreviousValue = self.zoom;
+//        self.zoom = zoom;
+//        
+//        for (NSString *key in Notes.Notes2) {
+//            [self transformVisualItem: Notes.Notes2[key]];
+//        }
+//        
+//        for (NSString *key in groupsCollection.groups2) {
+//            [self transformGroupItem: groupsCollection.groups2[key] ];
+//        }
+//        
+//        [gestureRecognizer setScale:1.0];
+//    }
+//}
+
+//- (void) zoomToValue: (float) zoom atPoint: (CGPoint) point
+//{
+//    float deltaX = point.x - point.x / self.zoom * zoom;
+//    float deltaY = point.y - point.y / self.zoom * zoom;
+//    
+//    CGFloat tx = self.pan.x / self.zoom * zoom + deltaX;
+//    CGFloat ty = self.pan.y / self.zoom * zoom + deltaY;
+//    self.pan = CGPointMake(tx, ty);
+//    
+//    self.zoom = zoom;
+//    
+//    for (NSString *key in self.notesCollection.Notes2) {
+//        [self transformVisualItem: self.notesCollection.Notes2[key]];
+//    }
+//    
+//    for (NSString *key in self.groupsCollection.groups2) {
+//        [self transformGroupItem: self.groupsCollection.groups2[key] ];
+//    }
+//}
+
+//-(void)onTick:(NSTimer *) timer {
+//
+//
+//    if (self.timeElapsed >= self.timerThreshold) {
+//        self.timeElapsed = 0.0;
+//        [timer invalidate];
+//        return;
+//    }
+//    
+//    self.timeElapsed = self.timeElapsed + 0.1;
+//    float slope = [timer.userInfo[@"slope"] floatValue];
+//    float yIntercept = [timer.userInfo[@"yIntercept"] floatValue];
+//    //    NSLog(@"timer on blast, %f", [zoom floatValue]);
+//    CGPoint gesturePoint = [timer.userInfo[@"gesturePointValue"] CGPointValue];
+//    float zoom = slope * self.timeElapsed + yIntercept;
+//    [self zoomToValue:zoom atPoint: gesturePoint];
+//    
+//    NSLog(@"New zoom value: ,%f", slope * self.timeElapsed + yIntercept);
+//    
+//}
 
 - (UIView *)rootView: (UIView *) view {
 //    UIView *view = self;
@@ -149,19 +149,20 @@
     }
     return view;
 }
-
-- (void) translateToPoint: (CGPoint) point
-{
-    
-    float tx = -point.x * self.zoom + self.rootView.frame.size.width/2;
-    float ty = -point.y * self.zoom + self.rootView.frame.size.height/2;
-    CGPoint transformedPoint = CGPointMake(tx, ty);
-    [self setPan: transformedPoint];
-    [self transfromAllItems];
-}
+//
+//- (void) translateToPoint: (CGPoint) point
+//{
+//    
+//    float tx = -point.x * self.zoom + self.rootView.frame.size.width/2;
+//    float ty = -point.y * self.zoom + self.rootView.frame.size.height/2;
+//    CGPoint transformedPoint = CGPointMake(tx, ty);
+//    [self setPan: transformedPoint];
+//    [self transfromAllItems];
+//}
 /*
 
 */
+/*
 - (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView:(UIView *) view
 {
     CGPoint gesturePoint;
@@ -202,7 +203,7 @@
                                                 userInfo: dictionary
                                                  repeats:YES];
 }
-
+*/
 //-(void) transformVisualItem: (id) visualItem0
 //{
 //    

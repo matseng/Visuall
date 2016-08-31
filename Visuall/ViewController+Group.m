@@ -44,9 +44,8 @@
         NSMutableArray *arrowsInGroup = [[NSMutableArray alloc]init];
 
         [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
-         {
+        {
              if ( [groupItem isNoteInGroup:ni]) {
-                 //                NSLog(@"Note name in group: %@", ni.note.title);
                  [notesInGroup addObject:ni];
              }
 
@@ -88,6 +87,7 @@
     }
 }
 
+/*
 - (void) setItemsInGroup: (GroupItem *) groupItem
 {
     NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
@@ -128,6 +128,7 @@
     [groupItem setGroupsInGroup:groupsInGroup];
     [groupItem setArrowsInGroup: arrowsInGroup];
 }
+ */
 
 /*
  * Name: refreshGroupsView
@@ -136,9 +137,7 @@
 - (void) refreshGroupsView
 {
     // Sort by area of group view
-    NSArray *sortedArray;
-    
-    sortedArray = [self.groupsCollection.groups2 keysSortedByValueUsingComparator: ^(GroupItem *group1, GroupItem *group2) {
+    NSArray *sortedArray = [self.groupsCollection.items keysSortedByValueUsingComparator: ^(GroupItem *group1, GroupItem *group2) {
         
         float firstArea = group1.group.width * group1.group.height;
         float secondArea = group2.group.width * group2.group.height;

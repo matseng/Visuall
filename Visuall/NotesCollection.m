@@ -21,46 +21,46 @@
 //method to add single note dynamically from main view
 - (void) addNote:(NoteItem2 *) newNote withKey: (NSString *) key
 {
-    if ( !self.Notes2) {
-        self.Notes2 = [[NSMutableDictionary alloc] init];
+    if ( !self.items) {
+        self.items = [[NSMutableDictionary alloc] init];
     }
     newNote.key = key;
-    self.Notes2[key] = newNote;
+    self.items[key] = newNote;
 }
 
-- (void) myForIn: (void (^)(NoteItem2 *ni)) myFunction
-{
-    for (NSString *key in self.Notes2) {
-        NoteItem2 *ni = self.Notes2[key];
-        myFunction(ni);
-    }
-}
+//- (void) myForIn: (void (^)(NoteItem2 *ni)) myFunction
+//{
+//    for (NSString *key in self.Notes2) {
+//        NoteItem2 *ni = self.Notes2[key];
+//        myFunction(ni);
+//    }
+//}
 
 - (float) getNoteFontSizeFromKey: (NSString *) key
 {
-    return [[self.Notes2[key] note] fontSize];
+    return [[self.items[key] note] fontSize];
 }
 
 - (NSString *) getNoteTitleFromKey: (NSString *) key
 {
-    return [[self.Notes2[key] note] title];
+    return [[self.items[key] note] title];
 }
 
 - (NoteItem2 *) getNoteItemFromKey: (NSString *) key
 {
-    return self.Notes2[key];
+    return self.items[key];
 }
 
 - (Note2 *) getNoteFromKey: (NSString *) key
 {
-    NoteItem2 *ni = self.Notes2[key];
+    NoteItem2 *ni = self.items[key];
     return ni.note;
 }
 
 - (BOOL) deleteNoteGivenKey: (NSString *) key
 {
-    if([self.Notes2 objectForKey: key]) {
-        [self.Notes2 removeObjectForKey: key];
+    if([self.items objectForKey: key]) {
+        [self.items removeObjectForKey: key];
         return YES;
     }
     return NO;

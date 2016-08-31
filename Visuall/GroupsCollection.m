@@ -37,36 +37,38 @@
 
 - (void) addGroup:(GroupItem *) newGroup withKey: (NSString *) key
 {
-    if ( !self.groups2) {
-        self.groups2 = [[NSMutableDictionary alloc] init];
+    if ( !self.items) {
+        self.items = [[NSMutableDictionary alloc] init];
     }
     newGroup.group.key = key;
     newGroup.key = key;
-    self.groups2[key] = newGroup;
+    self.items[key] = newGroup;
 }
 
-- (void) myForIn: (void (^)(GroupItem *gi)) myFunction
-{
-    for (NSString *key in self.groups2) {
-        GroupItem *gi = self.groups2[key];
-        myFunction(gi);
-    }
-}
+//- (void) myForIn: (void (^)(GroupItem *gi)) myFunction
+//{
+//    for (NSString *key in self.items) {
+//        GroupItem *gi = self.items[key];
+//        myFunction(gi);
+//    }
+//}
 
 - (GroupItem *) getGroupItemFromKey: (NSString *) key
 {
-    return self.groups2[key];
+    return self.items[key];
 }
 
 - (float) getGroupAreaFromKey: (NSString *) key
 {
-    return [[self.groups2[key] group] getArea];
+    return [[self.items[key] group] getArea];
 }
 
 - (BOOL) deleteGroupGivenKey: (NSString *) key
 {
-    if([self.groups2 objectForKey: key]) {
-        [self.groups2 removeObjectForKey: key];
+    if([self.items objectForKey: key]) {
+        NSLog(@"\n %li", [[self items] count]);
+        [self.items removeObjectForKey: key];
+        NSLog(@"\n %li", [[self items] count]);
         return YES;
     }
     return NO;

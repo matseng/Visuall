@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "GroupItem.h"
-//#import "Group2.h"
+#import "Collection.h"
 
-@interface GroupsCollection : NSObject
+@interface GroupsCollection : Collection
 
 @property NSMutableArray *groups;
 
