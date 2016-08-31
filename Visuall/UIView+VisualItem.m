@@ -66,7 +66,7 @@
 
 - (BOOL) isArrowItem
 {
-    return [self isKindOfClass:[ArrowItem class]];
+    return [self isKindOfClass:[ArrowItem class]] || [[self superview] isKindOfClass:[ArrowItem class]];
 }
 
 - (GroupItem *) getGroupItem
@@ -100,7 +100,7 @@
     if ( [self isKindOfClass:[ArrowItem class]] )
     {
         return (ArrowItem *) self;
-    } else if ( [[self superview] isKindOfClass:[GroupItem class]] )
+    } else if ( [[self superview] isKindOfClass:[ArrowItem class]] )
     {
         return (ArrowItem *) [self superview];
     }

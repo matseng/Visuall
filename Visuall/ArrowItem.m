@@ -22,11 +22,12 @@ static CGPoint __startPoint;  // class variables http://rypress.com/tutorials/ob
 static CGPoint __endPoint;
 static CAShapeLayer *__tempShapeLayer;
 
-
 @interface ArrowItem ()
 
+@property float length;
 @property CAShapeLayer *arrowLayer;
 @property UIColor *borderColor;
+@property UIView *headHandle;
 
 @end
 
@@ -131,18 +132,17 @@ static CAShapeLayer *__tempShapeLayer;
 {
     UIBezierPath *path;
     UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
-    float length;
     float theta;
     self.transform = CGAffineTransformIdentity;
     
     CGPoint point = CGPointMake(self.endPoint.x - self.startPoint.x, self.endPoint.y - self.startPoint.y);
-    length = sqrtf( powf(point.x, 2) + powf(point.y, 2));
+    self.length = sqrtf( powf(point.x, 2) + powf(point.y, 2));
     CGPoint localStartPoint = CGPointMake(0, self.headWidth/2);
-    CGPoint localEndPoint = CGPointMake(length, self.headWidth/2);
+    CGPoint localEndPoint = CGPointMake(self.length, self.headWidth/2);
 
-    float offsetCenterX = point.x / 2 - length / 2;
+    float offsetCenterX = point.x / 2 - self.length / 2;
     float offsetCenterY = point.y / 2;
-    CGRect rect = CGRectMake(self.startPoint.x + offsetCenterX, self.startPoint.y - self.headWidth/2 + offsetCenterY , length, self.headWidth);
+    CGRect rect = CGRectMake(self.startPoint.x + offsetCenterX, self.startPoint.y - self.headWidth/2 + offsetCenterY , self.length, self.headWidth);
     self.frame = rect;
     self.x = rect.origin.x;
     self.y = rect.origin.y;
@@ -269,7 +269,7 @@ static CAShapeLayer *__tempShapeLayer;
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
+    CGPoint translation = [gestureRecognizer translationInView: [[[UserUtil sharedManager] getState] ArrowsView]];
     self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
     self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
     self.transform = CGAffineTransformTranslate( CGAffineTransformIdentity, self.transform.tx + translation.x, self.transform.ty + translation.y);
@@ -281,30 +281,45 @@ static CAShapeLayer *__tempShapeLayer;
     [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
 }
 
+- (void) addHandles
+{
+    UIView *handle = [self makeHandle];
+    self.headHandle = handle;
+    CGRect rect = handle.frame;
+    rect.origin.x = (self.length - self.headLength/2) - rect.size.width/2;
+    rect.origin.y = self.headWidth / 2 - rect.size.height /2;
+    handle.frame = rect;
+    [self addSubview: handle];
+    
+}
+
+- (UIView *) makeHandle
+{
+    float diameter = (self.headWidth > self.headLength) ? self.headWidth : self.headLength;
+    diameter = diameter * 1.5;
+    UIView *circleView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, diameter, diameter)];
+    circleView.alpha = 0.5;
+    circleView.layer.cornerRadius = diameter / 2;
+    circleView.layer.backgroundColor = [self.borderColor CGColor];
+    return circleView;
+}
+
 - (void) setViewAsSelected
 {
-//    if ( editModeOn )
-//    {
-//        [self setViewAsNotSelected];
-//        [self renderHandles];
-//        [self updateFrame];
-//    }
-//    self.innerGroupView.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
-//    self.innerGroupView.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / zoomScale);
-    [self.arrowLayer removeFromSuperlayer];
+    [self setViewAsNotSelected];
     self.borderColor = [UIColor blueColor];
+    if ( [[[UserUtil sharedManager] getState] editModeOn] )
+    {
+        [self addHandles];
+    }
     [self addArrowSublayer];
 //    self.backgroundColor = [UIColor greenColor];
 }
 
 - (void) setViewAsNotSelected
 {
-//    self.innerGroupView.layer.borderColor = [GROUP_VIEW_BORDER_COLOR CGColor];
-//    [handleTopLeft removeFromSuperview];
-//    [handleTopRight removeFromSuperview];
-//    [handleBottomLeft removeFromSuperview];
-//    [handleBottomRight removeFromSuperview];
     [self.arrowLayer removeFromSuperlayer];
+    [self.headHandle removeFromSuperview];
     self.borderColor = [UIColor whiteColor];
     [self addArrowSublayer];
 }
