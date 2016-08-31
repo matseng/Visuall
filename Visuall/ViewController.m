@@ -509,6 +509,12 @@
             [self.groupsCollection deleteGroupGivenKey: gi.group.key];
         }
         
+        else if ( [self.visuallState.selectedVisualItem isArrowItem] )
+        {
+            ArrowItem *ai = [self.visuallState.selectedVisualItem getArrowItem];
+            [self.visuallState.arrowsCollection deleteItemGivenKey: ai.key];
+        }
+        
         [self.lastSelectedObject removeFromSuperview];
         [self.visuallState removeValue: self.lastSelectedObject];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
         //        [self.lastSelectedObject delete:nil];  // TODO: untested

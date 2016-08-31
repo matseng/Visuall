@@ -32,4 +32,13 @@
     return self.items[key];
 }
 
+- (BOOL) deleteItemGivenKey: (NSString *) key
+{
+    if ([self.items objectForKey: key]) {
+        [self.items removeObjectForKey: key];
+        return YES;
+    }
+    return NO;
+}
+
 @end

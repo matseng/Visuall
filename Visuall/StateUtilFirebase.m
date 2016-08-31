@@ -699,6 +699,34 @@
             }];
         }
     }
+    else if( [view isArrowItem] )
+    {
+        // Step 1 of 3: Delete group from groups table
+        ArrowItem *ai = [view getArrowItem];
+        FIRDatabaseReference *deleteItemRef = [__arrowsTableRef child: ai.key];
+        [deleteItemRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+            if (error) {
+                NSLog(@"Group could not be removed.");
+            } else {
+                NSLog(@"Group removed successfully.");
+                [ai removeFromSuperview];
+            }
+        }];
+        
+        // Step 2 of 3: Delete group key from current visuall table
+        FIRDatabaseReference *deleteItemKeyFromVisuallRef = [[_visuallsTable_currentVisuallRef child: @"arrows"] child: ai.key];
+        [deleteItemKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+            if (error) {
+                NSLog(@"Group key could not be removed.");
+            } else {
+                NSLog(@"Group key removed successfully.");
+            }
+        }];
+        
+        // Step 3 of 3: Decrement groups counter in visuall table
+        FIRDatabaseReference *itemsCounterRef = [_visuallsTable_currentVisuallRef child: @"arrows_counter"];
+        [self increaseOrDecreaseCounter: itemsCounterRef byAmount:-1];
+    }
     
 }
 

@@ -130,6 +130,7 @@ static CAShapeLayer *__tempShapeLayer;
 - (void) addArrowSublayer
 {
     UIBezierPath *path;
+    UIGraphicsBeginImageContext( CGSizeMake(1, 1) );  // required to avoid errors 'invalid context 0x0.'
     float length;
     float theta;
     self.transform = CGAffineTransformIdentity;

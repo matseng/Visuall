@@ -20,4 +20,6 @@
 
 - (VisualItem *) getItemFromKey: (NSString *) key;
 
+- (BOOL) deleteItemGivenKey: (NSString *) key;
+
 @end
