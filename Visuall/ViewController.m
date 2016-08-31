@@ -999,7 +999,8 @@
             [[self.lastSelectedObject getGroupItem] setViewAsNotSelected];
         } else if ( [self.lastSelectedObject isArrowItem] )
         {
-            [[self.lastSelectedObject getArrowItem] setViewAsNotSelected];
+            object = [object getArrowItem];
+            [[self.lastSelectedObject getArrowItem] setViewAsNotSelected];  // if the object is a handle, then it gets mutated here. Hence the line above to get the arrow item
         }
     }
     
