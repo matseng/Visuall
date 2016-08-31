@@ -12,9 +12,9 @@
 
 @interface GroupsCollection : Collection
 
-@property NSMutableArray *groups;
+//@property NSMutableArray *groups;
 
-@property NSMutableDictionary *groups2;
+//@property NSMutableDictionary *groups2;
 
 //- (void) initializeGroups;
 //- (void) addGroup:(GroupItem *)newGroup;

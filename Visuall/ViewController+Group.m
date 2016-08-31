@@ -51,6 +51,7 @@
 
          }];
 
+        NSLog(@"\n handlePanGroup, count %li", [[[self.visuallState groupsCollection] items] count]);
         [[self.visuallState groupsCollection] myForIn:^(GroupItem *gi)
         {
             if ([groupItem isGroupInGroup:gi]) {
@@ -78,6 +79,7 @@
         {
             [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
         }
+        NSLog(@"\n handlePanGroup, count %li", [groupItem.groupsInGroup count]);
         for (GroupItem *gi in groupItem.groupsInGroup)
         {
             [self.visuallState updateChildValue:gi Property:@"frame"];
@@ -137,7 +139,7 @@
 - (void) refreshGroupsView
 {
     // Sort by area of group view
-    NSArray *sortedArray = [self.groupsCollection.items keysSortedByValueUsingComparator: ^(GroupItem *group1, GroupItem *group2) {
+    NSArray *sortedArray = [self.visuallState.groupsCollection.items keysSortedByValueUsingComparator: ^(GroupItem *group1, GroupItem *group2) {
         
         float firstArea = group1.group.width * group1.group.height;
         float secondArea = group2.group.width * group2.group.height;
@@ -155,11 +157,11 @@
     }];
     
     for (NSString *key in sortedArray) {
-        float area = [self.groupsCollection getGroupAreaFromKey:key];
+        float area = [self.visuallState.groupsCollection getGroupAreaFromKey:key];
         NSLog(@"Group area: %f", area);
 //        [self.groupsCollection.groups2[key] removeFromSuperview];
 //        [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
-        GroupItem *gi = [self.groupsCollection getGroupItemFromKey:key];
+        GroupItem *gi = [self.visuallState.groupsCollection getGroupItemFromKey:key];
         [self.GroupsView bringSubviewToFront: gi];
     }
     
@@ -218,8 +220,8 @@
 {
     [self.visuallState setValueGroup: currentGroupItem];
     [self.GroupsView addSubview: currentGroupItem];
-    if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
-    [self.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
+    if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
+    [self.visuallState.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
     [self refreshGroupsView];
     [self setSelectedObject: currentGroupItem];
     [self setActivelySelectedObjectDuringPan: nil];

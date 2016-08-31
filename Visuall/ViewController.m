@@ -76,8 +76,8 @@
     [self.visuallState setCallbackGroupItem:^(GroupItem *gi) {
         [self addGestureRecognizersToGroup: gi];
         [self.GroupsView addSubview: gi];
-        if ( !self.groupsCollection ) self.groupsCollection = [GroupsCollection new];
-        [self.groupsCollection addGroup: gi withKey: gi.group.key];
+        if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
+        [self.visuallState.groupsCollection addGroup: gi withKey: gi.group.key];
         //        [self refreshGroupView];
         [self calculateTotalBounds: gi];
     }];
@@ -500,13 +500,14 @@
         if ([self.lastSelectedObject isNoteItem])
         {
             NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
-            [self.NotesCollection deleteNoteGivenKey: ni.note.key];
+            [self.visuallState.notesCollection deleteNoteGivenKey: ni.note.key];
         }
         
         else if ([self.lastSelectedObject isGroupItem])
         {
             GroupItem *gi = [self.lastSelectedObject getGroupItem];
-            [self.groupsCollection deleteGroupGivenKey: gi.group.key];
+//            [self.groupsCollection deleteGroupGivenKey: gi.group.key];
+            [[self.visuallState groupsCollection] deleteGroupGivenKey: gi.group.key];
         }
         
         else if ( [self.visuallState.selectedVisualItem isArrowItem] )
@@ -976,11 +977,12 @@
                 if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]]) {
                     NoteItem2 *ni = (NoteItem2 *)self.lastSelectedObject;
 //                    [self removeValue:ni];
-                    [self.NotesCollection deleteNoteGivenKey: ni.note.key];
+                    [self.visuallState.notesCollection deleteNoteGivenKey: ni.note.key];
                 } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
                     GroupItem *gi = (GroupItem *)self.lastSelectedObject;
 //                    [self removeValue:gi];
-                    [self.groupsCollection deleteGroupGivenKey: gi.group.key];
+                    [self.visuallState.groupsCollection deleteGroupGivenKey: gi.group.key];
+
                 }
                 [self.lastSelectedObject removeFromSuperview];
                 self.lastSelectedObject = nil;

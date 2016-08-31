@@ -57,10 +57,6 @@
 
 @property (strong, nonatomic) UIScrollView *scrollViewButtonList;
 
-@property NotesCollection *NotesCollection;
-
-@property GroupsCollection *groupsCollection;
-
 @property UIView *lastSelectedObject;
 
 @property UIView *activelySelectedObjectDuringPan;
