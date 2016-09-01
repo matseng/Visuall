@@ -79,10 +79,16 @@
         {
             [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
         }
-        NSLog(@"\n handlePanGroup, count %li", [groupItem.groupsInGroup count]);
+
         for (GroupItem *gi in groupItem.groupsInGroup)
         {
             [self.visuallState updateChildValue:gi Property:@"frame"];
+            
+        }
+        
+        for (ArrowItem *ai in groupItem.arrowsInGroup)
+        {
+            [self.visuallState updateChildValue: ai Property:nil];
             
         }
         

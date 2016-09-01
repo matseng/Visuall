@@ -209,6 +209,7 @@
         }
         for (ArrowItem *ai in self.arrowsInGroup) {
             [ai translateArrowByDelta: translation];
+//            [[[UserUtil sharedManager] getState] updateChildValue: ai Property: nil];
         }
     }
 }

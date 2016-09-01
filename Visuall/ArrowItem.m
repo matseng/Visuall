@@ -372,6 +372,7 @@ static CAShapeLayer *__tempShapeLayer;
     self.borderColor = [UIColor blueColor];
     if ( [[[UserUtil sharedManager] getState] editModeOn] )
     {
+        [self addHandles];
         [self showHandles];
     }
     [self addArrowSublayer];

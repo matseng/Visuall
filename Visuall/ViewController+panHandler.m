@@ -49,7 +49,16 @@
             NoteItem2 *ni = [self.activelySelectedObjectDuringPan getNoteItem];
             [self setSelectedObject:ni];
             [ni handlePan:gestureRecognizer];
-            [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
+            [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];  // save note coordinates
+            for (ArrowItem *ai in ni.arrowTailsInGroup)
+            {
+                [[[UserUtil sharedManager] getState] updateChildValue: ai Property: nil];  // save arrow tail(s) position
+            }
+            
+            for (ArrowItem *ai in ni.arrowHeadsInGroup)
+            {
+                [[[UserUtil sharedManager] getState] updateChildValue: ai Property: nil];  // save arrow heads(s) position
+            }
             return;
         }
         else if ([self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isGroupItem] && ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem]) )  // Pan or resize a group

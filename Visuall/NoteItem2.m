@@ -101,16 +101,12 @@
         [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai) {
             CGRect rect = self.frame;
             
-            CGRect rect2 = ai.tailHandle.frame;
-            rect2 = [[self superview] convertRect:rect2 fromView:ai];
-            if ( CGRectIntersectsRect(rect, rect2) )
+            if ( CGRectContainsPoint(rect, ai.startPoint) )
             {
                 [self.arrowTailsInGroup addObject: ai];  // add overlapping arrow TAILS to this note
             }
             
-            CGRect rect3 = ai.headHandle.frame;
-            rect3 = [[self superview] convertRect:rect3 fromView:ai];
-            if ( CGRectIntersectsRect(rect, rect3) )
+            if ( CGRectContainsPoint(rect, ai.endPoint) )
             {
                 [self.arrowHeadsInGroup addObject: ai];  // add overlapping arrow HEADS to this note
             }
