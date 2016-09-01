@@ -97,8 +97,7 @@
     if ( gestureRecognizer.state == UIGestureRecognizerStateBegan )
     {
         self.arrowTailsInGroup = [[NSMutableArray alloc] init];
-//        self.arrowHeadsInGroup = [[NSMutableArray alloc] init];
-        
+        self.arrowHeadsInGroup = [[NSMutableArray alloc] init];
         [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai) {
             CGRect rect = self.frame;
             
@@ -109,30 +108,31 @@
                 [self.arrowTailsInGroup addObject: ai];  // add overlapping arrow TAILS to this note
             }
             
-//            CGRect rect3 = ai.headHandle.frame;
-//            rect3 = [[self superview] convertRect:rect3 fromView:ai];
-//            if ( CGRectIntersectsRect(rect, rect3) )
-//            {
-//                [self.arrowHeadsInGroup addObject: ai];  // add overlapping arrow HEADS to this note
-//            }
+            CGRect rect3 = ai.headHandle.frame;
+            rect3 = [[self superview] convertRect:rect3 fromView:ai];
+            if ( CGRectIntersectsRect(rect, rect3) )
+            {
+                [self.arrowHeadsInGroup addObject: ai];  // add overlapping arrow HEADS to this note
+            }
         }];
     }
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
             gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        [self translateTx: translation.x andTy: translation.y];  // scale translation
+        [self translateTx: translation.x andTy: translation.y];
         
         for (ArrowItem *ai in self.arrowTailsInGroup)
         {
             [ai translateArrowTailByDelta: translation];
         }
-//        for (ArrowItem *ai in self.arrowHeadsInGroup)
-//        {
-//            [ai translateArrowHeadByDelta:translation];
-//        }
-        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+        
+        for (ArrowItem *ai in self.arrowHeadsInGroup)
+        {
+            [ai translateArrowHeadByDelta:translation];
+        }
     }
+    [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
 }
 
 - (void) resizeToFit: (NSString *) text;

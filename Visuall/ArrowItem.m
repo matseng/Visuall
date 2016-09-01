@@ -104,6 +104,7 @@ static CAShapeLayer *__tempShapeLayer;
         self.headLength = [value[@"data"][@"headLength"] floatValue];
         self.borderColor = [UIColor whiteColor];
         [self addArrowSublayer];
+        [self addHandles];
     }
     return self;
 }
@@ -125,6 +126,7 @@ static CAShapeLayer *__tempShapeLayer;
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
         [[[UserUtil sharedManager] getState] setSelectedVisualItem: self];
         [self addArrowSublayer];
+        [self addHandles];
     }
     return self;
 }
@@ -311,9 +313,21 @@ static CAShapeLayer *__tempShapeLayer;
     self.headHandle = [self makeHandle];
     self.tailHandle = [self makeHandle];
     [self updateHandlePosition];
+}
+
+- (void) showHandles
+{
     [self addSubview: self.headHandle];
     [self addSubview: self.tailHandle];
 }
+
+
+- (void) hideHandles
+{
+    [self.headHandle removeFromSuperview];
+    [self.tailHandle removeFromSuperview];
+}
+
 
 - (UIView *) makeHandle
 {
@@ -322,6 +336,7 @@ static CAShapeLayer *__tempShapeLayer;
     UIView *circleView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, diameter, diameter)];
     circleView.alpha = 0.5;
     circleView.layer.cornerRadius = diameter / 2;
+//    circleView.layer.backgroundColor = [self.borderColor CGColor];
     circleView.layer.backgroundColor = [self.borderColor CGColor];
     return circleView;
 }
@@ -357,7 +372,7 @@ static CAShapeLayer *__tempShapeLayer;
     self.borderColor = [UIColor blueColor];
     if ( [[[UserUtil sharedManager] getState] editModeOn] )
     {
-        [self addHandles];
+        [self showHandles];
     }
     [self addArrowSublayer];
 //    self.backgroundColor = [UIColor greenColor];  // for debugging shapes
@@ -366,8 +381,7 @@ static CAShapeLayer *__tempShapeLayer;
 - (void) setViewAsNotSelected
 {
     [self.arrowLayer removeFromSuperlayer];
-    [self.headHandle removeFromSuperview];
-    [self.tailHandle removeFromSuperview];
+    [self hideHandles];
     self.borderColor = [UIColor whiteColor];
     [self addArrowSublayer];
 }
