@@ -22,8 +22,7 @@
 #import "StateUtilFirebase.h"
 #import "UserUtil.h"
 #import "TouchDownGestureRecognizer.h"
-#import "DDFileReader.h"
-#import "RegExCategories.h"
+#import "ViewController+xmlParser.h"
 
 @interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
@@ -88,31 +87,13 @@
     if (self.tabBarController.selectedIndex == 0)  // Global tab
     {
         [self.visuallState loadPublicVisuallsList];
+        [self loadAndUploadXML];
     }
     else
     {
         [self.visuallState loadVisuallsListForCurrentUser];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
         [self.visuallState loadVisuallsForCurrentUser];
     }
-    
-    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"defaultVisualizationSmall"
-                                                     ofType:@"xml"];
-    __block NSString *result = @"test";  // https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Blocks/Articles/bxVariables.html
-    __block NSString *text;
-    DDFileReader * reader = [[DDFileReader alloc] initWithFilePath: filePath];
-    [reader enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
-        result = [result stringByAppendingString: line];
-
-        if ([result isMatch:RX(@"\\<node\\sid\\=\"(\\d)+\"\\>")] && [result isMatch:RX(@"\\<\\/node\\>")])
-        {
-            text = [result firstMatch:RX(@"\\<data key\\=\"name\"\\>[\\s\\S]*?\\<\\/data>")];
-            text = [text stringByReplacingOccurrencesOfString:@"<data key=\"name\">" withString:@""];
-            text = [text stringByReplacingOccurrencesOfString:@"</data>" withString:@""];
-            NSLog(@"read text: \n %@", text);
-            result = @"";
-        }
-    }];
-
 }
 
 /*

@@ -31,6 +31,12 @@
 
 @end
 
+@protocol XMLController  // implemented in ViewController+Group.h
+
+- (void) loadAndUploadXML;
+
+@end
+
 @interface ViewController : UIViewController
 
 @property (nonatomic, strong) StateUtilFirebase *visuallState;
