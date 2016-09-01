@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RegExCategories.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SevenSwitch.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +32,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0EE42DFC72D2DE38DE7726E2CE42C4BB</key>
+		<key>0693476D235C7ACAABDD3975CF0CC0D1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>67B6A435175ED4E08D71EB4BA26AB8AE</key>
+		<key>5D87AB92692D9023F92F67DCA8F37290</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>85F0D395AF550324669AD15236C13711</key>
+		<key>64FA17B12DC155D2FB06A3D2CF097B3C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D538F2CECE942DCD4D9AD569D62C6AC1</key>
+		<key>673CB4FE52801A2A9827B46AD976F758</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>881A444CA6D6CE1151DF3CA68554B58A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

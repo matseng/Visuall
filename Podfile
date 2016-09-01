@@ -17,6 +17,8 @@ pod 'GoogleSignIn'
 
 pod 'Firebase/Database'
 
+pod 'RegExCategories', '~> 1.0'
+
 target 'Visuall' do
 
 end

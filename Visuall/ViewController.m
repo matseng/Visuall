@@ -22,8 +22,8 @@
 #import "StateUtilFirebase.h"
 #import "UserUtil.h"
 #import "TouchDownGestureRecognizer.h"
-
 #import "DDFileReader.h"
+#import "RegExCategories.h"
 
 @interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
@@ -97,20 +97,22 @@
     
     NSString* filePath = [[NSBundle mainBundle] pathForResource:@"defaultVisualizationSmall"
                                                      ofType:@"xml"];
-    
     __block NSString *result = @"test";  // https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Blocks/Articles/bxVariables.html
+    __block NSString *text;
     DDFileReader * reader = [[DDFileReader alloc] initWithFilePath: filePath];
     [reader enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
         result = [result stringByAppendingString: line];
-//        NSLog(@"read line: %@", line);
+
+        if ([result isMatch:RX(@"\\<node\\sid\\=\"(\\d)+\"\\>")] && [result isMatch:RX(@"\\<\\/node\\>")])
+        {
+            text = [result firstMatch:RX(@"\\<data key\\=\"name\"\\>[\\s\\S]*?\\<\\/data>")];
+            text = [text stringByReplacingOccurrencesOfString:@"<data key=\"name\">" withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@"</data>" withString:@""];
+            NSLog(@"read text: \n %@", text);
+            result = @"";
+        }
     }];
-//    NSString* string = @"I have 2 dogs.";
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"node" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSRange range   = [regex rangeOfFirstMatchInString:result
-                                               options:0
-                                                 range:NSMakeRange(0, [result length])];
-    NSString *result2 = [result substringWithRange:range];
-NSLog(@"\n result: %@", result2);
+
 }
 
 /*
