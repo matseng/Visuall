@@ -20,6 +20,8 @@
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
+		715C60C11D78BBF300DD6942 /* DDFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C60C01D78BBF300DD6942 /* DDFileReader.m */; };
+		715C60C41D78BCAF00DD6942 /* defaultVisualizationSmall.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60C31D78BCAF00DD6942 /* defaultVisualizationSmall.xml */; };
 		7161CF641D55202700B278EB /* MyVisuallsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */; };
 		7161CF671D556C6E00B278EB /* GlobalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161CF661D556C6E00B278EB /* GlobalViewController.m */; };
 		716328B31D25F215009DF56B /* Paint Bucket-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B21D25F215009DF56B /* Paint Bucket-50.png */; };
@@ -128,6 +130,9 @@
 		713D0D5F1CC6AE4F00878EAE /* Group2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group2.m; sourceTree = "<group>"; };
 		71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDownGestureRecognizer.h; sourceTree = "<group>"; };
 		71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDownGestureRecognizer.m; sourceTree = "<group>"; };
+		715C60BF1D78BBF300DD6942 /* DDFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileReader.h; sourceTree = "<group>"; };
+		715C60C01D78BBF300DD6942 /* DDFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileReader.m; sourceTree = "<group>"; };
+		715C60C31D78BCAF00DD6942 /* defaultVisualizationSmall.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualizationSmall.xml; sourceTree = "<group>"; };
 		7161CF621D55202700B278EB /* MyVisuallsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVisuallsNavigationController.h; sourceTree = "<group>"; };
 		7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVisuallsNavigationController.m; sourceTree = "<group>"; };
 		7161CF651D556C6E00B278EB /* GlobalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalViewController.h; sourceTree = "<group>"; };
@@ -308,6 +313,7 @@
 				712EC9611BEAF21500ED6803 /* Main.storyboard */,
 				885AFD781C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld */,
 				712EC9641BEAF21500ED6803 /* Images.xcassets */,
+				715C60C21D78BC5A00DD6942 /* xml */,
 				71C23F291D21EF9400D53E0C /* Button Icons */,
 				77E13DA71C011D5F00105BB5 /* linkarrow.png */,
 				77E13DA91C011DC100105BB5 /* plane.png */,
@@ -347,9 +353,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		715C60C21D78BC5A00DD6942 /* xml */ = {
+			isa = PBXGroup;
+			children = (
+				715C60C31D78BCAF00DD6942 /* defaultVisualizationSmall.xml */,
+			);
+			name = xml;
+			sourceTree = "<group>";
+		};
 		71710A7F1D5CF6350038D883 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				715C60BF1D78BBF300DD6942 /* DDFileReader.h */,
+				715C60C01D78BBF300DD6942 /* DDFileReader.m */,
 				71FD2EE81D6522BC00CA5365 /* UserUtil.h */,
 				71FD2EE91D6522BC00CA5365 /* UserUtil.m */,
 				716B04681BFC210300DA9451 /* StateUtil.h */,
@@ -629,6 +645,7 @@
 				716328BB1D25F867009DF56B /* picture.png in Resources */,
 				71C23F351D221A7800D53E0C /* Trash-50.png in Resources */,
 				77E13DAC1C01211E00105BB5 /* delete.png in Resources */,
+				715C60C41D78BCAF00DD6942 /* defaultVisualizationSmall.xml in Resources */,
 				71C23F311D21F41600D53E0C /* conversation-with-text-lines.png in Resources */,
 				716328B51D25F23E009DF56B /* photo-camera.png in Resources */,
 				71D96BEF1D30347400CD1C49 /* light-bulb@2x.png in Resources */,
@@ -740,6 +757,7 @@
 				716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */,
 				7161CF671D556C6E00B278EB /* GlobalViewController.m in Sources */,
 				71E1AF651D4C325400B818A0 /* TabBarViewController.m in Sources */,
+				715C60C11D78BBF300DD6942 /* DDFileReader.m in Sources */,
 				71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */,
 				7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */,
 				71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */,
