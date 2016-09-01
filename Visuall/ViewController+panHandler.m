@@ -66,7 +66,7 @@
             }
             return;
         }
-        else if ( ([self isPointerButtonSelected] || [self isArrowButtonSelected]) && [self.activelySelectedObjectDuringPan isArrowItem])
+        else if ( ([self isPointerButtonSelected] || [self isArrowButtonSelected]) && ([self.lastSelectedObject getArrowItem] == [self.activelySelectedObjectDuringPan getArrowItem]))
         {
             ArrowItem *ai = [self.activelySelectedObjectDuringPan getArrowItem];
             if ( ![ai isHandle: self.activelySelectedObjectDuringPan] )

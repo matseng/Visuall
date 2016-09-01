@@ -23,6 +23,8 @@
 @property CGFloat tailWidth;
 @property CGFloat headWidth;
 @property CGFloat headLength;
+@property UIView *headHandle;
+@property UIView *tailHandle;
 //@property CGFloat headInnerLength;  // TODO (Aug 26, 2016): make arrow trapezoid-like if tail and head substantially different sizes
 
 + (void) setStartPoint: (CGPoint) aPoint;
@@ -42,6 +44,10 @@
 - (void) setViewAsNotSelected;
 
 - (void) translateArrowByDelta: (CGPoint) translation;
+
+- (void) translateArrowTailByDelta: (CGPoint) translation;
+
+- (void) translateArrowHeadByDelta: (CGPoint) translation;
 
 - (BOOL) isHandle: (UIView*) handle;
 

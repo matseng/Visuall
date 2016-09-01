@@ -10,6 +10,8 @@
 
 #import "Note+CoreDataProperties.h"
 #import "AppDelegate.h"
+#import "UserUtil.h"
+#import "ArrowItem.h"
 
 @interface NoteItem2()
 @property NSManagedObjectContext *moc;
@@ -90,11 +92,46 @@
 
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer
 {
+    CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
+    
+    if ( gestureRecognizer.state == UIGestureRecognizerStateBegan )
+    {
+        self.arrowTailsInGroup = [[NSMutableArray alloc] init];
+//        self.arrowHeadsInGroup = [[NSMutableArray alloc] init];
+        
+        [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai) {
+            CGRect rect = self.frame;
+            
+            CGRect rect2 = ai.tailHandle.frame;
+            rect2 = [[self superview] convertRect:rect2 fromView:ai];
+            if ( CGRectIntersectsRect(rect, rect2) )
+            {
+                [self.arrowTailsInGroup addObject: ai];  // add overlapping arrow TAILS to this note
+            }
+            
+//            CGRect rect3 = ai.headHandle.frame;
+//            rect3 = [[self superview] convertRect:rect3 fromView:ai];
+//            if ( CGRectIntersectsRect(rect, rect3) )
+//            {
+//                [self.arrowHeadsInGroup addObject: ai];  // add overlapping arrow HEADS to this note
+//            }
+        }];
+    }
+    
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
-        gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [gestureRecognizer translationInView: [self superview]];  // amount translated in the NotesView, which is effectively the user's screen
-        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
         [self translateTx: translation.x andTy: translation.y];  // scale translation
+        
+        for (ArrowItem *ai in self.arrowTailsInGroup)
+        {
+            [ai translateArrowTailByDelta: translation];
+        }
+//        for (ArrowItem *ai in self.arrowHeadsInGroup)
+//        {
+//            [ai translateArrowHeadByDelta:translation];
+//        }
+        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
     }
 }
 

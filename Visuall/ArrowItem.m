@@ -28,8 +28,7 @@ static CAShapeLayer *__tempShapeLayer;
 @property UIView *arrowSubview;
 @property CAShapeLayer *arrowLayer;
 @property UIColor *borderColor;
-@property UIView *headHandle;
-@property UIView *tailHandle;
+
 
 @end
 
@@ -266,17 +265,11 @@ static CAShapeLayer *__tempShapeLayer;
     
     if ( [[[UserUtil sharedManager] getState] selectedVisualItemSubview] == self.headHandle )  // move the arrow head
     {
-        [self.arrowLayer removeFromSuperlayer];
-        self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
-        [self addArrowSublayer];
-        [self updateHandlePosition];
+        [self translateArrowHeadByDelta: translation];
     }
     else if ( [[[UserUtil sharedManager] getState] selectedVisualItemSubview] == self.tailHandle )  // move the arrow tail
     {
-        [self.arrowLayer removeFromSuperlayer];
-        self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
-        [self addArrowSublayer];
-        [self updateHandlePosition];
+        [self translateArrowTailByDelta: translation];
     }
     else  // move the entire arrow
     {
@@ -284,6 +277,22 @@ static CAShapeLayer *__tempShapeLayer;
     }
 
     [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+}
+
+- (void) translateArrowHeadByDelta: (CGPoint) translation
+{
+    [self.arrowLayer removeFromSuperlayer];
+    self.endPoint = CGPointMake(self.endPoint.x + translation.x, self.endPoint.y + translation.y);
+    [self addArrowSublayer];
+    [self updateHandlePosition];
+}
+
+- (void) translateArrowTailByDelta: (CGPoint) translation
+{
+    [self.arrowLayer removeFromSuperlayer];
+    self.startPoint = CGPointMake(self.startPoint.x + translation.x, self.startPoint.y + translation.y);
+    [self addArrowSublayer];
+    [self updateHandlePosition];
 }
 
 - (void) translateArrowByDelta: (CGPoint) translation
@@ -390,7 +399,6 @@ static CAShapeLayer *__tempShapeLayer;
     result = [self hitTest: point withEvent:nil];
     return result;
 }
-
 
 //- (UIView *) hitTestWithHandles: (CGPoint) point
 //{

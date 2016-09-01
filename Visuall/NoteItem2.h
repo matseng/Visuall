@@ -17,6 +17,9 @@
 @property Note2 *note;
 @property UITextView *noteTextView;
 @property float fontSizeScaleFactor;
+@property NSMutableArray *arrowTailsInGroup;
+@property NSMutableArray *arrowHeadsInGroup;
+
 
 //- (instancetype) initNote:(Note *) note;
 
