@@ -83,11 +83,15 @@
         [self calculateTotalBounds: gi];
     }];
     
+    [self.visuallState setCallbackPublicVisuallLoaded:^{
+        [self loadAndUploadXML];
+    }];
+    
 //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
     if (self.tabBarController.selectedIndex == 0)  // Global tab
     {
         [self.visuallState loadPublicVisuallsList];
-        [self loadAndUploadXML];
+//        [self loadAndUploadXML];
     }
     else
     {

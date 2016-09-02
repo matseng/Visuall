@@ -35,6 +35,7 @@
     FIRDatabaseReference *__publicVisuallsTableRef;
     void (^_callbackNoteItem)(NoteItem2 *ni);
     void (^_callbackGroupItem)(GroupItem *gi);
+    void (^_callbackPublicVisuallLoaded)(void);
 }
 
 //+(id)sharedManager {
@@ -175,6 +176,7 @@
                  _currentVisuallKey = key;
                  _visuallsTable_currentVisuallRef = [_visuallsTableRef child: key];
                  [self loadVisuallFromKey: key];
+                 _callbackPublicVisuallLoaded();
                  return; // TODO: early termination here only loading the 1st and only visuall
              }
          }
@@ -219,6 +221,11 @@
 - (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem
 {
     _callbackGroupItem = [callbackGroupItem copy];
+};
+
+- (void) setCallbackPublicVisuallLoaded:(void (^)(void)) callback
+{
+    _callbackPublicVisuallLoaded = [callback copy];
 };
 
 - (void) loadVisuallFromKey: (NSString *) key
@@ -401,7 +408,14 @@
     ni.note.key = newNoteRef.key;
     [self.notesCollection addNote:ni withKey:newNoteRef.key];
     [newNoteRef updateChildValues: noteDictionary];
-    [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
+//    [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
+    [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues:@{newNoteRef.key: @"1"} withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error) {
+            NSLog(@"Note could NOT be saved.");
+        } else {
+            NSLog(@"Note saved successfully.");
+        }
+    }];
     FIRDatabaseReference *notesCounterRef = [_visuallsTable_currentVisuallRef child: @"notes_counter"];
     [self increaseOrDecreaseCounter: notesCounterRef byAmount:1];
 }
@@ -638,7 +652,6 @@
             } else {
                 NSLog(@"Note removed successfully.");
                 [ni removeFromSuperview];
-                
             }
         }];
         

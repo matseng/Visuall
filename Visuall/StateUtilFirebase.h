@@ -17,6 +17,8 @@
 
 - (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem;
 
+- (void) setCallbackPublicVisuallLoaded: (void (^)(void)) callback;
+
 - (void) loadVisuallsListForCurrentUser;
 
 - (void) loadVisuallsForCurrentUser;
