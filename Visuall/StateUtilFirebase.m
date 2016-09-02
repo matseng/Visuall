@@ -64,8 +64,8 @@
 {
     self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
     
-//    [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016): TEMP
-    
+//    /* CAUTION */ [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016): TEMP
+
     if ( __userID )
     {
         _usersTableCurrentUser = [[self.version01TableRef child:@"users"] child: __userID];
@@ -418,17 +418,25 @@
     //    NSLog(@"setValueNote, parent-visuall: %@", _currentVisuallKey);
     ni.note.key = newNoteRef.key;
     [self.notesCollection addNote:ni withKey:newNoteRef.key];
-    [newNoteRef updateChildValues: noteDictionary];
-//    [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues: @{newNoteRef.key: @"1"}];
-    [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues:@{newNoteRef.key: @"1"} withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+    [newNoteRef setValue: @"enable offline, local storage hack"];
+    [newNoteRef updateChildValues: noteDictionary withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error) {
             NSLog(@"Note could NOT be saved.");
         } else {
             NSLog(@"Note saved successfully.");
         }
     }];
-    FIRDatabaseReference *notesCounterRef = [_visuallsTable_currentVisuallRef child: @"notes_counter"];
-    [self increaseOrDecreaseCounter: notesCounterRef byAmount:1];
+
+    [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues:@{newNoteRef.key: @"1"} withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error) {
+            NSLog(@"Note could NOT be saved.");
+        } else {
+            NSLog(@"Note saved successfully.");
+            FIRDatabaseReference *notesCounterRef = [_visuallsTable_currentVisuallRef child: @"notes_counter"];
+            [self increaseOrDecreaseCounter: notesCounterRef byAmount:1];
+        }
+    }];
+
 }
 
 - (void) increaseOrDecreaseCounter: (FIRDatabaseReference *) ref byAmount: (int) i
@@ -466,6 +474,8 @@
                                               } mutableCopy];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
+    NSDictionary *dict = @{@"metadata/parent-visuall": _currentVisuallKey};
+    [newGroupRef setValue: dict];  // HACK to allow for offline, local storage and avoid permission errors
     [newGroupRef updateChildValues: groupDictionary];
     [[_visuallsTable_currentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
     if ( [vi isImage] )
@@ -501,6 +511,7 @@
                                               } mutableCopy];
     [arrowDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [arrowDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
+    [newArrowRef setValue: @"enable offline, local storage hack"];
     [newArrowRef updateChildValues: arrowDictionary];
     [[_visuallsTable_currentVisuallRef child: @"arrows"] updateChildValues: @{newArrowRef.key: @"1"}];
     FIRDatabaseReference *arrowsCounterRef = [_visuallsTable_currentVisuallRef child: @"arrows_counter"];

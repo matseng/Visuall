@@ -27,10 +27,11 @@
     __block int counter = 0;
     DDFileReader * reader = [[DDFileReader alloc] initWithFilePath: filePath];
     NSDate *methodStart = [NSDate date];
+    /*
     [reader enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
         result = [result stringByAppendingString: line];  // concatenate lines of XML
         
-        /*
+        
 //        if ([result isMatch:RX(@"\\<node\\sid\\=\"(\\d)+\"\\>")] && [result isMatch:RX(@"\\<\\/node\\>")])  // determine if we have a complete node
         if ([line isMatch:RX(@"\\<\\/node\\>")])  // we reach an end node
         {
@@ -51,11 +52,12 @@
             NSLog(@"\n Counter %d", counter++);
 //            return;
          
-        }  */
+        } 
     }];
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
     NSLog(@"Done loading notes: executionTime = %f", executionTime);
+    */
 }
 
 - (NSString *) getValueFromXMLString: (NSString *) xmlString forKey: (NSString *) key
