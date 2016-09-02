@@ -14,35 +14,48 @@
 
 - (void) loadAndUploadXML
 {
-    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"defaultVisualizationSmall"
+    NSString *fileName = @"defaultVisualizationSmall";
+//    NSString *fileName = @"defaultVisualization1773";
+    NSString* filePath = [[NSBundle mainBundle] pathForResource:fileName
                                                          ofType:@"xml"];
+    
     __block NSString *result = @"test";  // https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Blocks/Articles/bxVariables.html
     __block NSString *text;
     __block NSString *pointX;
     __block NSString *pointY;
     __block CGPoint point;
+    __block int counter = 0;
     DDFileReader * reader = [[DDFileReader alloc] initWithFilePath: filePath];
+    NSDate *methodStart = [NSDate date];
     [reader enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
         result = [result stringByAppendingString: line];  // concatenate lines of XML
         
-        if ([result isMatch:RX(@"\\<node\\sid\\=\"(\\d)+\"\\>")] && [result isMatch:RX(@"\\<\\/node\\>")])  // determine if we have a complete node
+        /*
+//        if ([result isMatch:RX(@"\\<node\\sid\\=\"(\\d)+\"\\>")] && [result isMatch:RX(@"\\<\\/node\\>")])  // determine if we have a complete node
+        if ([line isMatch:RX(@"\\<\\/node\\>")])  // we reach an end node
         {
             text = [result firstMatch:RX(@"\\<data key\\=\"name\"\\>[\\s\\S]*?\\<\\/data>")];
             text = [text stringByReplacingOccurrencesOfString:@"<data key=\"name\">" withString:@""];
             text = [text stringByReplacingOccurrencesOfString:@"</data>" withString:@""];
-            NSLog(@"read text: \n %@", text);
+//            NSLog(@"read text: \n %@", text);
             pointX = [self getValueFromXMLString: result forKey:@"X"];
-            NSLog(@"read text: \n %@", pointX);
+//            NSLog(@"read text: \n %@", pointX);
             pointY = [self getValueFromXMLString: result forKey:@"Y"];
-            NSLog(@"read text: \n %@", pointY);
+//            NSLog(@"read text: \n %@", pointY);
             point = CGPointMake([pointX floatValue], [pointY floatValue]);
-            NoteItem2 *newNote = [[NoteItem2 alloc] initNote: text withPoint: CGPointMake(-800, -900)];
-            [self.visuallState setValueNote: newNote];
+            NoteItem2 *newNote = [[NoteItem2 alloc] initNote: text withPoint: point];  // CGPointMake(-800, -900)
+//            [self.visuallState setValueNote: newNote];  // DANGER may overwhelm Firebase
             [self addNoteToViewWithHandlers:newNote];
+            [self calculateTotalBounds: newNote];
             result = @"";
-            return;
-        }
+            NSLog(@"\n Counter %d", counter++);
+//            return;
+         
+        }  */
     }];
+    NSDate *methodFinish = [NSDate date];
+    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+    NSLog(@"Done loading notes: executionTime = %f", executionTime);
 }
 
 - (NSString *) getValueFromXMLString: (NSString *) xmlString forKey: (NSString *) key

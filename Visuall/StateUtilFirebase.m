@@ -62,9 +62,10 @@
 
 - (void) loadTableRefs
 {
-    [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016):
-    
     self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    
+//    [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016): TEMP
+    
     if ( __userID )
     {
         _usersTableCurrentUser = [[self.version01TableRef child:@"users"] child: __userID];
@@ -77,6 +78,8 @@
     __storage = [FIRStorage storage];
     FIRStorageReference *storageRef = [__storage referenceForURL:@"gs://visuall-2f878.appspot.com"];
     __storageImagesRef = [storageRef child:@"images"];
+    
+
     
 }
 
@@ -158,7 +161,7 @@
 {
     
     [__publicVisuallsTableRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
-     {
+    {
          if ( ![snapshot exists] )  // we need to create first public visual
          {
              NSDictionary *visuallDictionary = @{
@@ -173,7 +176,10 @@
              [_visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
              [__publicVisuallsTableRef updateChildValues: @{_visuallsTable_currentVisuallRef.key: @"1"}];
          }
-         {  // run thru list of Visualls
+         else {
+             NSLog(@"loadPublicVisuallsList: no snapshot");
+         }
+//         {  // run thru list of Visualls
              NSDictionary *visuallKeys = (NSDictionary *) snapshot.value;
              for (NSString *key in visuallKeys) {
                  _currentVisuallKey = key;
@@ -182,9 +188,10 @@
                  _callbackPublicVisuallLoaded();
                  return; // TODO: early termination here only loading the 1st and only visuall
              }
-         }
+//         }
+        
      } withCancelBlock:^(NSError * _Nonnull error) {
-         NSLog(@"%@", error.localizedDescription);
+         NSLog(@"loadPublicVisuallsList: %@", error.localizedDescription);
      }];
 }
 
@@ -254,6 +261,7 @@
          }
          self.childrenCountNotes = snapshot.childrenCount;
          [self loadNoteFromRef: [_notesTableRef child:key]];
+//         [self removeNoteGivenKey: key];
          
      } withCancelBlock:^(NSError *error)
      {
@@ -379,7 +387,7 @@
          [self.ArrowsView addSubview: ai];
      } withCancelBlock:^(NSError *error)
      {
-         NSLog(@"loadNoteFromRef %@", error.description);
+         NSLog(@"loadArrowFromRef %@", error.description);
      }];
 }
 
@@ -546,9 +554,7 @@
     if ( [visualObject isNoteItem] )
     {
         NoteItem2 *ni = [visualObject getNoteItem];
-        
-//        '.' '#' '$' '[' or ']''
-        if( [ni.note.key isMatch:RX(@"[^\\.\\#\\$\\[\\]]")] )
+        if( [ni.note.key isMatch:RX(@"[\\.\\#\\$\\[\\]]")] )
         {
             return;
         }
@@ -753,7 +759,38 @@
     
 }
 
-
+- (void) removeNoteGivenKey: (NSString *) key
+{
+    // TODO (Aug 11, 2016): Consider changing operations below to nested callbacks or promises.
+    // Also need to delete note from NotesCollection and set note to nil via [ni delete:nil];
+    // Step 1 of 3: Delete note from notes table
+    FIRDatabaseReference *deleteNoteRef = [_notesTableRef child: key];
+    [deleteNoteRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+        NSLog(@"error: %@", error);
+        NSLog(@"key: %@", ref.key);
+        if (error) {
+            NSLog(@"Note could NOT be removed.");
+        } else {
+            NSLog(@"Note removed successfully.");
+//            [ni removeFromSuperview];
+        }
+    }];
+    
+    // Step 2 of 3: Delete note key from current visuall table
+    FIRDatabaseReference *deleteNoteKeyFromVisuallRef = [[_visuallsTable_currentVisuallRef child: @"notes"] child: key];
+    [deleteNoteKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+        if (error) {
+            NSLog(@"Note key could not be removed.");
+        } else {
+            NSLog(@"Note key removed successfully.");
+        }
+    }];
+    
+    // Step 3 of 3: Decrement notes counter in visuall table
+    FIRDatabaseReference *notesCounterRef = [_visuallsTable_currentVisuallRef child: @"notes_counter"];
+    [self increaseOrDecreaseCounter: notesCounterRef byAmount:-1];
+    
+}
 
 /*
  
