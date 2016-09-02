@@ -12,6 +12,7 @@
 #import "GroupItemImage.h"
 #import "ArrowItem.h"
 #import "ViewController+Arrow.h"
+#import "RegExCategories.h"
 
 @interface StateUtilFirebase()
 
@@ -61,6 +62,8 @@
 
 - (void) loadTableRefs
 {
+    [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016):
+    
     self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
     if ( __userID )
     {
@@ -543,6 +546,13 @@
     if ( [visualObject isNoteItem] )
     {
         NoteItem2 *ni = [visualObject getNoteItem];
+        
+//        '.' '#' '$' '[' or ']''
+        if( [ni.note.key isMatch:RX(@"[^\\.\\#\\$\\[\\]]")] )
+        {
+            return;
+        }
+        
         FIRDatabaseReference *notesDataRef = [[self.version01TableRef child: @"notes"] child: ni.note.key];
         NSString *localKey = [@"data/" stringByAppendingString: propertyName];
         NSMutableDictionary *noteDict = [@{
@@ -742,6 +752,8 @@
     }
     
 }
+
+
 
 /*
  
