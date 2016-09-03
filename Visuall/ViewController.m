@@ -269,23 +269,24 @@
     CGRect rect = self.BackgroundScrollView.bounds;
     NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
-    if (contentsFrame.size.width < boundsSize.width) {
+//    if (contentsFrame.size.width < boundsSize.width) {
         contentsFrame.origin.x = contentsFrame.origin.x - self.BackgroundScrollView.bounds.origin.x;
-    }
+//    }
     
-    if (contentsFrame.size.height < boundsSize.height) {
+//    if (contentsFrame.size.height < boundsSize.height) {
         contentsFrame.origin.y = contentsFrame.origin.y - self.BackgroundScrollView.bounds.origin.y;
-    }
+//    }
     
     self.BoundsTiledLayerView.frame = contentsFrame;
+    [self centerScrollViewContents2];
 }
 
-- (void) __centerScrollViewContents {
+- (void) centerScrollViewContents2 {
     // TODO (Sep 2, 2016): We have visualItemsRectInBackgroundScollView working correctly. Need to build correctly sized BoundsTiledLayerView to allow each corner of VisualItemsView to be scrolled to the middle. Then need to place VisualItemsView correctly so it appears as though it didn't move.
     
     CGRect offsetRect = CGRectMake(0, 0, - self.BackgroundScrollView.bounds.origin.x, - self.BackgroundScrollView.bounds.origin.y);
     CGRect convertedVisualItemsRect = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
-//    CGPoint convertVisualItemsOriginInBackgroundScrollView = [self.BackgroundScrollView convertPoint: CGPointZero fromView: self.VisualItemsView];
+    CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
     CGRect visualItemsRectInBackgroundScollView = CGRectMake(
                                              offsetRect.size.width + convertedVisualItemsRect.origin.x,
                                              offsetRect.size.height + convertedVisualItemsRect.origin.y,
@@ -294,6 +295,7 @@
     NSLog(@"offsetRect: %f, %f, %f, %f", offsetRect.origin.x, offsetRect.origin.y, offsetRect.size.width, offsetRect.size.height);
     NSLog(@"convertedVisualItemsRect: %f, %f, %f, %f", convertedVisualItemsRect.origin.x, convertedVisualItemsRect.origin.y, convertedVisualItemsRect.size.width, convertedVisualItemsRect.size.height);
     NSLog(@"visualItemsRectInBackgroundScollView: %f, %f, %f, %f", visualItemsRectInBackgroundScollView.origin.x, visualItemsRectInBackgroundScollView.origin.y, visualItemsRectInBackgroundScollView.size.width, visualItemsRectInBackgroundScollView.size.height);
+//    CGRect newBoundsTiledLayerRect = CGRectUnion(<#CGRect r1#>, <#CGRect r2#>)
 //    NSLog(@"convertVisualItemsOriginInBackgroundScrollView: %f, %f", convertVisualItemsOriginInBackgroundScrollView.x, convertVisualItemsOriginInBackgroundScrollView.y);
 
 }
@@ -367,7 +369,7 @@
 {
     [self findChildandTitleNotes];
 //    [self __centerScrollViewContents];
-    [self setNewScrollViewOuterContentsFrame];
+//    [self setNewScrollViewOuterContentsFrame];
 }
 
 
