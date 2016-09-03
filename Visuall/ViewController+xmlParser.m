@@ -27,11 +27,11 @@
     __block int counter = 0;
     DDFileReader * reader = [[DDFileReader alloc] initWithFilePath: filePath];
     NSDate *methodStart = [NSDate date];
-    /*
+    
+//    return;  // TODO (Sep 2, 2016):
+    
     [reader enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
         result = [result stringByAppendingString: line];  // concatenate lines of XML
-        
-        
 //        if ([result isMatch:RX(@"\\<node\\sid\\=\"(\\d)+\"\\>")] && [result isMatch:RX(@"\\<\\/node\\>")])  // determine if we have a complete node
         if ([line isMatch:RX(@"\\<\\/node\\>")])  // we reach an end node
         {
@@ -44,8 +44,8 @@
             pointY = [self getValueFromXMLString: result forKey:@"Y"];
 //            NSLog(@"read text: \n %@", pointY);
             point = CGPointMake([pointX floatValue], [pointY floatValue]);
-            NoteItem2 *newNote = [[NoteItem2 alloc] initNote: text withPoint: point];  // CGPointMake(-800, -900)
-//            [self.visuallState setValueNote: newNote];  // DANGER may overwhelm Firebase
+            NoteItem2 *newNote = [[NoteItem2 alloc] initNote: text withPoint: point];  //
+            [self.visuallState setValueNote: newNote];  // CAUTION may overwhelm Firebase
             [self addNoteToViewWithHandlers:newNote];
             [self calculateTotalBounds: newNote];
             result = @"";
@@ -57,7 +57,6 @@
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
     NSLog(@"Done loading notes: executionTime = %f", executionTime);
-    */
 }
 
 - (NSString *) getValueFromXMLString: (NSString *) xmlString forKey: (NSString *) key

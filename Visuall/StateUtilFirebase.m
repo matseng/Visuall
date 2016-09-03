@@ -37,6 +37,7 @@
     void (^_callbackNoteItem)(NoteItem2 *ni);
     void (^_callbackGroupItem)(GroupItem *gi);
     void (^_callbackPublicVisuallLoaded)(void);
+    __block int counter;
 }
 
 //+(id)sharedManager {
@@ -162,33 +163,30 @@
     
     [__publicVisuallsTableRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
     {
-         if ( ![snapshot exists] )  // we need to create first public visual
-         {
-             NSDictionary *visuallDictionary = @{
-                                                 @"title": @"My First Global Visuall",
-                                                 @"date-created": [FIRServerValue timestamp],
-                                                 @"created-by-userID": [FIRAuth auth].currentUser.uid,
-                                                 @"admin" : @{ [FIRAuth auth].currentUser.uid : @"1" },
-                                                 @"public": @"1"
-                                                 };
-             _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
-             _currentVisuallKey = _visuallsTable_currentVisuallRef.key;
-             [_visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
-             [__publicVisuallsTableRef updateChildValues: @{_visuallsTable_currentVisuallRef.key: @"1"}];
-         }
-         else {
-             NSLog(@"loadPublicVisuallsList: no snapshot");
-         }
-//         {  // run thru list of Visualls
-             NSDictionary *visuallKeys = (NSDictionary *) snapshot.value;
-             for (NSString *key in visuallKeys) {
-                 _currentVisuallKey = key;
-                 _visuallsTable_currentVisuallRef = [_visuallsTableRef child: key];
-                 [self loadVisuallFromKey: key];
-                 _callbackPublicVisuallLoaded();
-                 return; // TODO: early termination here only loading the 1st and only visuall
-             }
-//         }
+        if ( ![snapshot exists] )  // we need to create over very first public visual
+        {
+            NSDictionary *visuallDictionary = @{
+                                                @"title": @"My First Global Visuall",
+                                                @"date-created": [FIRServerValue timestamp],
+                                                @"created-by-userID": [FIRAuth auth].currentUser.uid,
+                                                @"admin" : @{ [FIRAuth auth].currentUser.uid : @"1" },
+                                                @"public": @"1"
+                                                };
+            _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
+            _currentVisuallKey = _visuallsTable_currentVisuallRef.key;
+            [_visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
+            [__publicVisuallsTableRef updateChildValues: @{_visuallsTable_currentVisuallRef.key: @"1"}];
+        }
+        else {  // run thru list of Visualls
+            NSDictionary *visuallKeys = (NSDictionary *) snapshot.value;
+            for (NSString *key in visuallKeys) {
+                _currentVisuallKey = key;
+                _visuallsTable_currentVisuallRef = [_visuallsTableRef child: key];
+                [self loadVisuallFromKey: key];
+                _callbackPublicVisuallLoaded();
+                return; // TODO: early termination here only loading the 1st and only visuall
+            }
+        }
         
      } withCancelBlock:^(NSError * _Nonnull error) {
          NSLog(@"loadPublicVisuallsList: %@", error.localizedDescription);
@@ -262,6 +260,7 @@
          self.childrenCountNotes = snapshot.childrenCount;
          [self loadNoteFromRef: [_notesTableRef child:key]];
 //         [self removeNoteGivenKey: key];
+
          
      } withCancelBlock:^(NSError *error)
      {
@@ -313,6 +312,7 @@
 {
     [noteRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
+        // TODO (Sep 2, 2016): Change to make ASYNC to speed up load times? Move all operations to background thread until ready to add subview: [self.NotesView addSubview:noteItem];
          
          if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
          {
@@ -322,6 +322,7 @@
          NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
          [self.notesCollection addNote:newNote withKey:snapshot.key];
          _callbackNoteItem(newNote);
+        NSLog(@"\n Number of notes loaded into Visuall: %d", counter++);
          
      } withCancelBlock:^(NSError *error)
      {
@@ -406,7 +407,6 @@
                                              @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
 //                                             @"data/font-size": [NSString stringWithFormat:@"%.1f", ni.note.fontSize],
                                              @"data/fontSize": [ni.note valueForKey: @"fontSize"],
-                                             @"metadata/parent-visuall": _currentVisuallKey,
                                              @"metadata/date-created": [FIRServerValue timestamp],
                                              @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
                                              @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
@@ -418,7 +418,7 @@
     //    NSLog(@"setValueNote, parent-visuall: %@", _currentVisuallKey);
     ni.note.key = newNoteRef.key;
     [self.notesCollection addNote:ni withKey:newNoteRef.key];
-    [newNoteRef setValue: @"enable offline, local storage hack"];
+    [newNoteRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
     [newNoteRef updateChildValues: noteDictionary withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error) {
             NSLog(@"Note could NOT be saved.");
@@ -429,9 +429,9 @@
 
     [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues:@{newNoteRef.key: @"1"} withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error) {
-            NSLog(@"Note could NOT be saved.");
+            NSLog(@"Note REF could NOT be saved.");
         } else {
-            NSLog(@"Note saved successfully.");
+            NSLog(@"Note REF saved successfully.");
             FIRDatabaseReference *notesCounterRef = [_visuallsTable_currentVisuallRef child: @"notes_counter"];
             [self increaseOrDecreaseCounter: notesCounterRef byAmount:1];
         }
@@ -462,20 +462,19 @@
         return;
     }
     NSMutableDictionary *groupDictionary = [@{
+                                              @"parent-visuall": _currentVisuallKey,
                                               @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
                                               @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
                                               @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
                                               @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
                                               @"data/image": ([vi isImage]) ? @"1" : @"0",
-                                              @"metadata/parent-visuall": _currentVisuallKey,
                                               @"metadata/date-created": [FIRServerValue timestamp],
                                               @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
                                               @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
                                               } mutableCopy];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
-    NSDictionary *dict = @{@"metadata/parent-visuall": _currentVisuallKey};
-    [newGroupRef setValue: dict];  // HACK to allow for offline, local storage and avoid permission errors
+    [newGroupRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
     [newGroupRef updateChildValues: groupDictionary];
     [[_visuallsTable_currentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
     if ( [vi isImage] )
@@ -511,7 +510,7 @@
                                               } mutableCopy];
     [arrowDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [arrowDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
-    [newArrowRef setValue: @"enable offline, local storage hack"];
+    [newArrowRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
     [newArrowRef updateChildValues: arrowDictionary];
     [[_visuallsTable_currentVisuallRef child: @"arrows"] updateChildValues: @{newArrowRef.key: @"1"}];
     FIRDatabaseReference *arrowsCounterRef = [_visuallsTable_currentVisuallRef child: @"arrows_counter"];
@@ -543,7 +542,7 @@
     {
         return [@{
 
-                  @"metadata/parent-visuall": _currentVisuallKey,
+                  @"parent-visuall": _currentVisuallKey,
                   @"metadata/date-created": [FIRServerValue timestamp],
                   @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,
                   @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,

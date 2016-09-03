@@ -88,7 +88,7 @@
         }
         else
         {
-            CGPoint translation = [gestureRecognizer translationInView: self.BackgroundScrollView];  // amount translated in the NotesView, which is effectively the user's screen
+            CGPoint translation = [gestureRecognizer translationInView: self.BackgroundScrollView];
             [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
             CGRect rect = self.BoundsTiledLayerView.frame;
             rect.origin.x = rect.origin.x + translation.x;

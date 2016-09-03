@@ -84,7 +84,7 @@
     }];
     
     [self.visuallState setCallbackPublicVisuallLoaded:^{
-        [self loadAndUploadXML];
+//        [self loadAndUploadXML];
     }];
     
 //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
@@ -282,6 +282,7 @@
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    
     [self centerScrollViewContents];
     
     return; // TODO (Aug 22, 2016): testing 
@@ -328,7 +329,8 @@
     self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
     self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
 
-    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
+//    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
+    self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
     float contentOriginX = -self.totalBoundsRect.origin.x;
     float contentOriginY = -self.totalBoundsRect.origin.y;
 
@@ -872,43 +874,14 @@
     [self tapHandler: gestureRecognizer];  // tap group --> check to see if we should add a note
 }
 
-//- (void) attachAllNotes
-//{
-//    for (NoteItem2 *ni in self.NotesCollection.Notes) {
-//        [self addNoteToViewWithHandlers:ni]; // TODO: re-enable
-//    }
-//}
-
 - (void) addNoteToViewWithHandlers:(NoteItem2 *) noteItem
 {
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(tapHandler:)];
-//    tap.delegate = self;
-//    [noteItem.noteTextView addGestureRecognizer: tap];
-//    [noteItem addGestureRecognizer: tap];
-    
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(panHandler:)];
-//    pan.delegate = self;
-//    [noteItem.noteTextView addGestureRecognizer: pan];
     noteItem.noteTextView.delegate = self;
     noteItem.noteTextView.editable = NO;
-    
-    [self.NotesView addSubview:noteItem];
-//    [[StateUtil sharedManager] transformVisualItem: noteItem];
     [noteItem transformVisualItem];
-
+    [self.NotesView addSubview:noteItem];
 }
 
-//- (BOOL) textFieldShouldReturn:(UITextField *) textField
-//{
-//    NSLog(@"Should remove keyboard here again");
-//    [textField resignFirstResponder];
-//    return YES;
-//}
-//
 - (BOOL) textViewShouldBeginEditing:(UITextView *) textView
 {
     NSLog(@"textFieldShouldBeginEditing");

@@ -177,6 +177,19 @@
 
 -(void) transformVisualItem
 {
+    CGRect frame = self.frame;
+    [self.noteTextView setFont: [UIFont systemFontOfSize: self.note.fontSize]];
+    [self resizeToFit: nil];
+    float centerDeltaX = (self.note.width- self.note.width) / 2;
+    frame.origin.x = self.note.x - centerDeltaX;
+    frame.origin.y = self.note.y;
+    frame.size.width = self.note.width;
+    frame.size.height = self.note.height;
+    [self setFrame: frame];
+}
+
+-(void) ARCHIVE_transformVisualItem
+{
     
 //    VisualItem *visualItem = self;
     CGRect frame = self.frame;
@@ -224,7 +237,6 @@
     frame.size.width = self.note.width * scaleFactor;
     frame.size.height = self.note.height * scaleFactor;
     [self setFrame: frame];
-
 }
 
 - (void) increaseFontSize
