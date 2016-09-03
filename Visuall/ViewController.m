@@ -261,14 +261,13 @@
 //    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
-- (void) centerScrollViewContents {
+- (void) centerScrollViewContents0
+{
     CGSize boundsSize = self.BackgroundScrollView.bounds.size;
     CGRect contentsFrame = self.BoundsTiledLayerView.frame;
     
-//    CGRect rect = self.BackgroundScrollView.frame;
-//        NSLog(@"Frame rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-//    rect = self.BackgroundScrollView.bounds;
-//        NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    CGRect rect = self.BackgroundScrollView.bounds;
+    NSLog(@"Bounds rect: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     if (contentsFrame.size.width < boundsSize.width) {
         contentsFrame.origin.x = contentsFrame.origin.x - self.BackgroundScrollView.bounds.origin.x;
@@ -279,6 +278,25 @@
     }
     
     self.BoundsTiledLayerView.frame = contentsFrame;
+}
+
+- (void) centerScrollViewContents {
+//    CGSize boundsSize = self.BackgroundScrollView.bounds.size;
+//    CGRect contentsFrameRef = self.BoundsTiledLayerView.frame;
+//    CGRect visualItem = self.VisualItemsView.frame;
+    
+    CGRect offsetRect = CGRectMake(0, 0, - self.BackgroundScrollView.bounds.origin.x, - self.BackgroundScrollView.bounds.origin.y);
+    CGRect convertedVisualItemsRect = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
+    CGRect visualItemsRectInBackgroundScollView = CGRectMake(
+                                             offsetRect.size.width + convertedVisualItemsRect.origin.x,
+                                             offsetRect.size.height + convertedVisualItemsRect.origin.y,
+                                             convertedVisualItemsRect.size.width,
+                                             convertedVisualItemsRect.size.height);
+    NSLog(@"offsetRect: %f, %f, %f, %f", offsetRect.origin.x, offsetRect.origin.y, offsetRect.size.width, offsetRect.size.height);
+    NSLog(@"convertedVisualItemsRect: %f, %f, %f, %f", convertedVisualItemsRect.origin.x, convertedVisualItemsRect.origin.y, convertedVisualItemsRect.size.width, convertedVisualItemsRect.size.height);
+    NSLog(@"visualItemsRectInBackgroundScollView: %f, %f, %f, %f", visualItemsRectInBackgroundScollView.origin.x, visualItemsRectInBackgroundScollView.origin.y, visualItemsRectInBackgroundScollView.size.width, visualItemsRectInBackgroundScollView.size.height);
+    
+//    self.VisualItemsView.frame = contentsFrame;
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
@@ -300,6 +318,7 @@
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
     [self findChildandTitleNotes];
+//    [self __centerScrollViewContents];
 }
 
 
@@ -669,13 +688,14 @@
         return YES;
     }
     
+    /*
     CGSize boundsSize = self.BackgroundScrollView.bounds.size;
     CGRect contentsFrame = self.BoundsTiledLayerView.frame;
     if ([gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && (contentsFrame.size.width < boundsSize.width || contentsFrame.size.height < boundsSize.height) )
     {
         return YES;
     }
-    
+    */
     
     return NO;
 }
