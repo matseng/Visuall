@@ -552,6 +552,7 @@
 - (NSMutableDictionary *) getCommonUpdateParameters
 {
     return [@{
+              @"parent-visuall": _currentVisuallKey,
               @"data/selected-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
               @"data/selected-by-uid": [FIRAuth auth].currentUser.uid,
               @"metadata/date-last-modified": [FIRServerValue timestamp],
