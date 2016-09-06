@@ -265,14 +265,38 @@
 {
     CGRect backgroudScrollViewBounds = self.BackgroundScrollView.bounds;
     CGRect boundsTiledLayerRect = self.BoundsTiledLayerView.frame;
+    boundsTiledLayerRect.origin = CGPointMake(-backgroudScrollViewBounds.origin.x, backgroudScrollViewBounds.origin.y);
     
     NSLog(@"BackgroundScrollView origin: %f, %f", backgroudScrollViewBounds.origin.x, backgroudScrollViewBounds.origin.y);
     NSLog(@"boundsTiledLayerRect origin: %f, %f", boundsTiledLayerRect.origin.x, boundsTiledLayerRect.origin.y);
     
-    boundsTiledLayerRect.origin.x = boundsTiledLayerRect.origin.x - backgroudScrollViewBounds.origin.x;
-    boundsTiledLayerRect.origin.y = boundsTiledLayerRect.origin.y - backgroudScrollViewBounds.origin.y;
+//    boundsTiledLayerRect.origin.x = boundsTiledLayerRect.origin.x - backgroudScrollViewBounds.origin.x;
+//    boundsTiledLayerRect.origin.y = boundsTiledLayerRect.origin.y - backgroudScrollViewBounds.origin.y;
+//    self.BoundsTiledLayerView.frame = boundsTiledLayerRect;
+
+//    self.BackgroundScrollView.frame = boundsTiledLayerRect;
+    self.BackgroundScrollView.contentOffset = boundsTiledLayerRect.origin;
+}
+
+- (void) __centerScrollViewContents
+{
+    
+    CGRect backgroudScrollViewBounds = self.BackgroundScrollView.bounds;
+    CGRect boundsTiledLayerRect = self.BoundsTiledLayerView.frame;
+    
+    NSLog(@"BackgroundScrollView origin: %f, %f", backgroudScrollViewBounds.origin.x, backgroudScrollViewBounds.origin.y);
+    NSLog(@"boundsTiledLayerRect origin: %f, %f", boundsTiledLayerRect.origin.x, boundsTiledLayerRect.origin.y);
+    
+    if (boundsTiledLayerRect.size.width < backgroudScrollViewBounds.size.width) {
+        boundsTiledLayerRect.origin.x = boundsTiledLayerRect.origin.x - self.BackgroundScrollView.bounds.origin.x;
+    }
+    
+    if (boundsTiledLayerRect.size.height < backgroudScrollViewBounds.size.height) {
+        boundsTiledLayerRect.origin.y = boundsTiledLayerRect.origin.y - self.BackgroundScrollView.bounds.origin.y;
+    }
     self.BoundsTiledLayerView.frame = boundsTiledLayerRect;
 }
+
 
 - (void) expandBoundsTiledLayerView
 {
@@ -283,17 +307,6 @@
     self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
     CGRect convertedVisualItemsRectInNewBoundsTiledLayerView = [self.BoundsTiledLayerView convertRect: convertedVisualItemsRectInScrollView fromView: self.BackgroundScrollView];
     self.VisualItemsView.frame = convertedVisualItemsRectInNewBoundsTiledLayerView;
-    
-//    CGPoint newContentOffset = CGPointZero;
-//    if (newBoundsTiledLayerRect.origin.x < 0)
-//    {
-//        newContentOffset.x = newBoundsTiledLayerRect.origin.x;
-//    }
-//    if (newBoundsTiledLayerRect.origin.y < 0)
-//    {
-//        newContentOffset.y = newBoundsTiledLayerRect.origin.y;
-//    }
-//    self.BackgroundScrollView.contentOffset = newContentOffset;
     
     UIEdgeInsets newContentInset = UIEdgeInsetsZero;
     CGSize newContentSize = newBoundsTiledLayerRect.size;
@@ -309,28 +322,21 @@
     }
     self.BackgroundScrollView.contentInset = newContentInset;
     self.BackgroundScrollView.contentSize = newContentSize;
-    
-
 }
 
+- (void) centerScrollViewContents2
+{
+    CGPoint offsetPoint = CGPointMake(-self.BackgroundScrollView.bounds.origin.x, -self.BackgroundScrollView.bounds.origin.y);
+    CGRect newBoundsTiledLayerViewRect = CGRectMake(self.BoundsTiledLayerView.frame.origin.x + offsetPoint.x,
+                                                    self.BoundsTiledLayerView.frame.origin.y + offsetPoint.y,
+                                                    self.BoundsTiledLayerView.frame.size.width,
+                                                    self.BoundsTiledLayerView.frame.size.height);
+    self.BoundsTiledLayerView.frame = newBoundsTiledLayerViewRect;
 
-- (void) centerScrollViewContents2 {
-    // TODO (Sep 2, 2016): We have visualItemsRectInBackgroundScollView working correctly. Need to build correctly sized BoundsTiledLayerView to allow each corner of VisualItemsView to be scrolled to the middle. Then need to place VisualItemsView correctly so it appears as though it didn't move.
-    
-    CGRect offsetRect = CGRectMake(0, 0, - self.BackgroundScrollView.bounds.origin.x, - self.BackgroundScrollView.bounds.origin.y);
-    CGRect convertedVisualItemsRect = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
-    CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
-    CGRect visualItemsRectInBackgroundScollView = CGRectMake(
-                                             offsetRect.size.width + convertedVisualItemsRect.origin.x,
-                                             offsetRect.size.height + convertedVisualItemsRect.origin.y,
-                                             convertedVisualItemsRect.size.width,
-                                             convertedVisualItemsRect.size.height);
-    NSLog(@"offsetRect: %f, %f, %f, %f", offsetRect.origin.x, offsetRect.origin.y, offsetRect.size.width, offsetRect.size.height);
-    NSLog(@"convertedVisualItemsRect: %f, %f, %f, %f", convertedVisualItemsRect.origin.x, convertedVisualItemsRect.origin.y, convertedVisualItemsRect.size.width, convertedVisualItemsRect.size.height);
-    NSLog(@"visualItemsRectInBackgroundScollView: %f, %f, %f, %f", visualItemsRectInBackgroundScollView.origin.x, visualItemsRectInBackgroundScollView.origin.y, visualItemsRectInBackgroundScollView.size.width, visualItemsRectInBackgroundScollView.size.height);
-//    CGRect newBoundsTiledLayerRect = CGRectUnion(<#CGRect r1#>, <#CGRect r2#>)
-//    NSLog(@"convertVisualItemsOriginInBackgroundScrollView: %f, %f", convertVisualItemsOriginInBackgroundScrollView.x, convertVisualItemsOriginInBackgroundScrollView.y);
-
+    self.BackgroundScrollView.bounds = CGRectMake(0,
+                                                  0,
+                                                  self.BackgroundScrollView.bounds.size.width,
+                                                  self.BackgroundScrollView.bounds.size.height);
 }
 - (void) setNewScrollViewOuterContentsFrame
 {
@@ -381,12 +387,12 @@
 }
 
 
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+- (void) scrollViewDidZoom:(UIScrollView *)scrollView {
     
-    [self centerScrollViewContents];
+//    [self centerScrollViewContents];
 //    [self setNewScrollViewOuterContentsFrame];
-    
-    return; // TODO (Aug 22, 2016): testing 
+//    [self centerScrollViewContents2];
+    return; // TODO (Aug 22, 2016): testing
     
     [self.visuallState.groupsCollection myForIn:^(GroupItem *gi) {
         NSString *titleNoteKey = gi.group.titleNoteKey;
@@ -400,18 +406,24 @@
 
 - (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
 {
+//    [self.BoundsTiledLayerView removeFromSuperview];
+//    [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
+    
     NSLog(@"HERE in scrollViewWillBeginZooming");
-    self.BackgroundScrollView.contentSize = CGSizeMake(self.BackgroundScrollView.contentSize.width + self.BackgroundScrollView.contentInset.left,
-                                                       self.BackgroundScrollView.contentSize.height + self.BackgroundScrollView.contentInset.top);
-    self.BackgroundScrollView.contentInset = UIEdgeInsetsZero;
+//    self.BackgroundScrollView.contentSize = CGSizeMake(self.BackgroundScrollView.contentSize.width + self.BackgroundScrollView.contentInset.left,
+//                                                       self.BackgroundScrollView.contentSize.height + self.BackgroundScrollView.contentInset.top);
+//    self.BackgroundScrollView.contentInset = UIEdgeInsetsZero;
 }
 
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
-    [self findChildandTitleNotes];
+    [self centerScrollViewContents2];
+//    [self findChildandTitleNotes];
 //    [self __centerScrollViewContents];
 //    [self setNewScrollViewOuterContentsFrame];
     [self expandBoundsTiledLayerView];
+//    [self.BoundsTiledLayerView removeFromSuperview];
+//    [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
 }
 
 
@@ -426,23 +438,23 @@
  */
 - (void) calculateTotalBounds: (UIView *) view
 {
-//    self.BackgroundScrollView.zoomScale = 1.0;
-//    
-//    if ( self.totalBoundsRect.size.width == 0 )
-//    {
-//        self.totalBoundsRect = CGRectZero;
-//    }
+    self.BackgroundScrollView.zoomScale = 1.0;
+    
+    if ( self.totalBoundsRect.size.width == 0 )
+    {
+        self.totalBoundsRect = CGRectZero;
+    }
 
     self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
     [self expandBoundsTiledLayerView];
-//    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
-//
-////    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
-//    self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
-//    float contentOriginX = -self.totalBoundsRect.origin.x;
-//    float contentOriginY = -self.totalBoundsRect.origin.y;
-//
-//    self.VisualItemsView.frame = CGRectMake(contentOriginX, contentOriginY, 100, 100);
+    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
+
+//    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
+    self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
+    float contentOriginX = -self.totalBoundsRect.origin.x;
+    float contentOriginY = -self.totalBoundsRect.origin.y;
+
+    self.VisualItemsView.frame = CGRectMake(contentOriginX, contentOriginY, 100, 100);
 }
 
 /*
