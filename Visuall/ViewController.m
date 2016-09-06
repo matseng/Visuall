@@ -438,23 +438,23 @@
  */
 - (void) calculateTotalBounds: (UIView *) view
 {
-    self.BackgroundScrollView.zoomScale = 1.0;
-    
-    if ( self.totalBoundsRect.size.width == 0 )
-    {
-        self.totalBoundsRect = CGRectZero;
-    }
+//    self.BackgroundScrollView.zoomScale = 1.0;
+//    
+//    if ( self.totalBoundsRect.size.width == 0 )
+//    {
+//        self.totalBoundsRect = CGRectZero;
+//    }
 
     self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
     [self expandBoundsTiledLayerView];
-    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
-
-//    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
-    self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
-    float contentOriginX = -self.totalBoundsRect.origin.x;
-    float contentOriginY = -self.totalBoundsRect.origin.y;
-
-    self.VisualItemsView.frame = CGRectMake(contentOriginX, contentOriginY, 100, 100);
+//    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
+//
+////    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
+//    self.BackgroundScrollView.contentSize = self.totalBoundsRect.size;
+//    float contentOriginX = -self.totalBoundsRect.origin.x;
+//    float contentOriginY = -self.totalBoundsRect.origin.y;
+//
+//    self.VisualItemsView.frame = CGRectMake(contentOriginX, contentOriginY, 100, 100);
 }
 
 /*
