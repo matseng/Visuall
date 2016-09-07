@@ -157,10 +157,10 @@ static CAShapeLayer *__tempShapeLayer;
                                             tailWidth:(CGFloat)self.tailWidth
                                             headWidth:(CGFloat)self.headWidth
                                            headLength:(CGFloat)self.headLength];
-    [path setLineWidth:2.0];
     [path stroke];
     CAShapeLayer *arrowLayer = [[CAShapeLayer alloc] init];
     [arrowLayer setFillColor: [UIColor blackColor].CGColor];
+    [arrowLayer setLineWidth: ceilf(self.tailWidth / 4) ];
     [arrowLayer setStrokeColor: self.borderColor.CGColor];
     [arrowLayer setPath: path.CGPath];
     [self.layer addSublayer: arrowLayer];
@@ -414,6 +414,25 @@ static CAShapeLayer *__tempShapeLayer;
     result = [self hitTest: point withEvent:nil];
     return result;
 }
+
+- (void) increaseSize
+{
+    CGFloat scale = 12.0 / 10.0;
+    self.headWidth = self.headWidth * scale;
+    self.headLength = self.headLength * scale;
+    self.tailWidth = self.tailWidth * scale;
+    [self setViewAsSelected];
+}
+
+- (void) decreaseSize
+{
+    CGFloat scale = 10.0 / 12.0;
+    self.headWidth = self.headWidth * scale;
+    self.headLength = self.headLength * scale;
+    self.tailWidth = self.tailWidth * scale;
+    [self setViewAsSelected];
+}
+
 
 //- (UIView *) hitTestWithHandles: (CGPoint) point
 //{

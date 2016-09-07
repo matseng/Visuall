@@ -556,7 +556,12 @@ UIColor *darkGrayBorderColor;
         [ni decreaseFontSize];
         [self.visuallState updateChildValue:ni Property: @"fontSize"];
     }
-    
+    else if ( [self.lastSelectedObject isArrowItem])
+    {
+        ArrowItem *ai = [self.lastSelectedObject getArrowItem];
+        [ai decreaseSize];
+        [self.visuallState updateChildValue: ai Property: nil];
+    }
 }
 
 - (void) increaseFontSizeHandler: (UIButton *) button
@@ -568,7 +573,12 @@ UIColor *darkGrayBorderColor;
         [ni increaseFontSize];
         [self.visuallState updateChildValue:ni Property: @"fontSize"];
     }
-    
+    else if ( [self.lastSelectedObject isArrowItem])
+    {
+        ArrowItem *ai = [self.lastSelectedObject getArrowItem];
+        [ai increaseSize];
+        [self.visuallState updateChildValue: ai Property: nil];
+    }
 }
 
 - (UIButton *) makeButtonFromImage: (NSString *) imageName buttonSize: (float) unit andExtraPadding: (float) padding

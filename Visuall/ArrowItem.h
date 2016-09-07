@@ -53,4 +53,8 @@
 
 - (UIView *) hitTestWithHandles: (CGPoint) point;
 
+- (void) increaseSize;
+
+- (void) decreaseSize;
+
 @end
