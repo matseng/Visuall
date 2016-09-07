@@ -77,7 +77,9 @@
 @property UIView *submenu;
 @property UIScrollView *secondSubmenuScrollView;
 @property SegmentedControlMod *segmentControlInsertMedia;
-@property UIButton *trashButton; // Utilized in ViewController+Menus.m
+@property NSMutableDictionary *buttonDictionary;
+@property UIButton *trashButton;
+- (void) updateSecondSubmenuState; // Utilized in ViewController+Menus.m
 
 - (BOOL) setSelectedObject:(UIView *) object;
 

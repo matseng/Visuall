@@ -38,7 +38,7 @@ NoteItem2 *targetNoteForArrow;
             if ( [viewHit isNoteItem] )
             {
                 NoteItem2 *ni = [viewHit getNoteItem];
-//                [self setSelectedObject:ni];
+                [self setSelectedObject:ni];
 //                NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
 //                return;
                 [ni.noteTextView becomeFirstResponder];

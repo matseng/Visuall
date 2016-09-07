@@ -1107,6 +1107,7 @@
             ni.noteTextView.editable = NO;
             ni.noteTextView.selectable = NO;
             self.lastSelectedObject.layer.borderWidth = 0;
+            self.visuallState.selectedVisualItem.layer.borderWidth = 0;
         } else if ([self.lastSelectedObject isGroupItem])
         {
             [[self.lastSelectedObject getGroupItem] setViewAsNotSelected];
@@ -1131,6 +1132,7 @@
         visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
         visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
         self.lastSelectedObject = noteToSet;
+        self.visuallState.selectedVisualItem = noteToSet;
     }
     else if ( [object isGroupItem] )
     {
@@ -1138,6 +1140,7 @@
         [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];
         [[self.view window] endEditing:YES];
         self.lastSelectedObject = gi;
+        self.visuallState.selectedVisualItem = gi;
     }
     else if ( [object isArrowItem] )
     {
@@ -1149,9 +1152,11 @@
     else
     {
         self.lastSelectedObject = nil;
+        self.visuallState.selectedVisualItem = nil;
         [[self.view window] endEditing:YES];
     }
 
+    [self updateSecondSubmenuState];
     return YES;
 }
 

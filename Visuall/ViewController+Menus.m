@@ -27,6 +27,7 @@ UIColor *darkGrayBorderColor;
 - (void) createTopMenu
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resize) name:UIDeviceOrientationDidChangeNotification object:nil];
+    self.buttonDictionary = [[NSMutableDictionary alloc] init];
     
     float h = 42;
     float w = 42;
@@ -484,6 +485,7 @@ UIColor *darkGrayBorderColor;
     [self.Background addSubview: self.secondSubmenuScrollView];
     
     UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"Decrease Font Filled-50" buttonSize: h andExtraPadding:0.5];
+    [self.buttonDictionary setObject: decreaseFontSizeButton forKey:@"decreaseFontSize"];
     [decreaseFontSizeButton setTitle:@"decreaseFontSize" forState:UIControlStateNormal];
     UIBarButtonItem *decreaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: decreaseFontSizeButton];
     [decreaseFontSizeButton addTarget:self
@@ -491,6 +493,7 @@ UIColor *darkGrayBorderColor;
          forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *increaseFontSizeButton = [self makeButtonFromImage:@"Increase Font Filled-50" buttonSize: h andExtraPadding:0.5];
+    [self.buttonDictionary setObject: increaseFontSizeButton forKey:@"increaseFontSize"];
     [increaseFontSizeButton setTitle:@"increaseFontSize" forState:UIControlStateNormal];
     UIBarButtonItem *increaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: increaseFontSizeButton];
     [increaseFontSizeButton addTarget:self
@@ -520,6 +523,42 @@ UIColor *darkGrayBorderColor;
 //    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 //    
 //    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
+}
+
+- (void) updateSecondSubmenuState
+{
+    if ( [self.visuallState.selectedVisualItem isNoteItem] || [self.visuallState.selectedVisualItem isArrowItem] )
+    {
+        // change size buttons in active state
+        [self enableButton:@"increaseFontSize"];
+        [self enableButton:@"decreaseFontSize"];
+    }
+    else
+    {
+        // change size buttons in inactive state
+        [self disableButton:@"increaseFontSize"];
+        [self disableButton:@"decreaseFontSize"];
+    }
+}
+
+- (void) enableButton: (NSString *) buttonName
+{
+    UIButton *button = self.buttonDictionary[buttonName];
+    if (button)
+    {
+        button.enabled = YES;
+        [button.layer setBorderColor: [self.view.tintColor CGColor]];
+    }
+}
+
+- (void) disableButton: (NSString *) buttonName
+{
+    UIButton *button = self.buttonDictionary[buttonName];
+    if (button)
+    {
+        button.enabled = NO;
+        [button.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
+    }
 }
 
 - (void) resize
@@ -590,8 +629,10 @@ UIColor *darkGrayBorderColor;
 //    undoImg = [UIImage imageWithCGImage:undoImg.CGImage scale:1.5 orientation:undoImg.imageOrientation];
     undoImg = [undoImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *undoImgHilighted = [undoImg makeImageWithBackgroundColor: self.view.tintColor andForegroundColor: backgroundColor];
+    UIImage *undoImgDisabled = [undoImg makeImageWithBackgroundColor: [UIColor clearColor] andForegroundColor: [UIColor lightGrayColor]];
     [undoButton setImage:undoImg forState:UIControlStateNormal];
     [undoButton setImage:undoImgHilighted forState:UIControlStateHighlighted];
+    [undoButton setImage: undoImgDisabled forState: UIControlStateDisabled];
     undoButton.frame = CGRectMake(0, 0, unit, unit);  // TODO (Aug 12, 2016): change to constants e.g. BUTTON_WIDTH BUTTON_HEIGHT
     undoButton.layer.cornerRadius = 5;
     undoButton.tintColor = self.view.tintColor;
