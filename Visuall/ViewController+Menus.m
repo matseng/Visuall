@@ -499,7 +499,7 @@ UIColor *darkGrayBorderColor;
     
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *spacer40 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    [spacer40 setWidth:80];
+    [spacer40 setWidth:30];
     
     CGRect rect = self.secondSubmenuScrollView.frame;
     rect.origin = CGPointZero;

@@ -241,16 +241,24 @@
 
 - (void) increaseFontSize
 {
+    float deltaX;
+    float previousWidth = self.frame.size.width;
     float size = self.note.fontSize * 12 / 10;
     size = floorf(size * 10 + 0.5) / 10;  // round to nearest 1/10th e.g.
     [self setFontSize: size];
+    deltaX = (previousWidth - self.frame.size.width) / 2;
+    [self translateTx: deltaX andTy:0];
 }
 
 - (void) decreaseFontSize
 {
+    float deltaX;
+    float previousWidth = self.frame.size.width;
     float size = self.note.fontSize * 10.0 / 12.0;
     size = floorf(size * 10 + 0.5) / 10;  // round to nearest 1/10th e.g.
     [self setFontSize: size];
+    deltaX = (previousWidth - self.frame.size.width) / 2;
+    [self translateTx: deltaX andTy:0];
 }
 
 - (void) setFontSize: (float) fontSize
