@@ -15,6 +15,7 @@
 - (void) loadAndUploadXML
 {
     NSString *fileName = @"defaultVisualizationSmall";
+//    NSString *fileName = @"defaultVisualization500";
 //    NSString *fileName = @"defaultVisualization1773";
     NSString* filePath = [[NSBundle mainBundle] pathForResource:fileName
                                                          ofType:@"xml"];
@@ -25,6 +26,7 @@
     __block NSString *pointY;
     __block CGPoint point;
     __block int counter = 0;
+    __block float fontSize;
     DDFileReader * reader = [[DDFileReader alloc] initWithFilePath: filePath];
     NSDate *methodStart = [NSDate date];
     
@@ -44,8 +46,10 @@
             pointY = [self getValueFromXMLString: result forKey:@"Y"];
 //            NSLog(@"read text: \n %@", pointY);
             point = CGPointMake([pointX floatValue], [pointY floatValue]);
+            fontSize = [[self getValueFromXMLString: result forKey:@"font"] floatValue];
             NoteItem2 *newNote = [[NoteItem2 alloc] initNote: text withPoint: point];  //
-            [self.visuallState setValueNote: newNote];  // CAUTION may overwhelm Firebase
+            [newNote setFontSize: fontSize];
+//            [self.visuallState setValueNote: newNote];  // CAUTION may overwhelm Firebase
             [self addNoteToViewWithHandlers:newNote];
             [self calculateTotalBounds: newNote];
             result = @"";

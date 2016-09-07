@@ -125,7 +125,7 @@
     [self initializeBackgroundScrollView];
     [self.BackgroundScrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.Background addSubview: self.BackgroundScrollView];
-    [self constrainViewToSuperview: self.BackgroundScrollView];
+//    [self constrainViewToSuperview: self.BackgroundScrollView];
     
     self.BoundsTiledLayerView = [[TiledLayerView alloc] initWithFrame: self.BackgroundScrollView.frame];
     self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
@@ -204,7 +204,6 @@
     
     
     float x = 0;
-//    float y = self.navigationController.navigationBar.frame.size.height;
     float y = 0;
     float width = [[UIScreen mainScreen] bounds].size.width;
     float height = [[UIScreen mainScreen] bounds].size.height;
@@ -331,6 +330,7 @@
                                                     self.BoundsTiledLayerView.frame.origin.y + offsetPoint.y,
                                                     self.BoundsTiledLayerView.frame.size.width,
                                                     self.BoundsTiledLayerView.frame.size.height);
+
     self.BoundsTiledLayerView.frame = newBoundsTiledLayerViewRect;
 
     self.BackgroundScrollView.bounds = CGRectMake(0,
