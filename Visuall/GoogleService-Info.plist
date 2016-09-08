@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>547811396909-kno98gmgf5hhpavg9uvj7vrgcjtba06l.apps.googleusercontent.com</string>
+	<string>547811396909-s7tgftvja83qaf52tm5m571krr5bb6fa.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.547811396909-kno98gmgf5hhpavg9uvj7vrgcjtba06l</string>
+	<string>com.googleusercontent.apps.547811396909-s7tgftvja83qaf52tm5m571krr5bb6fa</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBbxVx1sWJrBEp8vx-c0uhOXx1FdgR5Hrc</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>matseng.Visuall</string>
+	<string>com.Visuall.app</string>
 	<key>PROJECT_ID</key>
 	<string>visuall-2f878</string>
 	<key>STORAGE_BUCKET</key>
@@ -27,13 +27,13 @@
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
 	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:547811396909:ios:54fbae0be93a3540</string>
+	<string>1:547811396909:ios:2f1abc8ec6f57064</string>
 	<key>DATABASE_URL</key>
 	<string>https://visuall-2f878.firebaseio.com</string>
 </dict>

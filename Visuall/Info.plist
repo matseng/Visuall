@@ -25,12 +25,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.547811396909-kno98gmgf5hhpavg9uvj7vrgcjtba06l</string>
+				<string>com.googleusercontent.apps.547811396909-s7tgftvja83qaf52tm5m571krr5bb6fa</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

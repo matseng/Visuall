@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		210833191C0127AB00BA059F /* GroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 210833171C0127AB00BA059F /* GroupItem.m */; };
 		219E5FA41C00285E00CEE0D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 219E5FA31C00285E00CEE0D5 /* UIKit.framework */; };
+		710B0F481D81EE96000D6B9A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 710B0F471D81EE96000D6B9A /* GoogleService-Info.plist */; };
 		712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */ = {isa = PBXBuildFile; fileRef = 712682021D49997700A0A2F7 /* ScrollViewMod.m */; };
 		712EC95A1BEAF21500ED6803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9591BEAF21500ED6803 /* main.m */; };
 		712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC95C1BEAF21500ED6803 /* AppDelegate.m */; };
@@ -72,7 +73,6 @@
 		71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C001D35736400CD1C49 /* ViewController+ViewHit.m */; };
 		71D96C041D359E0000CD1C49 /* ViewController+Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C031D359E0000CD1C49 /* ViewController+Group.m */; };
 		71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */; };
-		71E1AF561D4AF7E700B818A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */; };
 		71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF611D4C278900B818A0 /* WelcomeViewController.m */; };
 		71E1AF651D4C325400B818A0 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1AF641D4C325400B818A0 /* TabBarViewController.m */; };
 		71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FC72131BF2E881003B7F14 /* NotesCollection.m */; };
@@ -113,6 +113,7 @@
 		210833171C0127AB00BA059F /* GroupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GroupItem.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		219E5FA31C00285E00CEE0D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		40A382F99E853FE4AB8D376B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		710B0F471D81EE96000D6B9A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		712682011D49997700A0A2F7 /* ScrollViewMod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewMod.h; sourceTree = "<group>"; };
 		712682021D49997700A0A2F7 /* ScrollViewMod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewMod.m; sourceTree = "<group>"; };
 		712EC9541BEAF21500ED6803 /* Visuall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visuall.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,7 +209,6 @@
 		71D96C031D359E0000CD1C49 /* ViewController+Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "ViewController+Group.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		71D96C051D35A9A400CD1C49 /* ViewController+TapHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+TapHandler.h"; sourceTree = "<group>"; };
 		71D96C061D35A9A400CD1C49 /* ViewController+TapHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "ViewController+TapHandler.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71E1AF601D4C278900B818A0 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		71E1AF611D4C278900B818A0 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		71E1AF631D4C325400B818A0 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
@@ -339,7 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				712EC9581BEAF21500ED6803 /* Info.plist */,
-				71E1AF551D4AF7E700B818A0 /* GoogleService-Info.plist */,
+				710B0F471D81EE96000D6B9A /* GoogleService-Info.plist */,
 				712EC9591BEAF21500ED6803 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -666,6 +666,7 @@
 				71D96BEF1D30347400CD1C49 /* light-bulb@2x.png in Resources */,
 				77E13DA21C011C1700105BB5 /* compass.png in Resources */,
 				71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */,
+				710B0F481D81EE96000D6B9A /* GoogleService-Info.plist in Resources */,
 				716328B31D25F215009DF56B /* Paint Bucket-50.png in Resources */,
 				71C23F2B1D21EFD000D53E0C /* groupRectangle.png in Resources */,
 				71C23F1E1D1E0F3900D53E0C /* leftRightUpDown.png in Resources */,
@@ -686,7 +687,6 @@
 				71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,
 				77E13DAA1C011DC100105BB5 /* plane.png in Resources */,
-				71E1AF561D4AF7E700B818A0 /* GoogleService-Info.plist in Resources */,
 				71D96BEC1D301D8600CD1C49 /* alarm-bell@2x.png in Resources */,
 				71C23F371D2220CB00D53E0C /* fontSize.png in Resources */,
 				71D96BED1D301D8600CD1C49 /* light-bulb.png in Resources */,
@@ -935,9 +935,10 @@
 				INFOPLIST_FILE = Visuall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = matseng.Visuall;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Visuall.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -951,9 +952,10 @@
 				INFOPLIST_FILE = Visuall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = matseng.Visuall;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Visuall.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
