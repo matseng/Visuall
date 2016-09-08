@@ -50,6 +50,12 @@
     NSArray *recipes;
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [self restrictRotation:YES];  // http://stackoverflow.com/questions/31794317/how-can-i-lock-orientation-for-a-specific-view-an-objective-c-iphone-app-in-ios
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -98,6 +104,12 @@
         [self.visuallState loadVisuallsListForCurrentUser];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
         [self.visuallState loadVisuallsForCurrentUser];
     }
+}
+
+-(void) restrictRotation:(BOOL) restriction
+{
+    AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    appDelegate.restrictRotation = restriction;
 }
 
 /*

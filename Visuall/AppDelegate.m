@@ -194,4 +194,13 @@ didSignInForUser:(GIDGoogleUser *)user
     }
 }
 
+//- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    if(self.restrictRotation)
+        return UIInterfaceOrientationMaskPortrait;
+    else
+        return UIInterfaceOrientationMaskAll;
+}
+
 @end
