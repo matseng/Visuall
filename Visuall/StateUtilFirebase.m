@@ -37,7 +37,8 @@
     void (^_callbackNoteItem)(NoteItem2 *ni);
     void (^_callbackGroupItem)(GroupItem *gi);
     void (^_callbackPublicVisuallLoaded)(void);
-    __block int counter;
+    __block int __numberOfNotesWillBeLoaded;
+    __block int __numberOfNotesLoaded;
 }
 
 //+(id)sharedManager {
@@ -257,7 +258,8 @@
          {
              return;
          }
-         self.childrenCountNotes = snapshot.childrenCount;
+         ++__numberOfNotesWillBeLoaded;
+         NSLog(@"\n self.childrenCountNotes: %i", __numberOfNotesWillBeLoaded);
          [self loadNoteFromRef: [_notesTableRef child:key]];
 //         [self removeNoteGivenKey: key];
 
@@ -322,7 +324,8 @@
          NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
          [self.notesCollection addNote:newNote withKey:snapshot.key];
          _callbackNoteItem(newNote);
-        NSLog(@"\n Number of notes loaded into Visuall: %d", counter++);
+         ++__numberOfNotesLoaded;
+        NSLog(@"\n Number of notes loaded into Visuall: %d", __numberOfNotesLoaded);
          
      } withCancelBlock:^(NSError *error)
      {
