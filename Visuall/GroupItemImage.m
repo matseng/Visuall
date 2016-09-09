@@ -35,21 +35,32 @@
         [self renderGroup];
         [self setViewAsNotSelected];
         [self updateFrame];
-        
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
-        imageView.frame = CGRectMake(0, 0, THUMBNAIL_WIDTH, thumbnailHeight);
-        [imageView setAutoresizingMask: UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        UIImageView *imageView = [self makeImageViewFromImage: img
+                                                    withWidth: THUMBNAIL_WIDTH
+                                                    andHeight: thumbnailHeight];
         [self.innerGroupView addSubview: imageView];
+        
     }
     return self;
 }
 
 - (void) addImage: (UIImage *) img
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
-    imageView.frame = CGRectMake(0, 0, self.group.width, self.group.height);
-    [imageView setAutoresizingMask: UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    UIImageView *imageView = [self makeImageViewFromImage: img
+                                                withWidth: self.group.width
+                                                andHeight: self.group.height];
+    
     [self.innerGroupView addSubview: imageView];
 }
+
+- (UIImageView *) makeImageViewFromImage: (UIImage *) img withWidth: (float) width andHeight: (float) height
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+    imageView.frame = CGRectMake(0, 0, width, height);
+    [imageView setAutoresizingMask: UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    self.innerGroupView.alpha = 1.0;
+    return imageView;
+}
+
 
 @end

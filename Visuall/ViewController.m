@@ -140,7 +140,8 @@
 //    [self constrainViewToSuperview: self.BackgroundScrollView];
     
     self.BoundsTiledLayerView = [[TiledLayerView alloc] initWithFrame: self.BackgroundScrollView.frame];
-    self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
+//    self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
+    self.BoundsTiledLayerView.backgroundColor = [UIColor whiteColor];
     
     self.VisualItemsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     self.VisualItemsView.backgroundColor = [UIColor orangeColor];

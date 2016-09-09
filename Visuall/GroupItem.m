@@ -31,7 +31,7 @@
 
 {
     float _handleDiameter;
-    UIView *__innerGroupView;
+//    UIView *self.innerGroupView;
     UIView *handleTopLeft;
     UIView *handleTopRight;
     UIView *handleBottomLeft;
@@ -115,14 +115,15 @@
 {
     _handleDiameter = [self getHandleDiameter];
     [self setFrame: CGRectMake(0, 0, (self.group.width + _handleDiameter), (self.group.height + _handleDiameter) )];
-    if ( !__innerGroupView ) __innerGroupView = [[UIView alloc] initWithFrame: CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
-    [__innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
-    [__innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
-    [__innerGroupView.layer setBorderWidth: 0];
-    __innerGroupView.tag = 100;
-    __innerGroupView.autoresizesSubviews = YES;
-    self.innerGroupView = __innerGroupView;
-    [self addSubview: __innerGroupView];
+    if ( !self.innerGroupView ) self.innerGroupView = [[UIView alloc] initWithFrame: CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
+    [self.innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
+    self.innerGroupView.alpha = 0.5;
+    [self.innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
+    [self.innerGroupView.layer setBorderWidth: 0];
+    self.innerGroupView.tag = 100;
+    self.innerGroupView.autoresizesSubviews = YES;
+    self.innerGroupView = self.innerGroupView;
+    [self addSubview: self.innerGroupView];
 //    [self renderHandles];
 }
 
@@ -467,7 +468,7 @@
 {
     float radiusOffset = [self getRadius] / 2;
     
-    __innerGroupView.frame = CGRectMake(radiusOffset, radiusOffset, self.group.width, self.group.height);
+    self.innerGroupView.frame = CGRectMake(radiusOffset, radiusOffset, self.group.width, self.group.height);
     
     CGRect frame = self.frame;
     frame.origin.x = self.group.x - radiusOffset;
@@ -477,7 +478,7 @@
 
 - (float) getWidth
 {
-    return __innerGroupView.frame.size.width;
+    return self.innerGroupView.frame.size.width;
 }
 
 /*
