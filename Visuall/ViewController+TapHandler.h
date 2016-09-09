@@ -12,4 +12,6 @@
 
 - (void) tapHandler:(UITapGestureRecognizer *) sender;
 
+- (void) doubleTapHandler:(UITapGestureRecognizer *) gesture;
+
 @end

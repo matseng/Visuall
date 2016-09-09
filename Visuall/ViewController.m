@@ -208,13 +208,7 @@
 
 - (void) initializeBackgroundScrollView
 {
-    /*
-    UITapGestureRecognizer *tapGestureDoubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    tapGestureDoubleTap.numberOfTapsRequired = 2;
-    //    [self.Background addGestureRecognizer:tapGestureDoubleTap];
-     */
-    
-    
+
     float x = 0;
     float y = 0;
     float width = [[UIScreen mainScreen] bounds].size.width;
@@ -225,6 +219,7 @@
 //    y = h0 + h1;
     height = height - h0 - h1 - h2;
     self.BackgroundScrollView.frame = CGRectMake(x, y, width, height);
+    self.BackgroundScrollView.multipleTouchEnabled = YES;
     
     TouchDownGestureRecognizer *touchDown = [[TouchDownGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchDown:)];
     touchDown.delegate = self;
@@ -234,6 +229,16 @@
     BackgroundScrollViewTapGesture.delegate = self;
     [self.BackgroundScrollView addGestureRecognizer:BackgroundScrollViewTapGesture];
 
+    
+     UITapGestureRecognizer *tapGestureDoubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapHandler:)];
+     tapGestureDoubleTap.numberOfTapsRequired = 2;
+    [self.BackgroundScrollView addGestureRecognizer:tapGestureDoubleTap];
+    
+    UITapGestureRecognizer *twoFingerDoubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapHandler:)];
+    twoFingerDoubleTap.numberOfTouchesRequired = 2;
+    twoFingerDoubleTap.numberOfTapsRequired = 2;
+    [self.BackgroundScrollView addGestureRecognizer:twoFingerDoubleTap];
+    
     
     UIPanGestureRecognizer *panBackgroundScrollView = [[UIPanGestureRecognizer alloc]
                                              initWithTarget:self

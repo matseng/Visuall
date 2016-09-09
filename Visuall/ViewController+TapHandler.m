@@ -30,50 +30,77 @@ NoteItem2 *targetNoteForArrow;
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
     
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        CGPoint point = [gestureRecognizer locationInView: self.BoundsTiledLayerView];
+        UIView *viewHit = [self.BoundsTiledLayerView hitTest:point withEvent:nil];
+        NSLog(@"tapHandler viewHit %@", [viewHit class]);
+        
+        if ( [viewHit isNoteItem] )
         {
-            CGPoint point = [gestureRecognizer locationInView: self.BoundsTiledLayerView];
-            UIView *viewHit = [self.BoundsTiledLayerView hitTest:point withEvent:nil];
-            NSLog(@"tapHandler viewHit %@", [viewHit class]);
-            
-            if ( [viewHit isNoteItem] )
-            {
-                NoteItem2 *ni = [viewHit getNoteItem];
-                [self setSelectedObject:ni];
-//                NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
-//                return;
-                [ni.noteTextView becomeFirstResponder];
-            }
-//            else if ( [viewHit isGroupItem] )
-//            {
-//                GroupItem *gi = [viewHit getGroupItem];
-//                NoteItem2 *ni = [self.visuallState.notesCollection getNoteItemFromKey: gi.group.titleNoteKey];
-//                NSLog(@"Group title: %@", ni.note.title);
-//                NSLog(@"Group key: %@", [gi.group key]);
-//                
-//            }
-//            else if ( [viewHit isArrowItem] )
-//            {
-//                ArrowItem *ai = [viewHit getArrowItem];
-//                [ai setViewAsSelected];
-//            }
-            
-            if ( [self isNoteButtonSelected] && ![viewHit isNoteItem])
-            {
-                CGPoint point = [gestureRecognizer locationInView: self.NotesView];
-                NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
-                [self.visuallState setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
-                [self addNoteToViewWithHandlers:newNote];
-                [self setSelectedObject:newNote];
-                [newNote becomeFirstResponder];  // puts cursor on text field
-                [newNote.noteTextView selectAll:nil];  // selects all text
-                [self updateTotalBounds: newNote];
-                return;
-            }
-            else
-            {
-                [self setSelectedObject: viewHit];
-            }
+            NoteItem2 *ni = [viewHit getNoteItem];
+            [self setSelectedObject:ni];
+            //                NSLog(@"Is a title note?: %@", ni.note.isTitleOfParentGroup ? @"YES" : @"NO");
+            //                return;
+            [ni.noteTextView becomeFirstResponder];
+        }
+        //            else if ( [viewHit isGroupItem] )
+        //            {
+        //                GroupItem *gi = [viewHit getGroupItem];
+        //                NoteItem2 *ni = [self.visuallState.notesCollection getNoteItemFromKey: gi.group.titleNoteKey];
+        //                NSLog(@"Group title: %@", ni.note.title);
+        //                NSLog(@"Group key: %@", [gi.group key]);
+        //
+        //            }
+        //            else if ( [viewHit isArrowItem] )
+        //            {
+        //                ArrowItem *ai = [viewHit getArrowItem];
+        //                [ai setViewAsSelected];
+        //            }
+        
+        if ( [self isNoteButtonSelected] && ![viewHit isNoteItem])
+        {
+            CGPoint point = [gestureRecognizer locationInView: self.NotesView];
+            NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
+            [self.visuallState setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
+            [self addNoteToViewWithHandlers:newNote];
+            [self setSelectedObject:newNote];
+            [newNote becomeFirstResponder];  // puts cursor on text field
+            [newNote.noteTextView selectAll:nil];  // selects all text
+            [self updateTotalBounds: newNote];
+            return;
+        }
+        else
+        {
+            [self setSelectedObject: viewHit];
         }
     }
-    
-    @end
+}
+
+- (void) doubleTapHandler:(UITapGestureRecognizer *) gesture
+{
+    NSLog(@"\n HERE doubleTapHandler");
+    if (gesture.numberOfTouches == 1)
+    {
+        if([self.visuallState selectedVisualItem])
+        {
+            // Double tap visual item --> zoom to rect of a visual item
+            CGRect rect = [self.visuallState selectedVisualItem].frame;
+            rect = [self.BoundsTiledLayerView convertRect: rect fromView:self.VisualItemsView];
+            [self.BackgroundScrollView zoomToRect:rect animated:YES];
+        }
+        else
+        {
+            // Double tap background --> zoom in by a factor of 2
+            CGFloat scale = self.BackgroundScrollView.zoomScale;
+            [self.BackgroundScrollView setZoomScale: scale * 2 animated:YES];
+        }
+    }
+    else if (gesture.numberOfTouches == 2)
+    {
+        // Two finger double tap --> zoom out by a factor of 2
+        CGFloat scale = self.BackgroundScrollView.zoomScale;
+        [self.BackgroundScrollView setZoomScale: scale / 2 animated:YES];
+    }
+}
+
+@end
