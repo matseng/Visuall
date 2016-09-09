@@ -104,6 +104,8 @@
         [self.visuallState loadVisuallsListForCurrentUser];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
         [self.visuallState loadVisuallsForCurrentUser];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView) name:@"refreshGroupsView" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/
 }
 
 -(void) restrictRotation:(BOOL) restriction

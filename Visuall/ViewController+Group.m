@@ -138,6 +138,7 @@
 }
  */
 
+
 /*
  * Name: refreshGroupsView
  * Description: Brute force method for sorting all the groups in GroupsView so that groups are ordered largest (back) and smallest (front)

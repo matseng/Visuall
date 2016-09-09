@@ -37,8 +37,10 @@
     void (^_callbackNoteItem)(NoteItem2 *ni);
     void (^_callbackGroupItem)(GroupItem *gi);
     void (^_callbackPublicVisuallLoaded)(void);
-    __block int __numberOfNotesWillBeLoaded;
+    __block int __numberOfNotesToBeLoaded;
     __block int __numberOfNotesLoaded;
+    __block int __numberOfGroupsToBeLoaded;
+    __block int __numberOfGroupsLoaded;
 }
 
 //+(id)sharedManager {
@@ -258,8 +260,7 @@
          {
              return;
          }
-         ++__numberOfNotesWillBeLoaded;
-         NSLog(@"\n self.childrenCountNotes: %i", __numberOfNotesWillBeLoaded);
+         ++__numberOfNotesToBeLoaded;
          [self loadNoteFromRef: [_notesTableRef child:key]];
 //         [self removeNoteGivenKey: key];
 
@@ -280,7 +281,7 @@
          {
              return;
          }
-         
+         ++__numberOfGroupsToBeLoaded;
          [self loadGroupFromRef: [_groupsTableRef child:snapshot.key]];
          
      } withCancelBlock:^(NSError *error)
@@ -324,8 +325,10 @@
          NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
          [self.notesCollection addNote:newNote withKey:snapshot.key];
          _callbackNoteItem(newNote);
-         ++__numberOfNotesLoaded;
-        NSLog(@"\n Number of notes loaded into Visuall: %d", __numberOfNotesLoaded);
+         if (++__numberOfNotesLoaded == __numberOfNotesToBeLoaded)
+         {
+             [self allNotesLoaded];
+         }
          
      } withCancelBlock:^(NSError *error)
      {
@@ -363,6 +366,10 @@
             GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
             _callbackGroupItem(newGroup);
+        }
+        if (++__numberOfGroupsLoaded == __numberOfGroupsToBeLoaded)
+        {
+            [self allGroupsLoaded];
         }
          
      } withCancelBlock:^(NSError *error)
@@ -804,6 +811,18 @@
     FIRDatabaseReference *notesCounterRef = [_visuallsTable_currentVisuallRef child: @"notes_counter"];
     [self increaseOrDecreaseCounter: notesCounterRef byAmount:-1];
     
+}
+
+- (void) allNotesLoaded
+{
+    NSLog(@"\n All notes loaded: %i", __numberOfNotesLoaded);
+}
+
+- (void) allGroupsLoaded
+{
+    NSLog(@"\n allGroupsLoaded loaded: %i", __numberOfGroupsLoaded);
+//    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView:) name:@"refreshGroupsView" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshGroupsView" object: nil];
 }
 
 /*
