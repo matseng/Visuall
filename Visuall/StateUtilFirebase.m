@@ -295,6 +295,7 @@
 {
     self.arrowsCollection = [Collection new];
     
+//    [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
     [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
          if( [self.arrowsCollection getItemFromKey: listOfArrowKeysRef.key] )  // If the group already exists in the collection
@@ -313,13 +314,13 @@
 
 -(void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
 {
-    [noteRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
         // TODO (Sep 2, 2016): Change to make ASYNC to speed up load times? Move all operations to background thread until ready to add subview: [self.NotesView addSubview:noteItem];
          
          if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
          {
-             return;
+             return;  // TODO (Sep 9, 2016): update the note's parameters
          }
          
          NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
