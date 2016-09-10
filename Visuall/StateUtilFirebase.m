@@ -41,6 +41,7 @@
     __block int __numberOfNotesLoaded;
     __block int __numberOfGroupsToBeLoaded;
     __block int __numberOfGroupsLoaded;
+    NSMutableArray *__pendingChildIds;
 }
 
 //+(id)sharedManager {
@@ -82,9 +83,7 @@
     __storage = [FIRStorage storage];
     FIRStorageReference *storageRef = [__storage referenceForURL:@"gs://visuall-2f878.appspot.com"];
     __storageImagesRef = [storageRef child:@"images"];
-    
-
-    
+    __pendingChildIds = [[NSMutableArray alloc] init];
 }
 
 - (void) loadVisuallsListForCurrentUser
@@ -317,18 +316,25 @@
     [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
         // TODO (Sep 2, 2016): Change to make ASYNC to speed up load times? Move all operations to background thread until ready to add subview: [self.NotesView addSubview:noteItem];
-         
-         if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
+         if ( [__pendingChildIds containsObject: snapshot.key] )
          {
-             return;  // TODO (Sep 9, 2016): update the note's parameters
+             [__pendingChildIds removeObjectAtIndex: [__pendingChildIds indexOfObject: snapshot.key]];
+             return;
          }
-         
-         NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
-         [self.notesCollection addNote:newNote withKey:snapshot.key];
-         _callbackNoteItem(newNote);
-         if (++__numberOfNotesLoaded == __numberOfNotesToBeLoaded)
+         else if( [self.notesCollection getNoteFromKey: snapshot.key] )  // If the note already exists in the collection
          {
-             [self allNotesLoaded];
+             NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
+             [ni updateNoteItem: snapshot.key andValue: snapshot.value];
+         }
+         else {
+             
+             NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
+             [self.notesCollection addNote:newNote withKey:snapshot.key];
+             _callbackNoteItem(newNote);
+             if (++__numberOfNotesLoaded == __numberOfNotesToBeLoaded)
+             {
+                 [self allNotesLoaded];
+             }
          }
          
      } withCancelBlock:^(NSError *error)
@@ -582,12 +588,21 @@
         }
         
         FIRDatabaseReference *notesDataRef = [[self.version01TableRef child: @"notes"] child: ni.note.key];
-        NSString *localKey = [@"data/" stringByAppendingString: propertyName];
+//        NSString *localKey = [@"data/" stringByAppendingString: propertyName];
+//        NSMutableDictionary *noteDict = [@{
+//                                           localKey : [ni.note valueForKey:propertyName]
+//                                           } mutableCopy];
         NSMutableDictionary *noteDict = [@{
-                                           localKey : [ni.note valueForKey:propertyName]
-                                           } mutableCopy];
+                                                 @"data/title": ni.note.title,
+                                                 @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                                 @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+                                                 @"data/fontSize": [ni.note valueForKey: @"fontSize"]
+                                        } mutableCopy];
         [noteDict addEntriesFromDictionary: [self getCommonUpdateParameters]];
-        [notesDataRef updateChildValues: noteDict];
+        [__pendingChildIds addObject: ni.note.key];
+        [notesDataRef updateChildValues:noteDict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+            [__pendingChildIds addObject: ni.note.key];
+        }];
     }
     else if ( [visualObject isGroupItem] )
     {

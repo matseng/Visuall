@@ -59,25 +59,51 @@
     self = [super init];
     if (self) {
 
-        Note2 *note = [[Note2 alloc] init];
-        note.key = key;
-        if (value[@"data"][@"title"]) {
-                note.title = value[@"data"][@"title"];
-        } else {
-            note.title = value[@"data"][@"text"];
-        }
-        note.x = [value[@"data"][@"x"] floatValue];
-        note.y = [value[@"data"][@"y"] floatValue];
-        if ( value[@"data"][@"fontSize"] ) {
-            note.fontSize = [value[@"data"][@"fontSize"] floatValue];
-        } else {
-            note.fontSize = 12.0;
-        }
-        [self setNote: note];
+        self.note = [[Note2 alloc] init];
+        [self updateNote: key andValue: value];
+//        note.key = key;
+//        if (value[@"data"][@"title"]) {
+//                note.title = value[@"data"][@"title"];
+//        } else {
+//            note.title = value[@"data"][@"text"];
+//        }
+//        note.x = [value[@"data"][@"x"] floatValue];
+//        note.y = [value[@"data"][@"y"] floatValue];
+//        if ( value[@"data"][@"fontSize"] ) {
+//            note.fontSize = [value[@"data"][@"fontSize"] floatValue];
+//        } else {
+//            note.fontSize = 12.0;
+//        }
+//        [self setNote: note];
         [self addTextView];
     }
     return self;
 }
+
+- (void) updateNoteItem: (NSString *) key andValue: (NSDictionary *) value
+{
+    [self updateNote: key andValue: value];
+    [self setFontSize: self.note.fontSize];
+    [self resizeToFit: self.note.title];
+}
+
+- (void) updateNote: (NSString *) key andValue: (NSDictionary *) value
+{
+    self.note.key = key;
+    if (value[@"data"][@"title"]) {
+        self.note.title = value[@"data"][@"title"];
+    } else {
+        self.note.title = value[@"data"][@"text"];
+    }
+    self.note.x = [value[@"data"][@"x"] floatValue];
+    self.note.y = [value[@"data"][@"y"] floatValue];
+    if ( value[@"data"][@"fontSize"] ) {
+        self.note.fontSize = [value[@"data"][@"fontSize"] floatValue];
+    } else {
+        self.note.fontSize = 12.0;
+    }
+}
+
 
 - (void) addTextView
 {

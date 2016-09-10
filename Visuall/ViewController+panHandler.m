@@ -49,7 +49,8 @@
             NoteItem2 *ni = [self.activelySelectedObjectDuringPan getNoteItem];
             [self setSelectedObject:ni];
             [ni handlePan:gestureRecognizer];
-            [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];  // save note coordinates
+//            [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];  // save note coordinates
+            [self.visuallState updateChildValue: ni Property: nil];  // save note coordinates
             for (ArrowItem *ai in ni.arrowTailsInGroup)
             {
                 [[[UserUtil sharedManager] getState] updateChildValue: ai Property: nil];  // save arrow tail(s) position

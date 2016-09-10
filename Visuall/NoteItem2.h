@@ -27,6 +27,8 @@
 
 - (instancetype) initNoteFromFirebase: (NSString *) key andValue: (NSDictionary *) data;
 
+- (void) updateNoteItem: (NSString *) key andValue: (NSDictionary *) value;
+
 - (void) handlePan: (UIPanGestureRecognizer *) gestureRecognizer;
 
 - (void) translateTx: (float) tx andTy: (float) ty;
