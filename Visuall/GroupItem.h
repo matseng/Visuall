@@ -38,6 +38,8 @@
 
 - (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float)width andHeight:(float)height;
 
+- (void) updateGroupItem: (NSString *) key andValue: (NSDictionary *) value;
+
 - (GroupItem *) initWithRect: (CGRect) rect;
 
 - (void) handlePanGroup2: (UIPanGestureRecognizer *) gestureRecognizer;

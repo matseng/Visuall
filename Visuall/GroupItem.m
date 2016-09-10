@@ -84,6 +84,27 @@
     return self;
 }
 
+- (void) updateGroupItem: (NSString *) key andValue: (NSDictionary *) value  // TODO (Sep 9, 2016): make public method for updating groups from firebase
+{
+    [self updateGroupModel: key andValue:value];
+    [self updateFrame];
+}
+
+- (void) updateGroupModel: (NSString *) key andValue: (NSDictionary *) value
+{
+    self.group.key = key;
+    self.group.x = [value[@"data"][@"x"] floatValue];
+    self.group.y = [value[@"data"][@"y"] floatValue];
+    
+    if ( value[@"data"][@"width"] && value[@"data"][@"height"]) {
+        self.group.width = [value[@"data"][@"width"] floatValue];
+        self.group.height = [value[@"data"][@"height"] floatValue];
+    } else {
+        self.group.width = [value[@"style"][@"width"] floatValue];
+        self.group.height = [value[@"style"][@"height"] floatValue];
+    }
+}
+
 - (instancetype) initWithPoint:(CGPoint)coordinate andWidth:(float) width andHeight:(float)height
 {
     self = [super init];

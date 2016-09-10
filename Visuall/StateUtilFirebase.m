@@ -41,13 +41,16 @@
     __block int __numberOfNotesLoaded;
     __block int __numberOfGroupsToBeLoaded;
     __block int __numberOfGroupsLoaded;
-    NSMutableArray *__pendingChildIds;
+    //    NSMutableArray *__pendingChildIds;
+    NSString *__localDeviceId;
+    BOOL __allNotesLoaded;
+    BOOL __allGroupsLoaded;
 }
 
 //+(id)sharedManager {
-//    
+//
 //    static StateUtilFirebase *sharedMyManager = nil;
-//    
+//
 //    @synchronized(self) {
 //        if (sharedMyManager == nil) {
 //            sharedMyManager = [[self alloc] init];
@@ -69,8 +72,8 @@
 {
     self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
     
-//    /* CAUTION */ [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016): TEMP
-
+    //    /* CAUTION */ [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016): TEMP
+    
     if ( __userID )
     {
         _usersTableCurrentUser = [[self.version01TableRef child:@"users"] child: __userID];
@@ -83,7 +86,7 @@
     __storage = [FIRStorage storage];
     FIRStorageReference *storageRef = [__storage referenceForURL:@"gs://visuall-2f878.appspot.com"];
     __storageImagesRef = [storageRef child:@"images"];
-    __pendingChildIds = [[NSMutableArray alloc] init];
+    __localDeviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 }
 
 - (void) loadVisuallsListForCurrentUser
@@ -164,32 +167,32 @@
 {
     
     [__publicVisuallsTableRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
-    {
-        if ( ![snapshot exists] )  // we need to create over very first public visual
-        {
-            NSDictionary *visuallDictionary = @{
-                                                @"title": @"My First Global Visuall",
-                                                @"date-created": [FIRServerValue timestamp],
-                                                @"created-by-userID": [FIRAuth auth].currentUser.uid,
-                                                @"admin" : @{ [FIRAuth auth].currentUser.uid : @"1" },
-                                                @"public": @"1"
-                                                };
-            _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
-            _currentVisuallKey = _visuallsTable_currentVisuallRef.key;
-            [_visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
-            [__publicVisuallsTableRef updateChildValues: @{_visuallsTable_currentVisuallRef.key: @"1"}];
-        }
-        else {  // run thru list of Visualls
-            NSDictionary *visuallKeys = (NSDictionary *) snapshot.value;
-            for (NSString *key in visuallKeys) {
-                _currentVisuallKey = key;
-                _visuallsTable_currentVisuallRef = [_visuallsTableRef child: key];
-                [self loadVisuallFromKey: key];
-                _callbackPublicVisuallLoaded();
-                return; // TODO: early termination here only loading the 1st and only visuall
-            }
-        }
-        
+     {
+         if ( ![snapshot exists] )  // we need to create over very first public visual
+         {
+             NSDictionary *visuallDictionary = @{
+                                                 @"title": @"My First Global Visuall",
+                                                 @"date-created": [FIRServerValue timestamp],
+                                                 @"created-by-userID": [FIRAuth auth].currentUser.uid,
+                                                 @"admin" : @{ [FIRAuth auth].currentUser.uid : @"1" },
+                                                 @"public": @"1"
+                                                 };
+             _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
+             _currentVisuallKey = _visuallsTable_currentVisuallRef.key;
+             [_visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
+             [__publicVisuallsTableRef updateChildValues: @{_visuallsTable_currentVisuallRef.key: @"1"}];
+         }
+         else {  // run thru list of Visualls
+             NSDictionary *visuallKeys = (NSDictionary *) snapshot.value;
+             for (NSString *key in visuallKeys) {
+                 _currentVisuallKey = key;
+                 _visuallsTable_currentVisuallRef = [_visuallsTableRef child: key];
+                 [self loadVisuallFromKey: key];
+                 _callbackPublicVisuallLoaded();
+                 return; // TODO: early termination here only loading the 1st and only visuall
+             }
+         }
+         
      } withCancelBlock:^(NSError * _Nonnull error) {
          NSLog(@"loadPublicVisuallsList: %@", error.localizedDescription);
      }];
@@ -197,28 +200,28 @@
 
 - (void) loadOrCreatePublicVisuall: (NSString *) publicKey
 {
-/*
-//    _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
-    
-//    FIRDatabaseReference *visuallsTable_globalRef = [_visuallsTableRef child: publicKey];
-    [__publicTableRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+    /*
+     //    _visuallsTable_currentVisuallRef = [_visuallsTableRef childByAutoId];
+     
+     //    FIRDatabaseReference *visuallsTable_globalRef = [_visuallsTableRef child: publicKey];
+     [__publicTableRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
      {
-         if ( ![snapshot exists] )
-         {
-             NSDictionary *visuallDictionary = @{
-                                                 @"title": @"Global Visuall",
-                                                 @"date-created": [FIRServerValue timestamp],
-                                                 @"created-by": [FIRAuth auth].currentUser.uid,
-                                                 @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" },
-                                                 @"public": @"1"
-                                                 };
-             [visuallsTable_globalRef updateChildValues: visuallDictionary];
-         } else
-         {
-             // load public visuall
-         }
+     if ( ![snapshot exists] )
+     {
+     NSDictionary *visuallDictionary = @{
+     @"title": @"Global Visuall",
+     @"date-created": [FIRServerValue timestamp],
+     @"created-by": [FIRAuth auth].currentUser.uid,
+     @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" },
+     @"public": @"1"
+     };
+     [visuallsTable_globalRef updateChildValues: visuallDictionary];
+     } else
+     {
+     // load public visuall
+     }
      } withCancelBlock:^(NSError * _Nonnull error) {
-         NSLog(@"loadOrCreateGlobalVisuall: %@", error);
+     NSLog(@"loadOrCreateGlobalVisuall: %@", error);
      }];
      */
 }
@@ -261,8 +264,8 @@
          }
          ++__numberOfNotesToBeLoaded;
          [self loadNoteFromRef: [_notesTableRef child:key]];
-//         [self removeNoteGivenKey: key];
-
+         //         [self removeNoteGivenKey: key];
+         
          
      } withCancelBlock:^(NSError *error)
      {
@@ -294,7 +297,7 @@
 {
     self.arrowsCollection = [Collection new];
     
-//    [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+    //    [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
     [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
          if( [self.arrowsCollection getItemFromKey: listOfArrowKeysRef.key] )  // If the group already exists in the collection
@@ -315,13 +318,12 @@
 {
     [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-        // TODO (Sep 2, 2016): Change to make ASYNC to speed up load times? Move all operations to background thread until ready to add subview: [self.NotesView addSubview:noteItem];
-         if ( [__pendingChildIds containsObject: snapshot.key] )
+         // TODO (Sep 2, 2016): Change to make ASYNC to speed up load times? Move all operations to background thread until ready to add subview: [self.NotesView addSubview:noteItem];
+         if ( [self isSnapshotFromLocalDevice: snapshot] && __allNotesLoaded )
          {
-             [__pendingChildIds removeObjectAtIndex: [__pendingChildIds indexOfObject: snapshot.key]];
              return;
          }
-         else if( [self.notesCollection getNoteFromKey: snapshot.key] )  // If the note already exists in the collection
+         else if( [self.notesCollection getNoteFromKey: snapshot.key] && __allNotesLoaded )  // If the note already exists in the collection
          {
              NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
              [ni updateNoteItem: snapshot.key andValue: snapshot.value];
@@ -345,39 +347,60 @@
 
 -(void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
 {
-    [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [groupRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )  // If the group already exists in the collection
+         if ( [self isSnapshotFromLocalDevice: snapshot] && __allGroupsLoaded)
          {
              return;
          }
-
-        if( [snapshot.value[@"data"][@"image"] boolValue] )
-        {
-            GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
-            [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-            _callbackGroupItem(newGroup);
-            NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
-            FIRStorageReference *islandRef = [__storageImagesRef child: fileName];
-            [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
-                if (error != nil) {
-                    NSLog(@"\n loadGroupFromRef: error loading an image: %@", error.description);
-                } else {
-                    UIImage *islandImage = [UIImage imageWithData:data];
-                    [newGroup addImage: islandImage];
-                }
-            }];
-        }
-        else
-        {
-            GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
-            [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-            _callbackGroupItem(newGroup);
-        }
-        if (++__numberOfGroupsLoaded == __numberOfGroupsToBeLoaded)
-        {
-            [self allGroupsLoaded];
-        }
+         else if( [self.groupsCollection getGroupItemFromKey: snapshot.key] && __allGroupsLoaded)  // If the group already exists in the collection
+         {
+             GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
+             [gi updateGroupItem: snapshot.key andValue: snapshot.value];
+             return;
+         }
+         
+         if( [snapshot.value[@"data"][@"image"] boolValue] )
+         {
+             GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
+             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+             _callbackGroupItem(newGroup);
+             NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
+             FIRStorageReference *islandRef = [__storageImagesRef child: fileName];
+             [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
+                 if (error != nil) {
+                     NSLog(@"\n loadGroupFromRef: error loading an image: %@", error.description);
+                 } else {
+                     UIImage *islandImage = [UIImage imageWithData:data];
+                     [newGroup addImage: islandImage];
+                 }
+             }];
+         }
+         else
+         {
+             GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
+             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+             _callbackGroupItem(newGroup);
+         }
+         
+         if (++__numberOfGroupsLoaded == __numberOfGroupsToBeLoaded)
+         {
+             [self allGroupsLoaded];
+         }
+         
+         [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+          {
+              if ( [self isSnapshotFromLocalDevice: snapshot] )
+              {
+                  return;
+              }
+              else if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )  // If the group already exists in the collection
+              {
+                  GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
+                  [gi updateGroupItem: snapshot.key andValue: snapshot.value];
+                  return;
+              }
+          }];
          
      } withCancelBlock:^(NSError *error)
      {
@@ -401,7 +424,7 @@
          
          ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
          [self.arrowsCollection addItem: ai withKey: arrowRef.key];
-//         _callbackNoteItem(newNote);
+         //         _callbackNoteItem(newNote);
          [self.ArrowsView addSubview: ai];
      } withCancelBlock:^(NSError *error)
      {
@@ -422,7 +445,7 @@
                                              @"data/title": ni.note.title,
                                              @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
                                              @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-//                                             @"data/font-size": [NSString stringWithFormat:@"%.1f", ni.note.fontSize],
+                                             //                                             @"data/font-size": [NSString stringWithFormat:@"%.1f", ni.note.fontSize],
                                              @"data/fontSize": [ni.note valueForKey: @"fontSize"],
                                              @"metadata/date-created": [FIRServerValue timestamp],
                                              @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
@@ -443,7 +466,7 @@
             NSLog(@"Note saved successfully.");
         }
     }];
-
+    
     [[_visuallsTable_currentVisuallRef child: @"notes"] updateChildValues:@{newNoteRef.key: @"1"} withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error) {
             NSLog(@"Note REF could NOT be saved.");
@@ -453,7 +476,7 @@
             [self increaseOrDecreaseCounter: notesCounterRef byAmount:1];
         }
     }];
-
+    
 }
 
 - (void) increaseOrDecreaseCounter: (FIRDatabaseReference *) ref byAmount: (int) i
@@ -498,7 +521,7 @@
     {
         [[_visuallsTable_currentVisuallRef child: @"images"] updateChildValues: @{newGroupRef.key: @"1"}];
         [self uploadImage: [vi getGroupItemImage]];
-
+        
     }
     FIRDatabaseReference *groupsCounterRef = [_visuallsTable_currentVisuallRef child: @"groups_counter"];
     [self increaseOrDecreaseCounter: groupsCounterRef byAmount:1];
@@ -556,16 +579,16 @@
 }
 
 - (NSMutableDictionary  *) getGenericSetValueParameters
-    {
-        return [@{
+{
+    return [@{
+              
+              @"parent-visuall": _currentVisuallKey,
+              @"metadata/date-created": [FIRServerValue timestamp],
+              @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,
+              @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
+              } mutableCopy];
+}
 
-                  @"parent-visuall": _currentVisuallKey,
-                  @"metadata/date-created": [FIRServerValue timestamp],
-                  @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,
-                  @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
-                  } mutableCopy];
-    }
-     
 - (NSMutableDictionary *) getCommonUpdateParameters
 {
     return [@{
@@ -573,6 +596,7 @@
               @"data/selected-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
               @"data/selected-by-uid": [FIRAuth auth].currentUser.uid,
               @"metadata/date-last-modified": [FIRServerValue timestamp],
+              @"metadata/local-device-id": __localDeviceId
               } mutableCopy];
 }
 
@@ -588,20 +612,19 @@
         }
         
         FIRDatabaseReference *notesDataRef = [[self.version01TableRef child: @"notes"] child: ni.note.key];
-//        NSString *localKey = [@"data/" stringByAppendingString: propertyName];
-//        NSMutableDictionary *noteDict = [@{
-//                                           localKey : [ni.note valueForKey:propertyName]
-//                                           } mutableCopy];
+        //        NSString *localKey = [@"data/" stringByAppendingString: propertyName];
+        //        NSMutableDictionary *noteDict = [@{
+        //                                           localKey : [ni.note valueForKey:propertyName]
+        //                                           } mutableCopy];
         NSMutableDictionary *noteDict = [@{
-                                                 @"data/title": ni.note.title,
-                                                 @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
-                                                 @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-                                                 @"data/fontSize": [ni.note valueForKey: @"fontSize"]
-                                        } mutableCopy];
+                                           @"data/title": ni.note.title,
+                                           @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                           @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+                                           @"data/fontSize": [ni.note valueForKey: @"fontSize"]
+                                           } mutableCopy];
         [noteDict addEntriesFromDictionary: [self getCommonUpdateParameters]];
-        [__pendingChildIds addObject: ni.note.key];
         [notesDataRef updateChildValues:noteDict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
-            [__pendingChildIds addObject: ni.note.key];
+            //            [__pendingChildIds addObject: ni.note.key];
         }];
     }
     else if ( [visualObject isGroupItem] )
@@ -675,10 +698,10 @@
                                                 }];
         } else
         {
-        [arrowsDataRef updateChildValues: @{
-                                           propertyName1 : [ai valueForKey:propertyName1],
-                                           propertyName2 : [ai valueForKey:propertyName2],
-                                           }];
+            [arrowsDataRef updateChildValues: @{
+                                                propertyName1 : [ai valueForKey:propertyName1],
+                                                propertyName2 : [ai valueForKey:propertyName2],
+                                                }];
         }
     }
 }
@@ -809,7 +832,7 @@
             NSLog(@"Note could NOT be removed.");
         } else {
             NSLog(@"Note removed successfully.");
-//            [ni removeFromSuperview];
+            //            [ni removeFromSuperview];
         }
     }];
     
@@ -831,14 +854,30 @@
 
 - (void) allNotesLoaded
 {
+    __allNotesLoaded = YES;
     NSLog(@"\n All notes loaded: %i", __numberOfNotesLoaded);
 }
 
 - (void) allGroupsLoaded
 {
+    __allGroupsLoaded = YES;
     NSLog(@"\n allGroupsLoaded loaded: %i", __numberOfGroupsLoaded);
-//    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView:) name:@"refreshGroupsView" object:nil];
+    //    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView:) name:@"refreshGroupsView" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshGroupsView" object: nil];
+}
+
+
+- (BOOL) isSnapshotFromLocalDevice: (FIRDataSnapshot*) snapshot
+{
+    if ( snapshot.value && snapshot.value[@"metadata"] && snapshot.value[@"metadata"][@"local-device-id"] )
+    {
+        NSString *foreignDeviceId = snapshot.value[@"metadata"][@"local-device-id"];
+        if ( [__localDeviceId isEqualToString: foreignDeviceId] )
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 /*
