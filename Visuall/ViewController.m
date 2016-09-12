@@ -20,6 +20,7 @@
 #import "ViewController+TapHandler.h"
 #import "ViewController+Group.h"
 #import "StateUtilFirebase.h"
+#import "StateUtilFirebase+Delete.h"
 #import "UserUtil.h"
 #import "TouchDownGestureRecognizer.h"
 #import "ViewController+xmlParser.h"

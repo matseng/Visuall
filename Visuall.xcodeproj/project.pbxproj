@@ -45,6 +45,7 @@
 		71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF001CB83CCE009D8F5C /* VisualItem.m */; };
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
+		71C167F81D875E1600961374 /* StateUtilFirebase+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C167F71D875E1600961374 /* StateUtilFirebase+Delete.m */; };
 		71C23F1E1D1E0F3900D53E0C /* leftRightUpDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */; };
 		71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F211D21DF9900D53E0C /* cursorClick.png */; };
 		71C23F281D21EF4800D53E0C /* textLetter.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F271D21EF4800D53E0C /* textLetter.png */; };
@@ -173,6 +174,8 @@
 		71B0EF031CB83E6D009D8F5C /* NoteItem2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteItem2.m; sourceTree = "<group>"; };
 		71B37E771C1924800048851A /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeViewController.h; path = Visuall/HomeViewController.h; sourceTree = "<group>"; };
 		71B37E781C1924800048851A /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Visuall/HomeViewController.m; sourceTree = "<group>"; };
+		71C167F61D875E1600961374 /* StateUtilFirebase+Delete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StateUtilFirebase+Delete.h"; sourceTree = "<group>"; };
+		71C167F71D875E1600961374 /* StateUtilFirebase+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StateUtilFirebase+Delete.m"; sourceTree = "<group>"; };
 		71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leftRightUpDown.png; sourceTree = "<group>"; };
 		71C23F211D21DF9900D53E0C /* cursorClick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursorClick.png; sourceTree = "<group>"; };
 		71C23F271D21EF4800D53E0C /* textLetter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textLetter.png; sourceTree = "<group>"; };
@@ -386,6 +389,8 @@
 				716B04691BFC210300DA9451 /* StateUtil.m */,
 				71FD2EEB1D662F8300CA5365 /* StateUtilFirebase.h */,
 				71FD2EEC1D662F8300CA5365 /* StateUtilFirebase.m */,
+				71C167F61D875E1600961374 /* StateUtilFirebase+Delete.h */,
+				71C167F71D875E1600961374 /* StateUtilFirebase+Delete.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -788,6 +793,7 @@
 				71D96C011D35736400CD1C49 /* ViewController+ViewHit.m in Sources */,
 				712EC9601BEAF21500ED6803 /* ViewController.m in Sources */,
 				712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */,
+				71C167F81D875E1600961374 /* StateUtilFirebase+Delete.m in Sources */,
 				71FD2EFB1D6FAF9E00CA5365 /* ViewController+Arrow.m in Sources */,
 				7161CF641D55202700B278EB /* MyVisuallsNavigationController.m in Sources */,
 				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,

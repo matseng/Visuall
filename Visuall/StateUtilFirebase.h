@@ -7,6 +7,7 @@
 //
 
 #import "StateUtil.h"
+#import "UIView+VisualItem.h"
 
 @protocol Create
 
@@ -22,9 +23,19 @@
 
 @protocol Delete
 
+- (void) removeValue: (UIView *) view;
+
 @end
 
 @interface StateUtilFirebase : StateUtil
+
+@property FIRDatabaseReference *usersTableCurrentUser;
+@property FIRDatabaseReference *visuallsTableRef;
+@property FIRDatabaseReference *visuallsTable_currentVisuallRef;
+@property FIRDatabaseReference *groupsTableRef;
+@property FIRDatabaseReference *arrowsTableRef;
+@property FIRDatabaseReference *publicVisuallsTableRef;
+@property FIRDatabaseReference *notesTableRef;
 
 @property NSInteger childrenCountNotes;
 
@@ -53,8 +64,6 @@
 - (void) updateChildValue: (UIView *) visualObject Property: (NSString *) propertyName;
 
 - (void) updateChildValues: (UIView *) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;
-
-- (void) removeValue: (UIView *) view;
 
 - (void) loadPublicVisuallsList;
 
