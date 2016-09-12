@@ -8,9 +8,24 @@
 
 #import "StateUtil.h"
 
+@protocol Create
+
+@end
+
+@protocol Read
+
+@end
+
+@protocol Update
+
+@end
+
+@protocol Delete
+
+@end
+
 @interface StateUtilFirebase : StateUtil
 
-//+(id) sharedManager;
 @property NSInteger childrenCountNotes;
 
 - (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;

@@ -77,7 +77,7 @@
         
         for (NoteItem2 *ni in groupItem.notesInGroup)
         {
-            [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];
+            [self.visuallState updateChildValue: ni Property: nil];
         }
 
         for (GroupItem *gi in groupItem.groupsInGroup)
