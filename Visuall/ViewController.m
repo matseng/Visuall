@@ -789,10 +789,12 @@
     {
         return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
     }
-    if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] &&
-        [self.BoundsTiledLayerView.hitTestView isGroupItem] && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
+    if ([self isEditModeOn]
+        && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]]
+        && ( [self.BoundsTiledLayerView.hitTestView getGroupItem] == [self.lastSelectedObject getGroupItem] )
+        && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
     {
-        return YES;
+        return YES;  // A group will receive a pan gesture only if it's has already been selected and fully in view
     }
     if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isArrowItem])
     {
