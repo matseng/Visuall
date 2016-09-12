@@ -73,6 +73,8 @@
     [self.visuallState setBackgroundScrollView: self.BackgroundScrollView];
     [self.visuallState setBoundsTiledLayerView: self.BoundsTiledLayerView];
     [self.visuallState setVisualItemsView: self.VisualItemsView];
+    [self.visuallState setGroupsView: self.GroupsView];
+    [self.visuallState setNotesView: self.NotesView];
     [self.visuallState setArrowsView: self.ArrowsView];
     
     [self.visuallState setCallbackNoteItem:^(NoteItem2 *ni) {

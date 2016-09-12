@@ -37,6 +37,8 @@
 @property ScrollViewMod *BackgroundScrollView;
 @property TiledLayerView *BoundsTiledLayerView;
 @property UIView *VisualItemsView;
+@property UIView *GroupsView;
+@property UIView *NotesView;
 @property UIView *ArrowsView;
 @property UIView *selectedVisualItem;
 @property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing

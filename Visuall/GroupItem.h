@@ -76,4 +76,6 @@
 
 - (void) updateFrame;
 
+- (UIView *) hitTestIncludingHandles: (CGPoint) point;
+
 @end

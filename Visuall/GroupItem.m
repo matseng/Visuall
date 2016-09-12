@@ -513,21 +513,44 @@
  * Description: point should be given in local coordinates (i.e. already converted)
  */
 
-- (UIView *) hitTestWithHandles: (CGPoint) point
+- (UIView *) hitTestIncludingHandles: (CGPoint) point
 {
     UIView *result;
+    CGPoint convertedPoint;
     if (handleTopLeft)
     {
-        CGPoint convertedPoint = [handleTopLeft convertPoint:point fromView: self];
         if (CGRectContainsPoint(handleTopLeft.frame, convertedPoint))
         {
             return handleTopLeft;
         }
     }
     
-    // TODO (Sep 11, 2016): Add this method to TiledLayerView.m (and test for handleTopLeft and if it works add other handles)... purpose to do better better hit testing on just the inner group view and its handles (not the whole frame)
+    if (handleTopRight)
+    {
+        if (CGRectContainsPoint(handleTopRight.frame, convertedPoint))
+        {
+            return handleTopRight;
+        }
+    }
+
+    if (handleBottomRight)
+    {
+        if (CGRectContainsPoint(handleBottomRight.frame, convertedPoint))
+        {
+            return handleBottomRight;
+        }
+    }
     
-    result = [self.innerGroupView hitTest: point withEvent:nil];
+    if (handleBottomLeft)
+    {
+        if (CGRectContainsPoint(handleBottomLeft.frame, convertedPoint))
+        {
+            return handleBottomLeft;
+        }
+    }
+    
+    convertedPoint = [self.innerGroupView convertPoint:point fromView: self];
+    result = [self.innerGroupView hitTest: convertedPoint withEvent:nil];
     return result;
 }
 
