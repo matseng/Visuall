@@ -166,6 +166,8 @@
 
 - (void) renderHandles
 {
+    _handleDiameter = [self getHandleDiameter];
+    
     handleBottomRight = [self makeHandle: CGRectMake(self.group.width, self.group.height, _handleDiameter, _handleDiameter)];
     [self insertSubview:handleBottomRight belowSubview:self.subviews[0]];
     
@@ -304,6 +306,10 @@
         
         [self updateGroupDimensions];
         [self updateFrame];
+    }
+    else if ( gestureRecognizer.state == UIGestureRecognizerStateEnded )
+    {
+        
     }
 }
 
@@ -500,6 +506,29 @@
 - (float) getWidth
 {
     return self.innerGroupView.frame.size.width;
+}
+
+/*
+ * Name:
+ * Description: point should be given in local coordinates (i.e. already converted)
+ */
+
+- (UIView *) hitTestWithHandles: (CGPoint) point
+{
+    UIView *result;
+    if (handleTopLeft)
+    {
+        CGPoint convertedPoint = [handleTopLeft convertPoint:point fromView: self];
+        if (CGRectContainsPoint(handleTopLeft.frame, convertedPoint))
+        {
+            return handleTopLeft;
+        }
+    }
+    
+    // TODO (Sep 11, 2016): Add this method to TiledLayerView.m (and test for handleTopLeft and if it works add other handles)... purpose to do better better hit testing on just the inner group view and its handles (not the whole frame)
+    
+    result = [self.innerGroupView hitTest: point withEvent:nil];
+    return result;
 }
 
 /*

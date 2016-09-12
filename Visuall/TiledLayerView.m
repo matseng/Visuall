@@ -33,7 +33,7 @@
 
 //    NSLog(@"TiledLayerView point %f, %f", point.x, point.y);
 
-    UIView *GroupsView = self.subviews[0].subviews[0];
+
     UIView *target = nil;
     
     if ( [self hitTestOnArrows: point withEvent: event] ) {
@@ -41,7 +41,17 @@
     }
     
     if ( [self hitTestOnNotes: point withEvent: event] ) return self.hitTestView;
-    
+
+    if ( [self hitTestOnGroups: point withEvent: event] ) return self.hitTestView;
+
+    self.hitTestView = nil;
+    NSLog(@"TiledLayerView viewHit %@", [target class]);
+    return nil;
+}
+
+- (UIView *) hitTestOnGroups: (CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *GroupsView = self.subviews[0].subviews[0];
     for (UIView *subview in [GroupsView.subviews reverseObjectEnumerator]) {
         CGPoint convertedPoint = [subview convertPoint:point fromView:self];
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isGroupItem])
@@ -50,8 +60,6 @@
             return self.hitTestView;
         }
     }
-    self.hitTestView = nil;
-    NSLog(@"TiledLayerView viewHit %@", [target class]);
     return nil;
 }
 

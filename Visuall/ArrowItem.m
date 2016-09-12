@@ -392,7 +392,7 @@ static CAShapeLayer *__tempShapeLayer;
  * Description: point should be given in local coordinates (i.e. already converted)
  */
 
-- (UIView *) hitTestWithHandles: (CGPoint) point
+- (UIView *) __hitTestWithHandles: (CGPoint) point
 {
     UIView *result;
     if (self.headHandle)
@@ -405,6 +405,30 @@ static CAShapeLayer *__tempShapeLayer;
     {
         CGPoint convertedPoint = [self.tailHandle convertPoint:point fromView: self];
 //        result = [self.tailHandle hitTest:convertedPoint withEvent:nil];
+        if (CGRectContainsPoint(self.tailHandle.frame, convertedPoint))
+        {
+            return self.tailHandle;
+        }
+    }
+    
+    result = [self hitTest: point withEvent:nil];
+    return result;
+}
+
+- (UIView *) hitTestWithHandles: (CGPoint) point
+{
+    UIView *result;
+    if (self.headHandle)
+    {
+        CGPoint convertedPoint = [self.headHandle convertPoint:point fromView: self];
+        if (CGRectContainsPoint(self.headHandle.frame, convertedPoint))
+        {
+            return self.headHandle;
+        }
+    }
+    if (self.tailHandle)
+    {
+        CGPoint convertedPoint = [self.tailHandle convertPoint:point fromView: self];
         if (CGRectContainsPoint(self.tailHandle.frame, convertedPoint))
         {
             return self.tailHandle;
