@@ -230,8 +230,8 @@
     if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
     [self.visuallState.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
     [self refreshGroupsView];
-    [self setSelectedObject: currentGroupItem];
     [self setActivelySelectedObjectDuringPan: nil];
+    [self setSelectedObject: currentGroupItem];
 }
 
 - (CGRect) createGroupViewRect:(CGPoint)start withEnd:(CGPoint)end {

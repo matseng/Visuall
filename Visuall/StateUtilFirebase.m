@@ -13,6 +13,7 @@
 #import "ArrowItem.h"
 #import "ViewController+Arrow.h"
 #import "RegExCategories.h"
+#import "StateUtilFirebase+Read.h"
 
 @interface StateUtilFirebase()
 
@@ -30,16 +31,15 @@
     NSString *_currentVisuallKey;
     
     void (^_callbackNoteItem)(NoteItem2 *ni);
-    void (^_callbackGroupItem)(GroupItem *gi);
+//    void (^_callbackGroupItem)(GroupItem *gi);
     void (^_callbackPublicVisuallLoaded)(void);
     __block int __numberOfNotesToBeLoaded;
     __block int __numberOfNotesLoaded;
-    __block int __numberOfGroupsToBeLoaded;
-    __block int __numberOfGroupsLoaded;
-    //    NSMutableArray *__pendingChildIds;
+//    __block int self.numberOfGroupsToBeLoaded;
+//    __block int self.numberOfGroupsLoaded;
     NSString *__localDeviceId;
     BOOL __allNotesLoaded;
-    BOOL __allGroupsLoaded;
+//    BOOL self.allGroupsLoaded;
 }
 
 //+(id)sharedManager {
@@ -274,12 +274,13 @@
     
     [listOfGroupKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( [self.groupsCollection getGroupItemFromKey: listOfGroupKeysRef.key] )  // If the group already exists in the collection
+         if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )  // If the group already exists in the collection
          {
              return;
          }
-         ++__numberOfGroupsToBeLoaded;
+         ++self.numberOfGroupsToBeLoaded;
          [self loadGroupFromRef: [self.groupsTableRef child:snapshot.key]];
+//         [self loadGr]
          
      } withCancelBlock:^(NSError *error)
      {
@@ -340,78 +341,27 @@
      }];
 }
 
--(void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
-{
-    [groupRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
-     {
-         if ( [self isSnapshotFromLocalDevice: snapshot] && __allGroupsLoaded)
-         {
-             return;
-         }
-         else if (snapshot.value == (id)[NSNull null])
-         {
-             GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
-             if (gi)
-             {
-                 [gi removeFromSuperview];
-                 [self.groupsCollection deleteGroupGivenKey: gi.group.key];
-             }
-             return;
-         }
-         else if( [self.groupsCollection getGroupItemFromKey: snapshot.key] && __allGroupsLoaded)  // If the group already exists in the collection
-         {
-             GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
-             [gi updateGroupItem: snapshot.key andValue: snapshot.value];
-             return;
-         }
-         
-         if( [snapshot.value[@"data"][@"image"] boolValue] )
-         {
-             GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
-             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-             _callbackGroupItem(newGroup);
-             NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
-             FIRStorageReference *islandRef = [self.storageImagesRef child: fileName];
-             [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
-                 if (error != nil) {
-                     NSLog(@"\n loadGroupFromRef: error loading an image: %@", error.description);
-                 } else {
-                     UIImage *islandImage = [UIImage imageWithData:data];
-                     [newGroup addImage: islandImage];
-                 }
-             }];
-         }
-         else
-         {
-             GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
-             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-             _callbackGroupItem(newGroup);
-         }
-         
-         if (++__numberOfGroupsLoaded == __numberOfGroupsToBeLoaded)
-         {
-             [self allGroupsLoaded];
-         }
-         
-         [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
-          {
-              if ( [self isSnapshotFromLocalDevice: snapshot] )
-              {
-                  return;
-              }
-              else if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )  // If the group already exists in the collection
-              {
-                  GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
-                  [gi updateGroupItem: snapshot.key andValue: snapshot.value];
-                  return;
-              }
-          }];
-         
-     } withCancelBlock:^(NSError *error)
-     {
-         NSLog(@"loadGroupFromRef: %@", error.description);
-     }];
-}
+//if ( [self isSnapshotFromLocalDevice: snapshot] && __allGroupsLoaded)
+//{
+//    return;
+//}
+//else if (snapshot.value == (id)[NSNull null])
+//{
+//    GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
+//    if (gi)
+//    {
+//        [gi removeFromSuperview];
+//        [self.groupsCollection deleteGroupGivenKey: gi.group.key];
+//    }
+//    return;
+//}
+//else if( [self.groupsCollection getGroupItemFromKey: snapshot.key] && __allGroupsLoaded)  // If the group already exists in the collection
+//{
+//    GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
+//    [gi updateGroupItem: snapshot.key andValue: snapshot.value];
+//    return;
+//}
+
 
 /*
  * Name:
@@ -759,8 +709,8 @@
 
 - (void) allGroupsLoaded
 {
-    __allGroupsLoaded = YES;
-    NSLog(@"\n allGroupsLoaded loaded: %i", __numberOfGroupsLoaded);
+    self.allGroupsLoadedBOOL = YES;
+    NSLog(@"\n allGroupsLoaded loaded: %i", self.numberOfGroupsLoaded);
     //    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView:) name:@"refreshGroupsView" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshGroupsView" object: nil];
 }

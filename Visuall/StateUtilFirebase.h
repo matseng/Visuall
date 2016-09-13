@@ -15,6 +15,8 @@
 
 @protocol Read
 
+- (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef;
+
 @end
 
 @protocol Update
@@ -37,6 +39,12 @@
 @property FIRDatabaseReference *publicVisuallsTableRef;
 @property FIRDatabaseReference *notesTableRef;
 @property FIRStorageReference *storageImagesRef;
+
+@property void (^callbackGroupItem)(GroupItem *gi);
+
+@property __block int numberOfGroupsToBeLoaded;
+@property __block int numberOfGroupsLoaded;
+@property BOOL allGroupsLoadedBOOL;
 
 @property NSInteger childrenCountNotes;
 
@@ -73,5 +81,7 @@
 - (float) getZoomScale;
 
 - (void) setUserID: (NSString *) userID;
+
+- (void) allGroupsLoaded;
 
 @end

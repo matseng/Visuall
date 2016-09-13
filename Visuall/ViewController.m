@@ -83,12 +83,11 @@
         [self calculateTotalBounds: ni];  // TODO - update so doest move window
         //        [self setSelectedObject: ni];
     }];
+    
     [self.visuallState setCallbackGroupItem:^(GroupItem *gi) {
-        [self addGestureRecognizersToGroup: gi];
-        [self.GroupsView addSubview: gi];
+        [[self.visuallState GroupsView] addSubview: gi];
         if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
         [self.visuallState.groupsCollection addGroup: gi withKey: gi.group.key];
-        //        [self refreshGroupView];
         [self calculateTotalBounds: gi];
     }];
     

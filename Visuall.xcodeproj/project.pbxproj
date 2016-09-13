@@ -46,6 +46,7 @@
 		71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0EF031CB83E6D009D8F5C /* NoteItem2.m */; };
 		71B37E791C1924800048851A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B37E781C1924800048851A /* HomeViewController.m */; };
 		71C167F81D875E1600961374 /* StateUtilFirebase+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C167F71D875E1600961374 /* StateUtilFirebase+Delete.m */; };
+		71C167FB1D877D8100961374 /* StateUtilFirebase+Read.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C167FA1D877D8100961374 /* StateUtilFirebase+Read.m */; };
 		71C23F1E1D1E0F3900D53E0C /* leftRightUpDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */; };
 		71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F211D21DF9900D53E0C /* cursorClick.png */; };
 		71C23F281D21EF4800D53E0C /* textLetter.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C23F271D21EF4800D53E0C /* textLetter.png */; };
@@ -176,6 +177,8 @@
 		71B37E781C1924800048851A /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Visuall/HomeViewController.m; sourceTree = "<group>"; };
 		71C167F61D875E1600961374 /* StateUtilFirebase+Delete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StateUtilFirebase+Delete.h"; sourceTree = "<group>"; };
 		71C167F71D875E1600961374 /* StateUtilFirebase+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StateUtilFirebase+Delete.m"; sourceTree = "<group>"; };
+		71C167F91D877D8100961374 /* StateUtilFirebase+Read.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StateUtilFirebase+Read.h"; sourceTree = "<group>"; };
+		71C167FA1D877D8100961374 /* StateUtilFirebase+Read.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StateUtilFirebase+Read.m"; sourceTree = "<group>"; };
 		71C23F1D1D1E0F3900D53E0C /* leftRightUpDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leftRightUpDown.png; sourceTree = "<group>"; };
 		71C23F211D21DF9900D53E0C /* cursorClick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursorClick.png; sourceTree = "<group>"; };
 		71C23F271D21EF4800D53E0C /* textLetter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textLetter.png; sourceTree = "<group>"; };
@@ -389,6 +392,8 @@
 				716B04691BFC210300DA9451 /* StateUtil.m */,
 				71FD2EEB1D662F8300CA5365 /* StateUtilFirebase.h */,
 				71FD2EEC1D662F8300CA5365 /* StateUtilFirebase.m */,
+				71C167F91D877D8100961374 /* StateUtilFirebase+Read.h */,
+				71C167FA1D877D8100961374 /* StateUtilFirebase+Read.m */,
 				71C167F61D875E1600961374 /* StateUtilFirebase+Delete.h */,
 				71C167F71D875E1600961374 /* StateUtilFirebase+Delete.m */,
 			);
@@ -768,6 +773,7 @@
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				71FD2EF31D6BE66400CA5365 /* GroupItemImage.m in Sources */,
 				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,
+				71C167FB1D877D8100961374 /* StateUtilFirebase+Read.m in Sources */,
 				71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */,
 				7195EBD51D46684500F609DE /* Arrow.m in Sources */,
 				210833191C0127AB00BA059F /* GroupItem.m in Sources */,
