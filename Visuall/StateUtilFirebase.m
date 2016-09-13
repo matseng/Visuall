@@ -31,15 +31,15 @@
     NSString *_currentVisuallKey;
     
     void (^_callbackNoteItem)(NoteItem2 *ni);
-//    void (^_callbackGroupItem)(GroupItem *gi);
+    //    void (^_callbackGroupItem)(GroupItem *gi);
     void (^_callbackPublicVisuallLoaded)(void);
     __block int __numberOfNotesToBeLoaded;
     __block int __numberOfNotesLoaded;
-//    __block int self.numberOfGroupsToBeLoaded;
-//    __block int self.numberOfGroupsLoaded;
+    //    __block int self.numberOfGroupsToBeLoaded;
+    //    __block int self.numberOfGroupsLoaded;
     NSString *__localDeviceId;
     BOOL __allNotesLoaded;
-//    BOOL self.allGroupsLoaded;
+    //    BOOL self.allGroupsLoaded;
 }
 
 //+(id)sharedManager {
@@ -280,11 +280,27 @@
          }
          ++self.numberOfGroupsToBeLoaded;
          [self loadGroupFromRef: [self.groupsTableRef child:snapshot.key]];
-//         [self loadGr]
+         // TODO (Sep 12, 2016): create update file and method to montitor groups for UPDATES... CAUTION: watch out for FIRDataEventTypeChildChanged because it only give data or metadata nodes (not both)... consider changing data structure to flatten (remove) data and metadata headers
          
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"\n Ignore the following error if deleting a group.");
+         NSLog(@"loadListOfGroupsFromRef: %@", error.description);
+     }];
+    
+    [listOfGroupKeysRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot *snapshot)  // DELETE operation in CRUD
+     {
+         GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
+         if (gi)
+         {
+             [gi removeFromSuperview];
+             [self.groupsCollection deleteGroupGivenKey: gi.group.key];
+         }
+         return;
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         //         NSLog(@"\n Ignore the following error if deleting a group.");
          NSLog(@"loadListOfGroupsFromRef: %@", error.description);
      }];
 }
@@ -397,14 +413,14 @@
         return;  // TODO (Aug 16, 2016): Unable to save a note bc user didn't log-in 2/2 no internet connection - possible to load data from local disk?
     }
     NSMutableDictionary *noteDictionary = [@{
-                                             @"data/title": ni.note.title,
-                                             @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
-                                             @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-                                             //                                             @"data/font-size": [NSString stringWithFormat:@"%.1f", ni.note.fontSize],
-                                             @"data/fontSize": [ni.note valueForKey: @"fontSize"],
-                                             @"metadata/date-created": [FIRServerValue timestamp],
-                                             @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
-                                             @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
+                                             @"title": ni.note.title,
+                                             @"x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                             @"y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+                                             //                                             @"font-size": [NSString stringWithFormat:@"%.1f", ni.note.fontSize],
+                                             @"fontSize": [ni.note valueForKey: @"fontSize"],
+                                             @"date-created": [FIRServerValue timestamp],
+                                             @"created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
+                                             @"created-by-uid": [FIRAuth auth].currentUser.uid,
                                              @"parent-visuall": _currentVisuallKey,
                                              } mutableCopy];
     [noteDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
@@ -458,14 +474,14 @@
     }
     NSMutableDictionary *groupDictionary = [@{
                                               @"parent-visuall": _currentVisuallKey,
-                                              @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
-                                              @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
-                                              @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
-                                              @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
-                                              @"data/image": ([vi isImage]) ? @"1" : @"0",
-                                              @"metadata/date-created": [FIRServerValue timestamp],
-                                              @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
-                                              @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
+                                              @"x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                              @"y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                              @"width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                              @"height": [NSString stringWithFormat:@"%.3f", gi.group.height],
+                                              @"image": ([vi isImage]) ? @"1" : @"0",
+                                              @"date-created": [FIRServerValue timestamp],
+                                              @"created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
+                                              @"created-by-uid": [FIRAuth auth].currentUser.uid,
                                               } mutableCopy];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
@@ -493,15 +509,15 @@
         return;
     }
     NSMutableDictionary *arrowDictionary = [@{
-                                              @"data/startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
-                                              @"data/startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
-                                              @"data/endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
-                                              @"data/endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
-                                              @"data/startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
-                                              @"data/endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
-                                              @"data/tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
-                                              @"data/headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
-                                              @"data/headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
+                                              @"startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
+                                              @"startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
+                                              @"endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
+                                              @"endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
+                                              @"startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
+                                              @"endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
+                                              @"tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
+                                              @"headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
+                                              @"headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
                                               } mutableCopy];
     [arrowDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [arrowDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
@@ -538,9 +554,9 @@
     return [@{
               
               @"parent-visuall": _currentVisuallKey,
-              @"metadata/date-created": [FIRServerValue timestamp],
-              @"metadata/created-by-username": [FIRAuth auth].currentUser.displayName,
-              @"metadata/created-by-uid": [FIRAuth auth].currentUser.uid,
+              @"date-created": [FIRServerValue timestamp],
+              @"created-by-username": [FIRAuth auth].currentUser.displayName,
+              @"created-by-uid": [FIRAuth auth].currentUser.uid,
               } mutableCopy];
 }
 
@@ -548,10 +564,10 @@
 {
     return [@{
               @"parent-visuall": _currentVisuallKey,
-              @"data/selected-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
-              @"data/selected-by-uid": [FIRAuth auth].currentUser.uid,
-              @"metadata/date-last-modified": [FIRServerValue timestamp],
-              @"metadata/local-device-id": __localDeviceId
+              @"selected-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
+              @"selected-by-uid": [FIRAuth auth].currentUser.uid,
+              @"date-last-modified": [FIRServerValue timestamp],
+              @"local-device-id": __localDeviceId
               } mutableCopy];
 }
 
@@ -567,15 +583,15 @@
         }
         
         FIRDatabaseReference *notesDataRef = [[self.version01TableRef child: @"notes"] child: ni.note.key];
-        //        NSString *localKey = [@"data/" stringByAppendingString: propertyName];
+        //        NSString *localKey = [@"" stringByAppendingString: propertyName];
         //        NSMutableDictionary *noteDict = [@{
         //                                           localKey : [ni.note valueForKey:propertyName]
         //                                           } mutableCopy];
         NSMutableDictionary *noteDict = [@{
-                                           @"data/title": ni.note.title,
-                                           @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
-                                           @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-                                           @"data/fontSize": [ni.note valueForKey: @"fontSize"]
+                                           @"title": ni.note.title,
+                                           @"x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                           @"y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+                                           @"fontSize": [ni.note valueForKey: @"fontSize"]
                                            } mutableCopy];
         [noteDict addEntriesFromDictionary: [self getCommonUpdateParameters]];
         [notesDataRef updateChildValues:noteDict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
@@ -589,20 +605,20 @@
             GroupItem *gi = [visualObject getGroupItem];
             FIRDatabaseReference *groupDataRef = [[self.version01TableRef child: @"groups"] child: gi.group.key];
             NSMutableDictionary *groupDictionary = [@{
-                                                      @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
-                                                      @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
-                                                      @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
-                                                      @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
+                                                      @"x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                                      @"y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                                      @"width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                                      @"height": [NSString stringWithFormat:@"%.3f", gi.group.height],
                                                       } mutableCopy];
             [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
             [groupDataRef updateChildValues: groupDictionary withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref)
-            {
-                if (error) {
-                    NSLog(@"Group could be updated.");
-                } else {
-                    NSLog(@"Group updated successfully.");
-                }
-            }];
+             {
+                 if (error) {
+                     NSLog(@"Group could be updated.");
+                 } else {
+                     NSLog(@"Group updated successfully.");
+                 }
+             }];
         }
     }
     else if ( [visualObject isArrowItem] )
@@ -610,15 +626,15 @@
         ArrowItem *ai = [visualObject getArrowItem];
         FIRDatabaseReference *arrowDataRef = [[self.version01TableRef child: @"arrows"] child: ai.key];
         NSMutableDictionary *arrowDictionary = [@{
-                                                  @"data/startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
-                                                  @"data/startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
-                                                  @"data/endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
-                                                  @"data/endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
-                                                  @"data/startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
-                                                  @"data/endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
-                                                  @"data/tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
-                                                  @"data/headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
-                                                  @"data/headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
+                                                  @"startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
+                                                  @"startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
+                                                  @"endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
+                                                  @"endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
+                                                  @"startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
+                                                  @"endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
+                                                  @"tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
+                                                  @"headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
+                                                  @"headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
                                                   } mutableCopy];
         [arrowDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
         [arrowDataRef updateChildValues: arrowDictionary];
@@ -631,7 +647,7 @@
     if ( [visualObject isNoteItem] )
     {
         NoteItem2 *ni = [visualObject getNoteItem];
-        FIRDatabaseReference *notesDataRef = [[self.version01TableRef child: @"notes"] child: [ni.note.key stringByAppendingString:@"/data"]];
+        FIRDatabaseReference *notesDataRef = [[self.version01TableRef child: @"notes"] child: ni.note.key];
         [notesDataRef updateChildValues: @{
                                            propertyName1 : [ni.note valueForKey:propertyName1],
                                            propertyName2 : [ni.note valueForKey:propertyName2],
@@ -640,7 +656,7 @@
     else if ( [visualObject isGroupItem] )
     {
         GroupItem *gi = (GroupItem *) visualObject;
-        NSString *groupUrl = [[@"groups/" stringByAppendingString: gi.group.key] stringByAppendingString:@"/data/"];
+        NSString *groupUrl = [@"groups/" stringByAppendingString: gi.group.key];
         [self.version01TableRef updateChildValues: @{
                                                      [groupUrl stringByAppendingString:propertyName1] : [gi.group valueForKey:propertyName1],
                                                      [groupUrl stringByAppendingString:propertyName2] : [gi.group valueForKey:propertyName2],
@@ -649,7 +665,7 @@
     else if ( [visualObject isArrowItem] )
     {
         ArrowItem *ai = [visualObject getArrowItem];
-        FIRDatabaseReference *arrowsDataRef = [[self.version01TableRef child: @"arrows"] child: [ai.key stringByAppendingString:@"/data"]];
+        FIRDatabaseReference *arrowsDataRef = [[self.version01TableRef child: @"arrows"] child: ai.key];
         if ([propertyName1 isEqualToString:@"x"] && [propertyName2 isEqualToString:@"y"])
         {
             [arrowsDataRef updateChildValues: @{
@@ -720,10 +736,10 @@
 {
     if ( snapshot.value
         && snapshot.value != (id)[NSNull null]
-        && snapshot.value[@"metadata"]
-        && snapshot.value[@"metadata"][@"local-device-id"] )
+        && snapshot.value[@"data"]
+        && snapshot.value[@"data"][@"local-device-id"] )
     {
-        NSString *foreignDeviceId = snapshot.value[@"metadata"][@"local-device-id"];
+        NSString *foreignDeviceId = snapshot.value[@"data"][@"local-device-id"];
         if ( [__localDeviceId isEqualToString: foreignDeviceId] )
         {
             return YES;

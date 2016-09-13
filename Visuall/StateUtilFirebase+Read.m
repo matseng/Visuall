@@ -12,7 +12,7 @@
 
 
 -(void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
-{
+{    
     [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
          if( [snapshot.value[@"data"][@"image"] boolValue] )

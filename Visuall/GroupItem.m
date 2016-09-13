@@ -31,7 +31,7 @@
 
 {
     float _handleDiameter;
-//    UIView *self.innerGroupView;
+    //    UIView *self.innerGroupView;
     UIView *handleTopLeft;
     UIView *handleTopRight;
     UIView *handleBottomLeft;
@@ -65,12 +65,12 @@
     if (self) {
         Group2 *group = [[Group2 alloc] init];
         group.key = key;
-        group.x = [value[@"data"][@"x"] floatValue];
-        group.y = [value[@"data"][@"y"] floatValue];
+        group.x = [value[@"x"] floatValue];
+        group.y = [value[@"y"] floatValue];
         
-        if ( value[@"data"][@"width"] && value[@"data"][@"height"]) {
-            group.width = [value[@"data"][@"width"] floatValue];
-            group.height = [value[@"data"][@"height"] floatValue];
+        if ( value[@"width"] && value[@"height"]) {
+            group.width = [value[@"width"] floatValue];
+            group.height = [value[@"height"] floatValue];
         } else {
             group.width = [value[@"style"][@"width"] floatValue];
             group.height = [value[@"style"][@"height"] floatValue];
@@ -93,12 +93,12 @@
 - (void) updateGroupModel: (NSString *) key andValue: (NSDictionary *) value
 {
     self.group.key = key;
-    self.group.x = [value[@"data"][@"x"] floatValue];
-    self.group.y = [value[@"data"][@"y"] floatValue];
+    self.group.x = [value[@"x"] floatValue];
+    self.group.y = [value[@"y"] floatValue];
     
-    if ( value[@"data"][@"width"] && value[@"data"][@"height"]) {
-        self.group.width = [value[@"data"][@"width"] floatValue];
-        self.group.height = [value[@"data"][@"height"] floatValue];
+    if ( value[@"width"] && value[@"height"]) {
+        self.group.width = [value[@"width"] floatValue];
+        self.group.height = [value[@"height"] floatValue];
     } else {
         self.group.width = [value[@"style"][@"width"] floatValue];
         self.group.height = [value[@"style"][@"height"] floatValue];
@@ -111,7 +111,7 @@
     
     if (self)
     {
-
+        
         Group2 *group = [[Group2 alloc] init];
         group.key = nil;
         group.x = coordinate.x;
@@ -145,7 +145,7 @@
     self.innerGroupView.autoresizesSubviews = YES;
     self.innerGroupView = self.innerGroupView;
     [self addSubview: self.innerGroupView];
-//    [self renderHandles];
+    //    [self renderHandles];
 }
 
 /*
@@ -233,7 +233,7 @@
         }
         for (ArrowItem *ai in self.arrowsInGroup) {
             [ai translateArrowByDelta: translation];
-//            [[[UserUtil sharedManager] getState] updateChildValue: ai Property: nil];
+            //            [[[UserUtil sharedManager] getState] updateChildValue: ai Property: nil];
         }
     }
 }
@@ -436,12 +436,12 @@
 //- (void) setViewAsSelected: (StateUtilFirebase *) visuallState
 - (void) setViewAsSelected
 {
-//    if ( [visuallState editModeOn])
+    //    if ( [visuallState editModeOn])
     if (YES)
     {
-//        [__innerGroupView removeFromSuperview];
+        //        [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
-//        [self renderGroup];
+        //        [self renderGroup];
         [self renderHandles];
         [self updateFrame];
     }
@@ -452,9 +452,9 @@
 {
     if ( editModeOn )
     {
-//        [__innerGroupView removeFromSuperview];
+        //        [__innerGroupView removeFromSuperview];
         [self setViewAsNotSelected];
-//        [self renderGroup];
+        //        [self renderGroup];
         [self renderHandles];
         [self updateFrame];
     }
@@ -477,7 +477,7 @@
     _handleDiameter = HANDLE_DIAMETER;
     float groupWidth = self.group.width;
     float groupHeight = self.group.height;
-
+    
     if (groupWidth <= groupHeight && _handleDiameter > 1/3 * groupWidth)
     {
         return (.333 * groupWidth);  // TODO: what type if groupWidth... bc 1/3 * groupWidth doesnt work. ALSO, what scale are we at?
@@ -532,7 +532,7 @@
             return handleTopRight;
         }
     }
-
+    
     if (handleBottomRight)
     {
         if (CGRectContainsPoint(handleBottomRight.frame, point))
