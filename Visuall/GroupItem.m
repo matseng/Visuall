@@ -519,7 +519,7 @@
     CGPoint convertedPoint;
     if (handleTopLeft)
     {
-        if (CGRectContainsPoint(handleTopLeft.frame, convertedPoint))
+        if (CGRectContainsPoint(handleTopLeft.frame, point))
         {
             return handleTopLeft;
         }
@@ -527,7 +527,7 @@
     
     if (handleTopRight)
     {
-        if (CGRectContainsPoint(handleTopRight.frame, convertedPoint))
+        if (CGRectContainsPoint(handleTopRight.frame, point))
         {
             return handleTopRight;
         }
@@ -535,7 +535,7 @@
 
     if (handleBottomRight)
     {
-        if (CGRectContainsPoint(handleBottomRight.frame, convertedPoint))
+        if (CGRectContainsPoint(handleBottomRight.frame, point))
         {
             return handleBottomRight;
         }
@@ -543,7 +543,7 @@
     
     if (handleBottomLeft)
     {
-        if (CGRectContainsPoint(handleBottomLeft.frame, convertedPoint))
+        if (CGRectContainsPoint(handleBottomLeft.frame, point))
         {
             return handleBottomLeft;
         }

@@ -24,7 +24,7 @@
 @implementation StateUtilFirebase
 {
     FIRStorage *__storage;
-    FIRStorageReference *__storageImagesRef;
+    
     NSString *__userID;
     
     NSString *_currentVisuallKey;
@@ -80,7 +80,7 @@
     self.publicVisuallsTableRef = [self.version01TableRef child: @"public"];
     __storage = [FIRStorage storage];
     FIRStorageReference *storageRef = [__storage referenceForURL:@"gs://visuall-2f878.appspot.com"];
-    __storageImagesRef = [storageRef child:@"images"];
+    self.storageImagesRef = [storageRef child:@"images"];
     __localDeviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 }
 
@@ -348,6 +348,16 @@
          {
              return;
          }
+         else if (snapshot.value == (id)[NSNull null])
+         {
+             GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
+             if (gi)
+             {
+                 [gi removeFromSuperview];
+                 [self.groupsCollection deleteGroupGivenKey: gi.group.key];
+             }
+             return;
+         }
          else if( [self.groupsCollection getGroupItemFromKey: snapshot.key] && __allGroupsLoaded)  // If the group already exists in the collection
          {
              GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
@@ -361,7 +371,7 @@
              [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
              _callbackGroupItem(newGroup);
              NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
-             FIRStorageReference *islandRef = [__storageImagesRef child: fileName];
+             FIRStorageReference *islandRef = [self.storageImagesRef child: fileName];
              [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
                  if (error != nil) {
                      NSLog(@"\n loadGroupFromRef: error loading an image: %@", error.description);
@@ -560,7 +570,7 @@
 
 - (void) uploadImage: (GroupItemImage *) gii
 {
-    FIRStorageReference *riversRef = [__storageImagesRef child: [gii.group.key stringByAppendingString:@".jpg"]];
+    FIRStorageReference *riversRef = [self.storageImagesRef child: [gii.group.key stringByAppendingString:@".jpg"]];
     NSData *data = UIImageJPEGRepresentation(gii.thumbnail, 1.0);
     FIRStorageUploadTask *uploadTask = [riversRef putData:data metadata:nil completion:^(FIRStorageMetadata *metadata, NSError *error) {
         if (error != nil) {
@@ -635,7 +645,14 @@
                                                       @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
                                                       } mutableCopy];
             [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
-            [groupDataRef updateChildValues: groupDictionary];
+            [groupDataRef updateChildValues: groupDictionary withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref)
+            {
+                if (error) {
+                    NSLog(@"Group could be updated.");
+                } else {
+                    NSLog(@"Group updated successfully.");
+                }
+            }];
         }
     }
     else if ( [visualObject isArrowItem] )
@@ -751,7 +768,10 @@
 
 - (BOOL) isSnapshotFromLocalDevice: (FIRDataSnapshot*) snapshot
 {
-    if ( snapshot.value && snapshot.value[@"metadata"] && snapshot.value[@"metadata"][@"local-device-id"] )
+    if ( snapshot.value
+        && snapshot.value != (id)[NSNull null]
+        && snapshot.value[@"metadata"]
+        && snapshot.value[@"metadata"][@"local-device-id"] )
     {
         NSString *foreignDeviceId = snapshot.value[@"metadata"][@"local-device-id"];
         if ( [__localDeviceId isEqualToString: foreignDeviceId] )

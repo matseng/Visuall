@@ -38,7 +38,10 @@
     
     if ( [self hitTestOnNotes: point withEvent: event] ) return self.hitTestView;
 
-    if ( [self hitTestOnGroups: point withEvent: event] ) return self.hitTestView;
+    if ( [self hitTestOnGroups: point withEvent: event] )
+    {
+        return self.hitTestView;
+    }
 
     self.hitTestView = nil;
     NSLog(@"TiledLayerView viewHit %@", [target class]);

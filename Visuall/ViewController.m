@@ -656,7 +656,6 @@
         else if ([self.lastSelectedObject isGroupItem])
         {
             GroupItem *gi = [self.lastSelectedObject getGroupItem];
-//            [self.groupsCollection deleteGroupGivenKey: gi.group.key];
             [[self.visuallState groupsCollection] deleteGroupGivenKey: gi.group.key];
         }
         
@@ -792,7 +791,9 @@
     }
     if ([self isEditModeOn]
         && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]]
+//        && ( [self.BoundsTiledLayerView.hitTestView isGroupItem] )
         && ( [self.BoundsTiledLayerView.hitTestView getGroupItem] == [self.lastSelectedObject getGroupItem] )
+        
         && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
     {
         return YES;  // A group will receive a pan gesture only if it's has already been selected and fully in view

@@ -36,6 +36,7 @@
 @property FIRDatabaseReference *arrowsTableRef;
 @property FIRDatabaseReference *publicVisuallsTableRef;
 @property FIRDatabaseReference *notesTableRef;
+@property FIRStorageReference *storageImagesRef;
 
 @property NSInteger childrenCountNotes;
 
