@@ -401,20 +401,15 @@
         return;  // TODO (Aug 16, 2016): Unable to save a note bc user didn't log-in 2/2 no internet connection - possible to load data from local disk?
     }
     NSMutableDictionary *noteDictionary = [@{
-                                             @"title": ni.note.title,
-                                             @"x": [NSString stringWithFormat:@"%.3f", ni.note.x],
-                                             @"y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-                                             //                                             @"font-size": [NSString stringWithFormat:@"%.1f", ni.note.fontSize],
-                                             @"fontSize": [ni.note valueForKey: @"fontSize"],
-                                             @"date-created": [FIRServerValue timestamp],
-                                             @"created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
-                                             @"created-by-uid": [FIRAuth auth].currentUser.uid,
-                                             @"parent-visuall": _currentVisuallKey,
+                                             @"data/title": ni.note.title,
+                                             @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                             @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+//                                             @"font-size": [NSString stringWithFormat:@"%.1f", ni.note.fontSize],
+                                             @"data/fontSize": [ni.note valueForKey: @"fontSize"],
                                              } mutableCopy];
+    [noteDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [noteDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     FIRDatabaseReference *newNoteRef = [self.notesTableRef childByAutoId];
-    //    NSLog(@"setValueNote, new note key: %@", newNoteRef.key);
-    //    NSLog(@"setValueNote, parent-visuall: %@", _currentVisuallKey);
     ni.note.key = newNoteRef.key;
     [self.notesCollection addNote:ni withKey:newNoteRef.key];
     [newNoteRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
@@ -461,16 +456,13 @@
         return;
     }
     NSMutableDictionary *groupDictionary = [@{
-                                              @"parent-visuall": _currentVisuallKey,
-                                              @"x": [NSString stringWithFormat:@"%.3f", gi.group.x],
-                                              @"y": [NSString stringWithFormat:@"%.3f", gi.group.y],
-                                              @"width": [NSString stringWithFormat:@"%.3f", gi.group.width],
-                                              @"height": [NSString stringWithFormat:@"%.3f", gi.group.height],
-                                              @"image": ([vi isImage]) ? @"1" : @"0",
-                                              @"date-created": [FIRServerValue timestamp],
-                                              @"created-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
-                                              @"created-by-uid": [FIRAuth auth].currentUser.uid,
+                                              @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                              @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                              @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                              @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
+                                              @"data/image": ([vi isImage]) ? @"1" : @"0"
                                               } mutableCopy];
+    [groupDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
     [newGroupRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
@@ -542,20 +534,20 @@
     return [@{
               
               @"parent-visuall": _currentVisuallKey,
-              @"date-created": [FIRServerValue timestamp],
-              @"created-by-username": [FIRAuth auth].currentUser.displayName,
-              @"created-by-uid": [FIRAuth auth].currentUser.uid,
+              @"data/date-created": [FIRServerValue timestamp],
+              @"data/created-by-username": [FIRAuth auth].currentUser.displayName,
+              @"data/created-by-uid": [FIRAuth auth].currentUser.uid,
               } mutableCopy];
 }
 
 - (NSMutableDictionary *) getCommonUpdateParameters
 {
     return [@{
-              @"parent-visuall": _currentVisuallKey,
-              @"selected-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
-              @"selected-by-uid": [FIRAuth auth].currentUser.uid,
-              @"date-last-modified": [FIRServerValue timestamp],
-              @"local-device-id": __localDeviceId
+//              @"parent-visuall": _currentVisuallKey,
+              @"data/selected-by-username": [FIRAuth auth].currentUser.displayName,  // TODO: working?
+              @"data/selected-by-uid": [FIRAuth auth].currentUser.uid,
+              @"data/date-last-modified": [FIRServerValue timestamp],
+              @"data/local-device-id": __localDeviceId
               } mutableCopy];
 }
 
@@ -576,10 +568,10 @@
         //                                           localKey : [ni.note valueForKey:propertyName]
         //                                           } mutableCopy];
         NSMutableDictionary *noteDict = [@{
-                                           @"title": ni.note.title,
-                                           @"x": [NSString stringWithFormat:@"%.3f", ni.note.x],
-                                           @"y": [NSString stringWithFormat:@"%.3f", ni.note.y],
-                                           @"fontSize": [ni.note valueForKey: @"fontSize"]
+                                           @"data/title": ni.note.title,
+                                           @"data/x": [NSString stringWithFormat:@"%.3f", ni.note.x],
+                                           @"data/y": [NSString stringWithFormat:@"%.3f", ni.note.y],
+                                           @"data/fontSize": [ni.note valueForKey: @"fontSize"]
                                            } mutableCopy];
         [noteDict addEntriesFromDictionary: [self getCommonUpdateParameters]];
         [notesDataRef updateChildValues:noteDict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
@@ -593,10 +585,10 @@
             GroupItem *gi = [visualObject getGroupItem];
             FIRDatabaseReference *groupDataRef = [[self.version01TableRef child: @"groups"] child: gi.group.key];
             NSMutableDictionary *groupDictionary = [@{
-                                                      @"x": [NSString stringWithFormat:@"%.3f", gi.group.x],
-                                                      @"y": [NSString stringWithFormat:@"%.3f", gi.group.y],
-                                                      @"width": [NSString stringWithFormat:@"%.3f", gi.group.width],
-                                                      @"height": [NSString stringWithFormat:@"%.3f", gi.group.height],
+                                                      @"data/x": [NSString stringWithFormat:@"%.3f", gi.group.x],
+                                                      @"data/y": [NSString stringWithFormat:@"%.3f", gi.group.y],
+                                                      @"data/width": [NSString stringWithFormat:@"%.3f", gi.group.width],
+                                                      @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
                                                       } mutableCopy];
             [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
             [groupDataRef updateChildValues: groupDictionary withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref)
@@ -709,9 +701,10 @@
 {
     if ( snapshot.value
         && snapshot.value != (id)[NSNull null]
-        && snapshot.value[@"local-device-id"] )
+        && snapshot.value[@"data"]
+        && snapshot.value[@"data"][@"local-device-id"] )
     {
-        NSString *foreignDeviceId = snapshot.value[@"local-device-id"];
+        NSString *foreignDeviceId = snapshot.value[@"data"][@"local-device-id"];
         if ( [__localDeviceId isEqualToString: foreignDeviceId] )
         {
             return YES;

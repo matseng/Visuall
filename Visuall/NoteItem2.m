@@ -107,16 +107,16 @@
 - (void) updateNote: (NSString *) key andValue: (NSDictionary *) value
 {
     self.note.key = key;
-    if (value[@"title"]) {
-        self.note.title = value[@"title"];
+    if (value[@"data"][@"title"]) {
+        self.note.title = value[@"data"][@"title"];
     } else
     {
         self.note.title = @"text...";
     }
-    self.note.x = [value[@"x"] floatValue];
-    self.note.y = [value[@"y"] floatValue];
-    if ( value[@"fontSize"] ) {
-        self.note.fontSize = [value[@"fontSize"] floatValue];
+    self.note.x = [value[@"data"][@"x"] floatValue];
+    self.note.y = [value[@"data"][@"y"] floatValue];
+    if ( value[@"data"][@"fontSize"] ) {
+        self.note.fontSize = [value[@"data"][@"fontSize"] floatValue];
     } else {
         self.note.fontSize = 12.0;
     }

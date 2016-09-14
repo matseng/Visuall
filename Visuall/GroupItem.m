@@ -65,12 +65,12 @@
     if (self) {
         Group2 *group = [[Group2 alloc] init];
         group.key = key;
-        group.x = [value[@"x"] floatValue];
-        group.y = [value[@"y"] floatValue];
+        group.x = [value[@"data"][@"x"] floatValue];
+        group.y = [value[@"data"][@"y"] floatValue];
         
-        if ( value[@"width"] && value[@"height"]) {
-            group.width = [value[@"width"] floatValue];
-            group.height = [value[@"height"] floatValue];
+        if ( value[@"data"][@"width"] && value[@"data"][@"height"]) {
+            group.width = [value[@"data"][@"width"] floatValue];
+            group.height = [value[@"data"][@"height"] floatValue];
         } else {
             group.width = [value[@"style"][@"width"] floatValue];
             group.height = [value[@"style"][@"height"] floatValue];
@@ -93,12 +93,12 @@
 - (void) updateGroupModel: (NSString *) key andValue: (NSDictionary *) value
 {
     self.group.key = key;
-    self.group.x = [value[@"x"] floatValue];
-    self.group.y = [value[@"y"] floatValue];
+    self.group.x = [value[@"data"][@"x"] floatValue];
+    self.group.y = [value[@"data"][@"y"] floatValue];
     
-    if ( value[@"width"] && value[@"height"]) {
-        self.group.width = [value[@"width"] floatValue];
-        self.group.height = [value[@"height"] floatValue];
+    if ( value[@"data"][@"width"] && value[@"data"][@"height"]) {
+        self.group.width = [value[@"data"][@"width"] floatValue];
+        self.group.height = [value[@"data"][@"height"] floatValue];
     } else {
         self.group.width = [value[@"style"][@"width"] floatValue];
         self.group.height = [value[@"style"][@"height"] floatValue];
