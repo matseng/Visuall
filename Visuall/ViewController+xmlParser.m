@@ -51,7 +51,7 @@
             [newNote setFontSize: fontSize];
 //            [self.visuallState setValueNote: newNote];  // CAUTION may overwhelm Firebase
             [self addNoteToViewWithHandlers:newNote];
-            [self calculateTotalBounds: newNote];
+//            [self calculateTotalBounds: newNote];
             result = @"";
             NSLog(@"\n Counter %d", counter++);
 //            return;

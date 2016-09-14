@@ -9,17 +9,25 @@
 #import "StateUtil.h"
 #import "UIView+VisualItem.h"
 
+static void (^__callbackGroupItem)(GroupItem *gi);
+static void (^__callbackNoteItem)(NoteItem2 *ni);
+
 @protocol Create
 
 @end
 
 @protocol Read
 
+- (void) loadNoteFromRef: (FIRDatabaseReference *) noteRef;
 - (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef;
+- (void) allNotesDidLoad;
+- (void) allGroupsDidLoad;
 
 @end
 
 @protocol Update
+
+-(void) updateGroupFromRef: (FIRDatabaseReference *) groupRef;
 
 @end
 
@@ -40,17 +48,19 @@
 @property FIRDatabaseReference *notesTableRef;
 @property FIRStorageReference *storageImagesRef;
 
-@property void (^callbackGroupItem)(GroupItem *gi);
-
 @property __block int numberOfGroupsToBeLoaded;
 @property __block int numberOfGroupsLoaded;
 @property BOOL allGroupsLoadedBOOL;
 
+@property __block int numberOfNotesToBeLoaded;
+@property __block int numberOfNotesLoaded;
+@property BOOL allNotesLoadedBool;
+
 @property NSInteger childrenCountNotes;
 
-- (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;
++ (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;
 
-- (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem;
++ (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem;
 
 - (void) setCallbackPublicVisuallLoaded: (void (^)(void)) callback;
 
@@ -82,6 +92,6 @@
 
 - (void) setUserID: (NSString *) userID;
 
-- (void) allGroupsLoaded;
+- (BOOL) isSnapshotFromLocalDevice: (FIRDataSnapshot*) snapshot;
 
 @end

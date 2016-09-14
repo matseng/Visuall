@@ -66,7 +66,7 @@ NoteItem2 *targetNoteForArrow;
             [self setSelectedObject:newNote];
             [newNote becomeFirstResponder];  // puts cursor on text field
             [newNote.noteTextView selectAll:nil];  // selects all text
-            [self updateTotalBounds: newNote];
+//            [self updateTotalBounds: newNote];
             return;
         }
         else

@@ -78,18 +78,18 @@
     [self.visuallState setNotesView: self.NotesView];
     [self.visuallState setArrowsView: self.ArrowsView];
     
-    [self.visuallState setCallbackNoteItem:^(NoteItem2 *ni) {
-        [self addNoteToViewWithHandlers: ni];
-        [self calculateTotalBounds: ni];  // TODO - update so doest move window
-        //        [self setSelectedObject: ni];
-    }];
+//    [StateUtilFirebase setCallbackNoteItem:^(NoteItem2 *ni) {
+//        [self addNoteToViewWithHandlers: ni];
+//        [self calculateTotalBounds: ni];
+//    }];
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addNoteToViewWithHandlersNotification:) name:@"addNoteToViewWithHandlers" object:nil];
     
-    [self.visuallState setCallbackGroupItem:^(GroupItem *gi) {
-        [[self.visuallState GroupsView] addSubview: gi];
-        if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
-        [self.visuallState.groupsCollection addGroup: gi withKey: gi.group.key];
-        [self calculateTotalBounds: gi];
-    }];
+//    [StateUtilFirebase setCallbackGroupItem:^(GroupItem *gi) {
+//        [[self.visuallState GroupsView] addSubview: gi];
+//        if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
+//        [self.visuallState.groupsCollection addGroup: gi withKey: gi.group.key];
+//        [self calculateTotalBounds: gi];
+//    }];
     
     [self.visuallState setCallbackPublicVisuallLoaded:^{
 //        [self loadAndUploadXML];
@@ -110,7 +110,17 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView) name:@"refreshGroupsView" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/
 }
 
--(void) restrictRotation:(BOOL) restriction
+-(void) addNoteToViewWithHandlersNotification:(NSNotification*)notification
+{
+    if ([notification.name isEqualToString:@"addNoteToViewWithHandlers"])
+    {
+        NSDictionary* userInfo = notification.userInfo;
+        NoteItem2 *ni = (NoteItem2*) userInfo[@"data"];
+        [self addNoteToViewWithHandlers: ni];
+    }
+}
+
+- (void) restrictRotation:(BOOL) restriction
 {
     AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     appDelegate.restrictRotation = restriction;
@@ -1026,6 +1036,7 @@
     noteItem.noteTextView.editable = NO;
     [noteItem transformVisualItem];
     [self.NotesView addSubview:noteItem];
+    [self updateTotalBounds: noteItem];
 }
 
 - (BOOL) textViewShouldBeginEditing:(UITextView *) textView

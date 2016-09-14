@@ -10,16 +10,48 @@
 
 @implementation StateUtilFirebase (Read)
 
+-(void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
+{
+    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         if ( [self isSnapshotFromLocalDevice: snapshot] && self.allNotesLoadedBool )
+         {
+             return;
+         }
+         else if( [self.notesCollection getNoteFromKey: snapshot.key] && self.allNotesLoadedBool )  // If the note already exists in the collection
+         {
+             NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
+             [ni updateNoteItem: snapshot.key andValue: snapshot.value];
+         }
+         else {
+             
+             NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
+             [self.notesCollection addNote:newNote withKey:snapshot.key];
+//             __callbackNoteItem(newNote);
+//            [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addNoteToViewWithHandlers:) name:@"addNoteToViewWithHandlers" object:nil];
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"addNoteToViewWithHandlers" object: nil userInfo: @{@"data": newNote}];
+             if (++self.numberOfNotesLoaded == self.numberOfNotesToBeLoaded)
+             {
+                 [self allNotesDidLoad];
+             }
+         }
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"loadNoteFromRef %@", error.description);
+     }];
+}
 
--(void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
+- (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
 {    
     [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( [snapshot.value[@"data"][@"image"] boolValue] )
+//         if( [snapshot.value[@"data"][@"image"] boolValue] )
+         if( [snapshot.value[@"image"] boolValue] )
          {
              GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
              [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-             self.callbackGroupItem(newGroup); // TODO (Sep 12, 2016):
+//             __callbackGroupItem(newGroup); // TODO (Sep 12, 2016):
 //                 [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addGroupItemToMVC:) name:@"refreshGroupsView" object:nil];
 //             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshGroupsView" object: nil];
              NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
@@ -37,12 +69,12 @@
          {
              GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
              [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-             self.callbackGroupItem(newGroup);
+//             __callbackGroupItem(newGroup);
          }
          
          if (++self.numberOfGroupsLoaded == self.numberOfGroupsToBeLoaded)
          {
-             [self allGroupsLoaded];
+             [self allGroupDidLoad];
          }
          
          //         [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
@@ -64,6 +96,20 @@
          NSLog(@"loadGroupFromRef: %@", error.description);
      }];
     
+}
+
+- (void) allNotesDidLoad
+{
+    self.allNotesLoadedBool = YES;
+    NSLog(@"\n All notes loaded: %i", self.numberOfNotesLoaded);
+}
+
+- (void) allGroupDidLoad
+{
+    self.allGroupsLoadedBOOL = YES;
+    NSLog(@"\n allGroupsLoaded loaded: %i", self.numberOfGroupsLoaded);
+    //    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView:) name:@"refreshGroupsView" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshGroupsView" object: nil];
 }
 
 @end

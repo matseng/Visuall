@@ -464,7 +464,8 @@
 
 - (void) setViewAsNotSelected
 {
-    self.innerGroupView.layer.borderColor = [GROUP_VIEW_BORDER_COLOR CGColor];
+//    self.innerGroupView.layer.borderColor = [GROUP_VIEW_BORDER_COLOR CGColor];
+    self.innerGroupView.layer.borderWidth = 0;
     [handleTopLeft removeFromSuperview];
     [handleTopRight removeFromSuperview];
     [handleBottomLeft removeFromSuperview];

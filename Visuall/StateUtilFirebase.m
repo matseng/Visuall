@@ -14,6 +14,7 @@
 #import "ViewController+Arrow.h"
 #import "RegExCategories.h"
 #import "StateUtilFirebase+Read.h"
+#import "StateUtilFirebase+Update.h"
 
 @interface StateUtilFirebase()
 
@@ -30,15 +31,15 @@
     
     NSString *_currentVisuallKey;
     
-    void (^_callbackNoteItem)(NoteItem2 *ni);
+//    void (^self.callbackNoteItem)(NoteItem2 *ni);
     //    void (^_callbackGroupItem)(GroupItem *gi);
     void (^_callbackPublicVisuallLoaded)(void);
-    __block int __numberOfNotesToBeLoaded;
-    __block int __numberOfNotesLoaded;
+//    __block int self.numberOfNotesToBeLoaded;
+//    __block int self.numberOfNotesLoaded;
     //    __block int self.numberOfGroupsToBeLoaded;
     //    __block int self.numberOfGroupsLoaded;
     NSString *__localDeviceId;
-    BOOL __allNotesLoaded;
+//    BOOL self.allNotesLoadedBool;
     //    BOOL self.allGroupsLoaded;
 }
 
@@ -221,14 +222,14 @@
      */
 }
 
-- (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackNoteItem
+- (void) setCallbackNoteItemCopy: (void (^)(NoteItem2 *ni)) callbackNoteItem
 {
-    _callbackNoteItem = [callbackNoteItem copy];
+    __callbackNoteItem = [callbackNoteItem copy];
 };
 
 - (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem
 {
-    _callbackGroupItem = [callbackGroupItem copy];
+    __callbackGroupItem = [callbackGroupItem copy];
 };
 
 - (void) setCallbackPublicVisuallLoaded:(void (^)(void)) callback
@@ -251,14 +252,12 @@
     self.notesCollection = [NotesCollection new];
     [listOfNoteKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
-         NSString *key = snapshot.key;
-         
-         if([self.notesCollection getNoteFromKey: key])  // If the note already exists in the collection
+         if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
          {
              return;
          }
-         ++__numberOfNotesToBeLoaded;
-         [self loadNoteFromRef: [self.notesTableRef child:key]];
+         ++self.numberOfNotesToBeLoaded;
+         [self loadNoteFromRef: [self.notesTableRef child: snapshot.key]];
          //         [self removeNoteGivenKey: key];
          
          
@@ -268,19 +267,27 @@
      }];
 }
 
+/*
+ * Name: loadListOfGroupsFromRef
+ * Description: CRUD operations
+ * 1. Create
+ * 2. Read
+ * 3. Update
+ * 4. Delete
+ */
 - (void) loadListOfGroupsFromRef: (FIRDatabaseReference *) listOfGroupKeysRef
 {
     self.groupsCollection = [GroupsCollection new];
     
     [listOfGroupKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )  // If the group already exists in the collection
+         if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )
          {
              return;
          }
          ++self.numberOfGroupsToBeLoaded;
-         [self loadGroupFromRef: [self.groupsTableRef child:snapshot.key]];
-         // TODO (Sep 12, 2016): create update file and method to montitor groups for UPDATES... CAUTION: watch out for FIRDataEventTypeChildChanged because it only give data or metadata nodes (not both)... consider changing data structure to flatten (remove) data and metadata headers
+         [self loadGroupFromRef: [self.groupsTableRef child:snapshot.key]];  // 2. Adds a listener to READ a group
+         [self updateGroupFromRef: [self.groupsTableRef child:snapshot.key]];  // 3. Adds a listener to UPDATE a group
          
      } withCancelBlock:^(NSError *error)
      {
@@ -288,7 +295,7 @@
          NSLog(@"loadListOfGroupsFromRef: %@", error.description);
      }];
     
-    [listOfGroupKeysRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot *snapshot)  // DELETE operation in CRUD
+    [listOfGroupKeysRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot *snapshot)  // 4. Adds a listener to DELETE a group
      {
          GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
          if (gi)
@@ -300,7 +307,6 @@
          
      } withCancelBlock:^(NSError *error)
      {
-         //         NSLog(@"\n Ignore the following error if deleting a group.");
          NSLog(@"loadListOfGroupsFromRef: %@", error.description);
      }];
 }
@@ -323,37 +329,6 @@
      {
          NSLog(@"\n Ignore the following error if deleting an arrow.");
          NSLog(@"loadListOfArrowsFromRef: %@", error.description);
-     }];
-}
-
--(void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
-{
-    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
-     {
-         // TODO (Sep 2, 2016): Change to make ASYNC to speed up load times? Move all operations to background thread until ready to add subview: [self.NotesView addSubview:noteItem];
-         if ( [self isSnapshotFromLocalDevice: snapshot] && __allNotesLoaded )
-         {
-             return;
-         }
-         else if( [self.notesCollection getNoteFromKey: snapshot.key] && __allNotesLoaded )  // If the note already exists in the collection
-         {
-             NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
-             [ni updateNoteItem: snapshot.key andValue: snapshot.value];
-         }
-         else {
-             
-             NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
-             [self.notesCollection addNote:newNote withKey:snapshot.key];
-             _callbackNoteItem(newNote);
-             if (++__numberOfNotesLoaded == __numberOfNotesToBeLoaded)
-             {
-                 [self allNotesLoaded];
-             }
-         }
-         
-     } withCancelBlock:^(NSError *error)
-     {
-         NSLog(@"loadNoteFromRef %@", error.description);
      }];
 }
 
@@ -717,29 +692,13 @@
     
 }
 
-- (void) allNotesLoaded
-{
-    __allNotesLoaded = YES;
-    NSLog(@"\n All notes loaded: %i", __numberOfNotesLoaded);
-}
-
-- (void) allGroupsLoaded
-{
-    self.allGroupsLoadedBOOL = YES;
-    NSLog(@"\n allGroupsLoaded loaded: %i", self.numberOfGroupsLoaded);
-    //    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView:) name:@"refreshGroupsView" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshGroupsView" object: nil];
-}
-
-
 - (BOOL) isSnapshotFromLocalDevice: (FIRDataSnapshot*) snapshot
 {
     if ( snapshot.value
         && snapshot.value != (id)[NSNull null]
-        && snapshot.value[@"data"]
-        && snapshot.value[@"data"][@"local-device-id"] )
+        && snapshot.value[@"local-device-id"] )
     {
-        NSString *foreignDeviceId = snapshot.value[@"data"][@"local-device-id"];
+        NSString *foreignDeviceId = snapshot.value[@"local-device-id"];
         if ( [__localDeviceId isEqualToString: foreignDeviceId] )
         {
             return YES;
