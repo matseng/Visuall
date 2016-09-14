@@ -10,21 +10,27 @@
 
 @implementation StateUtilFirebase (Read)
 
--(void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
-{
-    [noteRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
-     {
 
-             
+- (void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
+{
+    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         if( self.allNotesLoadedBool && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         {
+             NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
+             [ni updateNoteItem: snapshot.key andValue: snapshot.value];
+         }
+         else
+         {
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
              [self.notesCollection addNote:newNote withKey:snapshot.key];
-//             __callbackNoteItem(newNote);
-//            [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addNoteToViewWithHandlers:) name:@"addNoteToViewWithHandlers" object:nil];
              [[NSNotificationCenter defaultCenter] postNotificationName:@"addNoteToViewWithHandlers" object: nil userInfo: @{@"data": newNote}];
+             
              if (++self.numberOfNotesLoaded == self.numberOfNotesToBeLoaded)
              {
                  [self allNotesDidLoad];
              }
+         }
          
      } withCancelBlock:^(NSError *error)
      {
@@ -33,10 +39,16 @@
 }
 
 - (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
-{    
+{
     [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-//         if( [snapshot.value[@"data"][@"image"] boolValue] )
+         if( self.allNotesLoadedBool && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         {
+             GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
+             [gi updateGroupItem: snapshot.key andValue: snapshot.value];
+             return;
+         }
+
          if( [snapshot.value[@"image"] boolValue] )
          {
              GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
@@ -84,6 +96,30 @@
          NSLog(@"loadGroupFromRef: %@", error.description);
      }];
     
+}
+
+/*
+ * Name:
+ * Description:
+ */
+-(void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef
+{
+    [arrowRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         
+         if([self.arrowsCollection getItemFromKey: snapshot.key])  // If the note already exists in the collection
+         {
+             return;
+         }
+         
+         ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
+         [self.arrowsCollection addItem: ai withKey: arrowRef.key];
+         //         _callbackNoteItem(newNote);
+         [self.ArrowsView addSubview: ai];
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"loadArrowFromRef %@", error.description);
+     }];
 }
 
 - (void) allNotesDidLoad

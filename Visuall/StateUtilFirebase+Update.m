@@ -28,7 +28,6 @@
          NSLog(@"\n ^^^ IGNORE the above error if it follows a remote delete event ^^^");
          NSLog(@"\n Delete operation is taken care of in loadListOfGroupsFromRef");
      }];
-    
 }
 
 - (void) updateGroupFromRef: (FIRDatabaseReference *) groupRef

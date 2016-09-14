@@ -270,10 +270,7 @@
          }
          ++self.numberOfNotesToBeLoaded;
          [self loadNoteFromRef: [self.notesTableRef child: snapshot.key]];
-         [self updateNoteFromRef: [self.notesTableRef child:snapshot.key]];  // 3. Adds a listener to UPDATE a group
-         //         [self removeNoteGivenKey: key];
-         
-         
+         // [self removeNoteGivenKey: key];
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"loadListOfNotesFromRef: %@", error.description);
@@ -300,8 +297,6 @@
          }
          ++self.numberOfGroupsToBeLoaded;
          [self loadGroupFromRef: [self.groupsTableRef child:snapshot.key]];  // 2. Adds a listener to READ a group
-         [self updateGroupFromRef: [self.groupsTableRef child:snapshot.key]];  // 3. Adds a listener to UPDATE a group
-         
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"\n Ignore the following error if deleting a group.");
@@ -365,31 +360,6 @@
 //    [gi updateGroupItem: snapshot.key andValue: snapshot.value];
 //    return;
 //}
-
-
-/*
- * Name:
- * Description:
- */
--(void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef
-{
-    [arrowRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
-     {
-         
-         if([self.arrowsCollection getItemFromKey: snapshot.key])  // If the note already exists in the collection
-         {
-             return;
-         }
-         
-         ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
-         [self.arrowsCollection addItem: ai withKey: arrowRef.key];
-         //         _callbackNoteItem(newNote);
-         [self.ArrowsView addSubview: ai];
-     } withCancelBlock:^(NSError *error)
-     {
-         NSLog(@"loadArrowFromRef %@", error.description);
-     }];
-}
 
 /*
  * Name: setValueNote
@@ -489,15 +459,15 @@
         return;
     }
     NSMutableDictionary *arrowDictionary = [@{
-                                              @"startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
-                                              @"startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
-                                              @"endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
-                                              @"endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
-                                              @"startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
-                                              @"endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
-                                              @"tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
-                                              @"headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
-                                              @"headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
+                                              @"data/startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
+                                              @"data/startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
+                                              @"data/endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
+                                              @"data/endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
+                                              @"data/startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
+                                              @"data/endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
+                                              @"data/tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
+                                              @"data/headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
+                                              @"data/headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
                                               } mutableCopy];
     [arrowDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [arrowDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
@@ -606,15 +576,15 @@
         ArrowItem *ai = [visualObject getArrowItem];
         FIRDatabaseReference *arrowDataRef = [[self.version01TableRef child: @"arrows"] child: ai.key];
         NSMutableDictionary *arrowDictionary = [@{
-                                                  @"startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
-                                                  @"startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
-                                                  @"endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
-                                                  @"endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
-                                                  @"startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
-                                                  @"endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
-                                                  @"tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
-                                                  @"headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
-                                                  @"headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
+                                                  @"data/startX": [NSString stringWithFormat:@"%.1f", ai.startPoint.x],
+                                                  @"data/startY": [NSString stringWithFormat:@"%.1f", ai.startPoint.y],
+                                                  @"data/endX": [NSString stringWithFormat:@"%.1f", ai.endPoint.x],
+                                                  @"data/endY": [NSString stringWithFormat:@"%.1f", ai.endPoint.y],
+                                                  @"data/startItemKey": (ai.startItem && ai.startItem.key) ? ai.startItem.key : @"0",
+                                                  @"data/endItemKey": (ai.endItem && ai.endItem.key) ? ai.endItem.key : @"0",
+                                                  @"data/tailWidth": [NSString stringWithFormat:@"%.0f", ai.tailWidth],
+                                                  @"data/headWidth": [NSString stringWithFormat:@"%.0f", ai.headWidth],
+                                                  @"data/headLength": [NSString stringWithFormat:@"%.0f", ai.headLength],
                                                   } mutableCopy];
         [arrowDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
         [arrowDataRef updateChildValues: arrowDictionary];

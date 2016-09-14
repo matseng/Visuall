@@ -20,6 +20,7 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 - (void) loadNoteFromRef: (FIRDatabaseReference *) noteRef;
 - (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef;
+- (void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef;
 - (void) allNotesDidLoad;
 - (void) allGroupsDidLoad;
 
