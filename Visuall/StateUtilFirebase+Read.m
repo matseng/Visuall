@@ -12,18 +12,9 @@
 
 -(void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
 {
-    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [noteRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if ( [self isSnapshotFromLocalDevice: snapshot] && self.allNotesLoadedBool )
-         {
-             return;
-         }
-         else if( [self.notesCollection getNoteFromKey: snapshot.key] && self.allNotesLoadedBool )  // If the note already exists in the collection
-         {
-             NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
-             [ni updateNoteItem: snapshot.key andValue: snapshot.value];
-         }
-         else {
+
              
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
              [self.notesCollection addNote:newNote withKey:snapshot.key];
@@ -34,7 +25,6 @@
              {
                  [self allNotesDidLoad];
              }
-         }
          
      } withCancelBlock:^(NSError *error)
      {

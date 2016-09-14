@@ -247,9 +247,21 @@
     [self loadListOfArrowsFromRef: listOfArrowKeysRef];
 }
 
+//if ( [self isSnapshotFromLocalDevice: snapshot] && self.allNotesLoadedBool )
+//{
+//    return;
+//}
+//else if( [self.notesCollection getNoteFromKey: snapshot.key] && self.allNotesLoadedBool )  // If the note already exists in the collection
+//{
+//    NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
+//    [ni updateNoteItem: snapshot.key andValue: snapshot.value];
+//}
+//else {
+
 - (void) loadListOfNotesFromRef: (FIRDatabaseReference *) listOfNoteKeysRef
 {
     self.notesCollection = [NotesCollection new];
+    
     [listOfNoteKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
          if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
@@ -258,6 +270,7 @@
          }
          ++self.numberOfNotesToBeLoaded;
          [self loadNoteFromRef: [self.notesTableRef child: snapshot.key]];
+         [self updateNoteFromRef: [self.notesTableRef child:snapshot.key]];  // 3. Adds a listener to UPDATE a group
          //         [self removeNoteGivenKey: key];
          
          

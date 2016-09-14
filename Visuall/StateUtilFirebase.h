@@ -27,7 +27,8 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 @protocol Update
 
--(void) updateGroupFromRef: (FIRDatabaseReference *) groupRef;
+- (void) updateNoteFromRef: (FIRDatabaseReference *) noteRef;
+- (void) updateGroupFromRef: (FIRDatabaseReference *) groupRef;
 
 @end
 
