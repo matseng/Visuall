@@ -51,9 +51,7 @@
          {
              GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
              [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-//             __callbackGroupItem(newGroup); // TODO (Sep 12, 2016):
-//                 [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addGroupItemToMVC:) name:@"refreshGroupsView" object:nil];
-//             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshGroupsView" object: nil];
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"addGroupToViewWithHandlers" object: nil userInfo: @{@"data": newGroup}];
              NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
              FIRStorageReference *islandRef = [self.storageImagesRef child: fileName];
              [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
@@ -69,7 +67,7 @@
          {
              GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
              [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-//             __callbackGroupItem(newGroup);
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"addGroupToViewWithHandlers" object: nil userInfo: @{@"data": newGroup}];
          }
          
          if (++self.numberOfGroupsLoaded == self.numberOfGroupsToBeLoaded)

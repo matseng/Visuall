@@ -91,6 +91,8 @@
 //        [self calculateTotalBounds: gi];
 //    }];
     
+        [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addGroupToViewWithHandlersNotification:) name:@"addGroupToViewWithHandlers" object:nil];
+    
     [self.visuallState setCallbackPublicVisuallLoaded:^{
 //        [self loadAndUploadXML];
     }];
@@ -110,13 +112,26 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView) name:@"refreshGroupsView" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/
 }
 
--(void) addNoteToViewWithHandlersNotification:(NSNotification*)notification
+-(void) addNoteToViewWithHandlersNotification:(NSNotification*) notification
 {
     if ([notification.name isEqualToString:@"addNoteToViewWithHandlers"])
     {
         NSDictionary* userInfo = notification.userInfo;
         NoteItem2 *ni = (NoteItem2*) userInfo[@"data"];
         [self addNoteToViewWithHandlers: ni];
+    }
+}
+
+-(void) addGroupToViewWithHandlersNotification:(NSNotification*) notification
+{
+    if ([notification.name isEqualToString:@"addGroupToViewWithHandlers"])
+    {
+        NSDictionary* userInfo = notification.userInfo;
+        GroupItem *gi = (GroupItem *) userInfo[@"data"];
+                [[self.visuallState GroupsView] addSubview: gi];
+                if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
+                [self.visuallState.groupsCollection addGroup: gi withKey: gi.group.key];
+                [self calculateTotalBounds: gi];
     }
 }
 
