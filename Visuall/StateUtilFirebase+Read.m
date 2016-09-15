@@ -20,7 +20,7 @@
              NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
              [ni updateNoteItem: snapshot.key andValue: snapshot.value];
          }
-         else
+         else if ( !self.allNotesLoadedBOOL )
          {
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
              [self.notesCollection addNote:newNote withKey:snapshot.key];
@@ -36,6 +36,12 @@
      {
          NSLog(@"loadNoteFromRef %@", error.description);
      }];
+    
+    [noteRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        NSLog(@"\n TODO remove this note");
+    } withCancelBlock:^(NSError * _Nonnull error) {
+        NSLog(@"\n loadNoteFromRef error: %@", error.description);
+    }];
 }
 
 - (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
@@ -48,33 +54,36 @@
              [gi updateGroupItem: snapshot.key andValue: snapshot.value];
              return;
          }
-
-         if( [snapshot.value[@"image"] boolValue] )
+         else if ( !self.allGroupsLoadedBOOL )
          {
-             GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
-             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"addGroupToViewWithHandlers" object: nil userInfo: @{@"data": newGroup}];
-             NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
-             FIRStorageReference *islandRef = [self.storageImagesRef child: fileName];
-             [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
-                 if (error != nil) {
-                     NSLog(@"\n loadGroupFromRef: error loading an image: %@", error.description);
-                 } else {
-                     UIImage *islandImage = [UIImage imageWithData:data];
-                     [newGroup addImage: islandImage];
-                 }
-             }];
-         }
-         else
-         {
-             GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
-             [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"addGroupToViewWithHandlers" object: nil userInfo: @{@"data": newGroup}];
-         }
-         
-         if (++self.numberOfGroupsLoaded == self.numberOfGroupsToBeLoaded)
-         {
-             [self allGroupDidLoad];
+             
+             if( [snapshot.value[@"image"] boolValue] )
+             {
+                 GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
+                 [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+                 [[NSNotificationCenter defaultCenter] postNotificationName:@"addGroupToViewWithHandlers" object: nil userInfo: @{@"data": newGroup}];
+                 NSString *fileName = [snapshot.key stringByAppendingString: @".jpg"];
+                 FIRStorageReference *islandRef = [self.storageImagesRef child: fileName];
+                 [islandRef dataWithMaxSize:1 * 1024 * 1024 completion:^(NSData *data, NSError *error){
+                     if (error != nil) {
+                         NSLog(@"\n loadGroupFromRef: error loading an image: %@", error.description);
+                     } else {
+                         UIImage *islandImage = [UIImage imageWithData:data];
+                         [newGroup addImage: islandImage];
+                     }
+                 }];
+             }
+             else
+             {
+                 GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
+                 [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
+                 [[NSNotificationCenter defaultCenter] postNotificationName:@"addGroupToViewWithHandlers" object: nil userInfo: @{@"data": newGroup}];
+             }
+             
+             if (++self.numberOfGroupsLoaded == self.numberOfGroupsToBeLoaded)
+             {
+                 [self allGroupsDidLoad];
+             }
          }
          
          //         [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
@@ -134,7 +143,7 @@
     NSLog(@"\n All notes loaded: %i", self.numberOfNotesLoaded);
 }
 
-- (void) allGroupDidLoad
+- (void) allGroupsDidLoad
 {
     self.allGroupsLoadedBOOL = YES;
     NSLog(@"\n allGroupsLoaded loaded: %i", self.numberOfGroupsLoaded);
