@@ -264,16 +264,25 @@
     
     [listOfNoteKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if([self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection
-         {
-             return;
-         }
          ++self.numberOfNotesToBeLoaded;
          [self loadNoteFromRef: [self.notesTableRef child: snapshot.key]];
-         // [self removeNoteGivenKey: key];
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"loadListOfNotesFromRef: %@", error.description);
+     }];
+    
+    [listOfNoteKeysRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
+         if (ni)
+         {
+             [ni removeFromSuperview];
+             [self.notesCollection deleteNoteGivenKey: ni.note.key];
+         }
+         return;
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"loadListOfGroupsFromRef: %@", error.description);
      }];
 }
 
@@ -291,10 +300,6 @@
     
     [listOfGroupKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )
-         {
-             return;
-         }
          ++self.numberOfGroupsToBeLoaded;
          [self loadGroupFromRef: [self.groupsTableRef child:snapshot.key]];  // 2. Adds a listener to READ a group
      } withCancelBlock:^(NSError *error)

@@ -13,21 +13,17 @@
 
 - (void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
 {
-//    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
-    [noteRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if (snapshot.value == [NSNull null]) return;
-         
-         // TODO (Sep 14, 2016): Refactor to FIRDataEventTypeChildChanged to make it more clear
-         // Read a change to a note by another user
-         if( self.allNotesLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         if (snapshot.value == [NSNull null])
          {
-             NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
-             [ni updateNoteItem: snapshot.key andValue: snapshot.value];
+             --self.numberOfNotesToBeLoaded;
+             [self removeNoteGivenKey: noteRef.key];
+            return;
          }
-         
-         // Read a note upon the initial load:
-         else if ( !self.allNotesLoadedBOOL )
+        
+         // 1 of 2. Read a note upon the initial load:
+         if ( !self.allNotesLoadedBOOL && ![self.notesCollection getNoteFromKey: snapshot.key])
          {
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
              [self.notesCollection addNote:newNote withKey:snapshot.key];
@@ -37,18 +33,18 @@
              {
                  [self allNotesDidLoad];
              }
+             NSLog(@"\n %i", self.numberOfNotesLoaded);
          }
-         
+         // 2 of 2. Read a note upon an update from another user:
+        else if( self.allNotesLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])
+         {
+             NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
+             [ni updateNoteItem: snapshot.key andValue: snapshot.value];
+         }
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"loadNoteFromRef %@", error.description);
      }];
-    // Read if a note was deleted by another user:
-    [noteRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        NSLog(@"\n TODO remove this note");
-    } withCancelBlock:^(NSError * _Nonnull error) {
-        NSLog(@"\n loadNoteFromRef error: %@", error.description);
-    }];
 }
 
 - (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
@@ -92,21 +88,6 @@
                  [self allGroupsDidLoad];
              }
          }
-         
-         //         [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
-         //          {
-         //              if ( [self isSnapshotFromLocalDevice: snapshot] )
-         //              {
-         //                  return;
-         //              }
-         //              else if( [self.groupsCollection getGroupItemFromKey: snapshot.key] )  // If the group already exists in the collection
-         //              {
-         //                  GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
-         //                  [gi updateGroupItem: snapshot.key andValue: snapshot.value];
-         //                  return;
-         //              }
-         //          }];
-         
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"loadGroupFromRef: %@", error.description);
