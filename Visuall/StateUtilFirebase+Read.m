@@ -13,13 +13,20 @@
 
 - (void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
 {
-    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+//    [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [noteRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
+         if (snapshot.value == [NSNull null]) return;
+         
+         // TODO (Sep 14, 2016): Refactor to FIRDataEventTypeChildChanged to make it more clear
+         // Read a change to a note by another user
          if( self.allNotesLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection then update it
          {
              NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
              [ni updateNoteItem: snapshot.key andValue: snapshot.value];
          }
+         
+         // Read a note upon the initial load:
          else if ( !self.allNotesLoadedBOOL )
          {
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
@@ -36,7 +43,7 @@
      {
          NSLog(@"loadNoteFromRef %@", error.description);
      }];
-    
+    // Read if a note was deleted by another user:
     [noteRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSLog(@"\n TODO remove this note");
     } withCancelBlock:^(NSError * _Nonnull error) {
