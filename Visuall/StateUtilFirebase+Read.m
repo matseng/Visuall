@@ -15,7 +15,7 @@
 {
     [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( self.allNotesLoadedBool && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         if( self.allNotesLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection then update it
          {
              NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
              [ni updateNoteItem: snapshot.key andValue: snapshot.value];
@@ -40,9 +40,9 @@
 
 - (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef
 {
-    [groupRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [groupRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( self.allNotesLoadedBool && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         if( self.allGroupsLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the note already exists in the collection then update it
          {
              GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
              [gi updateGroupItem: snapshot.key andValue: snapshot.value];
@@ -102,20 +102,26 @@
  * Name:
  * Description:
  */
--(void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef
+- (void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef
 {
-    [arrowRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [arrowRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         
-         if([self.arrowsCollection getItemFromKey: snapshot.key])  // If the note already exists in the collection
+         if( self.allArrowsLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.arrowsCollection getItemFromKey: snapshot.key])  // If the note already exists in the collection then update it
          {
+             ArrowItem *ai = (ArrowItem *)[self.arrowsCollection getItemFromKey: snapshot.key];
+             [ai updateArrowFromFirebase: snapshot.key andValue: snapshot.value];
              return;
          }
          
          ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
          [self.arrowsCollection addItem: ai withKey: arrowRef.key];
-         //         _callbackNoteItem(newNote);
          [self.ArrowsView addSubview: ai];
+         
+         if (++self.numberOfArrowsLoaded == self.numberOfArrowsToBeLoaded)
+         {
+             NSLog(@"\n loadArrowFromRef all arrows loaded");
+             self.allArrowsLoadedBOOL = YES;
+         }
      } withCancelBlock:^(NSError *error)
      {
          NSLog(@"loadArrowFromRef %@", error.description);
@@ -124,7 +130,7 @@
 
 - (void) allNotesDidLoad
 {
-    self.allNotesLoadedBool = YES;
+    self.allNotesLoadedBOOL = YES;
     NSLog(@"\n All notes loaded: %i", self.numberOfNotesLoaded);
 }
 

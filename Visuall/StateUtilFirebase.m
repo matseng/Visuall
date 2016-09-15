@@ -330,7 +330,7 @@
          {
              return;
          }
-         
+         ++self.numberOfArrowsToBeLoaded;
          [self loadArrowFromRef: [self.arrowsTableRef child:snapshot.key]];
          
      } withCancelBlock:^(NSError *error)

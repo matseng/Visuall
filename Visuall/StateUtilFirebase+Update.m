@@ -14,7 +14,7 @@
 {
     [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if ( [self isSnapshotFromLocalDevice: snapshot] || !self.allNotesLoadedBool)
+         if ( [self isSnapshotFromLocalDevice: snapshot] || !self.allNotesLoadedBOOL)
          {
              return;
          }

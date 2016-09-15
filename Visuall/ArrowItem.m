@@ -93,18 +93,31 @@ static CAShapeLayer *__tempShapeLayer;
 {
     self = [super init];
     if (self) {
-        self.startItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"startItemKey"]];
-        self.endItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"endItemKey"]];
-        self.startPoint = CGPointMake( [value[@"data"][@"startX"] floatValue], [value[@"data"][@"startY"] floatValue]);
-        self.endPoint = CGPointMake( [value[@"data"][@"endX"] floatValue], [value[@"data"][@"endY"] floatValue]);
-        self.tailWidth = [value[@"data"][@"tailWidth"] floatValue];
-        self.headWidth = [value[@"data"][@"headWidth"] floatValue];
-        self.headLength = [value[@"data"][@"headLength"] floatValue];
-        self.borderColor = [UIColor whiteColor];
+        [self setDataFromFirebase: key andValue: value];
         [self addArrowSublayer];
         [self addHandles];
     }
     return self;
+}
+
+- (void) updateArrowFromFirebase: (NSString *) key andValue: (NSDictionary *) value
+{
+    [self setDataFromFirebase: key andValue: value];
+    [self.arrowLayer removeFromSuperlayer];
+    [self addArrowSublayer];
+    [self updateHandlePosition];
+}
+
+- (void) setDataFromFirebase: (NSString *) key andValue: (NSDictionary *) value
+{
+    self.startItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"startItemKey"]];
+    self.endItem = [[[UserUtil sharedManager] getState] getItemFromKey: value[@"data"][@"endItemKey"]];
+    self.startPoint = CGPointMake( [value[@"data"][@"startX"] floatValue], [value[@"data"][@"startY"] floatValue]);
+    self.endPoint = CGPointMake( [value[@"data"][@"endX"] floatValue], [value[@"data"][@"endY"] floatValue]);
+    self.tailWidth = [value[@"data"][@"tailWidth"] floatValue];
+    self.headWidth = [value[@"data"][@"headWidth"] floatValue];
+    self.headLength = [value[@"data"][@"headLength"] floatValue];
+    self.borderColor = [UIColor whiteColor];
 }
 
 - (instancetype) initArrowFromStartPointToEndPoint
