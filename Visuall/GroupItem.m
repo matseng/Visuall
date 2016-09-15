@@ -87,6 +87,7 @@
 - (void) updateGroupItem: (NSString *) key andValue: (NSDictionary *) value  // TODO (Sep 9, 2016): make public method for updating groups from firebase
 {
     [self updateGroupModel: key andValue:value];
+    [self updateHandles];
     [self updateFrame];
 }
 

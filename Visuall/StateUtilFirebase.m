@@ -286,14 +286,6 @@
      }];
 }
 
-/*
- * Name: loadListOfGroupsFromRef
- * Description: CRUD operations
- * 1. Create
- * 2. Read
- * 3. Update
- * 4. Delete
- */
 - (void) loadListOfGroupsFromRef: (FIRDatabaseReference *) listOfGroupKeysRef
 {
     self.groupsCollection = [GroupsCollection new];
@@ -325,6 +317,34 @@
 }
 
 - (void) loadListOfArrowsFromRef: (FIRDatabaseReference *) listOfArrowKeysRef
+{
+    self.arrowsCollection = [Collection new];
+    
+    [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         ++self.numberOfArrowsToBeLoaded;
+         [self loadArrowFromRef: [self.arrowsTableRef child: snapshot.key]];
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"loadListOfArrowsFromRef: %@", error.description);
+     }];
+    
+    [listOfArrowKeysRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         ArrowItem *ai = (ArrowItem *)[self.arrowsCollection getItemFromKey: snapshot.key];
+         if (ai)
+         {
+             [ai removeFromSuperview];
+             [self.arrowsCollection deleteItemGivenKey: ai.key];
+         }
+         return;
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"loadListOfGroupsFromRef: %@", error.description);
+     }];
+}
+
+- (void) __loadListOfArrowsFromRef: (FIRDatabaseReference *) listOfArrowKeysRef
 {
     self.arrowsCollection = [Collection new];
     

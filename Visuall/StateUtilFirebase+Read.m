@@ -22,8 +22,8 @@
             return;
          }
         
-         // 1 of 2. Read a note upon the initial load:
-         if ( !self.allNotesLoadedBOOL && ![self.notesCollection getNoteFromKey: snapshot.key])
+         // 1 of 2. Read a note upon the initial load or if a new note is added from another user
+         if (![self.notesCollection getNoteFromKey: snapshot.key])
          {
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
              [self.notesCollection addNote:newNote withKey:snapshot.key];
@@ -35,8 +35,8 @@
              }
              NSLog(@"\n %i", self.numberOfNotesLoaded);
          }
-         // 2 of 2. Read a note upon an update from another user:
-        else if( self.allNotesLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])
+         // 2 of 2. Read a note upon an UPDATE from another user:
+        else if(![self isSnapshotFromLocalDevice: snapshot] && [self.notesCollection getNoteFromKey: snapshot.key])
          {
              NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
              [ni updateNoteItem: snapshot.key andValue: snapshot.value];
@@ -51,13 +51,13 @@
 {
     [groupRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( self.allGroupsLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         if(![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the note already exists in the collection then update it
          {
              GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
              [gi updateGroupItem: snapshot.key andValue: snapshot.value];
              return;
          }
-         else if ( !self.allGroupsLoadedBOOL )
+         else if ( ![self.groupsCollection getGroupItemFromKey: snapshot.key] )
          {
              
              if( [snapshot.value[@"image"] boolValue] )
@@ -92,14 +92,48 @@
      {
          NSLog(@"loadGroupFromRef: %@", error.description);
      }];
-    
+}
+
+- (void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef
+{
+    [arrowRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         if (snapshot.value == [NSNull null])
+         {
+             --self.numberOfArrowsToBeLoaded;
+             return;
+         }
+         
+         // 1 of 2. Read a arrow upon the initial load:
+         if ( ![self.arrowsCollection getItemFromKey: snapshot.key])
+         {
+             ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
+             [self.arrowsCollection addItem: ai withKey: arrowRef.key];
+             [self.ArrowsView addSubview: ai];
+             
+             if (++self.numberOfArrowsLoaded == self.numberOfArrowsToBeLoaded)
+             {
+                 self.allArrowsLoadedBOOL = YES;
+             }
+             NSLog(@"\n %i", self.numberOfArrowsLoaded);
+         }
+         // 2 of 2. Read a arrow upon an update from another user:
+         else if(![self isSnapshotFromLocalDevice: snapshot] && [self.arrowsCollection getItemFromKey: snapshot.key])
+         {
+             ArrowItem *ai = (ArrowItem *)[self.arrowsCollection getItemFromKey: snapshot.key];
+             [ai updateArrowFromFirebase: snapshot.key andValue: snapshot.value];
+         }
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"loadArrowFromRef %@", error.description);
+     }];
 }
 
 /*
  * Name:
  * Description:
  */
-- (void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef
+- (void) __loadArrowFromRef: (FIRDatabaseReference *) arrowRef
 {
     [arrowRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
