@@ -51,7 +51,12 @@
 {
     [groupRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if(![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         if ( ![snapshot exists] || snapshot.value == [NSNull null])
+         {
+             --self.numberOfGroupsToBeLoaded;
+             return;
+         }
+         if( ![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the note already exists in the collection then update it
          {
              GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
              [gi updateGroupItem: snapshot.key andValue: snapshot.value];
@@ -60,7 +65,7 @@
          else if ( ![self.groupsCollection getGroupItemFromKey: snapshot.key] )
          {
              
-             if( [snapshot.value[@"image"] boolValue] )
+             if( [snapshot.value[@"data"][@"image"] boolValue] )
              {
                  GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
                  [self.groupsCollection addGroup: newGroup withKey:snapshot.key];

@@ -460,17 +460,42 @@
     [groupDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
-    [newGroupRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
-    [newGroupRef updateChildValues: groupDictionary];
-    [[self.visuallsTable_currentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
     if ( [vi isImage] )
     {
-        [[self.visuallsTable_currentVisuallRef child: @"images"] updateChildValues: @{newGroupRef.key: @"1"}];
-        [self uploadImage: [vi getGroupItemImage]];
-        
+        [self setValueGroupImageHelperForVisualItem:vi andGroupDictionary: groupDictionary andRef: newGroupRef];
     }
-    FIRDatabaseReference *groupsCounterRef = [self.visuallsTable_currentVisuallRef child: @"groups_counter"];
-    [self increaseOrDecreaseCounter: groupsCounterRef byAmount:1];
+    else
+    {
+        [self setValueGroupHelper: groupDictionary andRef: newGroupRef];
+    }
+    
+}
+
+- (void) setValueGroupImageHelperForVisualItem: (VisualItem *) vi andGroupDictionary: (NSMutableDictionary *) groupDictionary andRef: (FIRDatabaseReference *) newGroupRef
+{
+    [[self.visuallsTable_currentVisuallRef child: @"images"] updateChildValues: @{newGroupRef.key: @"1"}];
+    FIRStorageUploadTask *uploadTask = [self uploadImage: [vi getGroupItemImage]];
+    [uploadTask observeStatus: FIRStorageTaskStatusSuccess
+                      handler:^(FIRStorageTaskSnapshot *snapshot) {
+                          NSLog(@"\n setValueGroup upload complete");
+                          [self setValueGroupHelper: groupDictionary andRef: newGroupRef];
+                      }];
+}
+
+- (void) setValueGroupHelper: (NSMutableDictionary *) groupDictionary andRef: (FIRDatabaseReference *) newGroupRef
+{
+    // Use setValue prior to updateChildValues for compatibility with local persistent storage:
+    [newGroupRef setValue: @{@"parent-visuall": _currentVisuallKey} withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error)
+        {
+            NSLog(@"\n setValueGroup, error: %@", error);
+        }
+        else{
+            NSLog(@"\n Group set successfully.");
+        }
+    }];
+    [newGroupRef updateChildValues: groupDictionary];
+    [[self.visuallsTable_currentVisuallRef child: @"groups"] updateChildValues: @{newGroupRef.key: @"1"}];
 }
 
 - (void) setValueArrow: (VisualItem *) vi
@@ -509,7 +534,7 @@
  // TODO (Aug 23, 2016): "You can also put this code inside a GCD block and execute in another thread, showing an UIActivityIndicatorView during the process[...]"
  */
 
-- (void) uploadImage: (GroupItemImage *) gii
+- (FIRStorageUploadTask *) uploadImage: (GroupItemImage *) gii
 {
     FIRStorageReference *riversRef = [self.storageImagesRef child: [gii.group.key stringByAppendingString:@".jpg"]];
     NSData *data = UIImageJPEGRepresentation(gii.thumbnail, 1.0);
@@ -521,7 +546,7 @@
             NSURL *downloadURL = metadata.downloadURL;
         }
     }];
-    
+    return uploadTask;
 }
 
 - (NSMutableDictionary  *) getGenericSetValueParameters
@@ -586,6 +611,7 @@
                                                       @"data/height": [NSString stringWithFormat:@"%.3f", gi.group.height],
                                                       } mutableCopy];
             [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
+            NSLog(@"\n Preparing to update group child values.");
             [groupDataRef updateChildValues: groupDictionary withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref)
              {
                  if (error) {
