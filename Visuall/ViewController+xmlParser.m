@@ -10,6 +10,7 @@
 #import "DDFileReader.h"
 #import "RegExCategories.h"
 #import "ViewController+Group.h"
+#import "ViewController+Arrow.h"
 
 @implementation ViewController (xmlParser)
 
@@ -80,12 +81,34 @@
                     [self addGroupFromAggregateArray: arr andDictionary: noteDict];
                 }
             }
-         
-        } 
+        }
+        else if ([line isMatch:RX(@"\\<\\/edge\\>")])  // we reach an end node
+        {
+            [self addArrowFromEdgeXMLString: result andDictionary: noteDict];
+            result = @"";
+        }
     }];
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
     NSLog(@"Done loading notes: executionTime = %f", executionTime);
+}
+
+- (void) addArrowFromEdgeXMLString: (NSString *) xmlString andDictionary: (NSMutableDictionary *) dict
+{
+    NSString *regexSource = @"source\\=\"\\d+\"";
+    NSString *source = [xmlString firstMatch:RX(regexSource)];
+    source = [source firstMatch:RX(@"\\d+")];
+    NSLog(@"\n Source:, %@", source);
+    NSString *regexTarget = @"target\\=\"\\d+\"";
+    NSString *target = [xmlString firstMatch:RX(regexTarget)];
+    target = [target firstMatch:RX(@"\\d+")];
+    NSLog(@"\n target:, %@", target);
+    NoteItem2 *startNote = dict[source];
+    CGPoint startPoint = startNote.frame.origin;
+    NoteItem2 *endNote = dict[target];
+    CGPoint endPoint = endNote.frame.origin;
+    ArrowItem *ai = [[ArrowItem alloc] initArrowFromStartPoint: startPoint toEndPoint: endPoint];
+    [self addArrowItemToMVC: ai];
 }
 
 

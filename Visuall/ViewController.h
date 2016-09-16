@@ -27,7 +27,7 @@
 
 @protocol ArrowsController  // implemented in ViewController+Group.h
 
-- (void) addArrowToMVC: (ArrowItem *) arrow;
+- (void) addArrowItemToMVC: (ArrowItem *) arrow;
 
 @end
 

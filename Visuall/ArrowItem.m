@@ -142,6 +142,28 @@ static CAShapeLayer *__tempShapeLayer;
     return self;
 }
 
+- (instancetype) initArrowFromStartPoint: (CGPoint) startPoint toEndPoint: (CGPoint) endPoint
+{
+    self = [super init];
+    if (self) {
+        
+        self.startItem = [self hitTestOnNotesAndGroups: startPoint];
+        self.endItem = [self hitTestOnNotesAndGroups: endPoint];
+        self.startPoint = startPoint;
+        self.endPoint = endPoint;
+        self.tailWidth = TAIL_WIDTH;
+        self.headWidth = HEAD_WIDTH;
+        self.headLength = HEAD_LENGTH;
+        self.borderColor = [UIColor blueColor];
+        
+        if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
+        [[[UserUtil sharedManager] getState] setSelectedVisualItem: self];
+        [self addArrowSublayer];
+        [self addHandles];
+    }
+    return self;
+}
+
 - (void) addArrowSublayer
 {
     UIBezierPath *path;

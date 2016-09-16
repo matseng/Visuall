@@ -35,6 +35,8 @@
 
 - (instancetype) initArrowFromStartPointToEndPoint;
 
+- (instancetype) initArrowFromStartPoint: (CGPoint) startPoint toEndPoint: (CGPoint) endPoint;
+
 - (instancetype) initArrowFromFirebase: (NSString *) key andValue: (NSDictionary *) value;
 
 - (void) updateArrowFromFirebase: (NSString *) key andValue: (NSDictionary *) value;
