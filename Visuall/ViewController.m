@@ -94,7 +94,7 @@
         [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addGroupToViewWithHandlersNotification:) name:@"addGroupToViewWithHandlers" object:nil];
     
     [self.visuallState setCallbackPublicVisuallLoaded:^{
-//        [self loadAndUploadXML];
+        [self loadAndUploadXML];
     }];
     
 //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
@@ -669,7 +669,8 @@
 
 - (void) trashButtonHandler
 {
-    if ([self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
+//    if ([self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
+    if ([self.lastSelectedObject isPartiallyInBoundsOfView: self.BackgroundScrollView])
     {
         if ([self.lastSelectedObject isNoteItem])
         {

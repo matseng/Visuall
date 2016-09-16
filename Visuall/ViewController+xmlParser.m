@@ -14,8 +14,9 @@
 
 - (void) loadAndUploadXML
 {
-    NSString *fileName = @"defaultVisualizationSmall";
-//    NSString *fileName = @"defaultVisualization500";
+    __block int n = 500;
+//    NSString *fileName = @"defaultVisualizationSmall";
+    NSString *fileName = @"defaultVisualization500";
 //    NSString *fileName = @"defaultVisualization1773";
     NSString* filePath = [[NSBundle mainBundle] pathForResource:fileName
                                                          ofType:@"xml"];
@@ -27,6 +28,11 @@
     __block CGPoint point;
     __block int counter = 0;
     __block float fontSize;
+    __block NSString *nodeID;
+    __block NSMutableDictionary *noteDict = [NSMutableDictionary new];
+    __block NSArray *aggregateArray;
+    __block NSMutableArray *aggregateArrayOfArrays = [[NSMutableArray alloc] initWithCapacity: n];
+    __block NSString *aggregateString;
     DDFileReader * reader = [[DDFileReader alloc] initWithFilePath: filePath];
     NSDate *methodStart = [NSDate date];
     
@@ -46,21 +52,54 @@
             pointY = [self getValueFromXMLString: result forKey:@"Y"];
 //            NSLog(@"read text: \n %@", pointY);
             point = CGPointMake([pointX floatValue], [pointY floatValue]);
+            
             fontSize = [[self getValueFromXMLString: result forKey:@"font"] floatValue];
+            
+            aggregateString = [self getValueFromXMLString: result forKey:@"aggregate"];
+            if (![@"null" isEqualToString: aggregateString]){
+                NSLog(@"read text: \n aggregateString: %@", aggregateString);
+                aggregateArray = [aggregateString componentsSeparatedByString:@" "];
+                [aggregateArrayOfArrays addObject: [aggregateArray copy]];
+            }
+
             NoteItem2 *newNote = [[NoteItem2 alloc] initNote: text withPoint: point];  //
             [newNote setFontSize: fontSize];
+            [noteDict setObject: newNote forKey: [NSString stringWithFormat:@"%d", counter]];
 //            [self.visuallState setValueNote: newNote];  // CAUTION may overwhelm Firebase
             [self addNoteToViewWithHandlers:newNote];
 //            [self calculateTotalBounds: newNote];
             result = @"";
             NSLog(@"\n Counter %d", counter++);
-//            return;
+            if ( counter == n)
+            {
+                NSLog(@"\n DONE READING XML");
+                for (NSArray *arr in aggregateArrayOfArrays)
+                {
+                    [self addGroupFromAggregateArray: arr andDictionary: noteDict];
+                }
+            }
          
         } 
     }];
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
     NSLog(@"Done loading notes: executionTime = %f", executionTime);
+}
+
+
+- (void) addGroupFromAggregateArray: (NSArray *) arr andDictionary: (NSMutableDictionary *) dict
+{
+    CGRect rect = CGRectZero;
+//    NSNumber *key;
+    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    f.numberStyle = NSNumberFormatterDecimalStyle;
+    for (NSString *key in arr) {
+//        key = [f numberFromString: str];
+        NoteItem2 *ni = dict[key];
+        rect = CGRectUnion(rect, ni.frame);
+    }
+    NSLog(@"\n just made a rect");
+    
 }
 
 - (NSString *) getValueFromXMLString: (NSString *) xmlString forKey: (NSString *) key

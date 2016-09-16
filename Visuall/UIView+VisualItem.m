@@ -130,6 +130,26 @@
     return YES;
 }
 
+- (BOOL) isPartiallyInBoundsOfView: (UIView *) parentView
+{
+//    int counter = 0;
+//    CGPoint topLeft = [parentView.superview convertPoint: CGPointZero fromView:self];
+//    CGPoint topRight = [parentView.superview convertPoint: CGPointMake(self.frame.size.width, 0) fromView:self];
+//    CGPoint bottomRight = [parentView.superview convertPoint: CGPointMake(self.frame.size.width, self.frame.size.height) fromView:self];
+//    CGPoint bottomLeft = [parentView.superview convertPoint: CGPointMake(0, self.frame.size.height) fromView:self];
+//    
+//    if (CGRectContainsPoint(parentView.frame, topLeft)) counter++;
+//    if (CGRectContainsPoint(parentView.frame, topRight)) counter++;
+//    if (CGRectContainsPoint(parentView.frame, bottomRight)) counter++;
+//    if (CGRectContainsPoint(parentView.frame, bottomLeft)) counter++;
+//    if (counter >= 2) return YES;
+//    return NO;
+    CGRect boundsA = [self convertRect:self.bounds toView:nil];
+    CGRect boundsB = [parentView convertRect:parentView.bounds toView:nil];
+    BOOL viewsOverlap = CGRectIntersectsRect(boundsA, boundsB);
+    return viewsOverlap;
+}
+
 - (BOOL) isImage
 {
     if ( [self isKindOfClass: [GroupItemImage class]] )

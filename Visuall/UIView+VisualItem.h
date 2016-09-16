@@ -30,6 +30,8 @@
 
 - (BOOL) isInBoundsOfView: (UIView *) parentView;
 
+- (BOOL) isPartiallyInBoundsOfView: (UIView *) parentView;
+
 - (BOOL) isGroupItemSubview;
 
 - (BOOL) isGroupHandle;
