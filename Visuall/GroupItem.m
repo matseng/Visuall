@@ -139,7 +139,7 @@
     [self setFrame: CGRectMake(0, 0, (self.group.width + _handleDiameter), (self.group.height + _handleDiameter) )];
     if ( !self.innerGroupView ) self.innerGroupView = [[UIView alloc] initWithFrame: CGRectMake(_handleDiameter / 2, _handleDiameter / 2, self.group.width, self.group.height)];
     [self.innerGroupView setBackgroundColor:GROUP_VIEW_BACKGROUND_COLOR];
-    self.innerGroupView.alpha = 0.5;
+    self.innerGroupView.alpha = 0.2;
     [self.innerGroupView.layer setBorderColor:[GROUP_VIEW_BORDER_COLOR CGColor]];
     [self.innerGroupView.layer setBorderWidth: 0];
     self.innerGroupView.tag = 100;

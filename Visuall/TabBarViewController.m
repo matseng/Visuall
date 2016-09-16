@@ -79,7 +79,7 @@
     lightBulb = [UIImage imageWithCGImage:lightBulb.CGImage scale:2.1 orientation:lightBulb.imageOrientation];
     [tabBarItem1 setImage:lightBulb];
     
-    [self setSelectedIndex: 0];
+    [self setSelectedIndex: 1];
 //    ViewController *vc = self.viewControllers[1];
     
 }

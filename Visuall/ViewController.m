@@ -94,13 +94,13 @@
         [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addGroupToViewWithHandlersNotification:) name:@"addGroupToViewWithHandlers" object:nil];
     
     [self.visuallState setCallbackPublicVisuallLoaded:^{
-        [self loadAndUploadXML];
+//        [self loadAndUploadXML];
     }];
     
 //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
-    if (self.tabBarController.selectedIndex == 0)  // Global tab
+    if (self.tabBarController.selectedIndex == 1)  // My Visualls tab
     {
-        [self.visuallState loadPublicVisuallsList];
+        [self.visuallState loadVisuallsForCurrentUser];
         [self loadAndUploadXML];
     }
     else

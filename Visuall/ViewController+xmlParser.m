@@ -68,7 +68,7 @@
             NoteItem2 *newNote = [[NoteItem2 alloc] initNote: text withPoint: point];  //
             [newNote setFontSize: fontSize];
             [noteDict setObject: newNote forKey: [NSString stringWithFormat:@"%d", counter]];
-//            [self.visuallState setValueNote: newNote];  // CAUTION may overwhelm Firebase
+            [self.visuallState setValueNote: newNote];  // CAUTION may overwhelm Firebase
             [self addNoteToViewWithHandlers:newNote];
 //            [self calculateTotalBounds: newNote];
             result = @"";
@@ -104,13 +104,14 @@
     target = [target firstMatch:RX(@"\\d+")];
     NSLog(@"\n target:, %@", target);
     NoteItem2 *startNote = dict[source];
-    CGPoint startPoint = startNote.frame.origin;
+    CGPoint startPoint = CGPointMake(startNote.frame.origin.x + 0.5 * startNote.frame.size.width,
+                                     startNote.frame.origin.y + 0.9 * startNote.frame.size.height);
     NoteItem2 *endNote = dict[target];
-    CGPoint endPoint = endNote.frame.origin;
+    CGPoint endPoint = CGPointMake(endNote.frame.origin.x + 0.5 * endNote.frame.size.width,
+                                     endNote.frame.origin.y + 0.1 * endNote.frame.size.height);
     ArrowItem *ai = [[ArrowItem alloc] initArrowFromStartPoint: startPoint toEndPoint: endPoint];
     [self addArrowItemToMVC: ai];
 }
-
 
 - (void) addGroupFromAggregateArray: (NSArray *) arr andDictionary: (NSMutableDictionary *) dict
 {
