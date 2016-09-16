@@ -9,14 +9,16 @@
 #import "ViewController+xmlParser.h"
 #import "DDFileReader.h"
 #import "RegExCategories.h"
+#import "ViewController+Group.h"
 
 @implementation ViewController (xmlParser)
 
 - (void) loadAndUploadXML
 {
-    __block int n = 500;
+    __block int n = 13;
 //    NSString *fileName = @"defaultVisualizationSmall";
-    NSString *fileName = @"defaultVisualization500";
+    NSString *fileName = @"defaultVisualization13";
+//    NSString *fileName = @"defaultVisualization500";
 //    NSString *fileName = @"defaultVisualization1773";
     NSString* filePath = [[NSBundle mainBundle] pathForResource:fileName
                                                          ofType:@"xml"];
@@ -89,15 +91,20 @@
 
 - (void) addGroupFromAggregateArray: (NSArray *) arr andDictionary: (NSMutableDictionary *) dict
 {
-    CGRect rect = CGRectZero;
+    CGRect rect = CGRectNull;
 //    NSNumber *key;
     NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
     f.numberStyle = NSNumberFormatterDecimalStyle;
     for (NSString *key in arr) {
 //        key = [f numberFromString: str];
         NoteItem2 *ni = dict[key];
-        rect = CGRectUnion(rect, ni.frame);
+        if ( !CGRectIsEmpty( ni.frame))
+        {
+            rect = CGRectUnion(rect, ni.frame);
+        }
     }
+    GroupItem *gi = [[GroupItem alloc] initWithRect: rect];
+    [self addGroupItemToMVC: gi];
     NSLog(@"\n just made a rect");
     
 }

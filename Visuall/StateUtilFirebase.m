@@ -68,7 +68,7 @@
 {
     self.version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
     
-    //    /* CAUTION */ [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016): TEMP
+        /* CAUTION */ [FIRDatabaseReference goOffline];  // TODO (Sep 1, 2016): TEMP
     
     if ( __userID )
     {
