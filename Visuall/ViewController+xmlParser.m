@@ -16,11 +16,12 @@
 
 - (void) loadAndUploadXML
 {
-    __block int n = 13;
+    __block int n = 500;
 //    NSString *fileName = @"defaultVisualizationSmall";
-    NSString *fileName = @"defaultVisualization13";
+//    NSString *fileName = @"defaultVisualization13";
 //    NSString *fileName = @"defaultVisualization500";
 //    NSString *fileName = @"defaultVisualization1773";
+    NSString *fileName = [@"defaultVisualization" stringByAppendingString: [NSString stringWithFormat:@"%d", n]];
     NSString* filePath = [[NSBundle mainBundle] pathForResource:fileName
                                                          ofType:@"xml"];
     
@@ -70,10 +71,10 @@
             [noteDict setObject: newNote forKey: [NSString stringWithFormat:@"%d", counter]];
             [self.visuallState setValueNote: newNote];  // CAUTION may overwhelm Firebase
             [self addNoteToViewWithHandlers:newNote];
-//            [self calculateTotalBounds: newNote];
+            [self calculateTotalBounds: newNote];
             result = @"";
             NSLog(@"\n Counter %d", counter++);
-            if ( counter == n)
+            if ( /* DISABLES CODE */ (NO) && counter == n)
             {
                 NSLog(@"\n DONE READING XML");
                 for (NSArray *arr in aggregateArrayOfArrays)
@@ -82,7 +83,7 @@
                 }
             }
         }
-        else if ([line isMatch:RX(@"\\<\\/edge\\>")])  // we reach an end node
+        else if ( /* DISABLES CODE */ (NO) && [line isMatch:RX(@"\\<\\/edge\\>")])  // we reach an end node
         {
             [self addArrowFromEdgeXMLString: result andDictionary: noteDict];
             result = @"";

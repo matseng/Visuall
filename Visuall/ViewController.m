@@ -98,10 +98,10 @@
     }];
     
 //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
-    if (self.tabBarController.selectedIndex == 1)  // My Visualls tab
+    if (self.tabBarController.selectedIndex == 0)  // Public tab
     {
-        [self.visuallState loadVisuallsForCurrentUser];
-        [self loadAndUploadXML];
+        [self.visuallState loadPublicVisuallsList];
+//        [self loadAndUploadXML];
     }
     else
     {
@@ -349,6 +349,9 @@
     CGRect convertedVisualItemsRectInScrollView = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
     CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
     CGRect newBoundsTiledLayerRect = CGRectUnion(self.BackgroundScrollView.frame, convertedBoundsRectInScrollView);
+    
+//    newBoundsTiledLayerRect = [self addExtraScrollPaddingToBoundsRect: (CGRect) newBoundsTiledLayerRect fromContentBounds: convertedBoundsRectInScrollView];
+    
     self.BoundsTiledLayerView.frame = newBoundsTiledLayerRect;
     self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
     CGRect convertedVisualItemsRectInNewBoundsTiledLayerView = [self.BoundsTiledLayerView convertRect: convertedVisualItemsRectInScrollView fromView: self.BackgroundScrollView];
@@ -369,6 +372,29 @@
     self.BackgroundScrollView.contentInset = newContentInset;
     self.BackgroundScrollView.contentSize = newContentSize;
 }
+
+- (CGRect) addExtraScrollPaddingToBoundsRect: (CGRect) newBoundsTiledLayerRect fromContentBounds: (CGRect) convertedBoundsRectInScrollView
+{
+    CGRect newBoundsTiledLayerRect0 = newBoundsTiledLayerRect;
+    CGPoint scrollViewCenter = CGPointMake(self.BackgroundScrollView.frame.origin.x + 0.5 * self.BackgroundScrollView.frame.size.width, self.BackgroundScrollView.frame.origin.y + 0.5 * self.BackgroundScrollView.frame.size.height);
+    CGPoint farCornerPointRelativeToSrollViewCenter = [self findFarCornerPointOf: convertedBoundsRectInScrollView relativeToPoint: scrollViewCenter];
+    if (farCornerPointRelativeToSrollViewCenter.x < 0)
+    {
+        newBoundsTiledLayerRect.origin.x = newBoundsTiledLayerRect.origin.x + farCornerPointRelativeToSrollViewCenter.x;
+        newBoundsTiledLayerRect.size.width = newBoundsTiledLayerRect.size.width - farCornerPointRelativeToSrollViewCenter.x;
+    } else {
+        newBoundsTiledLayerRect.size.width = newBoundsTiledLayerRect.size.width + farCornerPointRelativeToSrollViewCenter.x;
+    }
+    if (farCornerPointRelativeToSrollViewCenter.y < 0)
+    {
+        newBoundsTiledLayerRect.origin.y = newBoundsTiledLayerRect.origin.y + farCornerPointRelativeToSrollViewCenter.y;
+        newBoundsTiledLayerRect.size.height = newBoundsTiledLayerRect.size.height - farCornerPointRelativeToSrollViewCenter.y;
+    } else {
+        newBoundsTiledLayerRect.size.height = newBoundsTiledLayerRect.size.height + farCornerPointRelativeToSrollViewCenter.y;
+    }
+    return newBoundsTiledLayerRect;
+}
+
 
 - (void) centerScrollViewContents2
 {
@@ -453,6 +479,35 @@
 
 - (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
 {
+    CGRect convertedVisualItemsRectInScrollView = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
+//    CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
+//    CGRect newBoundsTiledLayerRect = CGRectUnion(self.BackgroundScrollView.frame, convertedBoundsRectInScrollView);
+    CGRect newBoundsTiledLayerRect = CGRectMake(-0.5 *self.BackgroundScrollView.frame.size.width,
+                                         -0.5 *self.BackgroundScrollView.frame.size.height,
+                                         2 * self.BackgroundScrollView.frame.size.width,
+                                         2 * self.BackgroundScrollView.frame.size.height);
+    
+    self.BoundsTiledLayerView.frame = newBoundsTiledLayerRect;
+//    self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
+    CGRect convertedVisualItemsRectInNewBoundsTiledLayerView = [self.BoundsTiledLayerView convertRect: convertedVisualItemsRectInScrollView fromView: self.BackgroundScrollView];
+    self.VisualItemsView.frame = convertedVisualItemsRectInNewBoundsTiledLayerView;
+    
+    UIEdgeInsets newContentInset = UIEdgeInsetsZero;
+    CGSize newContentSize = newBoundsTiledLayerRect.size;
+    if (newBoundsTiledLayerRect.origin.x < 0)
+    {
+        newContentInset.left = -newBoundsTiledLayerRect.origin.x;
+        newContentSize.width = newBoundsTiledLayerRect.size.width + 1 * newBoundsTiledLayerRect.origin.x;
+    }
+    if (newBoundsTiledLayerRect.origin.y < 0)
+    {
+        newContentInset.top = -newBoundsTiledLayerRect.origin.y;
+        newContentSize.height = newBoundsTiledLayerRect.size.height + 1 * newBoundsTiledLayerRect.origin.y;
+    }
+    self.BackgroundScrollView.contentInset = newContentInset;
+    self.BackgroundScrollView.contentSize = newContentSize;
+    
+    
 //    [self.BoundsTiledLayerView removeFromSuperview];
 //    [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
     
@@ -464,13 +519,8 @@
 
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
-    [self centerScrollViewContents2];
-//    [self findChildandTitleNotes];
-//    [self __centerScrollViewContents];
-//    [self setNewScrollViewOuterContentsFrame];
-    [self expandBoundsTiledLayerView];
-//    [self.BoundsTiledLayerView removeFromSuperview];
-//    [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
+//    [self centerScrollViewContents2];
+//    [self expandBoundsTiledLayerView];
 }
 
 
@@ -492,8 +542,16 @@
 //        self.totalBoundsRect = CGRectZero;
 //    }
 
-    self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
-    [self expandBoundsTiledLayerView];
+    if (CGRectIsEmpty( self.totalBoundsRect) )
+    {
+        self.totalBoundsRect = view.frame;
+    }
+    else
+    {
+        self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
+    }
+//    [self expandBoundsTiledLayerView];
+    
 //    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
 //
 ////    self.BackgroundScrollView.contentSize = self.BoundsTiledLayerView.frame.size;
