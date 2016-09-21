@@ -63,10 +63,11 @@ UIColor *darkGrayBorderColor;
     UIBarButtonItem *searchBarItem = [[UIBarButtonItem alloc]initWithCustomView:searchBar];
     searchBarItem.tag = 123;
     
-    SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
-//    SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, 32 * 0.75)];
+//    SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h * 0.75)];
+    float h1 = self.navigationController.navigationBar.frame.size.height;
+    SevenSwitch *mySwitch = [[SevenSwitch alloc] initWithFrame:CGRectMake(0, 0, w * 1.65, h1 * 0.75)];
     self.editSwitch = mySwitch;
-    mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
+    mySwitch.center = CGPointMake(self.view.bounds.size.width * 0.5, h1 * 0.5);
     [mySwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     mySwitch.offLabel.text = @"Edit";
     mySwitch.offLabel.textColor = blueButtonColor;
@@ -141,7 +142,7 @@ UIColor *darkGrayBorderColor;
     
     UIBarButtonItem *starBarItem = [[UIBarButtonItem alloc]initWithCustomView:starButton];
     
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h+2)];
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width + 30, h1)];
 //    toolbar.backgroundColor = self.backgroundColor;
     toolbar.translucent = NO;
     toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -565,6 +566,20 @@ UIColor *darkGrayBorderColor;
 {
     CGFloat navBarHeight = self.navigationController.navigationBar.intrinsicContentSize.height;
 
+    CGRect rect = self.submenu.frame;
+    float width = [[UIScreen mainScreen] bounds].size.width;
+    rect.size.width = width;
+    self.submenu.frame = rect;
+    
+    CGRect rect2 = self.secondSubmenuScrollView.frame;
+    rect2.size.width = width;
+    self.secondSubmenuScrollView.frame = rect2;
+    
+    UIToolbar *secondSubmenuToolbar = self.secondSubmenuScrollView.subviews[0];
+    CGRect rect3 = secondSubmenuToolbar.frame;
+    rect3.size.width = width;
+    secondSubmenuToolbar.frame = rect3;
+    
     NSLog(@"\n here %f", navBarHeight);
     
     if ( [[UIScreen mainScreen] bounds].size.height < [[UIScreen mainScreen] bounds].size.width )  // landscape orientation

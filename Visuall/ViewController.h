@@ -105,6 +105,7 @@
 
 - (void) updateTotalBounds: (UIView *) view;
 
+- (void) constrainWidthToSuperview: (UIView *) subView;
 
 @end
 

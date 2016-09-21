@@ -156,7 +156,7 @@
     [self.Background removeFromSuperview];
 
     self.Background = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
-    self.Background.backgroundColor = [UIColor redColor];
+//    self.Background.backgroundColor = [UIColor redColor];
     [self.Background setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview: self.Background];
     [self constrainViewToSuperview: self.Background];
@@ -166,7 +166,7 @@
     [self initializeBackgroundScrollView];
     [self.BackgroundScrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.Background addSubview: self.BackgroundScrollView];
-//    [self constrainViewToSuperview: self.BackgroundScrollView];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     self.BoundsTiledLayerView = [[TiledLayerView alloc] initWithFrame: self.BackgroundScrollView.frame];
 //    self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
@@ -213,17 +213,9 @@
  */
 - (void) constrainViewToSuperview: (UIView *) subView
 {
-    UIView *parent = [subView superview];
+    [self constrainWidthToSuperview: subView];
     
-    NSLayoutConstraint *width =[NSLayoutConstraint
-                                 constraintWithItem:subView
-                                 attribute:NSLayoutAttributeWidth
-                                 relatedBy:NSLayoutRelationEqual
-                                 toItem:parent
-                                 attribute:NSLayoutAttributeWidth
-                                 multiplier:1.0f
-                                 constant:0.f];
-    [parent addConstraint:width];
+    UIView *parent = [subView superview];
     
     NSLayoutConstraint *height =[NSLayoutConstraint
                                 constraintWithItem:subView
@@ -236,9 +228,40 @@
     [parent addConstraint:height];
 }
 
-- (void) initializeBackgroundScrollView
+- (void) constrainWidthToSuperview: (UIView *) subView
 {
+    UIView *parent = [subView superview];
+    
+    NSLayoutConstraint *width =[NSLayoutConstraint
+                                constraintWithItem:subView
+                                attribute:NSLayoutAttributeWidth
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:parent
+                                attribute:NSLayoutAttributeWidth
+                                multiplier:1.0f
+                                constant:0.f];
+    [parent addConstraint:width];
+}
 
+
+-(void)OrientationDidChange:(NSNotification*)notification
+{
+    UIDeviceOrientation Orientation=[[UIDevice currentDevice]orientation];
+    
+    if(Orientation==UIDeviceOrientationLandscapeLeft || Orientation==UIDeviceOrientationLandscapeRight)
+    {
+        [self resizeBackgroundScrollView];
+    }
+    else if(Orientation==UIDeviceOrientationPortrait)
+    {
+        [self resizeBackgroundScrollView];
+    }
+    [self expandBoundsTiledLayerView];
+}
+
+- (void) resizeBackgroundScrollView
+{
+    
     float x = 0;
     float y = 0;
     float width = [[UIScreen mainScreen] bounds].size.width;
@@ -246,9 +269,15 @@
     float h0 = [[UIApplication sharedApplication] statusBarFrame].size.height;
     float h1 = self.navigationController.navigationBar.frame.size.height;
     float h2 = self.tabBarController.tabBar.frame.size.height;
-//    y = h0 + h1;
     height = height - h0 - h1 - h2;
     self.BackgroundScrollView.frame = CGRectMake(x, y, width, height);
+}
+
+
+- (void) initializeBackgroundScrollView
+{
+    [self resizeBackgroundScrollView];
+    
     self.BackgroundScrollView.multipleTouchEnabled = YES;
     
     TouchDownGestureRecognizer *touchDown = [[TouchDownGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchDown:)];
