@@ -12,7 +12,11 @@
 
 @interface WelcomeViewController : UIViewController <GIDSignInUIDelegate>
 
-@property(weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
+@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
+
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
+
+@property(strong, nonatomic) IBOutlet GIDSignInButton *signInButton;
 
 - (IBAction) skipThisStep:(id)sender;
 

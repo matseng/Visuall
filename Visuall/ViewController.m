@@ -53,7 +53,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [self restrictRotation:YES];  // http://stackoverflow.com/questions/31794317/how-can-i-lock-orientation-for-a-specific-view-an-objective-c-iphone-app-in-ios
+//    [self restrictRotation:YES];  // http://stackoverflow.com/questions/31794317/how-can-i-lock-orientation-for-a-specific-view-an-objective-c-iphone-app-in-ios
 }
 
 
@@ -180,7 +180,7 @@
     self.NotesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     self.NotesView.opaque = NO;
     self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-    self.ArrowsView.backgroundColor = [UIColor redColor];
+//    self.ArrowsView.backgroundColor = [UIColor redColor];
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
     [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
@@ -459,68 +459,10 @@
     return CGPointMake(x, y);  // (x, y) are RELATIVE to the given point
 }
 
-
-- (void) scrollViewDidZoom:(UIScrollView *)scrollView {
-    
-//    [self centerScrollViewContents];
-//    [self setNewScrollViewOuterContentsFrame];
-//    [self centerScrollViewContents2];
-    return; // TODO (Aug 22, 2016): testing
-    
-    [self.visuallState.groupsCollection myForIn:^(GroupItem *gi) {
-        NSString *titleNoteKey = gi.group.titleNoteKey;
-        if ( titleNoteKey )
-        {
-            NoteItem2 *ni = [self.visuallState.notesCollection getNoteItemFromKey: titleNoteKey];
-            [self.visuallState scaleNoteTitleSize:ni];
-        }
-    }];
-}
-
-- (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
-{
-    CGRect convertedVisualItemsRectInScrollView = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
-//    CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
-//    CGRect newBoundsTiledLayerRect = CGRectUnion(self.BackgroundScrollView.frame, convertedBoundsRectInScrollView);
-    CGRect newBoundsTiledLayerRect = CGRectMake(-0.5 *self.BackgroundScrollView.frame.size.width,
-                                         -0.5 *self.BackgroundScrollView.frame.size.height,
-                                         2 * self.BackgroundScrollView.frame.size.width,
-                                         2 * self.BackgroundScrollView.frame.size.height);
-    
-    self.BoundsTiledLayerView.frame = newBoundsTiledLayerRect;
-//    self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
-    CGRect convertedVisualItemsRectInNewBoundsTiledLayerView = [self.BoundsTiledLayerView convertRect: convertedVisualItemsRectInScrollView fromView: self.BackgroundScrollView];
-    self.VisualItemsView.frame = convertedVisualItemsRectInNewBoundsTiledLayerView;
-    
-    UIEdgeInsets newContentInset = UIEdgeInsetsZero;
-    CGSize newContentSize = newBoundsTiledLayerRect.size;
-    if (newBoundsTiledLayerRect.origin.x < 0)
-    {
-        newContentInset.left = -newBoundsTiledLayerRect.origin.x;
-        newContentSize.width = newBoundsTiledLayerRect.size.width + 1 * newBoundsTiledLayerRect.origin.x;
-    }
-    if (newBoundsTiledLayerRect.origin.y < 0)
-    {
-        newContentInset.top = -newBoundsTiledLayerRect.origin.y;
-        newContentSize.height = newBoundsTiledLayerRect.size.height + 1 * newBoundsTiledLayerRect.origin.y;
-    }
-    self.BackgroundScrollView.contentInset = newContentInset;
-    self.BackgroundScrollView.contentSize = newContentSize;
-    
-    
-//    [self.BoundsTiledLayerView removeFromSuperview];
-//    [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
-    
-    NSLog(@"HERE in scrollViewWillBeginZooming");
-//    self.BackgroundScrollView.contentSize = CGSizeMake(self.BackgroundScrollView.contentSize.width + self.BackgroundScrollView.contentInset.left,
-//                                                       self.BackgroundScrollView.contentSize.height + self.BackgroundScrollView.contentInset.top);
-//    self.BackgroundScrollView.contentInset = UIEdgeInsetsZero;
-}
-
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
-//    [self centerScrollViewContents2];
-//    [self expandBoundsTiledLayerView];
+    [self centerScrollViewContents2];
+    [self expandBoundsTiledLayerView];
 }
 
 
@@ -550,7 +492,7 @@
     {
         self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
     }
-//    [self expandBoundsTiledLayerView];
+    [self expandBoundsTiledLayerView];
     
 //    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
 //

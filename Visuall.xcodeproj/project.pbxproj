@@ -40,6 +40,7 @@
 		71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */ = {isa = PBXBuildFile; fileRef = 71710A831D5D14660038D883 /* SegmentedControlMod.m */; };
 		717F61C71D8C66CB0002157B /* defaultVisualization100.xml in Resources */ = {isa = PBXBuildFile; fileRef = 717F61C61D8C66CB0002157B /* defaultVisualization100.xml */; };
 		717F61C91D8C6F3C0002157B /* defaultVisualization13.xml in Resources */ = {isa = PBXBuildFile; fileRef = 717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */; };
+		717F61CB1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png in Resources */ = {isa = PBXBuildFile; fileRef = 717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */; };
 		7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBCE1D3D55E700F609DE /* TiledLayerView.m */; };
 		7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD11D4664BB00F609DE /* ArrowItem.m */; };
 		7195EBD51D46684500F609DE /* Arrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD41D46684500F609DE /* Arrow.m */; };
@@ -166,6 +167,7 @@
 		71710A831D5D14660038D883 /* SegmentedControlMod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedControlMod.m; sourceTree = "<group>"; };
 		717F61C61D8C66CB0002157B /* defaultVisualization100.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization100.xml; sourceTree = "<group>"; };
 		717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization13.xml; sourceTree = "<group>"; };
+		717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Microsoft-Visual-Studio-icon_v3.png"; sourceTree = "<group>"; };
 		7195EBCD1D3D55E700F609DE /* TiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledLayerView.h; sourceTree = "<group>"; };
 		7195EBCE1D3D55E700F609DE /* TiledLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiledLayerView.m; sourceTree = "<group>"; };
 		7195EBD01D4664BB00F609DE /* ArrowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrowItem.h; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 		71C23F291D21EF9400D53E0C /* Button Icons */ = {
 			isa = PBXGroup;
 			children = (
+				717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */,
 				71FD2EDD1D5E7F3600CA5365 /* Second Submenu */,
 				71D96BE81D301D7A00CD1C49 /* Globe-50.png */,
 				71D96BEB1D301D8600CD1C49 /* light-bulb.png */,
@@ -706,6 +709,7 @@
 				71C23F281D21EF4800D53E0C /* textLetter.png in Resources */,
 				71FD2EE11D5E7F5000CA5365 /* Increase Font Filled-50.png in Resources */,
 				71D96BD41D2D997500CD1C49 /* User Groups-50.png in Resources */,
+				717F61CB1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png in Resources */,
 				715C60C91D7908CF00DD6942 /* defaultVisualization500.xml in Resources */,
 				71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,
@@ -964,7 +968,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Visuall.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -981,7 +985,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Visuall.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

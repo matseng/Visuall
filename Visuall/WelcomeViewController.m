@@ -13,15 +13,64 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // TODO(developer) Configure the sign-in button look/feel
-    
+
     [GIDSignIn sharedInstance].uiDelegate = self;
+//    [[GIDSignIn sharedInstance] signInSilently];  // Uncomment to automatically sign in the user
     
-    // Uncomment to automatically sign in the user.
-    [[GIDSignIn sharedInstance] signInSilently];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
+/*
+ * Name: updateSubviews
+ * Description: Re-centers subviews upon change of device orientation
+ */
+- (void) updateSubviews
+{
+    // Scale and center icon:
+    UIImage *originalImage = [UIImage imageNamed: @"Microsoft-Visual-Studio-icon_v3"];
+    float scale = 230.0 / originalImage.size.width;  // kGIDSignInButtonStyleStandard: 230 x 48 (default)
+    UIImage *scaledImage = [UIImage imageWithCGImage:[originalImage CGImage]
+                                               scale:(1/scale * 2)  // Multiplying by 2 makes the image appear smaller
+                                         orientation:(originalImage.imageOrientation)];
+    self.iconImageView.frame = CGRectMake(0, 0, scaledImage.size.width, scaledImage.size.height);
+    self.iconImageView.center = CGPointMake(self.view.center.x, self.view.center.y / 2);
+    self.iconImageView.image = scaledImage;
+    
+    // Create and center Google Sign-in button:
+    if ( !self.signInButton) self.signInButton = [[GIDSignInButton alloc] initWithFrame: CGRectZero];
+    UIDeviceOrientation Orientation=[[UIDevice currentDevice]orientation];
+    if(Orientation==UIDeviceOrientationLandscapeLeft || Orientation==UIDeviceOrientationLandscapeRight)
+    {
+        self.signInButton.center = CGPointMake(self.view.center.x, self.view.frame.size.height * 2 / 3);
+    }
+    else
+    {
+        self.signInButton.center = self.view.center;
+    }
+
+    [self.view addSubview: self.signInButton];
+    
+    // Center text label:
+    self.welcomeLabel.frame = CGRectMake(0, 0, self.view.frame.size.width,  self.welcomeLabel.frame.size.height);
+    self.welcomeLabel.center = CGPointMake(self.view.center.x,
+                                           (self.iconImageView.frame.origin.y + self.iconImageView.frame.size.height + self.signInButton.frame.origin.y) / 2);
+    self.welcomeLabel.textAlignment = NSTextAlignmentCenter;
+}
+
+
+-(void)OrientationDidChange:(NSNotification*)notification
+{
+    UIDeviceOrientation Orientation=[[UIDevice currentDevice]orientation];
+    
+    if(Orientation==UIDeviceOrientationLandscapeLeft || Orientation==UIDeviceOrientationLandscapeRight)
+    {
+        [self updateSubviews];
+    }
+    else if(Orientation==UIDeviceOrientationPortrait)
+    {
+        [self updateSubviews];
+    }
+}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"segueToTabBarController"]) {

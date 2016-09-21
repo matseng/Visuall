@@ -44,7 +44,7 @@
     }
 
     self.hitTestView = nil;
-    NSLog(@"TiledLayerView viewHit %@", [target class]);
+//    NSLog(@"TiledLayerView viewHit %@", [target class]);
     return nil;
 }
 
@@ -56,7 +56,6 @@
         CGPoint convertedPoint = [gi convertPoint:point fromView: self];
         result = [gi hitTestIncludingHandles:convertedPoint];
         if (result) {
-            NSLog(@"TiledLayerView viewHit %@", [self.hitTestView class]);
             self.hitTestView = result;
             return self.hitTestView;
         }
@@ -72,7 +71,6 @@
         if ([subview pointInside:convertedPoint withEvent:event] && [subview isKindOfClass: [NoteItem2 class]])
         {
             self.hitTestView = [subview hitTest:convertedPoint withEvent:event];
-            NSLog(@"TiledLayerView viewHit %@", [self.hitTestView class]);
             return self.hitTestView;
         }
     }
@@ -87,7 +85,6 @@
         CGPoint convertedPoint = [ai convertPoint:point fromView: self];
         result = [ai hitTestWithHandles:convertedPoint];
         if (result) {
-            NSLog(@"TiledLayerView viewHit %@", [self.hitTestView class]);
             self.hitTestView = result;
             return self.hitTestView;
         }
