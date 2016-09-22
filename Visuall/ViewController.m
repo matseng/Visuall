@@ -105,7 +105,6 @@
     }
     else
     {
-        [self.visuallState loadVisuallsListForCurrentUser];  // TODO (Aug 17, 2016): In the future, this message will be moved into a different controller to load a list of personal visualls;
         [self.visuallState loadVisuallsForCurrentUser];
     }
     

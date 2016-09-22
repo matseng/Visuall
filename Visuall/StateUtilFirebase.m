@@ -16,6 +16,9 @@
 #import "StateUtilFirebase+Read.h"
 #import "StateUtilFirebase+Update.h"
 
+static NSMutableDictionary *__personalVisuallList;
+
+
 @interface StateUtilFirebase()
 
 @property FIRDatabaseReference *version01TableRef;
@@ -85,21 +88,48 @@
     __localDeviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 }
 
-- (void) loadVisuallsListForCurrentUser
++ (void) loadVisuallsListForCurrentUser
 {
-    [self.usersTableCurrentUser observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+    __personalVisuallList = [[NSMutableDictionary alloc] init];
+    NSString *userID = [[UserUtil sharedManager] userID];
+    FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
+    
+    [usersTableCurrentUser observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
      {
          if ( ![snapshot exists] )  // we have a new user
          {
-             [self setNewUser];
+//             [self setNewUser];  // TODO (Sep 21, 2016): Change this method to a class method
          } else {
              NSLog(@"%@", snapshot.value );
-             [[[self.version01TableRef child:@"users"] child: __userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
+             for (NSString *key in snapshot.value[@"visualls-personal"])
+             {
+                 NSLog(@"\n key: %@", key);
+                 FIRDatabaseReference *currentVisuallRef = [[version01TableRef child: @"visualls"] child: key];
+                 [self getVisuallDetailsForRef: currentVisuallRef andSetToList: __personalVisuallList];
+             }
+             [[[version01TableRef child:@"users"] child: userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
          }
          
      } withCancelBlock:^(NSError * _Nonnull error) {
          NSLog(@"%@", error.localizedDescription);
      }];
+}
+
+/*
+ * Name:
+ * Description:
+ */
++ (void) getVisuallDetailsForRef: (FIRDatabaseReference *) ref andSetToList: (NSMutableDictionary *) list
+{
+    FIRDatabaseReference *titleRef = [ref child: @"title"];
+    [titleRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        NSString *title = snapshot.value;
+        [list setValue: title forKey: snapshot.key];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{@"title": title}];
+        NSLog(@"\n My title: %@", list[snapshot.key]);
+    }];
+    
 }
 
 - (void) setNewUser

@@ -27,6 +27,22 @@
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
     self.recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
+
+    
+    // TODO (Sep 21, 2016): get list of public and private Visualls loaded as CLASS variables in StateUtilFirebase
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"personalVisuallDidLoad" object:nil];
+    [StateUtilFirebase loadVisuallsListForCurrentUser];
+    
+}
+
+-(void) personalVisuallsDidLoadNotification:(NSNotification*) notification
+{
+    if ([notification.name isEqualToString:@"personalVisuallDidLoad"])
+    {
+        NSDictionary* userInfo = notification.userInfo;
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]];
+        cell.textLabel.text = userInfo[@"title"];  // TODO (Sep 21, 2016): Load data here that needed for table view display... and to load the visuall graph
+    }
 }
 
 //- (void)viewDidAppear:(BOOL)animated

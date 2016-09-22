@@ -62,16 +62,17 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 @property __block int numberOfArrowsLoaded;
 @property BOOL allArrowsLoadedBOOL;
 
-
 @property NSInteger childrenCountNotes;
 
 + (void) setCallbackNoteItem: (void (^)(NoteItem2 *ni)) callbackOnNote;
 
 + (void) setCallbackGroupItem: (void (^)(GroupItem *gi)) callbackGroupItem;
 
++ (void) loadVisuallsListForCurrentUser;
+
 - (void) setCallbackPublicVisuallLoaded: (void (^)(void)) callback;
 
-- (void) loadVisuallsListForCurrentUser;
+//- (void) loadVisuallsListForCurrentUser;
 
 - (void) loadVisuallsForCurrentUser;
 

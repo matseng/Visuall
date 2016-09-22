@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "UserUtil.h"
 #import "WelcomeViewController.h"
+#import "StateUtilFirebase.h"
 
 @interface AppDelegate ()
 
@@ -71,6 +72,7 @@ didSignInForUser:(GIDGoogleUser *)user
                                           
                                           UIWindow *window = [UIApplication sharedApplication].keyWindow;
                                           WelcomeViewController *rootViewController = (WelcomeViewController *) window.rootViewController;
+                                          
                                           [rootViewController segueToNextView];
                                            
                                       } else {
