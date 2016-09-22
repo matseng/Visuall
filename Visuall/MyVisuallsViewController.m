@@ -22,6 +22,9 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
+    [self constrainWidthToSuperview: self.tableView];
+    
     recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
 }
 
@@ -87,6 +90,7 @@
     
     cell.textLabel.text = [recipes objectAtIndex:indexPath.row];
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     return cell;
 }
 
@@ -102,6 +106,38 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) constrainViewToSuperview: (UIView *) subView
+{
+    [self constrainWidthToSuperview: subView];
+    
+    UIView *parent = [subView superview];
+    
+    NSLayoutConstraint *height =[NSLayoutConstraint
+                                 constraintWithItem:subView
+                                 attribute:NSLayoutAttributeHeight
+                                 relatedBy:NSLayoutRelationEqual
+                                 toItem:parent
+                                 attribute:NSLayoutAttributeHeight
+                                 multiplier:1.0f
+                                 constant:0.f];
+    [parent addConstraint:height];
+}
+
+- (void) constrainWidthToSuperview: (UIView *) subView
+{
+    UIView *parent = [subView superview];
+    
+    NSLayoutConstraint *width =[NSLayoutConstraint
+                                constraintWithItem:subView
+                                attribute:NSLayoutAttributeWidth
+                                relatedBy:NSLayoutRelationEqual
+                                toItem:parent
+                                attribute:NSLayoutAttributeWidth
+                                multiplier:1.0f
+                                constant:0.f];
+    [parent addConstraint:width];
 }
 
 /*

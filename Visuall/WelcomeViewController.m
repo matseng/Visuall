@@ -15,7 +15,7 @@
     [super viewDidLoad];
 
     [GIDSignIn sharedInstance].uiDelegate = self;
-//    [[GIDSignIn sharedInstance] signInSilently];  // Uncomment to automatically sign in the user
+    [[GIDSignIn sharedInstance] signInSilently];  // Uncomment to automatically sign in the user
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }

@@ -67,9 +67,11 @@
     
     UITabBarItem *tabBarItem0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *tabBarItem1 = [tabBar.items objectAtIndex:1];
+    UITabBarItem *tabBarItem2 = [tabBar.items objectAtIndex:2];
     
     tabBarItem0.title = @"Global";
     tabBarItem1.title = @"My Visualls";
+    tabBarItem2.title = @"My Visualls List";
     
     UIImage *globe = [UIImage imageNamed:@"Globe-50"];
     globe = [UIImage imageWithCGImage:globe.CGImage scale:2.2 orientation:globe.imageOrientation];
