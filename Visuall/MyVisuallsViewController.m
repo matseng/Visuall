@@ -17,7 +17,7 @@
 
 @implementation MyVisuallsViewController
 {
-    NSArray *recipes;
+//    NSArray *self.recipes;
 }
 
 - (void) viewDidLoad {
@@ -26,7 +26,7 @@
     self.tableView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-    recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
+    self.recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
 }
 
 //- (void)viewDidAppear:(BOOL)animated
@@ -74,7 +74,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [recipes count];
+    return [self.recipes count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -87,7 +87,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
     
-    cell.textLabel.text = [recipes objectAtIndex:indexPath.row];
+    cell.textLabel.text = [self.recipes objectAtIndex:indexPath.row];
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     return cell;
@@ -97,10 +97,16 @@
     if ([segue.identifier isEqualToString:@"showVisuallDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         ViewController *destViewController = segue.destinationViewController;
-        NSLog(@"prep fro Segue: %@", [recipes objectAtIndex:indexPath.row]);
-        destViewController.firebaseURL = [recipes objectAtIndex:indexPath.row];
+        NSLog(@"prep fro Segue: %@", [self.recipes objectAtIndex:indexPath.row]);
+        destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row];
     }
 }
+
+- (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"prep fro Segue: %@", [self.recipes objectAtIndex:indexPath.row]);
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
