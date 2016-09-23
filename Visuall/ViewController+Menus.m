@@ -375,13 +375,15 @@ UIColor *darkGrayBorderColor;
 {
     NSMutableArray *buttonList = [[NSMutableArray alloc] init];
     float height = 44;
-    float unit = 40;
+    float unit = 38;  //  previously 40 with 8 buttons
+    int numberOfButtons = 9;
+
 //    UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     
     SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
     self.segmentControlVisualItem = segmentControl;
     [segmentControl addTarget:self action:@selector(segmentChangeViewValueChanged) forControlEvents:UIControlEventValueChanged];
-    segmentControl.frame = CGRectMake(0, 0, 4 * unit, unit);
+    segmentControl.frame = CGRectMake(0, 0, 5 * unit, unit);
 //    segmentControl.backgroundColor = backgroundColor;
     UIBarButtonItem *segmentControlItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
 
@@ -401,6 +403,10 @@ UIColor *darkGrayBorderColor;
     UIImage *arrow = [[UIImage imageNamed: @"Archers-Arrowhead"] imageWithExtraPadding: .15];
     [segmentControl insertSegmentWithImage:arrow atIndex:3 animated:YES];
     [segmentControl setMyTitle:@"arrow" forSegmentAtIndex:3];
+    
+    UIImage *pen = [[UIImage imageNamed: @"Sign Up-50"] imageWithExtraPadding: .15];
+    [segmentControl insertSegmentWithImage: pen atIndex:4 animated:YES];
+    [segmentControl setMyTitle:@"pen" forSegmentAtIndex:4];
     
     SegmentedControlMod *segmentControlFont = [[SegmentedControlMod alloc] init];
     self.segmentControlFormattingOptions = segmentControlFont;
