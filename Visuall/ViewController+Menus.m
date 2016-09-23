@@ -376,7 +376,7 @@ UIColor *darkGrayBorderColor;
     NSMutableArray *buttonList = [[NSMutableArray alloc] init];
     float height = 44;
     float unit = 40;
-    UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
+//    UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     
     SegmentedControlMod *segmentControl = [[SegmentedControlMod alloc] init];
     self.segmentControlVisualItem = segmentControl;
@@ -424,6 +424,7 @@ UIColor *darkGrayBorderColor;
     
     
     UIImage *insertPhoto = [[UIImage imageNamed: @"picture"] imageWithExtraPadding: .25];
+//    insertPhoto = [insertPhoto makeImageWithBackgroundColor: [UIColor blackColor] andForegroundColor: [UIColor whiteColor]];
     [self.segmentControlInsertMedia insertSegmentWithImage:insertPhoto atIndex:0 animated:YES];
     [self.segmentControlInsertMedia setMyTitle:@"insertPhoto" forSegmentAtIndex: 0];
     
@@ -448,11 +449,18 @@ UIColor *darkGrayBorderColor;
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, toolbar2.frame.size.height - 1.0f, toolbar2.frame.size.width, 0.5f);
     bottomBorder.backgroundColor = [darkGrayBorderColor CGColor];
-//    [toolbar2.layer addSublayer:bottomBorder];
+    [toolbar2.layer addSublayer:bottomBorder];
     toolbar2.autoresizesSubviews = NO;
     toolbar2.autoresizingMask = UIViewAutoresizingNone;
-//    toolbar2.translucent = NO;
-    toolbar2.backgroundColor = [UIColor whiteColor];
+//    [toolbar2 setBarStyle:UIBarStyleBlack];
+//    toolbar2.translucent = YES;
+    [toolbar2 setBackgroundImage:[UIImage new]
+                  forToolbarPosition:UIToolbarPositionAny
+                          barMetrics:UIBarMetricsDefault];
+    
+//    [self.toolbar setBackgroundColor:[UIColor clearColor]];
+    toolbar2.backgroundColor = [UIColor clearColor];
+    
 
     
     [toolbar2 setItems:@[flexibleSpace, segmentControlItem, segmentControlFontItem, segmentControlInsertMediaItem, trashButtonItem, flexibleSpace]];
@@ -468,7 +476,10 @@ UIColor *darkGrayBorderColor;
 - (void) addSecondSubmenu
 {
     self.secondSubmenuScrollView = [[UIScrollView alloc] init];
-    self.secondSubmenuScrollView.backgroundColor = backgroundColor;
+//    self.secondSubmenuScrollView.backgroundColor = backgroundColor;
+    self.secondSubmenuScrollView.backgroundColor = [UIColor clearColor];
+//    self.secondSubmenuScrollView.alpha = 0.8;
+    
     float h = 30;
 //    float w = 40;
 //    float padding = 10;
@@ -509,7 +520,12 @@ UIColor *darkGrayBorderColor;
     rect.origin = CGPointZero;
     rect.size.height = rect.size.height - 0.5;
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
-//    toolbar2.translucent = NO;
+//    toolbar2.translucent = YES;
+    [toolbar2 setBackgroundImage:[UIImage new]
+                  forToolbarPosition:UIToolbarPositionAny
+                          barMetrics:UIBarMetricsDefault];
+    
+    [toolbar2 setBackgroundColor:[UIColor clearColor]];
     [toolbar2 setItems:@[flexibleSpace, spacer40, decreaseFontSizeItem, increaseFontSizeItem, flexibleSpace]];
 
     self.secondSubmenuScrollView.delaysContentTouches = NO;
