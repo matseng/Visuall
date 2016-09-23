@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>NKOColorPickerView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Visuall.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,62 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0693476D235C7ACAABDD3975CF0CC0D1</key>
+		<key>3FCC384EF44696F21F78A73BBCA9D5B2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>190ACD3A51BC90B85EADB13E9CDD207B</key>
+		<key>4BE45D4F1DEF711E234F96874169B218</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>32A7E8D44AE92A1CC0EA65FBB4489F90</key>
+		<key>5BEA5134920FA9A59F15BC3BC8B483C1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5D87AB92692D9023F92F67DCA8F37290</key>
+		<key>6BCEEC0DBDC2DCF194377C087F8EADDC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>64FA17B12DC155D2FB06A3D2CF097B3C</key>
+		<key>911ABAED7062E98E9416FD8ED98235A4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>673CB4FE52801A2A9827B46AD976F758</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>747BAC69BB43E11BF193CF573D995E04</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7C6F0D732ABA8ECA1C9F8AA95BFE7D60</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>881A444CA6D6CE1151DF3CA68554B58A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9FED62E43AFCBEC9A3C554468CC13635</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C7CAF1343C816FDBD1DB2E2D9EEBDBD0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FA4E0A7968A74770640DEE70FA60318B</key>
+		<key>A6883E7A0EC02B74EEA370395FD3A845</key>
 		<dict>
 			<key>primary</key>
 			<true/>

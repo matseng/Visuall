@@ -17,6 +17,7 @@
 #import "ScrollViewMod.h"
 #import "SegmentedControlMod.h"
 #import "SevenSwitch.h"
+#import "FDDrawView.h"
 
 
 @protocol GroupsController  // implemented in ViewController+Group.h
@@ -56,6 +57,8 @@
 @property (strong, nonatomic) IBOutlet UIView *GroupsView;
 
 @property (strong, nonatomic) IBOutlet UIView *ArrowsView;
+
+@property (strong, nonatomic) IBOutlet FDDrawView *DrawView;
 
 @property UIView *drawGroupView;
 

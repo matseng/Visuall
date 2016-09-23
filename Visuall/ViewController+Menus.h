@@ -24,6 +24,8 @@
 
 - (BOOL) isPointerButtonSelected;
 
+- (BOOL) isDrawButtonSelected;
+
 - (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture;
 
 - (void) highlightTrashButton;

@@ -21,6 +21,10 @@
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
+		714847291D94B72200E73A7A /* FDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847221D94B72200E73A7A /* FDViewController.m */; };
+		7148472A1D94B72200E73A7A /* FDDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847241D94B72200E73A7A /* FDDrawView.m */; };
+		7148472B1D94B72200E73A7A /* FDPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847261D94B72200E73A7A /* FDPath.m */; };
+		7148472C1D94B72200E73A7A /* FDColorPickController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847281D94B72200E73A7A /* FDColorPickController.m */; };
 		715C60C11D78BBF300DD6942 /* DDFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C60C01D78BBF300DD6942 /* DDFileReader.m */; };
 		715C60C41D78BCAF00DD6942 /* defaultVisualizationSmall.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60C31D78BCAF00DD6942 /* defaultVisualizationSmall.xml */; };
 		715C60C71D78EC0100DD6942 /* ViewController+xmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C60C61D78EC0100DD6942 /* ViewController+xmlParser.m */; };
@@ -141,6 +145,14 @@
 		713D0D5F1CC6AE4F00878EAE /* Group2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group2.m; sourceTree = "<group>"; };
 		71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDownGestureRecognizer.h; sourceTree = "<group>"; };
 		71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDownGestureRecognizer.m; sourceTree = "<group>"; };
+		714847211D94B72200E73A7A /* FDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDViewController.h; sourceTree = "<group>"; };
+		714847221D94B72200E73A7A /* FDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDViewController.m; sourceTree = "<group>"; };
+		714847231D94B72200E73A7A /* FDDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDrawView.h; sourceTree = "<group>"; };
+		714847241D94B72200E73A7A /* FDDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDrawView.m; sourceTree = "<group>"; };
+		714847251D94B72200E73A7A /* FDPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDPath.h; sourceTree = "<group>"; };
+		714847261D94B72200E73A7A /* FDPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDPath.m; sourceTree = "<group>"; };
+		714847271D94B72200E73A7A /* FDColorPickController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorPickController.h; sourceTree = "<group>"; };
+		714847281D94B72200E73A7A /* FDColorPickController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorPickController.m; sourceTree = "<group>"; };
 		715C60BF1D78BBF300DD6942 /* DDFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileReader.h; sourceTree = "<group>"; };
 		715C60C01D78BBF300DD6942 /* DDFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileReader.m; sourceTree = "<group>"; };
 		715C60C31D78BCAF00DD6942 /* defaultVisualizationSmall.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualizationSmall.xml; sourceTree = "<group>"; };
@@ -332,6 +344,7 @@
 				71FD2EF41D6CB6FD00CA5365 /* Groups and Images */,
 				71FD2EF71D6D0D0B00CA5365 /* VisualItems */,
 				71710A7F1D5CF6350038D883 /* Utilities */,
+				7148470E1D94B2F900E73A7A /* Firebase Drawing */,
 				885AFD651C00217800F89DE5 /* OLD_model */,
 				71B37E761C1924020048851A /* OLD__ViewControllers */,
 				712EC9611BEAF21500ED6803 /* Main.storyboard */,
@@ -375,6 +388,21 @@
 				712EC9721BEAF21500ED6803 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7148470E1D94B2F900E73A7A /* Firebase Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				714847211D94B72200E73A7A /* FDViewController.h */,
+				714847221D94B72200E73A7A /* FDViewController.m */,
+				714847231D94B72200E73A7A /* FDDrawView.h */,
+				714847241D94B72200E73A7A /* FDDrawView.m */,
+				714847251D94B72200E73A7A /* FDPath.h */,
+				714847261D94B72200E73A7A /* FDPath.m */,
+				714847271D94B72200E73A7A /* FDColorPickController.h */,
+				714847281D94B72200E73A7A /* FDColorPickController.m */,
+			);
+			name = "Firebase Drawing";
 			sourceTree = "<group>";
 		};
 		715C60C21D78BC5A00DD6942 /* xml */ = {
@@ -790,6 +818,7 @@
 				88ED062B1C0627B100C0486D /* Note+CoreDataProperties.m in Sources */,
 				71FD2EF31D6BE66400CA5365 /* GroupItemImage.m in Sources */,
 				71D96BFB1D342A4100CD1C49 /* ViewController+Menus.m in Sources */,
+				7148472B1D94B72200E73A7A /* FDPath.m in Sources */,
 				71C167FB1D877D8100961374 /* StateUtilFirebase+Read.m in Sources */,
 				71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */,
 				7195EBD51D46684500F609DE /* Arrow.m in Sources */,
@@ -805,6 +834,7 @@
 				715C60C11D78BBF300DD6942 /* DDFileReader.m in Sources */,
 				71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */,
 				7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */,
+				7148472C1D94B72200E73A7A /* FDColorPickController.m in Sources */,
 				71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */,
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,
 				713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */,
@@ -824,8 +854,10 @@
 				71C167FE1D879E5A00961374 /* StateUtilFirebase+Update.m in Sources */,
 				715C60C71D78EC0100DD6942 /* ViewController+xmlParser.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,
+				714847291D94B72200E73A7A /* FDViewController.m in Sources */,
 				71FD2EED1D662F8300CA5365 /* StateUtilFirebase.m in Sources */,
 				71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */,
+				7148472A1D94B72200E73A7A /* FDDrawView.m in Sources */,
 				71D96C041D359E0000CD1C49 /* ViewController+Group.m in Sources */,
 				71D96BE11D2F030200CD1C49 /* UIImage+Extras.m in Sources */,
 				71D96BCA1D2C59AA00CD1C49 /* MyVisuallsViewController.m in Sources */,

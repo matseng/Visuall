@@ -19,6 +19,8 @@ pod 'Firebase/Database'
 
 pod 'RegExCategories', '~> 1.0'
 
+pod 'NKOColorPickerView'
+
 target 'Visuall' do
 
 end

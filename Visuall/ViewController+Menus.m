@@ -404,9 +404,9 @@ UIColor *darkGrayBorderColor;
     [segmentControl insertSegmentWithImage:arrow atIndex:3 animated:YES];
     [segmentControl setMyTitle:@"arrow" forSegmentAtIndex:3];
     
-    UIImage *pen = [[UIImage imageNamed: @"Sign Up-50"] imageWithExtraPadding: .15];
-    [segmentControl insertSegmentWithImage: pen atIndex:4 animated:YES];
-    [segmentControl setMyTitle:@"pen" forSegmentAtIndex:4];
+    UIImage *draw = [[UIImage imageNamed: @"Sign Up-50"] imageWithExtraPadding: .15];
+    [segmentControl insertSegmentWithImage: draw atIndex:4 animated:YES];
+    [segmentControl setMyTitle:@"draw" forSegmentAtIndex:4];
     
     SegmentedControlMod *segmentControlFont = [[SegmentedControlMod alloc] init];
     self.segmentControlFormattingOptions = segmentControlFont;
@@ -985,6 +985,11 @@ UIColor *darkGrayBorderColor;
 - (BOOL) isArrowButtonSelected
 {
     return [self.editSwitch isOn] && [[self.segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"arrow"];
+}
+
+- (BOOL) isDrawButtonSelected
+{
+    return [self.editSwitch isOn] && [[self.segmentControlVisualItem getMyTitleForCurrentlySelectedSegment] isEqualToString:@"draw"];
 }
 
 - (BOOL) trashButtonHitTest: (UIGestureRecognizer *) gesture

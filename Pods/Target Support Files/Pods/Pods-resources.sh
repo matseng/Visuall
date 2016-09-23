@@ -59,9 +59,15 @@ install_resource()
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "NKOColorPickerView/Assets/nko_brightness_guide.png"
+  install_resource "NKOColorPickerView/Assets/nko_brightness_guide@2x.png"
+  install_resource "NKOColorPickerView/Assets/nko_colormap.png"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "NKOColorPickerView/Assets/nko_brightness_guide.png"
+  install_resource "NKOColorPickerView/Assets/nko_brightness_guide@2x.png"
+  install_resource "NKOColorPickerView/Assets/nko_colormap.png"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

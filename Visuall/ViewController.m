@@ -179,13 +179,19 @@
     self.NotesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     self.NotesView.opaque = NO;
     self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-//    self.ArrowsView.backgroundColor = [UIColor redColor];
+    
+    // this is the main view and used to show drawing from other users and let the user draw
+    self.DrawView = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
+    
+    // make sure it's resizable to fit any device size
+    self.DrawView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
     [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
     [self.VisualItemsView addSubview: self.GroupsView];
     [self.VisualItemsView addSubview: self.NotesView];
     [self.VisualItemsView addSubview: self.ArrowsView];
+    [self.VisualItemsView addSubview: self.DrawView];
     
     self.drawGroupView = [self initializeDrawGroupView];
     [self createTopMenu];
@@ -827,11 +833,21 @@
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch:(nonnull UITouch *)touch
 {
-
     if ([gestureRecognizer isKindOfClass: [UIPinchGestureRecognizer class]])
     {
         return NO;
     }
+    
+    if ( [self isDrawButtonSelected] )
+    {
+        if (touch.phase == UITouchPhaseBegan)
+        {
+            [self.DrawView touchBegan: touch];
+        }
+        // TODO (Sep 22, 2016): add conditionals and methods for other phases in FDDrawView
+        return YES;  
+    }
+    
     if( [gestureRecognizer isKindOfClass: [TouchDownGestureRecognizer class]])
     {
         return YES;
@@ -841,6 +857,7 @@
     {
         return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
     }
+    
     if ([self isEditModeOn]
         && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]]
 //        && ( [self.BoundsTiledLayerView.hitTestView isGroupItem] )
