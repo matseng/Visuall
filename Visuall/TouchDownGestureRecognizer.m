@@ -32,7 +32,7 @@
     {
         [[[[UserUtil sharedManager] getState] DrawView] touchesMoved: touches withEvent: event];
     }
-    self.state = UIGestureRecognizerStateFailed;
+//    self.state = UIGestureRecognizerStateFailed;
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -42,7 +42,7 @@
         [[[[UserUtil sharedManager] getState] DrawView] touchesEnded: touches withEvent: event];
     }
 
-    self.state = UIGestureRecognizerStateFailed;
+//    self.state = UIGestureRecognizerStateFailed;
 }
 
 
@@ -53,7 +53,7 @@
         [[[[UserUtil sharedManager] getState] DrawView] touchesCancelled: touches withEvent: event];
     }
     
-    self.state = UIGestureRecognizerStateFailed;
+//    self.state = UIGestureRecognizerStateFailed;
 }
 
 @end

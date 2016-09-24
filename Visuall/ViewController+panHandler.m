@@ -38,6 +38,9 @@
 //        [ArrowItem drawArrow: gestureRecognizer];
         [self panHandlerForDrawArrow: gestureRecognizer];
         return;
+    } else if (  [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
+    {
+        return;
     }
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
