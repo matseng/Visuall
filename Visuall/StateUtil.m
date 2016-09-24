@@ -10,6 +10,7 @@
 #import "GroupItem.h"
 #import "VisualItem.h"
 #import "NoteItem2.h"
+#import "SegmentedControlMod.h"
 
 @interface StateUtil()
 //@property float zoomPreviousValue;
@@ -335,6 +336,12 @@
         return [self.groupsCollection getGroupItemFromKey: key];
     }
     return nil;
+}
+
+- (BOOL) isDrawButtonSelected
+{
+    SegmentedControlMod *scm = (SegmentedControlMod *) self.topMenuViews[@"segmentControlVisualItem"];
+    return [self.topMenuViews[@"editSwitch"] isOn] && [[scm getMyTitleForCurrentlySelectedSegment] isEqualToString:@"draw"];
 }
 
 

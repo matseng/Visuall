@@ -38,6 +38,12 @@
 
 @end
 
+@protocol TopMenuProtocol  // implemented in ViewController+Group.h
+
+@property NSDictionary *topMenuViews;
+
+@end
+
 @interface ViewController : UIViewController
 
 @property (nonatomic, strong) StateUtilFirebase *visuallState;
@@ -58,8 +64,6 @@
 
 @property (strong, nonatomic) IBOutlet UIView *ArrowsView;
 
-@property (strong, nonatomic) IBOutlet FDDrawView *DrawView;
-
 @property UIView *drawGroupView;
 
 @property (strong, nonatomic) IBOutlet UIView *NotesView;
@@ -71,6 +75,8 @@
 @property UIView *activelySelectedObjectDuringPan;
 
 @property CGPoint drawGroupViewStart;  // Used in ViewController+Group.m
+
+
 
 @property SevenSwitch *editSwitch;  // Utilized in ViewController+Menus.m [...]
 @property SegmentedControlMod *segmentControlVisualItem;

@@ -101,11 +101,6 @@
     }
 }
 
-- (void) touchBegan:(UITouch *) touch
-{
-   NSLog(@"\n touch began inf FDDrawView");
-}
-
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if (self.currentPath != nil) {

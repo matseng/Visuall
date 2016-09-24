@@ -16,6 +16,7 @@
 #import "UIView+VisualItem.h"
 #import "UIBezierPath+arrowhead.h"
 #import "ViewController+Group.h"
+#import "UserUtil.h"
 
 @implementation ViewController (Menus) 
 
@@ -163,6 +164,17 @@ UIColor *darkGrayBorderColor;
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
     //    self.navigationController.navigationBar.backgroundColor = self.backgroundColor;
     [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
+    
+    if ( ![[[UserUtil sharedManager] getState] topMenuViews] )
+    {
+        [[[UserUtil sharedManager] getState] setTopMenuViews: [[NSMutableDictionary alloc] init]];
+    }
+    NSMutableDictionary *dict = [@{@"editSwitch": self.editSwitch} mutableCopy];
+    StateUtilFirebase *state = [[UserUtil sharedManager] getState];
+    state.topMenuViews = dict;
+    NSMutableDictionary *md = [[[UserUtil sharedManager] getState] topMenuViews];
+    SevenSwitch *ss = md[@"editSwitch"];
+    NSLog(@"\n SegmentedControlMod: %@", [ss isOn] );
 
 }
 
@@ -473,8 +485,12 @@ UIColor *darkGrayBorderColor;
    
     [self.Background addSubview: toolbar2];
     self.submenu = toolbar2;
-    
-    
+//    if ( !self.topMenuViews ) self.topMenuViews = [[NSMutableDictionary alloc] init];
+    [[[[UserUtil sharedManager] getState] topMenuViews] setValue: self.segmentControlVisualItem forKey: @"segmentControlVisualItem"];
+
+    SegmentedControlMod *scm = [[[UserUtil sharedManager] getState] topMenuViews][@"segmentControlVisualItem"];
+
+        NSLog(@"\n SegmentedControlMod: %@", [scm getMyTitleForCurrentlySelectedSegment] );
     //    [scrollView setHidden:YES];
 }
 

@@ -61,13 +61,13 @@
 {
     [super viewDidLoad];
     
+    self.visuallState = [[StateUtilFirebase alloc] init];
+    
     [self buildViewHierarchyAndMenus];
     
     NSLog(@"Firebase URL: %@", self.firebaseURL);  // TODO (Aug 17, 2016): In the future this value will be populated from the previous selection of a Visuall
 
     NSString *userID = [[UserUtil sharedManager] userID];
-    
-    self.visuallState = [[StateUtilFirebase alloc] init];
     
     [self.visuallState setUserID: userID];
     
@@ -181,17 +181,19 @@
     self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     
     // this is the main view and used to show drawing from other users and let the user draw
-    self.DrawView = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
+     FDDrawView *DrawView = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
+    DrawView.backgroundColor  = [UIColor greenColor];
+    [[[UserUtil sharedManager] getState] setDrawView: DrawView];
     
     // make sure it's resizable to fit any device size
-    self.DrawView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    DrawView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.BackgroundScrollView addSubview: self.BoundsTiledLayerView];
     [self.BoundsTiledLayerView addSubview: self.VisualItemsView];
     [self.VisualItemsView addSubview: self.GroupsView];
     [self.VisualItemsView addSubview: self.NotesView];
     [self.VisualItemsView addSubview: self.ArrowsView];
-    [self.VisualItemsView addSubview: self.DrawView];
+    [self.VisualItemsView addSubview: DrawView];
     
     self.drawGroupView = [self initializeDrawGroupView];
     [self createTopMenu];
@@ -838,14 +840,11 @@
         return NO;
     }
     
-    if ( [self isDrawButtonSelected] )
+//    if ( [self isDrawButtonSelected] )
+    if ( [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
     {
-        if (touch.phase == UITouchPhaseBegan)
-        {
-            [self.DrawView touchBegan: touch];
-        }
-        // TODO (Sep 22, 2016): add conditionals and methods for other phases in FDDrawView
-        return YES;  
+        // TODO (Sep 23, 2016): Send touch to DrawView class - need to create mirror methods to receive a single touch (as opposed to a set) 
+        return YES;
     }
     
     if( [gestureRecognizer isKindOfClass: [TouchDownGestureRecognizer class]])

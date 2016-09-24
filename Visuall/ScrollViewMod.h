@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+//@class ScrollViewMod;
+
 @interface ScrollViewMod : UIScrollView
 
 - (void)scrollRectToVisibleSuperclass:(CGRect)rect animated:(BOOL)animated;

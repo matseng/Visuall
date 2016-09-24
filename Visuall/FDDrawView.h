@@ -31,4 +31,6 @@
 
 - (void) touchBegan: (UITouch *) touch;
 
+- (void) touchMoved:(UITouch *) touch;
+
 @end

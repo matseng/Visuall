@@ -40,27 +40,32 @@
 @property UIView *GroupsView;
 @property UIView *NotesView;
 @property UIView *ArrowsView;
+@property UIView *DrawView;
 @property UIView *selectedVisualItem;
 @property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing
 @property BOOL editModeOn;
 @property CGPoint touchDownPoint;
 
+@property NSMutableDictionary *topMenuViews;
 
 - (void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
 
--(void) transformGroupItem: (GroupItem *) groupItem;
+- (void) transformGroupItem: (GroupItem *) groupItem;
 
--(void) transformVisualItem: (VisualItem *) visualItem;
+- (void) transformVisualItem: (VisualItem *) visualItem;
 
--(CGPoint) getGlobalCoordinate: (CGPoint) point;
+- (CGPoint) getGlobalCoordinate: (CGPoint) point;
 
--(void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView: (UIView *) view;
+- (void) handleDoubleTapToZoom: (UITapGestureRecognizer *) gestureRecognizer andTargetView: (UIView *) view;
 
 - (float) getZoomScale;
 
 - (void) scaleNoteTitleSize: (NoteItem2 *) ni;
 
--(id) getItemFromKey: (NSString *) key;
+- (id) getItemFromKey: (NSString *) key;
+
+- (BOOL) isDrawButtonSelected;
+
 
 @end
 
