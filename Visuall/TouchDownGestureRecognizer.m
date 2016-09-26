@@ -15,17 +15,19 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-     if ( [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
-     {
-         [[[[UserUtil sharedManager] getState] DrawView] touchesBegan: touches withEvent: event];
-         self.state = UIGestureRecognizerStateBegan;
-         return;
-     }
-    if (self.state == UIGestureRecognizerStatePossible) {
+//     if ( [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
+//     {
+//         [[[[UserUtil sharedManager] getState] DrawView] touchesBegan: touches withEvent: event];
+//         self.state = UIGestureRecognizerStateBegan;
+//         return;
+//     }
+    if (self.state == UIGestureRecognizerStatePossible)
+    {
         self.state = UIGestureRecognizerStateRecognized;
     }
 }
 
+/*
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if ( [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
@@ -55,5 +57,6 @@
     
 //    self.state = UIGestureRecognizerStateFailed;
 }
+ */
 
 @end

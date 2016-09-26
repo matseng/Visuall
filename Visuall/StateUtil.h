@@ -18,6 +18,7 @@
 #import "ScrollViewMod.h"
 #import "TiledLayerView.h"
 #import "Collection.h"
+#import "FDDrawView.h"
 
 @interface StateUtil : NSObject
 
@@ -40,7 +41,7 @@
 @property UIView *GroupsView;
 @property UIView *NotesView;
 @property UIView *ArrowsView;
-@property UIView *DrawView;
+@property FDDrawView *DrawView;
 @property UIView *selectedVisualItem;
 @property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing
 @property BOOL editModeOn;

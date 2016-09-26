@@ -18,6 +18,7 @@
 #import "TiledLayerView.h"
 #import "ArrowItem.h"
 #import "UserUtil.h"
+#import "FDDrawView.h"
 
 @implementation ViewController (panHandler)
 
@@ -35,11 +36,11 @@
         return;
     } else if ([self isArrowButtonSelected] )
     {
-//        [ArrowItem drawArrow: gestureRecognizer];
         [self panHandlerForDrawArrow: gestureRecognizer];
         return;
     } else if (  [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
     {
+        [[[[UserUtil sharedManager] getState] DrawView] panHandler: gestureRecognizer];
         return;
     }
     

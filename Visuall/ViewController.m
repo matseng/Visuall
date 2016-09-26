@@ -840,14 +840,17 @@
         return NO;
     }
     
-//    if ( [self isDrawButtonSelected] )
-    if ( [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
+//    if ( [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
+//    {
+//        return YES;
+//    }
+    
+    if( [gestureRecognizer isKindOfClass: [TouchDownGestureRecognizer class]])
     {
-        // TODO (Sep 23, 2016): Send touch to DrawView class - need to create mirror methods to receive a single touch (as opposed to a set) 
         return YES;
     }
     
-    if( [gestureRecognizer isKindOfClass: [TouchDownGestureRecognizer class]])
+    if ( [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
     {
         return YES;
     }

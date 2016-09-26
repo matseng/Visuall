@@ -101,6 +101,30 @@
     }
 }
 
+- (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        [self panBeganWithGestureRecognizer: gestureRecognizer];
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        [self panChangedWithGestureRecognizer: gestureRecognizer];
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [self panEndedWithGestureRecognizer: gestureRecognizer];
+    }
+}
+
+- (void) panBeganWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
+{
+    self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
+    CGPoint touchPoint = [gestureRecognizer locationInView: self];
+    [self.currentPath addPoint:touchPoint];
+    [self setNeedsDisplay];
+}
+
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if (self.currentPath != nil) {
@@ -114,6 +138,25 @@
             }
         }
     }
+}
+
+- (void) panChangedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
+{
+    CGPoint touchPoint = [gestureRecognizer locationInView: self];
+    [self.currentPath addPoint:touchPoint];
+    [self setNeedsDisplay];
+}
+
+- (void) panEndedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
+{
+    // the touch finished draw add the line to the current state
+    [self.paths addObject:self.currentPath];
+    
+    // notify the delegate
+    [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
+    
+    // reset drawing state
+    self.currentPath = nil;
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
