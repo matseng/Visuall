@@ -19,6 +19,10 @@
 // the touch that is used to currently draw this path
 @property (nonatomic, strong) UITouch *currentTouch;
 
+//@property (nonatomic, strong) UIView *currentView;
+
+@property (nonatomic, strong) CAShapeLayer *shapeLayer;
+
 @end
 
 @implementation FDDrawView
@@ -30,6 +34,11 @@
         self.paths = [NSMutableArray array];
         self.backgroundColor = [UIColor whiteColor];
         self.drawColor = [UIColor redColor];
+//        self.currentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
+//        self.currentView.backgroundColor = [UIColor blueColor];
+//        self.currentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.shapeLayer = [[CAShapeLayer alloc] init];
+        [self.layer addSublayer: self.shapeLayer];
     }
     return self;
 }
@@ -65,6 +74,38 @@
     }
 }
 
+- (void)drawPathOnShapeLayer:(FDPath *)path withContext:(CGContextRef)context
+{
+//    [shapeView setPath: path.CGPath];
+    
+    if (path.points.count > 1) {
+        // make sure this is a new line
+        CGContextBeginPath(context);
+        
+        // set the color
+        CGContextSetStrokeColorWithColor(context, path.color.CGColor);
+        
+        FDPoint *point = path.points[0];
+        CGContextMoveToPoint(context, point.x, point.y);
+        
+        // draw all points on the path
+        for (NSUInteger i = 0; i < path.points.count; i++) {
+            FDPoint *point = path.points[i];
+            CGContextAddLineToPoint(context, point.x, point.y);
+        }
+        CGPathRef pathRef = CGContextCopyPath(context);
+        
+        // actually draw the path
+//        CGContextDrawPath(context, kCGPathStroke);
+//        NSLog(@"\n Path.points.count: %lu", (unsigned long)path.points.count);
+        self.shapeLayer.strokeColor = [[UIColor blueColor] CGColor];
+        self.shapeLayer.lineWidth = 3.0;
+        [self.shapeLayer setFillColor:[[UIColor clearColor] CGColor]];
+        [self.shapeLayer setPath: pathRef];
+
+    }
+}
+
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
@@ -74,12 +115,13 @@
 
     // draw all lines from Firebase
     for (FDPath *path in self.paths) {
-        [self drawPath:path withContext:context];
+//        [self drawPath:path withContext:context];
     }
 
     // make sure to draw the line the user is currently drawing
     if (self.currentPath != nil) {
-        [self drawPath:self.currentPath withContext:context];
+//        [self drawPath:self.currentPath withContext:context];
+        [self drawPathOnShapeLayer: self.currentPath withContext: context];
     }
 }
 
@@ -110,6 +152,7 @@
     else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
         [self panChangedWithGestureRecognizer: gestureRecognizer];
+        NSLog(@"\n FDDrawView");
     }
     else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
