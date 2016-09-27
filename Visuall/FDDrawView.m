@@ -96,13 +96,41 @@
         CGPathRef pathRef = CGContextCopyPath(context);
         
         // actually draw the path
-//        CGContextDrawPath(context, kCGPathStroke);
-//        NSLog(@"\n Path.points.count: %lu", (unsigned long)path.points.count);
         self.shapeLayer.strokeColor = [[UIColor blueColor] CGColor];
-        self.shapeLayer.lineWidth = 3.0;
+        self.shapeLayer.lineWidth = 4.0;
         [self.shapeLayer setFillColor:[[UIColor clearColor] CGColor]];
         [self.shapeLayer setPath: pathRef];
 
+    }
+}
+
+- (void)drawPathOnShapeLayer: (CAShapeLayer *) shapeLayer withPath: (FDPath *)path withContext:(CGContextRef)context
+{
+    //    [shapeView setPath: path.CGPath];
+    
+    if (path.points.count > 1) {
+        // make sure this is a new line
+        CGContextBeginPath(context);
+        
+        // set the color
+        CGContextSetStrokeColorWithColor(context, path.color.CGColor);
+        
+        FDPoint *point = path.points[0];
+        CGContextMoveToPoint(context, point.x, point.y);
+        
+        // draw all points on the path
+        for (NSUInteger i = 0; i < path.points.count; i++) {
+            FDPoint *point = path.points[i];
+            CGContextAddLineToPoint(context, point.x, point.y);
+        }
+        CGPathRef pathRef = CGContextCopyPath(context);
+        
+        // actually draw the path
+        shapeLayer.strokeColor = [[UIColor blueColor] CGColor];
+        shapeLayer.lineWidth = 4.0;
+        [shapeLayer setFillColor:[[UIColor clearColor] CGColor]];
+        [shapeLayer setPath: pathRef];
+        
     }
 }
 
@@ -114,9 +142,11 @@
     CGContextSetLineWidth(context, 0.5f);
 
     // draw all lines from Firebase
-    for (FDPath *path in self.paths) {
+//    for (FDPath *path in self.paths) {
 //        [self drawPath:path withContext:context];
-    }
+//        [self drawPathOnShapeLayer: path withContext: context];
+
+//    }
 
     // make sure to draw the line the user is currently drawing
     if (self.currentPath != nil) {
@@ -194,6 +224,13 @@
 {
     // the touch finished draw add the line to the current state
     [self.paths addObject:self.currentPath];
+    
+    // draw completed path on its own shape layer
+    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetLineWidth(context, 0.5f);
+    [self drawPathOnShapeLayer: layer withPath: self.currentPath withContext:context];
+    [self.layer addSublayer: layer];
     
     // notify the delegate
     [self.delegate drawView:self didFinishDrawingPath:self.currentPath];

@@ -182,7 +182,7 @@
     
     // this is the main view and used to show drawing from other users and let the user draw
      FDDrawView *DrawView = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
-    DrawView.backgroundColor  = [UIColor greenColor];
+//    DrawView.backgroundColor  = [UIColor greenColor];
     [[[UserUtil sharedManager] getState] setDrawView: DrawView];
     
     // make sure it's resizable to fit any device size
