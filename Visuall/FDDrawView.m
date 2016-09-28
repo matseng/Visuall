@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong) CAShapeLayer *shapeLayer;
 
+@property (nonatomic, strong) CAShapeLayer *shapeLayerBackground;
+
 @end
 
 @implementation FDDrawView
@@ -37,10 +39,34 @@
 //        self.currentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
 //        self.currentView.backgroundColor = [UIColor blueColor];
 //        self.currentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.shapeLayerBackground = [[CAShapeLayer alloc] init];
         self.shapeLayer = [[CAShapeLayer alloc] init];
+        [self.layer addSublayer: self.shapeLayerBackground];
         [self.layer addSublayer: self.shapeLayer];
     }
     return self;
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetLineWidth(context, 0.5f);
+    
+    // draw all lines from Firebase
+    //    for (FDPath *path in self.paths) {
+    //        [self drawPath:path withContext:context];
+    //        [self drawPathOnShapeLayer: path withContext: context];
+    
+    //    }
+    
+    // make sure to draw the line the user is currently drawing
+    if (self.currentPath != nil) {
+        //        [self drawPath:self.currentPath withContext:context];
+        [self drawPathOnShapeLayer: self.currentPath withContext: context];
+        [self drawPathOnBackgroundLayer: self.currentPath withContext: context];
+    }
 }
 
 - (void)addPath:(FDPath *)path
@@ -104,7 +130,37 @@
     }
 }
 
-- (void)drawPathOnShapeLayer: (CAShapeLayer *) shapeLayer withPath: (FDPath *)path withContext:(CGContextRef)context
+- (void) drawPathOnBackgroundLayer:(FDPath *)path withContext:(CGContextRef)context
+{
+    //    [shapeView setPath: path.CGPath];
+    
+    if (path.points.count > 1) {
+        // make sure this is a new line
+        CGContextBeginPath(context);
+        
+        // set the color
+        CGContextSetStrokeColorWithColor(context, path.color.CGColor);
+        
+        FDPoint *point = path.points[0];
+        CGContextMoveToPoint(context, point.x, point.y);
+        
+        // draw all points on the path
+        for (NSUInteger i = 0; i < path.points.count; i++) {
+            FDPoint *point = path.points[i];
+            CGContextAddLineToPoint(context, point.x, point.y);
+        }
+        CGPathRef pathRef = CGContextCopyPath(context);
+        
+        // actually draw the path
+        self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
+        self.shapeLayerBackground.lineWidth = 10.0;
+        [self.shapeLayerBackground setFillColor:[[UIColor clearColor] CGColor]];
+        [self.shapeLayerBackground setPath: pathRef];
+        
+    }
+}
+
+- (void) drawPathOnShapeLayer: (CAShapeLayer *) shapeLayer withPath: (FDPath *)path withContext:(CGContextRef)context
 {
     //    [shapeView setPath: path.CGPath];
     
@@ -131,27 +187,6 @@
         [shapeLayer setFillColor:[[UIColor clearColor] CGColor]];
         [shapeLayer setPath: pathRef];
         
-    }
-}
-
-- (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 0.5f);
-
-    // draw all lines from Firebase
-//    for (FDPath *path in self.paths) {
-//        [self drawPath:path withContext:context];
-//        [self drawPathOnShapeLayer: path withContext: context];
-
-//    }
-
-    // make sure to draw the line the user is currently drawing
-    if (self.currentPath != nil) {
-//        [self drawPath:self.currentPath withContext:context];
-        [self drawPathOnShapeLayer: self.currentPath withContext: context];
     }
 }
 

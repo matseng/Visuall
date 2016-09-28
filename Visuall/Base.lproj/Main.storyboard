@@ -281,7 +281,7 @@
                                 <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UwY-hV-Qux" id="DZr-A1-Bet">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -359,7 +359,7 @@
                                 <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R72-Wf-ikr" id="shg-Mk-0LJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -409,7 +409,7 @@
                                 <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hkA-7E-lRb" id="euX-kK-bpt">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -528,7 +528,6 @@
                     <connections>
                         <segue destination="Fbd-9Y-6CG" kind="relationship" relationship="viewControllers" id="lWO-Cx-rar"/>
                         <segue destination="LOH-1e-ScV" kind="relationship" relationship="viewControllers" id="Zgc-mf-6uD"/>
-                        <segue destination="Qi6-rb-76Q" kind="relationship" relationship="viewControllers" id="fxq-a0-8bQ"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3sN-ap-FQp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -555,6 +554,6 @@
         <image name="Microsoft-Visual-Studio-icon_v3.png" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ukt-2Z-DgX"/>
+        <segue reference="kvV-Ab-wk4"/>
     </inferredMetricsTieBreakers>
 </document>
