@@ -77,7 +77,7 @@
     [self setNeedsDisplay];
 }
 
-- (void)drawPath:(FDPath *)path withContext:(CGContextRef)context
+- (void) drawPath:(FDPath *)path withContext:(CGContextRef)context
 {
     if (path.points.count > 1) {
         // make sure this is a new line
@@ -100,7 +100,33 @@
     }
 }
 
-- (void)drawPathOnShapeLayer:(FDPath *)path withContext:(CGContextRef)context
+- (void)__drawPathOnShapeLayer:(FDPath *)path withContext:(CGContextRef)context
+{
+    if (path.points.count > 1)
+    {
+        CGMutablePathRef newPath = CGPathCreateMutable();
+        FDPoint *point = path.points[0];
+        
+        
+        for (NSUInteger i = 0; i < path.points.count - 1; i++)
+        {
+            FDPoint *point = path.points[i];
+            FDPoint *nextPoint = path.points[i+1];
+            CGPathMoveToPoint(newPath, NULL, point.x, point.y);
+            CGPathAddLineToPoint(newPath, NULL, nextPoint.x, nextPoint.y);
+        }
+//        CGPathCloseSubpath(newPath);
+        
+//        CGContextBeginPath(context);
+        CGContextAddPath(context, newPath);
+        CGContextSetStrokeColorWithColor(context,[UIColor greenColor].CGColor);
+        CGContextSetLineWidth(context, 4.0);
+        CGContextStrokePath(context);
+    }
+
+}
+
+- (void) drawPathOnShapeLayer:(FDPath *)path withContext:(CGContextRef)context
 {
 //    [shapeView setPath: path.CGPath];
     
@@ -124,7 +150,8 @@
         // actually draw the path
         self.shapeLayer.strokeColor = [[UIColor blueColor] CGColor];
         self.shapeLayer.lineWidth = 4.0;
-        [self.shapeLayer setFillColor:[[UIColor redColor] CGColor]];
+//        [self.shapeLayer setFillColor:[[UIColor redColor] CGColor]];
+        [self.shapeLayer setFillColor: nil];
         [self.shapeLayer setPath: pathRef];
 
     }
@@ -132,7 +159,7 @@
 
 - (void) drawPathOnBackgroundLayer:(FDPath *)path withContext:(CGContextRef)context
 {
-    return;
+//    return;
     
     /*
 
@@ -178,7 +205,7 @@
         // actually draw the path
         self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
         self.shapeLayerBackground.lineWidth = 10.0;
-        [self.shapeLayerBackground setFillColor:[[UIColor clearColor] CGColor]];
+        [self.shapeLayerBackground setFillColor: nil];
         [self.shapeLayerBackground setPath: pathRef];
         
     }
@@ -331,14 +358,63 @@
     }
 }
 
+
+/*
+Problem:
+    https://oleb.net/blog/2012/02/cgpath-hit-testing/
+    Hit testing. The CGPath APIs can only help you if you want to hit test the for interior of a path, not if your hit target is the path’s contour. Since CGPathCreateCopyByStrokingPath() can convert the countour into a new path’s interior, it can help with this problem, too.
+ */
+- (CAShapeLayer *) __hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event
+{
+    for (CAShapeLayer *layer in self.layer.sublayers)
+    {
+
+//        if (CGPathContainsPoint( layer.path, NULL, point, YES))
+//        {
+//            return layer;
+//        }
+        
+        if ( layer.path && [[UIBezierPath bezierPathWithCGPath:layer.path] containsPoint: point] )
+        {
+            return layer;
+        }
+        
+
+    }
+    return nil;
+}
+
 - (CAShapeLayer *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event
 {
     for (CAShapeLayer *layer in self.layer.sublayers)
     {
-        // if (CGPathContainsPoint([(CAShapeLayer *)self.layer.mask path], NULL, p, YES) )
-        if (CGPathContainsPoint( layer.path, NULL, point, YES))
+        if ( layer.path )
         {
-            return layer;
+            UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:layer.path];
+            
+            CGPathRef tapTargetPath = CGPathCreateCopyByStrokingPath(layer.path,
+                                                                     NULL,
+                                                                     fmaxf(35.0f, path.lineWidth),
+//                                                                     path.lineWidth,
+                                                                     path.lineCapStyle,
+                                                                     path.lineJoinStyle,
+                                                                     path.miterLimit);
+            if (tapTargetPath == NULL) {
+                return nil;
+            }
+            
+            UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:tapTargetPath];
+            CGPathRelease(tapTargetPath);
+            
+            if ([tapTarget containsPoint:point])
+            {
+                self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
+                self.shapeLayerBackground.lineWidth = 10.0;
+                [self.shapeLayerBackground setFillColor: nil];
+                [self.shapeLayerBackground setPath: layer.path];
+                
+                return layer;
+            }
         }
     }
     return nil;
