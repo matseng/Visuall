@@ -35,4 +35,6 @@
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer;
 
+- (CAShapeLayer *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event;
+
 @end

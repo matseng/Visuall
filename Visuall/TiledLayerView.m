@@ -10,6 +10,7 @@
 #import "NoteItem2.h"
 #import "UIView+VisualItem.h"
 #import "UserUtil.h"
+#import "FDDrawView.h"
 
 @implementation TiledLayerView
 
@@ -32,6 +33,8 @@
 
     UIView *target = nil;
     
+    if ( [self hitTestOnDrawView: point withEvent: event] ) return self.hitTestView;
+    
     if ( [self hitTestOnArrows: point withEvent: event] ) {
         return self.hitTestView;
     }
@@ -44,8 +47,19 @@
     }
 
     self.hitTestView = nil;
-//    NSLog(@"TiledLayerView viewHit %@", [target class]);
     return nil;
+}
+
+- (BOOL) hitTestOnDrawView: (CGPoint)point withEvent:(UIEvent *)event
+{
+    FDDrawView *drawView =  [[[UserUtil sharedManager] getState] DrawView];
+    CGPoint convertedPoint = [drawView convertPoint:point fromView: self];
+    if( [drawView hitTestOnShapeLayer:convertedPoint withEvent: event] )
+    {
+        self.hitTestView = drawView;
+        return YES;
+    }
+    return NO;
 }
 
 - (UIView *) hitTestOnGroups: (CGPoint)point withEvent:(UIEvent *)event

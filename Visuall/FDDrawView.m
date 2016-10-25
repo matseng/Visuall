@@ -41,7 +41,7 @@
 //        self.currentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.shapeLayerBackground = [[CAShapeLayer alloc] init];
         self.shapeLayer = [[CAShapeLayer alloc] init];
-        [self.layer addSublayer: self.shapeLayerBackground];
+        [self.layer addSublayer: self.shapeLayerBackground];  // shows highlight for example
         [self.layer addSublayer: self.shapeLayer];
     }
     return self;
@@ -124,7 +124,7 @@
         // actually draw the path
         self.shapeLayer.strokeColor = [[UIColor blueColor] CGColor];
         self.shapeLayer.lineWidth = 4.0;
-        [self.shapeLayer setFillColor:[[UIColor clearColor] CGColor]];
+        [self.shapeLayer setFillColor:[[UIColor redColor] CGColor]];
         [self.shapeLayer setPath: pathRef];
 
     }
@@ -132,7 +132,31 @@
 
 - (void) drawPathOnBackgroundLayer:(FDPath *)path withContext:(CGContextRef)context
 {
-    //    [shapeView setPath: path.CGPath];
+    return;
+    
+    /*
+
+     //Get the CGContext from this view
+     CGContextRef context = UIGraphicsGetCurrentContext();
+     
+     //Set the stroke (pen) color
+     CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+     //Set the width of the pen mark
+     CGContextSetLineWidth(context, 5.0);
+     
+     // Draw a line
+     //Start at this point
+     CGContextMoveToPoint(context, 10.0, 30.0);
+     
+     //Give instructions to the CGContext
+     //(move "pen" around the screen)
+     CGContextAddLineToPoint(context, 310.0, 30.0);
+     CGContextAddLineToPoint(context, 310.0, 90.0);
+     CGContextAddLineToPoint(context, 10.0, 90.0);
+     
+     //Draw it
+     CGContextStrokePath(context);
+     */
     
     if (path.points.count > 1) {
         // make sure this is a new line
@@ -306,5 +330,19 @@
         }
     }
 }
+
+- (CAShapeLayer *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event
+{
+    for (CAShapeLayer *layer in self.layer.sublayers)
+    {
+        // if (CGPathContainsPoint([(CAShapeLayer *)self.layer.mask path], NULL, p, YES) )
+        if (CGPathContainsPoint( layer.path, NULL, point, YES))
+        {
+            return layer;
+        }
+    }
+    return nil;
+}
+
 
 @end
