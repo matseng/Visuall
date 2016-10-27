@@ -7,6 +7,7 @@
 //
 
 #import "FDDrawView.h"
+#import "UserUtil.h"
 
 @interface FDDrawView ()
 
@@ -25,6 +26,8 @@
 
 @property (nonatomic, strong) CAShapeLayer *shapeLayerBackground;
 
+@property float lineWidth;
+
 @end
 
 @implementation FDDrawView
@@ -36,9 +39,7 @@
         self.paths = [NSMutableArray array];
         self.backgroundColor = [UIColor whiteColor];
         self.drawColor = [UIColor redColor];
-//        self.currentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
-//        self.currentView.backgroundColor = [UIColor blueColor];
-//        self.currentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.lineWidth = 5.0;
         self.shapeLayerBackground = [[CAShapeLayer alloc] init];
         self.shapeLayer = [[CAShapeLayer alloc] init];
         [self.layer addSublayer: self.shapeLayerBackground];  // shows highlight for example
@@ -259,6 +260,30 @@
     }
 }
 
+- (void) tapHandler: (UIGestureRecognizer *) gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
+        CGPoint touchPoint = [gestureRecognizer locationInView: self];
+//        [self.currentPath addPoint:touchPoint];
+//        CGPoint point = CGPointMake(touchPoint.x - 1.0, touchPoint.y - 1.0);
+//        [self.currentPath addPoint:touchPoint];
+//        [self.currentPath addPoint:point];
+//        [self panEndedWithGestureRecognizer: gestureRecognizer];
+        
+        CAShapeLayer *circleLayer = [CAShapeLayer layer];
+        [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(touchPoint.x - self.lineWidth / 2, touchPoint.y - self.lineWidth / 2, self.lineWidth, self.lineWidth)] CGPath]];
+        [self.layer addSublayer: circleLayer];
+        
+        // notify the delegate
+        [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
+        
+        // reset drawing state
+        self.currentPath = nil;
+    }
+}
+
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -276,10 +301,13 @@
     }
 }
 
+
 - (void) panBeganWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
 {
+    CGPoint touchDownPoint = [[[UserUtil sharedManager] getState] touchDownPoint];
     self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
     CGPoint touchPoint = [gestureRecognizer locationInView: self];
+    [self.currentPath addPoint:touchDownPoint];
     [self.currentPath addPoint:touchPoint];
     [self setNeedsDisplay];
 }

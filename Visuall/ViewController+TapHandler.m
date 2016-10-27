@@ -14,6 +14,8 @@
 #import "ArrowItem.h"
 #import "UIBezierPath+arrowhead.h"
 #import "ViewController+Group.h"
+#import "UserUtil.h"
+#import "FDDrawView.h"
 
 @implementation ViewController (TapHandler)
 
@@ -28,6 +30,12 @@ NoteItem2 *targetNoteForArrow;
 - (void) tapHandler:(UITapGestureRecognizer *) gestureRecognizer
 {
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
+    
+    if (  [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
+    {
+        [[[[UserUtil sharedManager] getState] DrawView] tapHandler: gestureRecognizer];
+        return;
+    }
     
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
