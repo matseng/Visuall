@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FDPath.h"
+#import "DrawItem.h"
 
 @class FDDrawView;
 

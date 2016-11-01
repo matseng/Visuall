@@ -22,9 +22,9 @@
 
 //@property (nonatomic, strong) UIView *currentView;
 
-@property (nonatomic, strong) CAShapeLayer *shapeLayer;
+@property (nonatomic, strong) DrawItem *shapeLayer;
 
-@property (nonatomic, strong) CAShapeLayer *shapeLayerBackground;
+@property (nonatomic, strong) DrawItem *shapeLayerBackground;
 
 @property float lineWidth;
 
@@ -40,9 +40,9 @@
         self.backgroundColor = [UIColor whiteColor];
         self.drawColor = [UIColor redColor];
         self.lineWidth = 5.0;
-        self.shapeLayerBackground = [[CAShapeLayer alloc] init];
-        self.shapeLayer = [[CAShapeLayer alloc] init];
-        [self.layer addSublayer: self.shapeLayerBackground];  // shows highlight for example
+        self.shapeLayerBackground = [[DrawItem alloc] init];  // shows highlight of currently selected line segment
+        self.shapeLayer = [[DrawItem alloc] init];  // shows current line segment
+        [self.layer addSublayer: self.shapeLayerBackground];
         [self.layer addSublayer: self.shapeLayer];
     }
     return self;
@@ -266,15 +266,34 @@
     {
         self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
         CGPoint touchPoint = [gestureRecognizer locationInView: self];
+        [self.currentPath addPoint: touchPoint];
 //        [self.currentPath addPoint:touchPoint];
 //        CGPoint point = CGPointMake(touchPoint.x - 1.0, touchPoint.y - 1.0);
 //        [self.currentPath addPoint:touchPoint];
 //        [self.currentPath addPoint:point];
 //        [self panEndedWithGestureRecognizer: gestureRecognizer];
         
-        CAShapeLayer *circleLayer = [CAShapeLayer layer];
+//        CAShapeLayer *circleLayer = [CAShapeLayer layer];
+        DrawItem *circleLayer = [DrawItem layer];
         [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(touchPoint.x - self.lineWidth / 2, touchPoint.y - self.lineWidth / 2, self.lineWidth, self.lineWidth)] CGPath]];
+        
+        UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:circleLayer.path];
+        
+        
+        CGPathRef tapTargetPath = CGPathCreateCopyByStrokingPath(circleLayer.path, NULL, 35.0f,
+                                                                path.lineCapStyle,
+                                                                 path.lineJoinStyle,
+                                                                 path.miterLimit);
+
+        [circleLayer setPath: tapTargetPath];
+
+        [circleLayer setFillColor: [[UIColor redColor] CGColor]];
+        
         [self.layer addSublayer: circleLayer];
+        circleLayer.fdpath = self.currentPath;
+        circleLayer.isPoint = YES;
+        [self.paths addObject: circleLayer];
+        
         
         // notify the delegate
         [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
@@ -337,14 +356,18 @@
 - (void) panEndedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
 {
     // the touch finished draw add the line to the current state
-    [self.paths addObject:self.currentPath];
+//    [self.paths addObject:self.currentPath];
     
     // draw completed path on its own shape layer
-    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
+//    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
+    DrawItem *layer = [[DrawItem alloc] init];
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 0.5f);
     [self drawPathOnShapeLayer: layer withPath: self.currentPath withContext:context];
     [self.layer addSublayer: layer];
+    layer.fdpath = self.currentPath;
+    [self.paths addObject: layer];
     
     // notify the delegate
     [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
@@ -392,31 +415,13 @@ Problem:
     https://oleb.net/blog/2012/02/cgpath-hit-testing/
     Hit testing. The CGPath APIs can only help you if you want to hit test the for interior of a path, not if your hit target is the path’s contour. Since CGPathCreateCopyByStrokingPath() can convert the countour into a new path’s interior, it can help with this problem, too.
  */
-- (CAShapeLayer *) __hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event
-{
-    for (CAShapeLayer *layer in self.layer.sublayers)
-    {
-
-//        if (CGPathContainsPoint( layer.path, NULL, point, YES))
-//        {
-//            return layer;
-//        }
-        
-        if ( layer.path && [[UIBezierPath bezierPathWithCGPath:layer.path] containsPoint: point] )
-        {
-            return layer;
-        }
-        
-
-    }
-    return nil;
-}
 
 - (CAShapeLayer *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event
 {
-    for (CAShapeLayer *layer in self.layer.sublayers)
+    int counter = 0;
+    for (DrawItem *layer in self.layer.sublayers)
     {
-        if ( layer.path )
+        if ( layer.path && !layer.isPoint)
         {
             UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:layer.path];
             
@@ -431,8 +436,10 @@ Problem:
                 return nil;
             }
             
-            UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:tapTargetPath];
+//            UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:tapTargetPath];
+            UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:layer.path];
             CGPathRelease(tapTargetPath);
+
             
             if ([tapTarget containsPoint:point])
             {
@@ -443,8 +450,13 @@ Problem:
                 
                 return layer;
             }
+        } else if (layer.path && layer.isPoint)
+        {
+            // TODO: hit testing for a single point (expand radius)
         }
+        counter++;
     }
+    NSLog(@"\n layer counter: %i", counter);
     return nil;
 }
 
