@@ -267,27 +267,19 @@
         self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
         CGPoint touchPoint = [gestureRecognizer locationInView: self];
         [self.currentPath addPoint: touchPoint];
-//        [self.currentPath addPoint:touchPoint];
-//        CGPoint point = CGPointMake(touchPoint.x - 1.0, touchPoint.y - 1.0);
-//        [self.currentPath addPoint:touchPoint];
-//        [self.currentPath addPoint:point];
-//        [self panEndedWithGestureRecognizer: gestureRecognizer];
-        
-//        CAShapeLayer *circleLayer = [CAShapeLayer layer];
+
         DrawItem *circleLayer = [DrawItem layer];
+        
         [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(touchPoint.x - self.lineWidth / 2, touchPoint.y - self.lineWidth / 2, self.lineWidth, self.lineWidth)] CGPath]];
-        
+/*
         UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:circleLayer.path];
-        
-        
         CGPathRef tapTargetPath = CGPathCreateCopyByStrokingPath(circleLayer.path, NULL, 35.0f,
                                                                 path.lineCapStyle,
                                                                  path.lineJoinStyle,
                                                                  path.miterLimit);
-
         [circleLayer setPath: tapTargetPath];
-
-        [circleLayer setFillColor: [[UIColor redColor] CGColor]];
+*/
+        [circleLayer setFillColor: [[UIColor blueColor] CGColor]];
         
         [self.layer addSublayer: circleLayer];
         circleLayer.fdpath = self.currentPath;
@@ -436,15 +428,15 @@ Problem:
                 return nil;
             }
             
-//            UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:tapTargetPath];
-            UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:layer.path];
+            UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:tapTargetPath];
+//            UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:layer.path];
             CGPathRelease(tapTargetPath);
 
             
             if ([tapTarget containsPoint:point])
             {
                 self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
-                self.shapeLayerBackground.lineWidth = 10.0;
+                self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
                 [self.shapeLayerBackground setFillColor: nil];
                 [self.shapeLayerBackground setPath: layer.path];
                 
@@ -452,7 +444,16 @@ Problem:
             }
         } else if (layer.path && layer.isPoint)
         {
-            // TODO: hit testing for a single point (expand radius)
+            FDPoint *fdpoint = [layer.fdpath getFirstPoint];
+            double dist = hypot((point.x - fdpoint.x), (point.y - fdpoint.y));
+            if (dist < self.lineWidth * 2)
+            {
+                self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
+                self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
+                [self.shapeLayerBackground setFillColor: nil];
+                [self.shapeLayerBackground setPath: layer.path];
+            }
+            NSLog(@"\n dist: %f", dist);
         }
         counter++;
     }

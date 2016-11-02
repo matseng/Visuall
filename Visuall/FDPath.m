@@ -159,4 +159,15 @@
     return [NSNumber numberWithInteger:integer];
 }
 
+- (FDPoint *) getFirstPoint
+{
+    if ([self.points count])
+    {
+        FDPoint *point = self.points[0];
+        return point;
+    }
+    return nil;
+}
+
+
 @end

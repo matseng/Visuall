@@ -40,4 +40,6 @@
 // add a point to this path
 - (void)addPoint:(CGPoint)point;
 
+- (FDPoint *) getFirstPoint;
+
 @end
