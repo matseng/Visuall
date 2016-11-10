@@ -27,7 +27,7 @@
     }
 }
 
-- (VisualItem *) getItemFromKey: (NSString *) key
+- (NSObject *) getItemFromKey: (NSString *) key
 {
     return self.items[key];
 }

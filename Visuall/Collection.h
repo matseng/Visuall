@@ -14,11 +14,15 @@
 
 @property NSMutableDictionary *items;
 
-- (void) addItem:(VisualItem *) vi withKey: (NSString *) key;
+//- (void) addItem:(VisualItem *) vi withKey: (NSString *) key;
+
+- (void) addItem: (NSObject *) vi withKey: (NSString *) key;
+
+- (NSObject *) getItemFromKey: (NSString *) key;
+
+//- (VisualItem *) getItemFromKey: (NSString *) key;
 
 - (void) myForIn: (void (^)(id vi)) myFunction;
-
-- (VisualItem *) getItemFromKey: (NSString *) key;
 
 - (BOOL) deleteItemGivenKey: (NSString *) key;
 
