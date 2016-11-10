@@ -6,8 +6,8 @@
 //  Copyright © 2016 Visuall. All rights reserved.
 //
 
-#import "DrawItem.h"
+#import "PathItem.h"
 
-@implementation DrawItem
+@implementation PathItem
 
 @end

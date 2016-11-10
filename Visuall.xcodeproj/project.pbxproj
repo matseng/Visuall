@@ -31,7 +31,7 @@
 		715C60C91D7908CF00DD6942 /* defaultVisualization500.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60C81D7908CF00DD6942 /* defaultVisualization500.xml */; };
 		715C60CB1D79175700DD6942 /* defaultVisualization1773.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60CA1D79175700DD6942 /* defaultVisualization1773.xml */; };
 		715C60CD1D79197700DD6942 /* defaultVisualization12k.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60CC1D79197700DD6942 /* defaultVisualization12k.xml */; };
-		715C8BAF1DC8189E008BC2A8 /* DrawItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C8BAE1DC8189E008BC2A8 /* DrawItem.m */; };
+		715C8BAF1DC8189E008BC2A8 /* PathItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C8BAE1DC8189E008BC2A8 /* PathItem.m */; };
 		7161CF641D55202700B278EB /* MyVisuallsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */; };
 		7161CF671D556C6E00B278EB /* GlobalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161CF661D556C6E00B278EB /* GlobalViewController.m */; };
 		716328B31D25F215009DF56B /* Paint Bucket-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 716328B21D25F215009DF56B /* Paint Bucket-50.png */; };
@@ -162,8 +162,8 @@
 		715C60C81D7908CF00DD6942 /* defaultVisualization500.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization500.xml; sourceTree = "<group>"; };
 		715C60CA1D79175700DD6942 /* defaultVisualization1773.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization1773.xml; sourceTree = "<group>"; };
 		715C60CC1D79197700DD6942 /* defaultVisualization12k.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization12k.xml; sourceTree = "<group>"; };
-		715C8BAD1DC8189E008BC2A8 /* DrawItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawItem.h; sourceTree = "<group>"; };
-		715C8BAE1DC8189E008BC2A8 /* DrawItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawItem.m; sourceTree = "<group>"; };
+		715C8BAD1DC8189E008BC2A8 /* PathItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathItem.h; sourceTree = "<group>"; };
+		715C8BAE1DC8189E008BC2A8 /* PathItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathItem.m; sourceTree = "<group>"; };
 		7161CF621D55202700B278EB /* MyVisuallsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVisuallsNavigationController.h; sourceTree = "<group>"; };
 		7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVisuallsNavigationController.m; sourceTree = "<group>"; };
 		7161CF651D556C6E00B278EB /* GlobalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalViewController.h; sourceTree = "<group>"; };
@@ -582,8 +582,8 @@
 				7195EBD41D46684500F609DE /* Arrow.m */,
 				7195EBD01D4664BB00F609DE /* ArrowItem.h */,
 				7195EBD11D4664BB00F609DE /* ArrowItem.m */,
-				715C8BAD1DC8189E008BC2A8 /* DrawItem.h */,
-				715C8BAE1DC8189E008BC2A8 /* DrawItem.m */,
+				715C8BAD1DC8189E008BC2A8 /* PathItem.h */,
+				715C8BAE1DC8189E008BC2A8 /* PathItem.m */,
 				71FD2EFC1D74DDF900CA5365 /* Collection.h */,
 				71FD2EFD1D74DDF900CA5365 /* Collection.m */,
 				71FC72121BF2E881003B7F14 /* NotesCollection.h */,
@@ -857,7 +857,7 @@
 				71B0EF011CB83CCE009D8F5C /* VisualItem.m in Sources */,
 				71D96C071D35A9A400CD1C49 /* ViewController+TapHandler.m in Sources */,
 				71C167FE1D879E5A00961374 /* StateUtilFirebase+Update.m in Sources */,
-				715C8BAF1DC8189E008BC2A8 /* DrawItem.m in Sources */,
+				715C8BAF1DC8189E008BC2A8 /* PathItem.m in Sources */,
 				715C60C71D78EC0100DD6942 /* ViewController+xmlParser.m in Sources */,
 				71FC72141BF2E881003B7F14 /* NotesCollection.m in Sources */,
 				714847291D94B72200E73A7A /* FDViewController.m in Sources */,

@@ -11,7 +11,7 @@
 
 @interface FDDrawView ()
 
-// the paths currently displayed by this view
+// the paths (PathItems) currently displayed by this view
 @property (nonatomic, strong) NSMutableArray *paths;
 
 // the current path the user is drawing
@@ -22,9 +22,9 @@
 
 //@property (nonatomic, strong) UIView *currentView;
 
-@property (nonatomic, strong) DrawItem *shapeLayer;
+@property (nonatomic, strong) PathItem *shapeLayer;
 
-@property (nonatomic, strong) DrawItem *shapeLayerBackground;
+@property (nonatomic, strong) PathItem *shapeLayerBackground;
 
 @property float lineWidth;
 
@@ -35,13 +35,14 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self != nil) {
+    if (self != nil)
+    {
         self.paths = [NSMutableArray array];
         self.backgroundColor = [UIColor whiteColor];
         self.drawColor = [UIColor redColor];
         self.lineWidth = 5.0;
-        self.shapeLayerBackground = [[DrawItem alloc] init];  // shows highlight of currently selected line segment
-        self.shapeLayer = [[DrawItem alloc] init];  // shows current line segment
+        self.shapeLayerBackground = [[PathItem alloc] init];  // shows highlight of currently selected line segment
+        self.shapeLayer = [[PathItem alloc] init];  // shows current line segment
         [self.layer addSublayer: self.shapeLayerBackground];
         [self.layer addSublayer: self.shapeLayer];
     }
@@ -68,14 +69,6 @@
         [self drawPathOnShapeLayer: self.currentPath withContext: context];
         [self drawPathOnBackgroundLayer: self.currentPath withContext: context];
     }
-}
-
-- (void)addPath:(FDPath *)path
-{
-    [self.paths addObject:path];
-
-    // make sure the view is redrawn
-    [self setNeedsDisplay];
 }
 
 - (void) drawPath:(FDPath *)path withContext:(CGContextRef)context
@@ -268,7 +261,7 @@
         CGPoint touchPoint = [gestureRecognizer locationInView: self];
         [self.currentPath addPoint: touchPoint];
 
-        DrawItem *circleLayer = [DrawItem layer];
+        PathItem *circleLayer = [PathItem layer];
         
         [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(touchPoint.x - self.lineWidth / 2, touchPoint.y - self.lineWidth / 2, self.lineWidth, self.lineWidth)] CGPath]];
 /*
@@ -284,8 +277,7 @@
         [self.layer addSublayer: circleLayer];
         circleLayer.fdpath = self.currentPath;
         circleLayer.isPoint = YES;
-        [self.paths addObject: circleLayer];
-        
+        [[[[UserUtil sharedManager] getState] pathsCollection] addItem: circleLayer withKey: nil];
         
         // notify the delegate
         [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
@@ -352,14 +344,14 @@
     
     // draw completed path on its own shape layer
 //    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-    DrawItem *layer = [[DrawItem alloc] init];
+    PathItem *layer = [[PathItem alloc] init];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 0.5f);
     [self drawPathOnShapeLayer: layer withPath: self.currentPath withContext:context];
     [self.layer addSublayer: layer];
     layer.fdpath = self.currentPath;
-    [self.paths addObject: layer];
+    [[[[UserUtil sharedManager] getState] pathsCollection] addItem: layer withKey: nil];
     
     // notify the delegate
     [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
@@ -382,26 +374,6 @@
     }
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    if (self.currentPath != nil) {
-        for (UITouch *touch in touches) {
-            if (self.currentTouch == touch) {
-                // the touch finished draw add the line to the current state
-                [self.paths addObject:self.currentPath];
-
-                // notify the delegate
-                [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
-
-                // reset drawing state
-                self.currentPath = nil;
-                self.currentTouch = nil;
-            }
-        }
-    }
-}
-
-
 /*
 Problem:
     https://oleb.net/blog/2012/02/cgpath-hit-testing/
@@ -411,8 +383,12 @@ Problem:
 - (CAShapeLayer *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event
 {
     int counter = 0;
-    for (DrawItem *layer in self.layer.sublayers)
+    NSMutableDictionary *items =  [[[[UserUtil sharedManager] getState] pathsCollection] items];
+    
+//    for (PathItem *layer in self.layer.sublayers)
+    for (NSString *key in items)
     {
+        PathItem *layer = items[key];
         if ( layer.path && !layer.isPoint)
         {
             UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:layer.path];

@@ -275,6 +275,7 @@ static NSMutableDictionary *__personalVisuallList;
     [self loadListOfNotesFromRef: listOfNoteKeysRef];
     [self loadListOfGroupsFromRef: listOfGroupKeysRef];
     [self loadListOfArrowsFromRef: listOfArrowKeysRef];
+    [self loadListOfPathsFromRef: nil];  // TODO (Nov 10, 2016): create firebase ref
 }
 
 //if ( [self isSnapshotFromLocalDevice: snapshot] && self.allNotesLoadedBool )
@@ -372,6 +373,11 @@ static NSMutableDictionary *__personalVisuallList;
      {
          NSLog(@"loadListOfGroupsFromRef: %@", error.description);
      }];
+}
+
+- (void) loadListOfPathsFromRef: (FIRDatabaseReference *) listOfPathKeysRef
+{
+    self.pathsCollection = [Collection new];
 }
 
 - (void) __loadListOfArrowsFromRef: (FIRDatabaseReference *) listOfArrowKeysRef

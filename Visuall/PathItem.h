@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "FDPath.h"
 
-@interface DrawItem : CAShapeLayer
+@interface PathItem : CAShapeLayer
 
 @property FDPath *fdpath;
 

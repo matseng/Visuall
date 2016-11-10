@@ -10,12 +10,23 @@
 
 @implementation Collection
 
-- (void) addItem:(VisualItem *) vi withKey: (NSString *) key
+- (void) addItem: (id) vi withKey: (NSString *) key
 {
     if ( !self.items) {
         self.items = [[NSMutableDictionary alloc] init];
     }
-    vi.key = key;
+    
+    if ( !key )
+    {
+        key = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970] * 1000];
+    }
+    
+    if ( [vi isKindOfClass:[VisualItem class]] )
+    {
+        VisualItem *vi2 = (VisualItem *) vi;
+        vi2.key = key;
+    }
+    
     self.items[key] = vi;
 }
 
@@ -27,7 +38,7 @@
     }
 }
 
-- (NSObject *) getItemFromKey: (NSString *) key
+- (id) getItemFromKey: (NSString *) key
 {
     return self.items[key];
 }

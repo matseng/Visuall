@@ -32,6 +32,7 @@
 @property NotesCollection *notesCollection;
 @property GroupsCollection *groupsCollection;
 @property Collection *arrowsCollection;
+@property Collection *pathsCollection;
 
 // New state properties (moving away from ViewController)
 @property FIRUser *firebaseUser;
