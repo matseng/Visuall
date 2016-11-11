@@ -49,6 +49,25 @@
     return self;
 }
 
+/*
+-(void) addArrowItemToMVC: (ArrowItem *) ai
+{
+    [self.ArrowsView addSubview: ai];
+    if (ai) [[[UserUtil sharedManager] getState] setValueArrow: ai];
+    [[[[UserUtil sharedManager] getState] arrowsCollection] addItem: ai withKey: ai.key];
+    [self setSelectedObject: ai];
+    [[[UserUtil sharedManager] getState] setSelectedVisualItem: ai];
+    [self setActivelySelectedObjectDuringPan: nil];
+}
+*/
+
+- (void) addPathItemToMVC: (PathItem *) pi
+{
+    [[[[UserUtil sharedManager] getState] pathsCollection] addItem: pi withKey: nil];
+    [[[UserUtil sharedManager] getState] setValuePath: pi];
+    [self.layer addSublayer: pi];
+}
+
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
@@ -274,10 +293,9 @@
 */
         [circleLayer setFillColor: [[UIColor blueColor] CGColor]];
         
-        [self.layer addSublayer: circleLayer];
         circleLayer.fdpath = self.currentPath;
         circleLayer.isPoint = YES;
-        [[[[UserUtil sharedManager] getState] pathsCollection] addItem: circleLayer withKey: nil];
+        [self addPathItemToMVC: circleLayer];
         
         // notify the delegate
         [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
@@ -349,9 +367,8 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 0.5f);
     [self drawPathOnShapeLayer: layer withPath: self.currentPath withContext:context];
-    [self.layer addSublayer: layer];
     layer.fdpath = self.currentPath;
-    [[[[UserUtil sharedManager] getState] pathsCollection] addItem: layer withKey: nil];
+    [self addPathItemToMVC: layer];
     
     // notify the delegate
     [self.delegate drawView:self didFinishDrawingPath:self.currentPath];

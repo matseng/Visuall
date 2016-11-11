@@ -30,10 +30,6 @@
 // adds a path to display to this view
 - (void) addPath:(FDPath *)path;
 
-- (void) touchBegan: (UITouch *) touch;
-
-- (void) touchMoved:(UITouch *) touch;
-
 - (void) tapHandler: (UIGestureRecognizer *) gestureRecognizer;
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer;

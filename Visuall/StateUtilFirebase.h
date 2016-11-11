@@ -88,6 +88,8 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 - (void) setValueArrow: (VisualItem *) vi;
 
+- (void) setValuePath: (PathItem *) pi;
+
 - (void) updateChildValue: (UIView *) visualObject Property: (NSString *) propertyName;
 
 - (void) updateChildValues: (UIView *) visualObject Property1: (NSString *) propertyName1 Property2: (NSString *) propertyName2;

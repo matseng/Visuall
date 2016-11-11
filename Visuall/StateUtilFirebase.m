@@ -564,6 +564,21 @@ static NSMutableDictionary *__personalVisuallList;
     [self increaseOrDecreaseCounter: arrowsCounterRef byAmount:1];
 }
 
+- (void) setValuePath:(PathItem *) pi
+{
+    FIRDatabaseReference *pathsRef = [self.version01TableRef child: @"paths"];
+    FIRDatabaseReference *newPathRef = [pathsRef childByAutoId];
+    pi.key = newPathRef.key;
+    if ( !_currentVisuallKey )
+    {
+        return;
+    }
+    NSDictionary *pathDict = [pi.fdpath serialize];
+//    [newPathRef setValue: @{@"path": pathDict }];
+    [newPathRef setValue: @{@"path": @"test" }];
+}
+
+
 /*
  * Name:
  * Description:

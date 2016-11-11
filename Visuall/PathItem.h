@@ -11,6 +11,8 @@
 
 @interface PathItem : CAShapeLayer
 
+@property NSString *key;
+
 @property FDPath *fdpath;
 
 @property BOOL isPoint;
