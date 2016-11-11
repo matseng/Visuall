@@ -81,6 +81,8 @@ static NSMutableDictionary *__personalVisuallList;
     self.notesTableRef = [self.version01TableRef child: @"notes"];
     self.groupsTableRef = [self.version01TableRef child: @"groups"];
     self.arrowsTableRef = [self.version01TableRef child: @"arrows"];
+    self.pathsTableRef = [self.version01TableRef child: @"paths"];
+    
     self.publicVisuallsTableRef = [self.version01TableRef child: @"public"];
     __storage = [FIRStorage storage];
     FIRStorageReference *storageRef = [__storage referenceForURL:@"gs://visuall-2f878.appspot.com"];
@@ -272,10 +274,11 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *listOfNoteKeysRef = [[self.visuallsTableRef child:key] child: @"notes"];
     FIRDatabaseReference *listOfGroupKeysRef = [[self.visuallsTableRef child:key] child: @"groups"];
     FIRDatabaseReference *listOfArrowKeysRef = [[self.visuallsTableRef child:key] child: @"arrows"];
+    FIRDatabaseReference *listOfPathKeysRef = [[self.visuallsTableRef child:key] child: @"paths"];
     [self loadListOfNotesFromRef: listOfNoteKeysRef];
     [self loadListOfGroupsFromRef: listOfGroupKeysRef];
     [self loadListOfArrowsFromRef: listOfArrowKeysRef];
-    [self loadListOfPathsFromRef: nil];  // TODO (Nov 10, 2016): create firebase ref
+    [self loadListOfPathsFromRef: listOfPathKeysRef];
 }
 
 //if ( [self isSnapshotFromLocalDevice: snapshot] && self.allNotesLoadedBool )
@@ -378,6 +381,15 @@ static NSMutableDictionary *__personalVisuallList;
 - (void) loadListOfPathsFromRef: (FIRDatabaseReference *) listOfPathKeysRef
 {
     self.pathsCollection = [Collection new];
+    
+    [listOfPathKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         ++self.numberOfPathsToBeLoaded;
+         [self loadPathFromRef: [self.pathsTableRef child: snapshot.key]];
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"loadListOfPathsFromRef: %@", error.description);
+     }];
 }
 
 - (void) __loadListOfArrowsFromRef: (FIRDatabaseReference *) listOfArrowKeysRef
@@ -573,15 +585,14 @@ static NSMutableDictionary *__personalVisuallList;
     {
         return;
     }
-    NSDictionary *fdpathDict = [pi.fdpath serialize];
     NSMutableDictionary *pathDictionary = [@{
-                                             @"data/points": fdpathDict[@"points"],
-                                             @"data/color": fdpathDict[@"color"]
+                                             @"data/path": [pi.fdpath serialize]
                                              } mutableCopy];
     [pathDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [pathDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     [newPathRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
     [newPathRef updateChildValues: pathDictionary];
+    [[self.visuallsTable_currentVisuallRef child: @"paths"] updateChildValues: @{newPathRef.key: @"1"}];
 }
 
 

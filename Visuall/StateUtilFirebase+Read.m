@@ -134,33 +134,37 @@
      }];
 }
 
-/*
- * Name:
- * Description:
- */
-- (void) __loadArrowFromRef: (FIRDatabaseReference *) arrowRef
+- (void) loadPathFromRef: (FIRDatabaseReference *) pathRef
 {
-    [arrowRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
+    [pathRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
-         if( self.allArrowsLoadedBOOL && ![self isSnapshotFromLocalDevice: snapshot] && [self.arrowsCollection getItemFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         if (snapshot.value == [NSNull null])
          {
-             ArrowItem *ai = (ArrowItem *)[self.arrowsCollection getItemFromKey: snapshot.key];
-             [ai updateArrowFromFirebase: snapshot.key andValue: snapshot.value];
+             --self.numberOfPathsToBeLoaded;
              return;
          }
          
-         ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
-         [self.arrowsCollection addItem: ai withKey: arrowRef.key];
-         [self.ArrowsView addSubview: ai];
-         
-         if (++self.numberOfArrowsLoaded == self.numberOfArrowsToBeLoaded)
+         // 1 of 2. Read a path upon the initial load:
+         if ( ![self.pathsCollection getItemFromKey: snapshot.key])
          {
-             NSLog(@"\n loadArrowFromRef all arrows loaded");
-             self.allArrowsLoadedBOOL = YES;
+             PathItem *pi = [[PathItem alloc] initPathFromFirebase: pathRef.key andValue:snapshot.value];
+             [self.DrawView addPathItemToMVC: pi];
+             
+             if (++self.numberOfPathsLoaded == self.numberOfPathsToBeLoaded)
+             {
+                 self.allPathsLoadedBOOL = YES;
+             }
+             NSLog(@"\n %i", self.numberOfPathsLoaded);
+         }
+         // 2 of 2. Read a path upon an update from another user:
+         else if(![self isSnapshotFromLocalDevice: snapshot] && [self.pathsCollection getItemFromKey: snapshot.key])
+         {
+             PathItem *ai = (PathItem *)[self.pathsCollection getItemFromKey: snapshot.key];
+//             [ai updatePathFromFirebase: snapshot.key andValue: snapshot.value];
          }
      } withCancelBlock:^(NSError *error)
      {
-         NSLog(@"loadArrowFromRef %@", error.description);
+         NSLog(@"loadPathFromRef %@", error.description);
      }];
 }
 

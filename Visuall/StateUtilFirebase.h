@@ -21,6 +21,7 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 - (void) loadNoteFromRef: (FIRDatabaseReference *) noteRef;
 - (void) loadGroupFromRef: (FIRDatabaseReference *) groupRef;
 - (void) loadArrowFromRef: (FIRDatabaseReference *) arrowRef;
+- (void) loadPathFromRef: (FIRDatabaseReference *) pathRef;
 - (void) allNotesDidLoad;
 - (void) allGroupsDidLoad;
 
@@ -44,10 +45,12 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 @property FIRDatabaseReference *usersTableCurrentUser;
 @property FIRDatabaseReference *visuallsTableRef;
 @property FIRDatabaseReference *visuallsTable_currentVisuallRef;
+@property FIRDatabaseReference *notesTableRef;
 @property FIRDatabaseReference *groupsTableRef;
 @property FIRDatabaseReference *arrowsTableRef;
+@property FIRDatabaseReference *pathsTableRef;
 @property FIRDatabaseReference *publicVisuallsTableRef;
-@property FIRDatabaseReference *notesTableRef;
+
 @property FIRStorageReference *storageImagesRef;
 
 @property __block int numberOfGroupsToBeLoaded;
@@ -61,6 +64,10 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 @property __block int numberOfArrowsToBeLoaded;
 @property __block int numberOfArrowsLoaded;
 @property BOOL allArrowsLoadedBOOL;
+
+@property __block int numberOfPathsToBeLoaded;
+@property __block int numberOfPathsLoaded;
+@property BOOL allPathsLoadedBOOL;
 
 @property NSInteger childrenCountNotes;
 

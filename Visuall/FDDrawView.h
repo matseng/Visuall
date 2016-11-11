@@ -36,4 +36,6 @@
 
 - (CAShapeLayer *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event;
 
+- (void) addPathItemToMVC: (PathItem *) pi;
+
 @end

@@ -19,4 +19,6 @@
 
 @property CGFloat lineWidth;
 
+- (instancetype) initPathFromFirebase: (NSString *) key andValue: (NSDictionary *) value;
+
 @end
