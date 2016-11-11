@@ -573,10 +573,15 @@ static NSMutableDictionary *__personalVisuallList;
     {
         return;
     }
-//    NSDictionary *pathDict = [pi.fdpath serialize];
-//    [newPathRef setValue: @{@"path": pathDict }];
-//    [newPathRef setValue: @{@"myPath": @"test" }];
+    NSDictionary *fdpathDict = [pi.fdpath serialize];
+    NSMutableDictionary *pathDictionary = [@{
+                                             @"data/points": fdpathDict[@"points"],
+                                             @"data/color": fdpathDict[@"color"]
+                                             } mutableCopy];
+    [pathDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
+    [pathDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
     [newPathRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
+    [newPathRef updateChildValues: pathDictionary];
 }
 
 
