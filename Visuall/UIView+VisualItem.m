@@ -32,15 +32,6 @@
     return [self isKindOfClass:[NoteItem2 class]] || [self.superview isKindOfClass:[NoteItem2 class]];
 }
 
-//- (NoteItem2 *) getNoteItem
-//{
-//    if ([self isNoteItem])
-//    {
-//        return (NoteItem2 *) self;
-//    }
-//    return nil;
-//}
-
 - (BOOL) isGroupItem
 {
     return [self isKindOfClass:[GroupItem class]]  || [ [self superview] isKindOfClass:[GroupItem class]];
@@ -67,6 +58,11 @@
 - (BOOL) isArrowItem
 {
     return [self isKindOfClass:[ArrowItem class]] || [[self superview] isKindOfClass:[ArrowItem class]];
+}
+
+- (BOOL) isPathItem
+{
+    return [self isKindOfClass:[FDDrawView class]];
 }
 
 - (GroupItem *) getGroupItem
@@ -103,6 +99,16 @@
     } else if ( [[self superview] isKindOfClass:[ArrowItem class]] )
     {
         return (ArrowItem *) [self superview];
+    }
+    return nil;
+}
+
+- (PathItem *) getPathItem
+{
+    if ( [self isPathItem] )
+    {
+        FDDrawView *dv = (FDDrawView *) self;
+        return dv.selectedPath;
     }
     return nil;
 }

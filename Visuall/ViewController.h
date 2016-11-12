@@ -76,8 +76,6 @@
 
 @property CGPoint drawGroupViewStart;  // Used in ViewController+Group.m
 
-
-
 @property SevenSwitch *editSwitch;  // Utilized in ViewController+Menus.m [...]
 @property SegmentedControlMod *segmentControlVisualItem;
 @property SegmentedControlMod *segmentControlFormattingOptions;
@@ -88,6 +86,7 @@
 @property SegmentedControlMod *segmentControlInsertMedia;
 @property NSMutableDictionary *buttonDictionary;
 @property UIButton *trashButton;
+
 - (void) updateSecondSubmenuState; // Utilized in ViewController+Menus.m
 
 - (BOOL) setSelectedObject:(UIView *) object;

@@ -11,6 +11,8 @@
 #import "GroupItem.h"
 #import "GroupItemImage.h"
 #import "ArrowItem.h"
+#import "FDDrawView.h"
+#import "PathItem.h"
 
 @interface UIView (VisualItem)
 
@@ -27,6 +29,10 @@
 - (BOOL) isArrowItem;
 
 - (ArrowItem *) getArrowItem;
+
+- (BOOL) isPathItem;
+
+- (PathItem *) getPathItem;
 
 - (BOOL) isInBoundsOfView: (UIView *) parentView;
 

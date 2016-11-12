@@ -24,6 +24,8 @@
 // the color that is used to draw lines
 @property (nonatomic, strong) UIColor *drawColor;
 
+@property (nonatomic, strong) PathItem *selectedPath;
+
 // the delegate that is notified about any drawing by the user
 @property (nonatomic, weak) id<FDDrawViewDelegate> delegate;
 
@@ -34,8 +36,12 @@
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer;
 
-- (CAShapeLayer *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event;
+- (PathItem *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event;
 
 - (void) addPathItemToMVC: (PathItem *) pi;
+
+- (void) highlightSelectedPath;
+
+- (void) removeHighlightFromPreviouslySelectedPath;
 
 @end

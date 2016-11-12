@@ -390,7 +390,7 @@ Problem:
     Hit testing. The CGPath APIs can only help you if you want to hit test the for interior of a path, not if your hit target is the path’s contour. Since CGPathCreateCopyByStrokingPath() can convert the countour into a new path’s interior, it can help with this problem, too.
  */
 
-- (CAShapeLayer *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event
+- (PathItem *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event
 {
     int counter = 0;
     NSMutableDictionary *items =  [[[[UserUtil sharedManager] getState] pathsCollection] items];
@@ -421,11 +421,8 @@ Problem:
             
             if ([tapTarget containsPoint:point])
             {
-                self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
-                self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
-                [self.shapeLayerBackground setFillColor: nil];
-                [self.shapeLayerBackground setPath: layer.path];
-                
+                self.selectedPath = layer;
+                [self highlightSelectedPath];
                 return layer;
             }
         } else if (layer.path && layer.isPoint)
@@ -438,14 +435,29 @@ Problem:
                 self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
                 [self.shapeLayerBackground setFillColor: nil];
                 [self.shapeLayerBackground setPath: layer.path];
+                self.selectedPath = layer;
+                return layer;
             }
             NSLog(@"\n dist: %f", dist);
         }
         counter++;
     }
     NSLog(@"\n layer counter: %i", counter);
+    self.selectedPath = nil;
     return nil;
 }
 
+- (void) highlightSelectedPath
+{
+    self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
+    self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
+    [self.shapeLayerBackground setFillColor: nil];
+    [self.shapeLayerBackground setPath: self.selectedPath.path];
+}
+
+- (void) removeHighlightFromPreviouslySelectedPath
+{
+    self.shapeLayerBackground.lineWidth = 0;
+}
 
 @end

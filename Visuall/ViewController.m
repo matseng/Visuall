@@ -1204,7 +1204,7 @@
             NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
             ni.noteTextView.editable = NO;
             ni.noteTextView.selectable = NO;
-            self.lastSelectedObject.layer.borderWidth = 0;
+            ni.layer.borderWidth = 0;
             self.visuallState.selectedVisualItem.layer.borderWidth = 0;
         } else if ([self.lastSelectedObject isGroupItem])
         {
@@ -1213,6 +1213,11 @@
         {
             object = [object getArrowItem];
             [[self.lastSelectedObject getArrowItem] setViewAsNotSelected];  // if the object is a handle, then it gets mutated here. Hence the line above to get the arrow item
+        }
+        else if ( [object isPathItem] )
+        {
+            FDDrawView *dv = (FDDrawView *) object;
+            [dv removeHighlightFromPreviouslySelectedPath];
         }
     }
     
@@ -1246,6 +1251,12 @@
         self.lastSelectedObject = ai;  // TODO (Aug 30, 2016): Stop using this property and instead use self.visuallState as below
         self.visuallState.selectedVisualItem = ai;
         [ai setViewAsSelected];
+    }
+    else if ( [object isPathItem] )
+    {
+        FDDrawView *dv = (FDDrawView *) object;
+        self.lastSelectedObject = dv;
+        self.visuallState.selectedVisualItem = dv;
     }
     else
     {
