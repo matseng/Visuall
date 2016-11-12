@@ -51,8 +51,10 @@
 
 - (void) addPathItemToMVCandFirebase: (PathItem *) pi
 {
+    self.selectedPath = pi;
     [[[UserUtil sharedManager] getState] setValuePath: pi];
     [self addPathItemToMVC: pi];
+    [self highlightSelectedPath];
 }
 
 - (void) addPathItemToMVC: (PathItem *) pi
@@ -422,7 +424,6 @@ Problem:
             if ([tapTarget containsPoint:point])
             {
                 self.selectedPath = layer;
-                [self highlightSelectedPath];
                 return layer;
             }
         } else if (layer.path && layer.isPoint)
@@ -431,10 +432,10 @@ Problem:
             double dist = hypot((point.x - fdpoint.x), (point.y - fdpoint.y));
             if (dist < self.lineWidth * 2)
             {
-                self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
-                self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
-                [self.shapeLayerBackground setFillColor: nil];
-                [self.shapeLayerBackground setPath: layer.path];
+//                self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
+//                self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
+//                [self.shapeLayerBackground setFillColor: nil];
+//                [self.shapeLayerBackground setPath: layer.path];
                 self.selectedPath = layer;
                 return layer;
             }

@@ -1214,9 +1214,9 @@
             object = [object getArrowItem];
             [[self.lastSelectedObject getArrowItem] setViewAsNotSelected];  // if the object is a handle, then it gets mutated here. Hence the line above to get the arrow item
         }
-        else if ( [object isPathItem] )
+        else if ( [self.lastSelectedObject isPathItem] )
         {
-            FDDrawView *dv = (FDDrawView *) object;
+            FDDrawView *dv = (FDDrawView *) self.lastSelectedObject;
             [dv removeHighlightFromPreviouslySelectedPath];
         }
     }
@@ -1255,6 +1255,7 @@
     else if ( [object isPathItem] )
     {
         FDDrawView *dv = (FDDrawView *) object;
+        [dv highlightSelectedPath];
         self.lastSelectedObject = dv;
         self.visuallState.selectedVisualItem = dv;
     }
