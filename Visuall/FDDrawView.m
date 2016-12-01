@@ -49,6 +49,12 @@
     return self;
 }
 
+- (void) addPathItemFromFirebase: (PathItem *) pi
+{
+    // TODO: add to collection, draw path OR point on shape layer, add shapelayer to this view
+}
+
+
 - (void) addPathItemToMVCandFirebase: (PathItem *) pi
 {
     self.selectedPath = pi;
@@ -125,6 +131,25 @@
     }
 
 }
+
+
+//TODO: drawPathItemOnShapeLayer... then add to MVC (model and v... controller is handled separately)
+- (void) drawPathItemOnShapeLayer: (PathItem *) pi
+{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetLineWidth(context, 0.5f);
+    if (pi.fdpath.points.count > 1)
+    {
+        [self drawPathOnShapeLayer: pi.fdpath withContext: context];
+    }
+    else
+    {
+        
+    }
+}
+
+
+
 
 - (void) drawPathOnShapeLayer:(FDPath *)path withContext:(CGContextRef)context
 {
@@ -214,6 +239,30 @@
     }
 }
 
+- (void) makePathItemFromPoint: (CGPoint) point
+{
+    PathItem *circleLayer = [PathItem layer];
+    circleLayer.fdpath = self.currentPath;
+    circleLayer.isPoint = YES;
+    
+    [self drawPointFromPathItemOnShapeLayer: circleLayer];
+    
+    [self addPathItemToMVCandFirebase: circleLayer];
+    
+    // notify the delegate
+    [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
+    
+    // reset drawing state
+    self.currentPath = nil;
+}
+
+- (void) drawPointFromPathItemOnShapeLayer: (PathItem *) pi
+{
+    FDPoint *point = pi.fdpath.points[0];
+    [pi setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(point.x - self.lineWidth / 2, point.y - self.lineWidth / 2, self.lineWidth, self.lineWidth)] CGPath]];
+    [pi setFillColor: [[UIColor blueColor] CGColor]];
+}
+
 - (void)touchesBegan:(NSSet *)touches
            withEvent:(UIEvent *)event
 {
@@ -239,29 +288,7 @@
         self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
         CGPoint touchPoint = [gestureRecognizer locationInView: self];
         [self.currentPath addPoint: touchPoint];
-
-        PathItem *circleLayer = [PathItem layer];
-        
-        [circleLayer setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(touchPoint.x - self.lineWidth / 2, touchPoint.y - self.lineWidth / 2, self.lineWidth, self.lineWidth)] CGPath]];
-/*
-        UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:circleLayer.path];
-        CGPathRef tapTargetPath = CGPathCreateCopyByStrokingPath(circleLayer.path, NULL, 35.0f,
-                                                                path.lineCapStyle,
-                                                                 path.lineJoinStyle,
-                                                                 path.miterLimit);
-        [circleLayer setPath: tapTargetPath];
-*/
-        [circleLayer setFillColor: [[UIColor blueColor] CGColor]];
-        
-        circleLayer.fdpath = self.currentPath;
-        circleLayer.isPoint = YES;
-        [self addPathItemToMVCandFirebase: circleLayer];
-        
-        // notify the delegate
-        [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
-        
-        // reset drawing state
-        self.currentPath = nil;
+        [self makePathItemFromPoint: touchPoint];
     }
 }
 

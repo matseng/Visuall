@@ -52,6 +52,11 @@
         [self setFillColor:[[UIColor clearColor] CGColor]];
         [self setPath: pathRef];
     }
+    else
+    {
+        NSLog(@"\n Draw a point on load");
+    }
 }
+
 
 @end
