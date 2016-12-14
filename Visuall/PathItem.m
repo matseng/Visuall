@@ -19,7 +19,7 @@
 //        [self addArrowSublayer];
 //        [self addHandles];
         self.fdpath = [FDPath parse: value[@"data"][@"path"]];
-        [self drawPathOnShapeLayer];
+//        [self drawPathOnShapeLayer];
     }
     return self;
 }

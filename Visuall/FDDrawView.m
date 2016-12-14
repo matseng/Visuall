@@ -58,7 +58,7 @@
 - (void) addPathItemToMVCandFirebase: (PathItem *) pi
 {
     self.selectedPath = pi;
-    [[[UserUtil sharedManager] getState] setValuePath: pi];
+    [[[UserUtil sharedManager] getState] setValuePath: pi];  // save to firebase
     [self addPathItemToMVC: pi];
     [self highlightSelectedPath];
 }
@@ -66,6 +66,7 @@
 - (void) addPathItemToMVC: (PathItem *) pi
 {
     [[[[UserUtil sharedManager] getState] pathsCollection] addItem: pi withKey: pi.key];
+    [self drawPathItemOnShapeLayer: pi];
     [self.layer addSublayer: pi];
 }
 
@@ -136,11 +137,16 @@
 //TODO: drawPathItemOnShapeLayer... then add to MVC (model and v... controller is handled separately)
 - (void) drawPathItemOnShapeLayer: (PathItem *) pi
 {
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 0.5f);
     if (pi.fdpath.points.count > 1)
     {
         [self drawPathOnShapeLayer: pi.fdpath withContext: context];
+//        [self drawPathOnShapeLayer: layer withPath: self.currentPath withContext:context];
+        [self drawPathOnShapeLayer: pi withPath: pi.fdpath withContext: context];
+//        layer.fdpath = self.currentPath;
+
     }
     else
     {
@@ -344,18 +350,11 @@
 }
 
 - (void) panEndedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
-{
-    // the touch finished draw add the line to the current state
-//    [self.paths addObject:self.currentPath];
-    
+{    
     // draw completed path on its own shape layer
-//    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
     PathItem *layer = [[PathItem alloc] init];
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 0.5f);
-    [self drawPathOnShapeLayer: layer withPath: self.currentPath withContext:context];
     layer.fdpath = self.currentPath;
+ 
     [self addPathItemToMVCandFirebase: layer];
     
     // notify the delegate
