@@ -19,7 +19,10 @@
 //        [self addArrowSublayer];
 //        [self addHandles];
         self.fdpath = [FDPath parse: value[@"data"][@"path"]];
-//        [self drawPathOnShapeLayer];
+        if ( self.fdpath.points.count == 1 )
+        {
+            self.isPoint = YES;
+        }        
     }
     return self;
 }

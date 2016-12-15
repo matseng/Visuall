@@ -133,29 +133,18 @@
 
 }
 
-
-//TODO: drawPathItemOnShapeLayer... then add to MVC (model and v... controller is handled separately)
 - (void) drawPathItemOnShapeLayer: (PathItem *) pi
 {
-    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 0.5f);
-    if (pi.fdpath.points.count > 1)
+    if (pi.isPoint)
     {
-        [self drawPathOnShapeLayer: pi.fdpath withContext: context];
-//        [self drawPathOnShapeLayer: layer withPath: self.currentPath withContext:context];
+        [self drawPointFromPathItemOnShapeLayer: pi];
+    } else
+    {
         [self drawPathOnShapeLayer: pi withPath: pi.fdpath withContext: context];
-//        layer.fdpath = self.currentPath;
-
-    }
-    else
-    {
-        
     }
 }
-
-
-
 
 - (void) drawPathOnShapeLayer:(FDPath *)path withContext:(CGContextRef)context
 {
@@ -250,8 +239,6 @@
     PathItem *circleLayer = [PathItem layer];
     circleLayer.fdpath = self.currentPath;
     circleLayer.isPoint = YES;
-    
-    [self drawPointFromPathItemOnShapeLayer: circleLayer];
     
     [self addPathItemToMVCandFirebase: circleLayer];
     
@@ -350,7 +337,7 @@
 }
 
 - (void) panEndedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
-{    
+{
     // draw completed path on its own shape layer
     PathItem *layer = [[PathItem alloc] init];
     layer.fdpath = self.currentPath;
