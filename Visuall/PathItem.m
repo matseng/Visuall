@@ -18,6 +18,7 @@
 //        [self setDataFromFirebase: key andValue: value];
 //        [self addArrowSublayer];
 //        [self addHandles];
+        self.key = key;
         self.fdpath = [FDPath parse: value[@"data"][@"path"]];
         if ( self.fdpath.points.count == 1 )
         {

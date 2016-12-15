@@ -44,4 +44,6 @@
 
 - (void) removeHighlightFromPreviouslySelectedPath;
 
+- (void) deleteSelectedPath;
+
 @end

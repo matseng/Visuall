@@ -30,7 +30,9 @@
 
 - (ArrowItem *) getArrowItem;
 
-- (BOOL) isPathItem;
+- (BOOL) isDrawView;
+
+- (FDDrawView *) getDrawView;
 
 - (PathItem *) getPathItem;
 

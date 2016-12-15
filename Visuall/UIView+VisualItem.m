@@ -60,7 +60,7 @@
     return [self isKindOfClass:[ArrowItem class]] || [[self superview] isKindOfClass:[ArrowItem class]];
 }
 
-- (BOOL) isPathItem
+- (BOOL) isDrawView
 {
     return [self isKindOfClass:[FDDrawView class]];
 }
@@ -103,9 +103,19 @@
     return nil;
 }
 
+- (FDDrawView *) getDrawView
+{
+    if ( [self isDrawView] )
+    {
+        FDDrawView *dv = (FDDrawView *) self;
+        return dv;
+    }
+    return nil;
+}
+
 - (PathItem *) getPathItem
 {
-    if ( [self isPathItem] )
+    if ( [self isDrawView] )
     {
         FDDrawView *dv = (FDDrawView *) self;
         return dv.selectedPath;

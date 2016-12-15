@@ -49,12 +49,6 @@
     return self;
 }
 
-- (void) addPathItemFromFirebase: (PathItem *) pi
-{
-    // TODO: add to collection, draw path OR point on shape layer, add shapelayer to this view
-}
-
-
 - (void) addPathItemToMVCandFirebase: (PathItem *) pi
 {
     self.selectedPath = pi;
@@ -68,6 +62,16 @@
     [[[[UserUtil sharedManager] getState] pathsCollection] addItem: pi withKey: pi.key];
     [self drawPathItemOnShapeLayer: pi];
     [self.layer addSublayer: pi];
+}
+
+- (void) deleteSelectedPath
+{
+    // TODO (Dec 14, 2016): Remove from collection, view, firebase and self
+    PathItem *pi = self.selectedPath;
+    [[[[UserUtil sharedManager] getState] pathsCollection] deleteItemGivenKey: pi.key];
+    [pi removeFromSuperlayer];
+    [self removeHighlightFromPreviouslySelectedPath];
+    self.selectedPath = nil;
 }
 
 - (void)drawRect:(CGRect)rect
@@ -113,7 +117,6 @@
     {
         CGMutablePathRef newPath = CGPathCreateMutable();
         FDPoint *point = path.points[0];
-        
         
         for (NSUInteger i = 0; i < path.points.count - 1; i++)
         {

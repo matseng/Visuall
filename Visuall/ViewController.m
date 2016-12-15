@@ -725,6 +725,14 @@
             [self.visuallState.arrowsCollection deleteItemGivenKey: ai.key];
         }
         
+        else if ( [self.visuallState.selectedVisualItem isDrawView] )
+        {
+            NSLog(@"\n TODO: delete PathItem");
+            FDDrawView *dv = [self.visuallState.selectedVisualItem getDrawView];
+            [dv deleteSelectedPath];
+            return;
+        }
+        
         [self.lastSelectedObject removeFromSuperview];
         [self.visuallState removeValue: self.lastSelectedObject];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
         //        [self.lastSelectedObject delete:nil];  // TODO: untested
@@ -1214,7 +1222,7 @@
             object = [object getArrowItem];
             [[self.lastSelectedObject getArrowItem] setViewAsNotSelected];  // if the object is a handle, then it gets mutated here. Hence the line above to get the arrow item
         }
-        else if ( [self.lastSelectedObject isPathItem] )
+        else if ( [self.lastSelectedObject isDrawView] )
         {
             FDDrawView *dv = (FDDrawView *) self.lastSelectedObject;
             [dv removeHighlightFromPreviouslySelectedPath];
@@ -1252,7 +1260,7 @@
         self.visuallState.selectedVisualItem = ai;
         [ai setViewAsSelected];
     }
-    else if ( [object isPathItem] )
+    else if ( [object isDrawView] )
     {
         FDDrawView *dv = (FDDrawView *) object;
         [dv highlightSelectedPath];
