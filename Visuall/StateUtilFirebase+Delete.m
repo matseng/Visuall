@@ -118,10 +118,30 @@
                 NSLog(@"Group key removed successfully.");
             }
         }];
+    }
+    else if( [view isDrawView] )
+    {
+        // Step 1 of 2: Delete path from paths table
+        PathItem *pi = [view getPathItem];
+        FIRDatabaseReference *deleteItemRef = [self.pathsTableRef child: pi.key];
+        [deleteItemRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+            if (error) {
+                NSLog(@"Path could not be removed.");
+            } else {
+                NSLog(@"Path removed successfully.");
+//                [ai removeFromSuperview]; // TODO (Dec 14, 2016):
+            }
+        }];
         
-        // Step 3 of 3: Decrement groups counter in visuall table
-//        FIRDatabaseReference *itemsCounterRef = [self.visuallsTable_currentVisuallRef child: @"arrows_counter"];
-//        [self increaseOrDecreaseCounter: itemsCounterRef byAmount:-1];
+        // Step 2 of 2: Delete path key from current visuall table
+        FIRDatabaseReference *deleteItemKeyFromVisuallRef = [[self.visuallsTable_currentVisuallRef child: @"paths"] child: pi.key];
+        [deleteItemKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+            if (error) {
+                NSLog(@"Path key could not be removed.");
+            } else {
+                NSLog(@"Path key removed successfully.");
+            }
+        }];
     }
     
 }

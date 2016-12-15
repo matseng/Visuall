@@ -729,8 +729,9 @@
         {
             NSLog(@"\n TODO: delete PathItem");
             FDDrawView *dv = [self.visuallState.selectedVisualItem getDrawView];
+            [self.visuallState removeValue: dv];
             [dv deleteSelectedPath];
-            return;
+            return;  // return here because we don't want to delete DrawView, rather we delete the selected path as above
         }
         
         [self.lastSelectedObject removeFromSuperview];
