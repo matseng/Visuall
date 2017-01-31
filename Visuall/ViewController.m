@@ -378,12 +378,25 @@
     self.BoundsTiledLayerView.frame = boundsTiledLayerRect;
 }
 
+- (CGRect) expandRectWidthAndHeight: (CGRect) rect byScalar: (CGFloat) s
+{
+    CGRect screenRect = self.BackgroundScrollView.frame;
+    CGRect newRect = CGRectMake(rect.origin.x - (s - 1) / 2 * rect.size.width,
+                                  rect.origin.y - (s - 1) / 2 * rect.size.width,
+                                  rect.size.width * s,
+                                  rect.size.height * s);
+    return newRect;
+}
 
 - (void) expandBoundsTiledLayerView
 {
     CGRect convertedVisualItemsRectInScrollView = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
     CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
-    CGRect newBoundsTiledLayerRect = CGRectUnion(self.BackgroundScrollView.frame, convertedBoundsRectInScrollView);
+    
+    CGRect expandedBackgroundScrollViewRect = [self expandRectWidthAndHeight: self.BackgroundScrollView.frame byScalar: 2.25];
+    
+//    CGRect newBoundsTiledLayerRect = CGRectUnion(self.BackgroundScrollView.frame, convertedBoundsRectInScrollView);
+    CGRect newBoundsTiledLayerRect = CGRectUnion(expandedBackgroundScrollViewRect, convertedBoundsRectInScrollView);
     
 //    newBoundsTiledLayerRect = [self addExtraScrollPaddingToBoundsRect: (CGRect) newBoundsTiledLayerRect fromContentBounds: convertedBoundsRectInScrollView];
     
@@ -492,6 +505,11 @@
     y = ( fabs(y0) > fabs(y1) ) ? y0 : y1;
     
     return CGPointMake(x, y);  // (x, y) are RELATIVE to the given point
+}
+
+- (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
+{
+    
 }
 
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
