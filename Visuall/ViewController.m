@@ -378,13 +378,18 @@
     self.BoundsTiledLayerView.frame = boundsTiledLayerRect;
 }
 
-- (CGRect) expandRectWidthAndHeight: (CGRect) rect byScalar: (CGFloat) s
+/*
+ * Name:
+ * Description: Adds extra padding to the bounds rect to allow better scrolling and less buggy zooming out. 
+ * If s = 2, that takes the bounds rect and adds two screen sizes to the width and height.
+ */
+- (CGRect) addExtraScrollPaddingToBoundsRect: (CGRect) rect byMultiple: (CGFloat) s
 {
-    CGRect screenRect = self.BackgroundScrollView.frame;
-    CGRect newRect = CGRectMake(rect.origin.x - (s - 1) / 2 * rect.size.width,
-                                  rect.origin.y - (s - 1) / 2 * rect.size.width,
-                                  rect.size.width * s,
-                                  rect.size.height * s);
+    CGSize screenSize = self.BackgroundScrollView.frame.size;
+    CGRect newRect = CGRectMake(rect.origin.x - screenSize.width / 2 * s,
+                                rect.origin.y - screenSize.height / 2 * s,
+                                rect.size.width + screenSize.width * s,
+                                rect.size.height + screenSize.height * s);
     return newRect;
 }
 
@@ -393,12 +398,7 @@
     CGRect convertedVisualItemsRectInScrollView = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
     CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
     
-    CGRect expandedBackgroundScrollViewRect = [self expandRectWidthAndHeight: self.BackgroundScrollView.frame byScalar: 2.25];
-    
-//    CGRect newBoundsTiledLayerRect = CGRectUnion(self.BackgroundScrollView.frame, convertedBoundsRectInScrollView);
-    CGRect newBoundsTiledLayerRect = CGRectUnion(expandedBackgroundScrollViewRect, convertedBoundsRectInScrollView);
-    
-//    newBoundsTiledLayerRect = [self addExtraScrollPaddingToBoundsRect: (CGRect) newBoundsTiledLayerRect fromContentBounds: convertedBoundsRectInScrollView];
+    CGRect newBoundsTiledLayerRect = [self addExtraScrollPaddingToBoundsRect: convertedBoundsRectInScrollView byMultiple: 1.75];
     
     self.BoundsTiledLayerView.frame = newBoundsTiledLayerRect;
     self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
@@ -420,29 +420,6 @@
     self.BackgroundScrollView.contentInset = newContentInset;
     self.BackgroundScrollView.contentSize = newContentSize;
 }
-
-- (CGRect) addExtraScrollPaddingToBoundsRect: (CGRect) newBoundsTiledLayerRect fromContentBounds: (CGRect) convertedBoundsRectInScrollView
-{
-    CGRect newBoundsTiledLayerRect0 = newBoundsTiledLayerRect;
-    CGPoint scrollViewCenter = CGPointMake(self.BackgroundScrollView.frame.origin.x + 0.5 * self.BackgroundScrollView.frame.size.width, self.BackgroundScrollView.frame.origin.y + 0.5 * self.BackgroundScrollView.frame.size.height);
-    CGPoint farCornerPointRelativeToSrollViewCenter = [self findFarCornerPointOf: convertedBoundsRectInScrollView relativeToPoint: scrollViewCenter];
-    if (farCornerPointRelativeToSrollViewCenter.x < 0)
-    {
-        newBoundsTiledLayerRect.origin.x = newBoundsTiledLayerRect.origin.x + farCornerPointRelativeToSrollViewCenter.x;
-        newBoundsTiledLayerRect.size.width = newBoundsTiledLayerRect.size.width - farCornerPointRelativeToSrollViewCenter.x;
-    } else {
-        newBoundsTiledLayerRect.size.width = newBoundsTiledLayerRect.size.width + farCornerPointRelativeToSrollViewCenter.x;
-    }
-    if (farCornerPointRelativeToSrollViewCenter.y < 0)
-    {
-        newBoundsTiledLayerRect.origin.y = newBoundsTiledLayerRect.origin.y + farCornerPointRelativeToSrollViewCenter.y;
-        newBoundsTiledLayerRect.size.height = newBoundsTiledLayerRect.size.height - farCornerPointRelativeToSrollViewCenter.y;
-    } else {
-        newBoundsTiledLayerRect.size.height = newBoundsTiledLayerRect.size.height + farCornerPointRelativeToSrollViewCenter.y;
-    }
-    return newBoundsTiledLayerRect;
-}
-
 
 - (void) centerScrollViewContents2
 {
