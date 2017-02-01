@@ -43,7 +43,7 @@
     [[[[UserUtil sharedManager] getState] arrowsCollection] addItem: ai withKey: ai.key];
     [self setSelectedObject: ai];
     [[[UserUtil sharedManager] getState] setSelectedVisualItem: ai];
-    [self setActivelySelectedObjectDuringPan: nil];
+    [self.visuallState setSelectedVisualItemDuringPan: nil];
 }
 
 @end

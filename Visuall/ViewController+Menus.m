@@ -642,15 +642,15 @@ UIColor *darkGrayBorderColor;
     // TODO (Aug 19, 2016): update note font size of currently selected note (double-check that it's viewable on screen) and save to firebase
     
     NSLog(@"decreaseFontSizeButton title: %@", [button currentTitle]);
-    NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
-    if ( (ni) && [self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
+    NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
+    if ( (ni) && [self.visuallState.selectedVisualItem isInBoundsOfView: self.BackgroundScrollView])
     {
         [ni decreaseFontSize];
         [self.visuallState updateChildValue:ni Property: @"fontSize"];
     }
-    else if ( [self.lastSelectedObject isArrowItem])
+    else if ( [self.visuallState.selectedVisualItem isArrowItem])
     {
-        ArrowItem *ai = [self.lastSelectedObject getArrowItem];
+        ArrowItem *ai = [self.visuallState.selectedVisualItem getArrowItem];
         [ai decreaseSize];
         [self.visuallState updateChildValue: ai Property: nil];
     }
@@ -659,15 +659,15 @@ UIColor *darkGrayBorderColor;
 - (void) increaseFontSizeHandler: (UIButton *) button
 {
     NSLog(@"increaseFontSizeButton: %@", [button currentTitle]);
-    NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
-    if ( (ni) && [self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
+    NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
+    if ( (ni) && [self.visuallState.selectedVisualItem isInBoundsOfView: self.BackgroundScrollView])
     {
         [ni increaseFontSize];
         [self.visuallState updateChildValue:ni Property: @"fontSize"];
     }
-    else if ( [self.lastSelectedObject isArrowItem])
+    else if ( [self.visuallState.selectedVisualItem isArrowItem])
     {
-        ArrowItem *ai = [self.lastSelectedObject getArrowItem];
+        ArrowItem *ai = [self.visuallState.selectedVisualItem getArrowItem];
         [ai increaseSize];
         [self.visuallState updateChildValue: ai Property: nil];
     }
@@ -746,7 +746,7 @@ UIColor *darkGrayBorderColor;
         [self.visuallState setEditModeOn: YES];
 //        UIView *temp = [self lastSelectedObject];
 //        [self setSelectedObject: nil];
-        [self setSelectedObject: self.lastSelectedObject];
+        [self setSelectedObject: self.visuallState.selectedVisualItem];
         [self.scrollViewButtonList setHidden: NO];
         
         CGRect rect = self.submenu.frame;
@@ -798,7 +798,7 @@ UIColor *darkGrayBorderColor;
     {
         NSLog(@"Switch is OFF");
         [self.visuallState setEditModeOn: NO];
-        [self setSelectedObject: self.lastSelectedObject];
+        [self setSelectedObject: self.visuallState.selectedVisualItem];
         CGRect rect = self.submenu.frame;
         rect.origin.y = -rect.size.height;
         

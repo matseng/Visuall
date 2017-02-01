@@ -45,6 +45,7 @@
 @property FDDrawView *DrawView;
 @property UIView *selectedVisualItem;
 @property UIView *selectedVisualItemSubview;  // e.g. a group handle for resizing
+@property UIView *selectedVisualItemDuringPan;  // see ViewController.m --> handleTouchDown method
 @property BOOL editModeOn;
 @property CGPoint touchDownPoint;
 

@@ -180,9 +180,11 @@
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer
 {
     {
-        GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
+        GroupItem *gi = [self.visuallState.selectedVisualItemDuringPan getGroupItem];
         
-        if ( ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem])  && [gi isHandle: self.activelySelectedObjectDuringPan] )
+        // Resize group by dragging its handle
+        if ( ([self.visuallState.selectedVisualItem getGroupItem] == [self.visuallState.selectedVisualItemDuringPan getGroupItem])
+            && [gi isHandle: self.visuallState.selectedVisualItemDuringPan] )
         {
             if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
             {
@@ -192,7 +194,7 @@
             }
             else
             {
-                [self setActivelySelectedObjectDuringPan: nil];
+                [self.visuallState setSelectedVisualItemDuringPan: nil];
             }
             return;
         }
@@ -230,7 +232,7 @@
     if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
     [self.visuallState.groupsCollection addGroup:currentGroupItem withKey:currentGroupItem.group.key];
     [self refreshGroupsView];
-    [self setActivelySelectedObjectDuringPan: nil];
+    [self.visuallState setSelectedVisualItemDuringPan: nil];
     [self setSelectedObject: currentGroupItem];
 }
 

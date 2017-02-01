@@ -48,9 +48,10 @@
     {
         UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
         NSLog(@"panHandler viewHit %@", [viewHit class]);
-        if ( ([self isPointerButtonSelected] || [self isNoteButtonSelected]) && [self.activelySelectedObjectDuringPan isNoteItem])  // Pan a note
+        if ( ([self isPointerButtonSelected] || [self isNoteButtonSelected])
+            && [self.visuallState.selectedVisualItemDuringPan isNoteItem])  // Pan a note
         {
-            NoteItem2 *ni = [self.activelySelectedObjectDuringPan getNoteItem];
+            NoteItem2 *ni = [self.visuallState.selectedVisualItemDuringPan getNoteItem];
             [self setSelectedObject:ni];
             [ni handlePan:gestureRecognizer];
 //            [self.visuallState updateChildValues: ni Property1:@"x" Property2:@"y"];  // save note coordinates
@@ -67,11 +68,11 @@
             return;
         }
         else if ([self isPointerButtonSelected]
-                 && [self.activelySelectedObjectDuringPan isGroupItem]
-                 && ([self.visuallState.selectedVisualItem getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem]) )  // Pan or resize a group
+                 && [self.visuallState.selectedVisualItemDuringPan isGroupItem]
+                 && ([self.visuallState.selectedVisualItem getGroupItem] == [self.visuallState.selectedVisualItemDuringPan getGroupItem]) )  // Pan or resize a group
         {
-            GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
-            if ( [gi isHandle: self.activelySelectedObjectDuringPan] )
+            GroupItem *gi = [self.visuallState.selectedVisualItemDuringPan getGroupItem];
+            if ( [gi isHandle: self.visuallState.selectedVisualItemDuringPan] )
             {
                 [gi resizeGroup: gestureRecognizer];
                 [self.visuallState updateChildValue:gi Property:@"frame"];
@@ -83,11 +84,11 @@
             return;
         }
         else if ( ([self isPointerButtonSelected] || [self isArrowButtonSelected])
-                 && ([self.activelySelectedObjectDuringPan getArrowItem])
-                 && ([self.lastSelectedObject getArrowItem] == [self.activelySelectedObjectDuringPan getArrowItem]))
+                 && ([self.visuallState.selectedVisualItemDuringPan getArrowItem])
+                 && ([self.visuallState.selectedVisualItem getArrowItem] == [self.visuallState.selectedVisualItemDuringPan getArrowItem]))
         {
-            ArrowItem *ai = [self.activelySelectedObjectDuringPan getArrowItem];
-            if ( ![ai isHandle: self.activelySelectedObjectDuringPan] )
+            ArrowItem *ai = [self.visuallState.selectedVisualItemDuringPan getArrowItem];
+            if ( ![ai isHandle: self.visuallState.selectedVisualItemDuringPan] )
             {
                 [self setSelectedObject: ai];
             }
@@ -99,7 +100,7 @@
         {
             if ( [self.visuallState.DrawView selectedPath] == [self.visuallState.DrawView hitTestPath] )
             {
-                PathItem *pi = [self.activelySelectedObjectDuringPan getPathItem];
+                PathItem *pi = [self.visuallState.selectedVisualItemDuringPan getPathItem];
                 NSLog(@"\n Should drag path here"); // TODO (Jan 31, 2017):
                 return;
             }
@@ -117,7 +118,7 @@
         return;  // --> YES pan the background
 
         // TODO:
-        if ( self.activelySelectedObjectDuringPan && [viewHit isEqual: self.scrollViewButtonList] )
+        if ( self.visuallState.selectedVisualItemDuringPan && [viewHit isEqual: self.scrollViewButtonList] )
         {
             float width = self.scrollViewButtonList.frame.size.width;
             float widthContent = self.scrollViewButtonList.contentSize.width;
@@ -148,27 +149,27 @@
     {
         if ( [self trashButtonHitTest: gestureRecognizer] )
         {
-            if ([self.activelySelectedObjectDuringPan isKindOfClass:[NoteItem2 class]]) {
-                NoteItem2 *ni = (NoteItem2 *)self.lastSelectedObject;
+            if ([self.visuallState.selectedVisualItemDuringPan isKindOfClass:[NoteItem2 class]]) {
+                NoteItem2 *ni = (NoteItem2 *)self.visuallState.selectedVisualItem;
 //                [self removeValue:ni];
                 [self.visuallState.notesCollection deleteNoteGivenKey: ni.note.key];
-            } else if ([self.activelySelectedObjectDuringPan isKindOfClass:[GroupItem class]]) {
-                GroupItem *gi = (GroupItem *)self.lastSelectedObject;
+            } else if ([self.visuallState.selectedVisualItemDuringPan isKindOfClass:[GroupItem class]]) {
+                GroupItem *gi = (GroupItem *)self.visuallState.selectedVisualItem;
 //                [self removeValue:gi];
                 [self.visuallState.groupsCollection deleteGroupGivenKey: gi.group.key];
             }
-            [self.lastSelectedObject removeFromSuperview];
-            self.lastSelectedObject = nil;
+            [self.visuallState.selectedVisualItem removeFromSuperview];
+            self.visuallState.selectedVisualItem = nil;
             [self normalizeTrashButton];
         }
-        else if ( [self.activelySelectedObjectDuringPan isNoteItem] )
+        else if ( [self.visuallState.selectedVisualItemDuringPan isNoteItem] )
         {
-            [self updateTotalBounds: self.activelySelectedObjectDuringPan];
+            [self updateTotalBounds: self.visuallState.selectedVisualItemDuringPan];
         }
-        else if ( [self.activelySelectedObjectDuringPan isGroupItem] )
+        else if ( [self.visuallState.selectedVisualItemDuringPan isGroupItem] )
         {
-            GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
-            if ( [gi isHandle: self.activelySelectedObjectDuringPan] )
+            GroupItem *gi = [self.visuallState.selectedVisualItemDuringPan getGroupItem];
+            if ( [gi isHandle: self.visuallState.selectedVisualItemDuringPan] )
             {
                 [self refreshGroupsView];  // TODO (Aug 10, 2016): Get this working again
                 [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];  // To re-render the handles  // TODO (Aug 10, 2016): animate this step for a smoother transition
@@ -176,7 +177,7 @@
             [self updateTotalBounds: gi];
         }
         
-        [self setActivelySelectedObjectDuringPan: nil];
+        [self.visuallState setSelectedVisualItemDuringPan: nil];
 
     }
     return;
@@ -184,7 +185,7 @@
 
 - (void) panHandlerForScrollViewButtonList: (UIPanGestureRecognizer *) gestureRecognizer
 {
-    if (self.activelySelectedObjectDuringPan)
+    if (self.visuallState.selectedVisualItemDuringPan)
     {
         float width = self.scrollViewButtonList.frame.size.width;
         float widthContent = self.scrollViewButtonList.contentSize.width;

@@ -792,7 +792,7 @@
     }
 }
 
--(void) handleTouchDown:(TouchDownGestureRecognizer *) gestureRecognizer {
+- (void) handleTouchDown:(TouchDownGestureRecognizer *) gestureRecognizer {
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
     self.visuallState.touchDownPoint = [gestureRecognizer locationInView: self.visuallState.VisualItemsView];
     NSLog(@"\n handleTouchDown viewHit %@", [viewHit class]);
@@ -804,38 +804,38 @@
     else if ( [viewHit isNoteItem] )
     {
         NoteItem2 *nv = [viewHit getNoteItem];
-        [self setActivelySelectedObjectDuringPan: nv];
-        //            [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
+//        [self setActivelySelectedObjectDuringPan: nv];
+        [self.visuallState setSelectedVisualItemDuringPan: nv];
+        // [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
     }
-//    else if ( [self isEditModeOn] && [self isPointerButtonSelected] && [viewHit isGroupItem])
     else if ( [self isEditModeOn] && [viewHit isGroupItem])
     {
         UIView *handleSelected = [[viewHit getGroupItem] hitTestOnHandles:gestureRecognizer];
         if ( handleSelected )
         {
-            [self setActivelySelectedObjectDuringPan: handleSelected];
+            [self.visuallState setSelectedVisualItemDuringPan: handleSelected];
             [[viewHit getGroupItem] setHandleSelected: handleSelected];
         } else if ([viewHit isInBoundsOfView:self.BackgroundScrollView])
         {
             GroupItem  *gi = [viewHit getGroupItem];
-            [self setActivelySelectedObjectDuringPan: gi];
+            [self.visuallState setSelectedVisualItemDuringPan: gi];
             //                [self setSelectedObject:gi];
             //                [self setItemsInGroup:gi];
         }
     }
     else if ( [viewHit isArrowItem] )
     {
-        [self setActivelySelectedObjectDuringPan: viewHit];
+        [self.visuallState setSelectedVisualItemDuringPan: viewHit];
         [self.visuallState setSelectedVisualItemSubview: viewHit];
     }
     else if ( [viewHit isDrawView] )
     {
-        [self setActivelySelectedObjectDuringPan: viewHit];
+        [self.visuallState setSelectedVisualItemDuringPan: viewHit];
         [self.visuallState setSelectedVisualItemSubview: nil];
     }
     else
     {
-        [self setActivelySelectedObjectDuringPan: nil];
+        [self.visuallState setSelectedVisualItemDuringPan: nil];
     }
     
 }

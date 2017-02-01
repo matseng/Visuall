@@ -22,7 +22,6 @@
 
 @protocol GroupsController  // implemented in ViewController+Group.h
 
-
 - (void) addGroupItemToMVC: (GroupItem *) currentGroupItem;
 
 @end
@@ -72,9 +71,9 @@
 
 @property (strong, nonatomic) UIScrollView *scrollViewButtonList;
 
-@property UIView *lastSelectedObject;
+//@property UIView *lastSelectedObject;
 
-@property UIView *activelySelectedObjectDuringPan;
+//@property UIView *activelySelectedObjectDuringPan;
 
 @property CGPoint drawGroupViewStart;  // Used in ViewController+Group.m
 
