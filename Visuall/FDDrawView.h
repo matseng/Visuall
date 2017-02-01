@@ -46,4 +46,6 @@
 
 - (void) deleteSelectedPath;
 
+- (void) deletePath: (PathItem *) pi;
+
 @end

@@ -68,10 +68,19 @@
 {
     // TODO (Dec 14, 2016): Remove from collection, view, firebase and self
     PathItem *pi = self.selectedPath;
-    [[[[UserUtil sharedManager] getState] pathsCollection] deleteItemGivenKey: pi.key];
-    [pi removeFromSuperlayer];
+    [self deletePath: pi];
     [self removeHighlightFromPreviouslySelectedPath];
     self.selectedPath = nil;
+}
+
+- (void) deletePath: (PathItem *) pi
+{
+    if ( [pi isEqual: self.selectedPath] )
+    {
+        [self removeHighlightFromPreviouslySelectedPath];
+    }
+    [[[[UserUtil sharedManager] getState] pathsCollection] deleteItemGivenKey: pi.key];
+    [pi removeFromSuperlayer];
 }
 
 - (void)drawRect:(CGRect)rect

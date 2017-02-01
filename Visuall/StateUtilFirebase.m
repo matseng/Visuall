@@ -390,6 +390,16 @@ static NSMutableDictionary *__personalVisuallList;
      {
          NSLog(@"loadListOfPathsFromRef: %@", error.description);
      }];
+    
+    [listOfPathKeysRef observeEventType: FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        PathItem *pi = (PathItem *) [self.pathsCollection getItemFromKey: snapshot.key];
+        if (pi)
+        {
+            [[[[UserUtil sharedManager] getState] DrawView] deletePath: pi];
+        }
+    } withCancelBlock:^(NSError * _Nonnull error) {
+        NSLog(@"loadListOfPathsFromRef: %@", error.description);
+    }];
 }
 
 - (void) __loadListOfArrowsFromRef: (FIRDatabaseReference *) listOfArrowKeysRef
