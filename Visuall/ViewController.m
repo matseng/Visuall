@@ -826,9 +826,13 @@
     }
     else if ( [viewHit isArrowItem] )
     {
-//        [self setActivelySelectedObjectDuringPan: [viewHit getArrowItem]];
         [self setActivelySelectedObjectDuringPan: viewHit];
         [self.visuallState setSelectedVisualItemSubview: viewHit];
+    }
+    else if ( [viewHit isDrawView] )
+    {
+        [self setActivelySelectedObjectDuringPan: viewHit];
+        [self.visuallState setSelectedVisualItemSubview: nil];
     }
     else
     {
@@ -876,6 +880,10 @@
     if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isArrowItem])
     {
         return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
+    }
+    if ([self isEditModeOn] && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]] && [self.BoundsTiledLayerView.hitTestView isDrawView])
+    {
+        return YES;
     }
     if ([gestureRecognizer isKindOfClass: [UITapGestureRecognizer class]])
     {
@@ -1260,7 +1268,7 @@
     {
         FDDrawView *dv = (FDDrawView *) object;
         [dv highlightSelectedPath];
-        self.lastSelectedObject = dv;
+//        self.lastSelectedObject = dv;
         self.visuallState.selectedVisualItem = dv;
     }
     else

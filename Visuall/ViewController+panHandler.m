@@ -80,7 +80,9 @@
             }
             return;
         }
-        else if ( ([self isPointerButtonSelected] || [self isArrowButtonSelected]) && ([self.lastSelectedObject getArrowItem] == [self.activelySelectedObjectDuringPan getArrowItem]))
+        else if ( ([self isPointerButtonSelected] || [self isArrowButtonSelected])
+                 && ([self.activelySelectedObjectDuringPan getArrowItem])
+                 && ([self.lastSelectedObject getArrowItem] == [self.activelySelectedObjectDuringPan getArrowItem]))
         {
             ArrowItem *ai = [self.activelySelectedObjectDuringPan getArrowItem];
             if ( ![ai isHandle: self.activelySelectedObjectDuringPan] )
@@ -89,6 +91,15 @@
             }
             [ai handlePan: gestureRecognizer];
             [self.visuallState updateChildValue: ai Property: nil];
+            return;
+        }
+        else if ( [self isPointerButtonSelected]
+                 && [self.lastSelectedObject isDrawView]
+                 && ([self.lastSelectedObject getPathItem] == [self.activelySelectedObjectDuringPan getPathItem])
+                 )
+        {
+            PathItem *pi = [self.activelySelectedObjectDuringPan getPathItem];
+            NSLog(@"\n Should drag path here"); // TODO (Jan 31, 2017):
             return;
         }
         else
