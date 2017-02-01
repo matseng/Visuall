@@ -66,7 +66,9 @@
             }
             return;
         }
-        else if ([self isPointerButtonSelected] && [self.activelySelectedObjectDuringPan isGroupItem] && ([self.lastSelectedObject getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem]) )  // Pan or resize a group
+        else if ([self isPointerButtonSelected]
+                 && [self.activelySelectedObjectDuringPan isGroupItem]
+                 && ([self.visuallState.selectedVisualItem getGroupItem] == [self.activelySelectedObjectDuringPan getGroupItem]) )  // Pan or resize a group
         {
             GroupItem *gi = [self.activelySelectedObjectDuringPan getGroupItem];
             if ( [gi isHandle: self.activelySelectedObjectDuringPan] )
@@ -93,14 +95,14 @@
             [self.visuallState updateChildValue: ai Property: nil];
             return;
         }
-        else if ( [self isPointerButtonSelected]
-                 && [self.lastSelectedObject isDrawView]
-                 && ([self.lastSelectedObject getPathItem] == [self.activelySelectedObjectDuringPan getPathItem])
-                 )
+        else if ( [self isPointerButtonSelected] && [self.visuallState.selectedVisualItem isDrawView] )
         {
-            PathItem *pi = [self.activelySelectedObjectDuringPan getPathItem];
-            NSLog(@"\n Should drag path here"); // TODO (Jan 31, 2017):
-            return;
+            if ( [self.visuallState.DrawView selectedPath] == [self.visuallState.DrawView hitTestPath] )
+            {
+                PathItem *pi = [self.activelySelectedObjectDuringPan getPathItem];
+                NSLog(@"\n Should drag path here"); // TODO (Jan 31, 2017):
+                return;
+            }
         }
         else
         {

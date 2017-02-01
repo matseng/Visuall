@@ -22,6 +22,7 @@
 
 @protocol GroupsController  // implemented in ViewController+Group.h
 
+
 - (void) addGroupItemToMVC: (GroupItem *) currentGroupItem;
 
 @end
@@ -43,6 +44,7 @@
 @property NSDictionary *topMenuViews;
 
 @end
+
 
 @interface ViewController : UIViewController
 
@@ -94,8 +96,6 @@
 - (void) backButtonHandler;
 
 - (void) buttonTapped: (id) sender;
-
-- (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer;
 
 //- (void) updateChildValue: (id) visualObject andProperty: (NSString *) propertyName;
 

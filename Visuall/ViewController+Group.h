@@ -12,6 +12,8 @@
 
 - (UIView *) initializeDrawGroupView;
 
+- (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer;
+
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem;
 
 - (void) setItemsInGroup: (GroupItem *) groupItem;

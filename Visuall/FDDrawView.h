@@ -24,7 +24,11 @@
 // the color that is used to draw lines
 @property (nonatomic, strong) UIColor *drawColor;
 
+@property (nonatomic, strong) PathItem *hitTestPath;
+
 @property (nonatomic, strong) PathItem *selectedPath;
+
+@property (nonatomic, strong) PathItem *previouslySelectedPath;
 
 // the delegate that is notified about any drawing by the user
 @property (nonatomic, weak) id<FDDrawViewDelegate> delegate;
@@ -47,5 +51,7 @@
 - (void) deleteSelectedPath;
 
 - (void) deletePath: (PathItem *) pi;
+
+- (void) setSelectedPathFromHitTestPath;
 
 @end

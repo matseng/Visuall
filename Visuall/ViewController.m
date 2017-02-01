@@ -699,18 +699,17 @@
 
 - (void) trashButtonHandler
 {
-//    if ([self.lastSelectedObject isInBoundsOfView: self.BackgroundScrollView])
-    if ([self.lastSelectedObject isPartiallyInBoundsOfView: self.BackgroundScrollView])
+    if ([self.visuallState.selectedVisualItem isPartiallyInBoundsOfView: self.BackgroundScrollView])
     {
-        if ([self.lastSelectedObject isNoteItem])
+        if ([self.visuallState.selectedVisualItem isNoteItem])
         {
-            NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
+            NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
             [self.visuallState.notesCollection deleteNoteGivenKey: ni.note.key];
         }
         
-        else if ([self.lastSelectedObject isGroupItem])
+        else if ([self.visuallState.selectedVisualItem isGroupItem])
         {
-            GroupItem *gi = [self.lastSelectedObject getGroupItem];
+            GroupItem *gi = [self.visuallState.selectedVisualItem getGroupItem];
             [[self.visuallState groupsCollection] deleteGroupGivenKey: gi.group.key];
         }
         
@@ -729,8 +728,8 @@
             return;  // return here because we don't want to delete DrawView, rather we delete the selected path as above
         }
         
-        [self.lastSelectedObject removeFromSuperview];
-        [self.visuallState removeValue: self.lastSelectedObject];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
+        [self.visuallState.selectedVisualItem removeFromSuperview];
+        [self.visuallState removeValue: self.visuallState.selectedVisualItem];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
         //        [self.lastSelectedObject delete:nil];  // TODO: untested
         //        self.lastSelectedObject = nil;
 
@@ -785,9 +784,9 @@
 {
     NSLog(@"Font size: %@", self.fontSize.text);
     float fontSize = self.fontSize.text.floatValue;
-    if (fontSize && [self.lastSelectedObject isKindOfClass: [NoteItem2 class]])
+    if (fontSize && [self.visuallState.selectedVisualItem isKindOfClass: [NoteItem2 class]])
     {
-        NoteItem2 *ni = (NoteItem2 *) self.lastSelectedObject;
+        NoteItem2 *ni = (NoteItem2 *) self.visuallState.selectedVisualItem;
         [ni setFontSize:fontSize];
         [self.visuallState transformVisualItem: ni];
     }
@@ -871,7 +870,7 @@
     if ([self isEditModeOn]
         && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]]
 //        && ( [self.BoundsTiledLayerView.hitTestView isGroupItem] )
-        && ( [self.BoundsTiledLayerView.hitTestView getGroupItem] == [self.lastSelectedObject getGroupItem] )
+        && ( [self.BoundsTiledLayerView.hitTestView getGroupItem] == [self.visuallState.selectedVisualItem getGroupItem] )
         
         && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
     {
@@ -1116,7 +1115,7 @@
 - (BOOL) textViewShouldBeginEditing:(UITextView *) textView
 {
     NSLog(@"textFieldShouldBeginEditing");
-    if ( [textView getNoteItem] == self.lastSelectedObject) {
+    if ( [textView getNoteItem] == self.visuallState.selectedVisualItem) {
         return YES;
     }
     return NO;
@@ -1143,7 +1142,7 @@
 - (void) textViewDidChangeSelection:(UITextView *)textView
 {
     NoteItem2 *ni = [textView getNoteItem];
-    if (self.lastSelectedObject != ni)
+    if (self.visuallState.selectedVisualItem != ni)
     {
         [self setSelectedObject: ni];
     }
@@ -1162,18 +1161,18 @@
 //    }];
 
     NSLog(@"Kill all humans");
-    if (self.lastSelectedObject) {
-        NSLog(@"%@", self.lastSelectedObject);
+    if (self.visuallState.selectedVisualItem) {
+        NSLog(@"%@", self.visuallState.selectedVisualItem);
         NSManagedObject *objectToDelete;
         NSString *modalText;
-        if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]]) {
+        if ([self.visuallState.selectedVisualItem isKindOfClass:[NoteItem2 class]]) {
             NSLog(@"puplet");
 //            NoteItem2 *noteToDelete = (NoteItem2 *)self.lastSelectedObject;
 //            objectToDelete = [self.moc existingObjectWithID:noteToDelete.note.objectID error:nil];
             modalText = @"this note";
-        } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
+        } else if ([self.visuallState.selectedVisualItem isKindOfClass:[GroupItem class]]) {
             NSLog(@"woofarf");
-            GroupItem *groupToDelete = (GroupItem *)self.lastSelectedObject;
+            GroupItem *groupToDelete = (GroupItem *)self.visuallState.selectedVisualItem;
             
 //            objectToDelete = [self.moc existingObjectWithID:groupToDelete.group.objectID error:nil];
             
@@ -1183,18 +1182,18 @@
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Delete" message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", modalText] preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]]) {
-                    NoteItem2 *ni = (NoteItem2 *)self.lastSelectedObject;
+                if ([self.visuallState.selectedVisualItem isKindOfClass:[NoteItem2 class]]) {
+                    NoteItem2 *ni = (NoteItem2 *)self.visuallState.selectedVisualItem;
 //                    [self removeValue:ni];
                     [self.visuallState.notesCollection deleteNoteGivenKey: ni.note.key];
-                } else if ([self.lastSelectedObject isKindOfClass:[GroupItem class]]) {
-                    GroupItem *gi = (GroupItem *)self.lastSelectedObject;
+                } else if ([self.visuallState.selectedVisualItem isKindOfClass:[GroupItem class]]) {
+                    GroupItem *gi = (GroupItem *)self.visuallState.selectedVisualItem;
 //                    [self removeValue:gi];
                     [self.visuallState.groupsCollection deleteGroupGivenKey: gi.group.key];
 
                 }
-                [self.lastSelectedObject removeFromSuperview];
-                self.lastSelectedObject = nil;
+                [self.visuallState.selectedVisualItem removeFromSuperview];
+                self.visuallState.selectedVisualItem = nil;
         }];
         
         
@@ -1210,25 +1209,25 @@
 
 - (BOOL) setSelectedObject:(UIView *) object
 {
-    if (self.lastSelectedObject) {
-        if ([self.lastSelectedObject isKindOfClass:[NoteItem2 class]])
+    if (self.visuallState.selectedVisualItem) {
+        if ([self.visuallState.selectedVisualItem isKindOfClass:[NoteItem2 class]])
         {
-            NoteItem2 *ni = [self.lastSelectedObject getNoteItem];
+            NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
             ni.noteTextView.editable = NO;
             ni.noteTextView.selectable = NO;
             ni.layer.borderWidth = 0;
             self.visuallState.selectedVisualItem.layer.borderWidth = 0;
-        } else if ([self.lastSelectedObject isGroupItem])
+        } else if ([self.visuallState.selectedVisualItem isGroupItem])
         {
-            [[self.lastSelectedObject getGroupItem] setViewAsNotSelected];
-        } else if ( [self.lastSelectedObject isArrowItem] )
+            [[self.visuallState.selectedVisualItem getGroupItem] setViewAsNotSelected];
+        } else if ( [self.visuallState.selectedVisualItem isArrowItem] )
         {
             object = [object getArrowItem];
-            [[self.lastSelectedObject getArrowItem] setViewAsNotSelected];  // if the object is a handle, then it gets mutated here. Hence the line above to get the arrow item
+            [[self.visuallState.selectedVisualItem getArrowItem] setViewAsNotSelected];  // if the object is a handle, then it gets mutated here. Hence the line above to get the arrow item
         }
-        else if ( [self.lastSelectedObject isDrawView] )
+        else if ( [self.visuallState.selectedVisualItem isDrawView] )
         {
-            FDDrawView *dv = (FDDrawView *) self.lastSelectedObject;
+            FDDrawView *dv = (FDDrawView *) self.visuallState.selectedVisualItem;
             [dv removeHighlightFromPreviouslySelectedPath];
         }
     }
@@ -1246,7 +1245,7 @@
         }
         visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
         visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
-        self.lastSelectedObject = noteToSet;
+        self.visuallState.selectedVisualItem = noteToSet;
         self.visuallState.selectedVisualItem = noteToSet;
     }
     else if ( [object isGroupItem] )
@@ -1254,26 +1253,26 @@
         GroupItem *gi = [object getGroupItem];
         [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];
         [[self.view window] endEditing:YES];
-        self.lastSelectedObject = gi;
+        self.visuallState.selectedVisualItem = gi;
         self.visuallState.selectedVisualItem = gi;
     }
     else if ( [object isArrowItem] )
     {
         ArrowItem *ai = [object getArrowItem];
-        self.lastSelectedObject = ai;  // TODO (Aug 30, 2016): Stop using this property and instead use self.visuallState as below
+        self.visuallState.selectedVisualItem = ai;  // TODO (Aug 30, 2016): Stop using this property and instead use self.visuallState as below
         self.visuallState.selectedVisualItem = ai;
         [ai setViewAsSelected];
     }
     else if ( [object isDrawView] )
     {
         FDDrawView *dv = (FDDrawView *) object;
+        [dv setSelectedPathFromHitTestPath];
         [dv highlightSelectedPath];
-//        self.lastSelectedObject = dv;
         self.visuallState.selectedVisualItem = dv;
     }
     else
     {
-        self.lastSelectedObject = nil;
+        self.visuallState.selectedVisualItem = nil;
         self.visuallState.selectedVisualItem = nil;
         [[self.view window] endEditing:YES];
     }
