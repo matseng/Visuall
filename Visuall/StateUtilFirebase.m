@@ -605,6 +605,15 @@ static NSMutableDictionary *__personalVisuallList;
     [[self.visuallsTable_currentVisuallRef child: @"paths"] updateChildValues: @{newPathRef.key: @"1"}];
 }
 
+- (void) updateValuePath: (PathItem *) pi
+{
+    FIRDatabaseReference *pathDathRef = [[self.version01TableRef child: @"paths"] child: pi.key];
+    NSMutableDictionary *pathDictionary = [@{
+                                             @"data/path": [pi.fdpath serialize]
+                                             } mutableCopy];
+    [pathDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
+    [pathDathRef updateChildValues: pathDictionary];
+}
 
 /*
  * Name:

@@ -309,10 +309,10 @@
         pi.fdpath.points[i] = translatedPoint;
     }
     self.currentPath = pi.fdpath;
-//    [self setNeedsDisplay];
     [self drawPathItemOnShapeLayer: pi];
     [self highlightSelectedPath];
     [gestureRecognizer setTranslation:CGPointZero inView: [[[UserUtil sharedManager] getState] DrawView]];
+    [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
 }
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
