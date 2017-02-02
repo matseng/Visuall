@@ -300,6 +300,7 @@
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer withPathItem: (PathItem *) pi
 {
     CGPoint translation = [gestureRecognizer translationInView: [[[UserUtil sharedManager] getState] DrawView]];
+//    CGPoint translation = [gestureRecognizer translationInView: gestureRecognizer.view];
     
     for (NSUInteger i = 0; i < pi.fdpath.points.count; i++) {
         FDPoint *point = pi.fdpath.points[i];
@@ -308,8 +309,10 @@
         pi.fdpath.points[i] = translatedPoint;
     }
     self.currentPath = pi.fdpath;
-    [self setNeedsDisplay];
-    [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+//    [self setNeedsDisplay];
+    [self drawPathItemOnShapeLayer: pi];
+    [self highlightSelectedPath];
+    [gestureRecognizer setTranslation:CGPointZero inView: [[[UserUtil sharedManager] getState] DrawView]];
 }
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
