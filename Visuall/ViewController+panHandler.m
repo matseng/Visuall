@@ -102,6 +102,7 @@
             {
                 PathItem *pi = [self.visuallState.selectedVisualItemDuringPan getPathItem];
                 NSLog(@"\n Should drag path here"); // TODO (Jan 31, 2017):
+                [self.visuallState.DrawView panHandler: gestureRecognizer withPathItem: pi];
                 return;
             }
         }

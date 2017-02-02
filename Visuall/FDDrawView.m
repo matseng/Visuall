@@ -297,6 +297,21 @@
     }
 }
 
+- (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer withPathItem: (PathItem *) pi
+{
+    CGPoint translation = [gestureRecognizer translationInView: [[[UserUtil sharedManager] getState] DrawView]];
+    
+    for (NSUInteger i = 0; i < pi.fdpath.points.count; i++) {
+        FDPoint *point = pi.fdpath.points[i];
+        CGPoint translatedCGPoint = CGPointMake(point.x + translation.x, point.y + translation.y);
+        FDPoint *translatedPoint = [[FDPoint alloc] initWithCGPoint: translatedCGPoint];
+        pi.fdpath.points[i] = translatedPoint;
+    }
+    self.currentPath = pi.fdpath;
+    [self setNeedsDisplay];
+    [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+}
+
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -313,7 +328,6 @@
         [self panEndedWithGestureRecognizer: gestureRecognizer];
     }
 }
-
 
 - (void) panBeganWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
 {

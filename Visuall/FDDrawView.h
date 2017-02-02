@@ -40,6 +40,8 @@
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer;
 
+- (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer withPathItem: (PathItem *) pi;
+
 - (PathItem *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event;
 
 - (void) addPathItemToMVC: (PathItem *) pi;

@@ -8,6 +8,7 @@
 
 #import "PathItem.h"
 #import "FDPath.h"
+#import "UserUtil.h"
 
 @implementation PathItem
 
@@ -28,6 +29,7 @@
     return self;
 }
 
+/*
 - (void) drawPathOnShapeLayer
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -61,6 +63,6 @@
         NSLog(@"\n Draw a point on load");
     }
 }
-
+*/
 
 @end
