@@ -42,6 +42,8 @@
 
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer withPathItem: (PathItem *) pi;
 
+- (void) translatePath: (PathItem *) pi byPoint: (CGPoint) translation;
+
 - (PathItem *) hitTestOnShapeLayer: (CGPoint) point withEvent:(UIEvent *)event;
 
 - (void) addPathItemToMVC: (PathItem *) pi;

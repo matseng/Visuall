@@ -301,19 +301,24 @@
 {
     CGPoint translation = [gestureRecognizer translationInView: [[[UserUtil sharedManager] getState] DrawView]];
 //    CGPoint translation = [gestureRecognizer translationInView: gestureRecognizer.view];
-    
+    [self translatePath: pi byPoint: translation];
+    self.currentPath = pi.fdpath;
+    [self highlightSelectedPath];
+    [gestureRecognizer setTranslation:CGPointZero inView: [[[UserUtil sharedManager] getState] DrawView]];
+    [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
+}
+
+- (void) translatePath: (PathItem *) pi byPoint: (CGPoint) translation
+{
     for (NSUInteger i = 0; i < pi.fdpath.points.count; i++) {
         FDPoint *point = pi.fdpath.points[i];
         CGPoint translatedCGPoint = CGPointMake(point.x + translation.x, point.y + translation.y);
         FDPoint *translatedPoint = [[FDPoint alloc] initWithCGPoint: translatedCGPoint];
         pi.fdpath.points[i] = translatedPoint;
     }
-    self.currentPath = pi.fdpath;
     [self drawPathItemOnShapeLayer: pi];
-    [self highlightSelectedPath];
-    [gestureRecognizer setTranslation:CGPointZero inView: [[[UserUtil sharedManager] getState] DrawView]];
-    [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
 }
+
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
 {

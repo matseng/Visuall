@@ -40,8 +40,9 @@
     if ( gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         [self setSelectedObject:groupItem];
         NSMutableArray *notesInGroup = [[NSMutableArray alloc] init];
-        NSMutableArray *groupsInGroup = [[NSMutableArray alloc]init];
-        NSMutableArray *arrowsInGroup = [[NSMutableArray alloc]init];
+        NSMutableArray *groupsInGroup = [[NSMutableArray alloc] init];
+        NSMutableArray *arrowsInGroup = [[NSMutableArray alloc] init];
+        NSMutableArray *pathsInGroup = [[NSMutableArray alloc] init];
 
         [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
         {
@@ -51,7 +52,6 @@
 
          }];
 
-        NSLog(@"\n handlePanGroup, count %li", [[[self.visuallState groupsCollection] items] count]);
         [[self.visuallState groupsCollection] myForIn:^(GroupItem *gi)
         {
             if ([groupItem isGroupInGroup:gi]) {
@@ -64,10 +64,19 @@
                 [arrowsInGroup addObject:ai];
             }
         }];
-         
+        
+        [[[[UserUtil sharedManager] getState] pathsCollection] myForIn:^(PathItem *pi) {
+            if ([groupItem isPathInGroup: pi]) {
+                [pathsInGroup addObject: pi];
+            }
+        }];
+
+//        NSLog(@"\n handlePanGroup, count %li", [[[self.visuallState groupsCollection] items] count]);
+        
         [groupItem setNotesInGroup: notesInGroup];
         [groupItem setGroupsInGroup: groupsInGroup];
         [groupItem setArrowsInGroup: arrowsInGroup];
+        [groupItem setPathsInGroup: pathsInGroup];
     }
     else if ( gestureRecognizer.state == UIGestureRecognizerStateChanged )
     {
@@ -83,13 +92,11 @@
         for (GroupItem *gi in groupItem.groupsInGroup)
         {
             [self.visuallState updateChildValue:gi Property:@"frame"];
-            
         }
         
         for (ArrowItem *ai in groupItem.arrowsInGroup)
         {
             [self.visuallState updateChildValue: ai Property:nil];
-            
         }
         
     }

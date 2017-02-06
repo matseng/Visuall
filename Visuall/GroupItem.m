@@ -10,6 +10,7 @@
 #import "StateUtilFirebase.h"
 #import "AppDelegate.h"
 #import "NoteItem2.h"
+#import "UserUtil.h"
 
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
@@ -223,18 +224,25 @@
         [self.group setY: y];
         [self updateFrame];
         
-        for (NoteItem2 *ni in self.notesInGroup) {
+        for (NoteItem2 *ni in self.notesInGroup)
+        {
             [ni translateTx: translation.x andTy:translation.y];
         }
-        for (GroupItem *gi in self.groupsInGroup) {
+        for (GroupItem *gi in self.groupsInGroup)
+        {
             x = gi.group.x + translation.x;
             y = gi.group.y + translation.y;
             [gi.group setX: x andY: y];
             [gi updateFrame];
         }
-        for (ArrowItem *ai in self.arrowsInGroup) {
+        for (ArrowItem *ai in self.arrowsInGroup)
+        {
             [ai translateArrowByDelta: translation];
-            //            [[[UserUtil sharedManager] getState] updateChildValue: ai Property: nil];
+            
+        }
+        for (PathItem *pi in self.pathsInGroup)
+        {
+            [[[[UserUtil sharedManager] getState] DrawView] translatePath: pi byPoint: translation];
         }
     }
 }
@@ -335,7 +343,22 @@
 {
     CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
     
-    if ( CGRectContainsPoint(groupRect, ai.startPoint) && CGRectContainsPoint(groupRect, ai.endPoint))
+    if ( CGRectContainsPoint(groupRect, ai.startPoint) || CGRectContainsPoint(groupRect, ai.endPoint))
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL) isPathInGroup: (PathItem *) pi
+{
+    CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
+    NSUInteger count = pi.fdpath.points.count;
+    CGPoint startPoint = [pi.fdpath.points[0] getCGPoint];
+    CGPoint endPoint = [pi.fdpath.points[count - 1] getCGPoint];
+    
+    if ( CGRectContainsPoint(groupRect, startPoint)
+        || CGRectContainsPoint( groupRect, endPoint))
     {
         return YES;
     }

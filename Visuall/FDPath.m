@@ -27,6 +27,11 @@
     return self;
 }
 
+- (CGPoint) getCGPoint
+{
+    return CGPointMake(self.x, self.y);
+}
+
 + (FDPoint *)parse:(id)obj
 {
     // parse a point from a JSON representation

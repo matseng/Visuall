@@ -17,6 +17,8 @@
 
 - (id)initWithCGPoint:(CGPoint)point;
 
+- (CGPoint) getCGPoint;
+
 @end
 
 // a path consisting of a color and multiple way points
