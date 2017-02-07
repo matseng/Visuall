@@ -343,7 +343,7 @@
 {
     CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
     
-    if ( CGRectContainsPoint(groupRect, ai.startPoint) || CGRectContainsPoint(groupRect, ai.endPoint))
+    if ( CGRectContainsPoint(groupRect, ai.startPoint) && CGRectContainsPoint(groupRect, ai.endPoint))
     {
         return YES;
     }
@@ -358,7 +358,7 @@
     CGPoint endPoint = [pi.fdpath.points[count - 1] getCGPoint];
     
     if ( CGRectContainsPoint(groupRect, startPoint)
-        || CGRectContainsPoint( groupRect, endPoint))
+        && CGRectContainsPoint( groupRect, endPoint))
     {
         return YES;
     }

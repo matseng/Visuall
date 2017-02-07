@@ -80,7 +80,7 @@
     }
     else if ( gestureRecognizer.state == UIGestureRecognizerStateChanged )
     {
-        [groupItem handlePanGroup2:gestureRecognizer];
+        [groupItem handlePanGroup2: gestureRecognizer];
         
         [self.visuallState updateChildValue:groupItem Property:@"frame"];
         
@@ -97,6 +97,11 @@
         for (ArrowItem *ai in groupItem.arrowsInGroup)
         {
             [self.visuallState updateChildValue: ai Property:nil];
+        }
+        
+        for (PathItem *pi in groupItem.pathsInGroup)
+        {
+            [self.visuallState updateValuePath: pi];
         }
         
     }

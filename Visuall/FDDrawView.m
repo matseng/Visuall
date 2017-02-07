@@ -420,8 +420,9 @@ Problem:
             
             CGPathRef tapTargetPath = CGPathCreateCopyByStrokingPath(layer.path,
                                                                      NULL,
-                                                                     fmaxf(35.0f, path.lineWidth),
+//                                                                     fmaxf(35.0f, path.lineWidth),
 //                                                                     path.lineWidth,
+                                                                     self.lineWidth * 3.0,
                                                                      path.lineCapStyle,
                                                                      path.lineJoinStyle,
                                                                      path.miterLimit);
@@ -444,7 +445,7 @@ Problem:
         {
             FDPoint *fdpoint = [layer.fdpath getFirstPoint];
             double dist = hypot((point.x - fdpoint.x), (point.y - fdpoint.y));
-            if (dist < self.lineWidth * 2)
+            if (dist < self.lineWidth * 2.0)
             {
 //                self.previouslySelectedPath = self.selectedPath;
 //                self.selectedPath = layer;

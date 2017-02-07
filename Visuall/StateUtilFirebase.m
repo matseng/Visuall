@@ -702,7 +702,7 @@ static NSMutableDictionary *__personalVisuallList;
             [groupDataRef updateChildValues: groupDictionary withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref)
              {
                  if (error) {
-                     NSLog(@"Group could be updated.");
+                     NSLog(@"Group could not be updated.");
                  } else {
                      NSLog(@"Group updated successfully.");
                  }

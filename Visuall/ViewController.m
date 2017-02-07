@@ -181,7 +181,7 @@
     self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     
     // this is the main view and used to show drawing from other users and let the user draw
-     FDDrawView *DrawView = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
+     FDDrawView *DrawView = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
 //    DrawView.backgroundColor  = [UIColor greenColor];
     [[[UserUtil sharedManager] getState] setDrawView: DrawView];
     
@@ -815,12 +815,12 @@
         {
             [self.visuallState setSelectedVisualItemDuringPan: handleSelected];
             [[viewHit getGroupItem] setHandleSelected: handleSelected];
-        } else if ([viewHit isInBoundsOfView:self.BackgroundScrollView])
+        }
+//        else if ([viewHit isInBoundsOfView: self.BackgroundScrollView])
+        else
         {
             GroupItem  *gi = [viewHit getGroupItem];
             [self.visuallState setSelectedVisualItemDuringPan: gi];
-            //                [self setSelectedObject:gi];
-            //                [self setItemsInGroup:gi];
         }
     }
     else if ( [viewHit isArrowItem] )
@@ -867,12 +867,12 @@
         return YES;  // NOTE: YES --> manually added gestureRecognizer receives the touch (not the UIScrollView)
     }
     
-    if ([self isEditModeOn]
+    if ( [self isEditModeOn]
         && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]]
-//        && ( [self.BoundsTiledLayerView.hitTestView isGroupItem] )
         && ( [self.BoundsTiledLayerView.hitTestView getGroupItem] == [self.visuallState.selectedVisualItem getGroupItem] )
-        
-        && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
+//        && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
+//        && [self.BoundsTiledLayerView.hitTestView isPartiallyInBoundsOfView: self.BackgroundScrollView ]
+        )
     {
         return YES;  // A group will receive a pan gesture only if it's has already been selected and fully in view
     }
