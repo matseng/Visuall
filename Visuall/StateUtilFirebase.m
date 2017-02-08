@@ -704,7 +704,7 @@ static NSMutableDictionary *__personalVisuallList;
                  if (error) {
                      NSLog(@"Group could not be updated.");
                  } else {
-                     NSLog(@"Group updated successfully.");
+                     NSLog(@"Group updated successfully: %@", ref.key);
                  }
              }];
         }

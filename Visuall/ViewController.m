@@ -262,7 +262,7 @@
     {
         [self resizeBackgroundScrollView];
     }
-    [self expandBoundsTiledLayerView];
+    [self expandBoundsTiledLayerView: 1.75];
 }
 
 - (void) resizeBackgroundScrollView
@@ -336,7 +336,7 @@
     
     self.BackgroundScrollView.contentSize = CGSizeMake(self.BoundsTiledLayerView.frame.size.width, self.BoundsTiledLayerView.frame.size.height);
     self.BackgroundScrollView.minimumZoomScale = 0.01;
-    self.BackgroundScrollView.maximumZoomScale = 6.0;
+    self.BackgroundScrollView.maximumZoomScale = 10.0;
     self.BackgroundScrollView.delegate = self;  // REQUIRED to enable pinch to zoom
     self.automaticallyAdjustsScrollViewInsets = NO;
 //    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
@@ -385,7 +385,10 @@
  */
 - (CGRect) addExtraScrollPaddingToBoundsRect: (CGRect) rect byMultiple: (CGFloat) s
 {
-    CGSize screenSize = self.BackgroundScrollView.frame.size;
+//    CGSize screenSize = self.BackgroundScrollView.frame.size;
+    
+    CGRect convertedBackgroundRectInScrollView = [self.BackgroundScrollView convertRect: self.Background.frame fromView: self.view];
+    CGSize screenSize = convertedBackgroundRectInScrollView.size;
     CGRect newRect = CGRectMake(rect.origin.x - screenSize.width / 2 * s,
                                 rect.origin.y - screenSize.height / 2 * s,
                                 rect.size.width + screenSize.width * s,
@@ -393,14 +396,14 @@
     return newRect;
 }
 
-- (void) expandBoundsTiledLayerView
+- (void) expandBoundsTiledLayerView: (float) scale
 {
     CGRect convertedVisualItemsRectInScrollView = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
     CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
     
-    CGRect newBoundsTiledLayerRect = [self addExtraScrollPaddingToBoundsRect: convertedBoundsRectInScrollView byMultiple: 1.75];
-    
+    CGRect newBoundsTiledLayerRect = [self addExtraScrollPaddingToBoundsRect: convertedBoundsRectInScrollView byMultiple: scale];
     self.BoundsTiledLayerView.frame = newBoundsTiledLayerRect;
+    
     self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
     CGRect convertedVisualItemsRectInNewBoundsTiledLayerView = [self.BoundsTiledLayerView convertRect: convertedVisualItemsRectInScrollView fromView: self.BackgroundScrollView];
     self.VisualItemsView.frame = convertedVisualItemsRectInNewBoundsTiledLayerView;
@@ -436,6 +439,7 @@
                                                   self.BackgroundScrollView.bounds.size.width,
                                                   self.BackgroundScrollView.bounds.size.height);
 }
+
 - (void) setNewScrollViewOuterContentsFrame
 {
     CGPoint scrollViewCenter = CGPointMake(self.BackgroundScrollView.frame.origin.x + 0.5 * self.BackgroundScrollView.frame.size.width, self.BackgroundScrollView.frame.origin.y + 0.5 * self.BackgroundScrollView.frame.size.height);
@@ -484,15 +488,22 @@
     return CGPointMake(x, y);  // (x, y) are RELATIVE to the given point
 }
 
-- (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
+- (void) scrollViewWillBeginZooming:(UIScrollView *) scrollView withView:(UIView *)view
 {
-    
+    float velocity = scrollView.pinchGestureRecognizer.velocity;
+
+    if ( velocity < 0 )
+    {
+        NSLog(@"\n pinchGestureRecognizer ZOOM scale: %f", velocity);
+        [self centerScrollViewContents2];
+        [self expandBoundsTiledLayerView: 8];
+    }
 }
 
 - (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
     [self centerScrollViewContents2];
-    [self expandBoundsTiledLayerView];
+    [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
 }
 
 
@@ -522,7 +533,7 @@
     {
         self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
     }
-    [self expandBoundsTiledLayerView];
+    [self expandBoundsTiledLayerView: 0];
     
 //    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
 //

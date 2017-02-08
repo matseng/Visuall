@@ -146,12 +146,7 @@
     return YES;
 }
 
-//- (BOOL) isPartiallyInBoundsOfView: (UIView *) parentView
-//{
-//    
-//}
-
-- (BOOL) __isPartiallyInBoundsOfView: (UIView *) parentView
+- (BOOL) isPartiallyInBoundsOfView: (UIView *) parentView
 {
 //    int counter = 0;
 //    CGPoint topLeft = [parentView.superview convertPoint: CGPointZero fromView:self];

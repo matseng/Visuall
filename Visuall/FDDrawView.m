@@ -447,18 +447,14 @@ Problem:
             double dist = hypot((point.x - fdpoint.x), (point.y - fdpoint.y));
             if (dist < self.lineWidth * 2.0)
             {
-//                self.previouslySelectedPath = self.selectedPath;
-//                self.selectedPath = layer;
                 self.hitTestPath = layer;
                 return layer;
             }
-            NSLog(@"\n dist: %f", dist);
+//            NSLog(@"\n dist: %f", dist);
         }
         counter++;
     }
-    NSLog(@"\n layer counter: %i", counter);
-//    self.previouslySelectedPath = self.selectedPath;
-//    self.selectedPath = nil;
+//    NSLog(@"\n layer counter: %i", counter);
     self.hitTestPath = nil;
     return nil;
 }
