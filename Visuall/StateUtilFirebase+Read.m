@@ -120,7 +120,7 @@
              {
                  self.allArrowsLoadedBOOL = YES;
              }
-             NSLog(@"\n %i", self.numberOfArrowsLoaded);
+             NSLog(@"\n self.numberOfArrowsLoaded: %i", self.numberOfArrowsLoaded);
          }
          // 2 of 2. Read a arrow upon an update from another user:
          else if(![self isSnapshotFromLocalDevice: snapshot] && [self.arrowsCollection getItemFromKey: snapshot.key])
@@ -154,7 +154,7 @@
              {
                  self.allPathsLoadedBOOL = YES;
              }
-             NSLog(@"\n %i", self.numberOfPathsLoaded);
+             NSLog(@"\n self.numberOfPathsLoaded: %i", self.numberOfPathsLoaded);
          }
          // 2 of 2. Read a path upon an update from another user:
          else if(![self isSnapshotFromLocalDevice: snapshot] && [self.pathsCollection getItemFromKey: snapshot.key])
@@ -179,7 +179,7 @@
     self.allGroupsLoadedBOOL = YES;
     NSLog(@"\n allGroupsLoaded loaded: %i", self.numberOfGroupsLoaded);
     //    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView:) name:@"refreshGroupsView" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshGroupsView" object: nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"allGroupsDidLoad" object: nil];
 }
 
 @end

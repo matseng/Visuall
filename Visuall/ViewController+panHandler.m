@@ -176,6 +176,8 @@
                 [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];  // To re-render the handles  // TODO (Aug 10, 2016): animate this step for a smoother transition
             }
             [self updateTotalBounds: gi];
+//            [self centerScrollViewContents2];
+            [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
         }
         
         [self.visuallState setSelectedVisualItemDuringPan: nil];

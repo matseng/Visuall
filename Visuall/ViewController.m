@@ -36,7 +36,7 @@
 //@property (strong, nonatomic) IBOutlet UIView *GestureView;
 @property CGPoint panBeginPoint;
 @property (strong, nonatomic) IBOutlet UITextField *fontSize;
-@property CGRect totalBoundsRect;
+//@property CGRect totalBoundsRect;
 @property CGPoint zoomOffsetPoint;
 
 @end
@@ -108,8 +108,20 @@
         [self.visuallState loadVisuallsForCurrentUser];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView) name:@"refreshGroupsView" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(allGroupsDidLoadHandler) name:@"allGroupsDidLoad" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/
 }
+
+- (void) allGroupsDidLoadHandler
+{
+    [self refreshGroupsView];
+    
+    // Center contents:
+    [self centerScrollViewContents2];
+    [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
+    CGRect rect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect fromView:self.VisualItemsView];
+    [self.BackgroundScrollView zoomToRect: rect animated:YES];
+}
+
 
 -(void) addNoteToViewWithHandlersNotification:(NSNotification*) notification
 {
@@ -171,14 +183,14 @@
 //    self.BoundsTiledLayerView.backgroundColor = [UIColor purpleColor];
     self.BoundsTiledLayerView.backgroundColor = [UIColor whiteColor];
     
-    self.VisualItemsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-    self.VisualItemsView.backgroundColor = [UIColor orangeColor];
+    self.VisualItemsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//    self.VisualItemsView.backgroundColor = [UIColor orangeColor];
     self.VisualItemsView.contentMode = UIViewContentModeRedraw;
 
     self.GroupsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     self.NotesView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     self.NotesView.opaque = NO;
-    self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    self.ArrowsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     
     // this is the main view and used to show drawing from other users and let the user draw
      FDDrawView *DrawView = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
@@ -424,6 +436,10 @@
     self.BackgroundScrollView.contentSize = newContentSize;
 }
 
+/*
+ * Name: centerScrollViewContents2
+ * Description: Prevents the content from automatically (and annoyingly) bouncing back to the origin of the scroll view
+ */
 - (void) centerScrollViewContents2
 {
     CGPoint offsetPoint = CGPointMake(-self.BackgroundScrollView.bounds.origin.x, -self.BackgroundScrollView.bounds.origin.y);

@@ -69,6 +69,8 @@
 
 @property (strong, nonatomic) IBOutlet UIView *NotesView;
 
+@property CGRect totalBoundsRect;
+
 @property (strong, nonatomic) UIScrollView *scrollViewButtonList;
 
 //@property UIView *lastSelectedObject;
@@ -113,6 +115,10 @@
 - (void) updateTotalBounds: (UIView *) view;
 
 - (void) constrainWidthToSuperview: (UIView *) subView;
+
+- (void) centerScrollViewContents2;
+
+- (void) expandBoundsTiledLayerView: (float) scale;
 
 @end
 
