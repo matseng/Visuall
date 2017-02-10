@@ -514,8 +514,6 @@
     return _handleDiameter;
 }
 
-
-
 - (void) updateFrame
 {
     float radiusOffset = [self getRadius] / 2;

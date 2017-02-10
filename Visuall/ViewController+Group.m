@@ -12,6 +12,7 @@
 #import "UIView+VisualItem.h"
 #import "UserUtil.h"
 #import "ArrowItem.h"
+#import "ShuttleView.h"
 
 #define GROUP_VIEW_BACKGROUND_COLOR [UIColor lightGrayColor]
 #define GROUP_VIEW_BORDER_COLOR [[UIColor blackColor] CGColor]
@@ -31,6 +32,37 @@
 }
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
+{
+    ShuttleView *sv = [[ShuttleView alloc] initWithGroupItem: groupItem];
+    
+    if ( gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        [self setSelectedObject:groupItem];
+        
+        [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
+         {
+             if ( [groupItem isNoteInGroup:ni]) {
+                 [sv addSubview: ni];
+             }
+         }];
+    }
+    else if ( gestureRecognizer.state == UIGestureRecognizerStateChanged )
+    {
+//        [groupItem handlePanGroup2: gestureRecognizer];
+        CGPoint translation = [gestureRecognizer translationInView: groupItem];
+        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+        
+        float x = groupItem.group.x + translation.x;
+        float y = groupItem.group.y + translation.y;
+        [groupItem.group setX: x];
+        [groupItem.group setY: y];
+        [groupItem updateFrame];
+    }
+    
+}
+
+
+- (void) __handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
     
     if (!groupItem) {

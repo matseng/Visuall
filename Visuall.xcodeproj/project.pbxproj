@@ -43,6 +43,7 @@
 		716B046A1BFC210300DA9451 /* StateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B04691BFC210300DA9451 /* StateUtil.m */; };
 		716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B51D51D36C2A40049A203 /* UIView+VisualItem.m */; };
 		71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */ = {isa = PBXBuildFile; fileRef = 71710A831D5D14660038D883 /* SegmentedControlMod.m */; };
+		7177E1821E4E5A0B00439451 /* ShuttleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7177E1811E4E5A0B00439451 /* ShuttleView.m */; };
 		717F61C71D8C66CB0002157B /* defaultVisualization100.xml in Resources */ = {isa = PBXBuildFile; fileRef = 717F61C61D8C66CB0002157B /* defaultVisualization100.xml */; };
 		717F61C91D8C6F3C0002157B /* defaultVisualization13.xml in Resources */ = {isa = PBXBuildFile; fileRef = 717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */; };
 		717F61CB1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png in Resources */ = {isa = PBXBuildFile; fileRef = 717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */; };
@@ -180,6 +181,8 @@
 		716B51D51D36C2A40049A203 /* UIView+VisualItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VisualItem.m"; sourceTree = "<group>"; };
 		71710A821D5D14660038D883 /* SegmentedControlMod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedControlMod.h; sourceTree = "<group>"; };
 		71710A831D5D14660038D883 /* SegmentedControlMod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedControlMod.m; sourceTree = "<group>"; };
+		7177E1801E4E5A0B00439451 /* ShuttleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleView.h; sourceTree = "<group>"; };
+		7177E1811E4E5A0B00439451 /* ShuttleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleView.m; sourceTree = "<group>"; };
 		717F61C61D8C66CB0002157B /* defaultVisualization100.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization100.xml; sourceTree = "<group>"; };
 		717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization13.xml; sourceTree = "<group>"; };
 		717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Microsoft-Visual-Studio-icon_v3.png"; sourceTree = "<group>"; };
@@ -574,6 +577,8 @@
 			children = (
 				71B0EEFF1CB83CCD009D8F5C /* VisualItem.h */,
 				71B0EF001CB83CCE009D8F5C /* VisualItem.m */,
+				7177E1801E4E5A0B00439451 /* ShuttleView.h */,
+				7177E1811E4E5A0B00439451 /* ShuttleView.m */,
 				713D0D5B1CC18CAB00878EAE /* Note2.h */,
 				713D0D5C1CC18CAB00878EAE /* Note2.m */,
 				71B0EF021CB83E6D009D8F5C /* NoteItem2.h */,
@@ -835,6 +840,7 @@
 				71FD2EFE1D74DDF900CA5365 /* Collection.m in Sources */,
 				716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */,
 				7161CF671D556C6E00B278EB /* GlobalViewController.m in Sources */,
+				7177E1821E4E5A0B00439451 /* ShuttleView.m in Sources */,
 				71E1AF651D4C325400B818A0 /* TabBarViewController.m in Sources */,
 				715C60C11D78BBF300DD6942 /* DDFileReader.m in Sources */,
 				71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */,
