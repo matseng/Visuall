@@ -22,6 +22,7 @@
 
 @implementation ViewController (Group)
 
+
 - (UIView *) initializeDrawGroupView
 {
     UIView *drawGroupView = [[UIView alloc] init];
@@ -33,20 +34,24 @@
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
-    ShuttleView *sv = [[ShuttleView alloc] initWithGroupItem: groupItem];
     
     if ( gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
+//        if (groupItem.sv) [groupItem.sv removeFromSuperview];
+        groupItem.sv = [[ShuttleView alloc] init];
+        groupItem.sv.backgroundColor = [UIColor orangeColor];
+        [[[[UserUtil sharedManager] getState] VisualItemsView] addSubview: groupItem.sv];
+        
         [self setSelectedObject:groupItem];
         
         [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
          {
              if ( [groupItem isNoteInGroup:ni]) {
-                 [sv addSubview: ni];
+                 [groupItem.sv addSubview: ni];
              }
          }];
     }
-    else if ( gestureRecognizer.state == UIGestureRecognizerStateChanged )
+    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged )
     {
 //        [groupItem handlePanGroup2: gestureRecognizer];
         CGPoint translation = [gestureRecognizer translationInView: groupItem];
@@ -57,6 +62,11 @@
         [groupItem.group setX: x];
         [groupItem.group setY: y];
         [groupItem updateFrame];
+        
+        [groupItem.sv setFrame: CGRectMake(groupItem.sv.frame.origin.x + translation.x,
+                                           groupItem.sv.frame.origin.y + translation.y,
+                                           1000,
+                                           1000)];
     }
     
 }

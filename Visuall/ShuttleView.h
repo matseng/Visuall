@@ -7,10 +7,10 @@
 //
 
 #import "VisualItem.h"
-#import "GroupItem.h"
+//#import "GroupItem.h"
 
 @interface ShuttleView : VisualItem
 
-- (instancetype) initWithGroupItem: (GroupItem *) gi;
+- (instancetype) init;
 
 @end

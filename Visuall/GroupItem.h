@@ -12,7 +12,7 @@
 #import "Group2.h"
 #import "ArrowItem.h"
 #import "PathItem.h"
-//#import "VisualItem.h"
+#import "ShuttleView.h"
 
 //@interface GroupItem : UIView
 
@@ -35,7 +35,7 @@
 
 @property UIView *handleSelected;
 
-//- (instancetype) initGroup:(Group *)group;
+@property ShuttleView *sv;
 
 - (instancetype) initGroup: (NSString *) key andValue: (NSDictionary *) value;
 

@@ -11,13 +11,14 @@
 
 @implementation ShuttleView
 
-- (instancetype) initWithGroupItem: (GroupItem *) gi
+- (instancetype) init
 {
     self = [super init];
     if (self)
     {
         CGRect rect =  [[[[UserUtil sharedManager] getState] VisualItemsView] frame];
-        self.frame = CGRectMake(rect.origin.x, rect.origin.y, 1, 1);
+//        self.frame = CGRectMake(rect.origin.x, rect.origin.y, 1000, 1000);
+        self.frame = CGRectMake(0, 0, 1000, 1000);
 //        [self addSubview: gi];
     }
     return self;
