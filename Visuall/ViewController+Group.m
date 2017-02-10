@@ -37,7 +37,7 @@
     
     if ( gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-//        if (groupItem.sv) [groupItem.sv removeFromSuperview];
+        if (groupItem.sv) [groupItem.sv removeFromSuperview];
         groupItem.sv = [[ShuttleView alloc] init];
         groupItem.sv.backgroundColor = [UIColor orangeColor];
         [[[[UserUtil sharedManager] getState] VisualItemsView] addSubview: groupItem.sv];
@@ -51,11 +51,11 @@
              }
          }];
     }
-    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged )
+    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged && gestureRecognizer.state != UIGestureRecognizerStateEnded)
     {
 //        [groupItem handlePanGroup2: gestureRecognizer];
         CGPoint translation = [gestureRecognizer translationInView: groupItem];
-        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+        [gestureRecognizer setTranslation: CGPointZero inView:gestureRecognizer.view];
         
         float x = groupItem.group.x + translation.x;
         float y = groupItem.group.y + translation.y;
@@ -67,6 +67,17 @@
                                            groupItem.sv.frame.origin.y + translation.y,
                                            1000,
                                            1000)];
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        for (NoteItem2 *ni in groupItem.sv.subviews)
+        {
+            ni.frame = CGRectMake(ni.frame.origin.x + groupItem.sv.frame.origin.x,
+                                  ni.frame.origin.y + groupItem.sv.frame.origin.y,
+                                  ni.frame.size.width,
+                                  ni.frame.size.height);
+            [[[[UserUtil sharedManager] getState] NotesView] addSubview: ni];
+        };
     }
     
 }

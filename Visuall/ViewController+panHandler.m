@@ -44,7 +44,9 @@
         return;
     }
     
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan || gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan
+        || gestureRecognizer.state == UIGestureRecognizerStateChanged
+        || gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
         UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
         NSLog(@"panHandler viewHit %@", [viewHit class]);
