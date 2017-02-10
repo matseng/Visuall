@@ -70,13 +70,20 @@
     }
     else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        for (NoteItem2 *ni in groupItem.sv.subviews)
+        for (UIView *uv in groupItem.sv.subviews)
         {
-            ni.frame = CGRectMake(ni.frame.origin.x + groupItem.sv.frame.origin.x,
-                                  ni.frame.origin.y + groupItem.sv.frame.origin.y,
-                                  ni.frame.size.width,
-                                  ni.frame.size.height);
-            [[[[UserUtil sharedManager] getState] NotesView] addSubview: ni];
+            if ( [uv isNoteItem] )
+            {
+                NoteItem2 *ni = [uv getNoteItem];
+                ni.frame = CGRectMake(ni.frame.origin.x + groupItem.sv.frame.origin.x,
+                                      ni.frame.origin.y + groupItem.sv.frame.origin.y,
+                                      ni.frame.size.width,
+                                      ni.frame.size.height);
+                ni.note.x = ni.frame.origin.x;
+                ni.note.y = ni.frame.origin.y;
+                [[[[UserUtil sharedManager] getState] NotesView] addSubview: ni];
+                [self.visuallState updateChildValue: ni Property: nil];
+            }
         };
     }
     
