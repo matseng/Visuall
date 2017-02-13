@@ -33,6 +33,7 @@
         if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
             ArrowItem *ai = [[ArrowItem alloc] initArrowFromStartPointToEndPoint];
             [self addArrowItemToMVC: ai];
+            [self setSelectedObject: ai];
         }
 }
 
@@ -42,8 +43,6 @@
     if (ai) [[[UserUtil sharedManager] getState] setValueArrow: ai];
     [[[[UserUtil sharedManager] getState] arrowsCollection] addItem: ai withKey: ai.key];
     [self setSelectedObject: ai];
-    [[[UserUtil sharedManager] getState] setSelectedVisualItem: ai];
-    [self.visuallState setSelectedVisualItemDuringPan: nil];
 }
 
 @end
