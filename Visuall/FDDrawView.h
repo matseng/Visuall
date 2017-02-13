@@ -34,7 +34,7 @@
 @property (nonatomic, weak) id<FDDrawViewDelegate> delegate;
 
 // adds a path to display to this view
-- (void) addPath:(FDPath *)path;
+- (void) addPath: (FDPath *)path;
 
 - (void) tapHandler: (UIGestureRecognizer *) gestureRecognizer;
 

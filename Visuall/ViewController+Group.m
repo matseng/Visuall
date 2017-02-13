@@ -34,12 +34,14 @@
 
 - (void) handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
-    
     if ( gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
         if (groupItem.sv) [groupItem.sv removeFromSuperview];
         groupItem.sv = [[ShuttleView alloc] init];
-        groupItem.sv.backgroundColor = [UIColor orangeColor];
+//        groupItem.sv.backgroundColor = [UIColor orangeColor];
+        FDDrawView *DrawViewTemp = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        [groupItem.sv addSubview: DrawViewTemp];
+        groupItem.pathsInGroup = [[NSMutableArray alloc] init];
         [[[[UserUtil sharedManager] getState] VisualItemsView] addSubview: groupItem.sv];
         
         [self setSelectedObject:groupItem];
@@ -50,8 +52,30 @@
                  [groupItem.sv addSubview: ni];
              }
          }];
+        
+        [[self.visuallState groupsCollection] myForIn:^(GroupItem *gi)
+         {
+             if ( [groupItem isGroupInGroup: gi]) {
+                 [groupItem.sv addSubview: gi];
+             }
+         }];
+        
+        [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai){
+            if ([groupItem isArrowInGroup: ai]) {
+                [groupItem.sv addSubview: ai];
+            }
+        }];
+        
+        [[[[UserUtil sharedManager] getState] pathsCollection] myForIn:^(PathItem *pi) {
+            if ([groupItem isPathInGroup: pi]) {
+//                [DrawViewTemp drawPathItemOnShapeLayer: pi];
+                [DrawViewTemp.layer addSublayer: pi];
+                [groupItem.pathsInGroup addObject: pi];
+            }
+        }];
+        
     }
-    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged && gestureRecognizer.state != UIGestureRecognizerStateEnded)
+    else if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
 //        [groupItem handlePanGroup2: gestureRecognizer];
         CGPoint translation = [gestureRecognizer translationInView: groupItem];
@@ -65,9 +89,10 @@
         
         [groupItem.sv setFrame: CGRectMake(groupItem.sv.frame.origin.x + translation.x,
                                            groupItem.sv.frame.origin.y + translation.y,
-                                           1000,
-                                           1000)];
+                                           1,
+                                           1)];
     }
+    
     else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
         for (UIView *uv in groupItem.sv.subviews)
@@ -84,11 +109,43 @@
                 [[[[UserUtil sharedManager] getState] NotesView] addSubview: ni];
                 [self.visuallState updateChildValue: ni Property: nil];
             }
+            
+            else if ( [uv isGroupItem] )
+            {
+                GroupItem *gi = [uv getGroupItem];
+                gi.frame = CGRectMake(gi.frame.origin.x + groupItem.sv.frame.origin.x,
+                                      gi.frame.origin.y + groupItem.sv.frame.origin.y,
+                                      gi.frame.size.width,
+                                      gi.frame.size.height);
+                gi.group.x = gi.frame.origin.x;
+                gi.group.y = gi.frame.origin.y;
+                [[[[UserUtil sharedManager] getState] GroupsView] addSubview: gi];
+                [self.visuallState updateChildValue: gi Property:@"frame"];
+            }
+
+            else if ( [uv isArrowItem] )
+            {
+                ArrowItem *ai = [uv getArrowItem];
+                [ai translateArrowByDelta: groupItem.sv.frame.origin];
+                [[[[UserUtil sharedManager] getState] ArrowsView] addSubview: ai];
+                [self.visuallState updateChildValue: ai Property: nil];
+            }
+            
+            else if ( [uv isDrawView] )
+            {
+                FDDrawView *dv = [uv getDrawView];
+                for (PathItem *pi in groupItem.pathsInGroup)
+                {
+                    [dv translatePath: pi byPoint: groupItem.sv.frame.origin];
+                    [[[[[UserUtil sharedManager] getState] DrawView] layer] addSublayer: pi];
+                    [self.visuallState updateValuePath: pi];
+                }
+                [groupItem.pathsInGroup removeAllObjects];
+            }
         };
     }
     
 }
-
 
 - (void) __handlePanGroup: (UIPanGestureRecognizer *) gestureRecognizer andGroupItem: (GroupItem *) groupItem
 {
@@ -130,8 +187,6 @@
                 [pathsInGroup addObject: pi];
             }
         }];
-
-//        NSLog(@"\n handlePanGroup, count %li", [[[self.visuallState groupsCollection] items] count]);
         
         [groupItem setNotesInGroup: notesInGroup];
         [groupItem setGroupsInGroup: groupsInGroup];

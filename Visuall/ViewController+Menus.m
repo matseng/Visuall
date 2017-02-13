@@ -470,16 +470,10 @@ UIColor *darkGrayBorderColor;
     [toolbar2.layer addSublayer:bottomBorder];
     toolbar2.autoresizesSubviews = NO;
     toolbar2.autoresizingMask = UIViewAutoresizingNone;
-//    [toolbar2 setBarStyle:UIBarStyleBlack];
-//    toolbar2.translucent = YES;
     [toolbar2 setBackgroundImage:[UIImage new]
                   forToolbarPosition:UIToolbarPositionAny
                           barMetrics:UIBarMetricsDefault];
-    
-//    [self.toolbar setBackgroundColor:[UIColor clearColor]];
-    toolbar2.backgroundColor = [UIColor clearColor];
-    
-
+    toolbar2.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
     
     [toolbar2 setItems:@[flexibleSpace, segmentControlItem, segmentControlFontItem, segmentControlInsertMediaItem, trashButtonItem, flexibleSpace]];
    

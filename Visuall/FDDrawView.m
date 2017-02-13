@@ -308,6 +308,16 @@
     [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
 }
 
+- (void) __translatePath: (PathItem *) pi byPoint: (CGPoint) translation
+{
+    for (NSUInteger i = 0; i < pi.fdpath.points.count; i++) {
+        FDPoint *point = pi.fdpath.points[i];
+        CGPoint translatedCGPoint = CGPointMake(point.x + translation.x, point.y + translation.y);
+        FDPoint *translatedPoint = [[FDPoint alloc] initWithCGPoint: translatedCGPoint];
+        pi.fdpath.points[i] = translatedPoint;
+    }
+}
+
 - (void) translatePath: (PathItem *) pi byPoint: (CGPoint) translation
 {
     for (NSUInteger i = 0; i < pi.fdpath.points.count; i++) {
