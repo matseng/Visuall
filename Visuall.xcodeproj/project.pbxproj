@@ -44,6 +44,9 @@
 		716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 716B51D51D36C2A40049A203 /* UIView+VisualItem.m */; };
 		71710A841D5D14670038D883 /* SegmentedControlMod.m in Sources */ = {isa = PBXBuildFile; fileRef = 71710A831D5D14660038D883 /* SegmentedControlMod.m */; };
 		7177E1821E4E5A0B00439451 /* ShuttleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7177E1811E4E5A0B00439451 /* ShuttleView.m */; };
+		7177E18A1E53A07F00439451 /* changeSizePlusMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7177E1891E53A07F00439451 /* changeSizePlusMinus.png */; };
+		7177E18C1E53A46F00439451 /* changeSizePlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7177E18B1E53A46F00439451 /* changeSizePlus.png */; };
+		7177E18E1E53A47B00439451 /* changeSizeMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7177E18D1E53A47B00439451 /* changeSizeMinus.png */; };
 		717F61C71D8C66CB0002157B /* defaultVisualization100.xml in Resources */ = {isa = PBXBuildFile; fileRef = 717F61C61D8C66CB0002157B /* defaultVisualization100.xml */; };
 		717F61C91D8C6F3C0002157B /* defaultVisualization13.xml in Resources */ = {isa = PBXBuildFile; fileRef = 717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */; };
 		717F61CB1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png in Resources */ = {isa = PBXBuildFile; fileRef = 717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */; };
@@ -183,6 +186,9 @@
 		71710A831D5D14660038D883 /* SegmentedControlMod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedControlMod.m; sourceTree = "<group>"; };
 		7177E1801E4E5A0B00439451 /* ShuttleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleView.h; sourceTree = "<group>"; };
 		7177E1811E4E5A0B00439451 /* ShuttleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleView.m; sourceTree = "<group>"; };
+		7177E1891E53A07F00439451 /* changeSizePlusMinus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeSizePlusMinus.png; sourceTree = "<group>"; };
+		7177E18B1E53A46F00439451 /* changeSizePlus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeSizePlus.png; sourceTree = "<group>"; };
+		7177E18D1E53A47B00439451 /* changeSizeMinus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeSizeMinus.png; sourceTree = "<group>"; };
 		717F61C61D8C66CB0002157B /* defaultVisualization100.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization100.xml; sourceTree = "<group>"; };
 		717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization13.xml; sourceTree = "<group>"; };
 		717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Microsoft-Visual-Studio-icon_v3.png"; sourceTree = "<group>"; };
@@ -508,6 +514,7 @@
 				71C23F2E1D21F23200D53E0C /* pen.png */,
 				71C23F301D21F41600D53E0C /* conversation-with-text-lines.png */,
 				71C23F361D2220CB00D53E0C /* fontSize.png */,
+				7177E1891E53A07F00439451 /* changeSizePlusMinus.png */,
 				716328B21D25F215009DF56B /* Paint Bucket-50.png */,
 				71C23F381D23081700D53E0C /* fontColor.png */,
 				716328BA1D25F867009DF56B /* picture.png */,
@@ -523,6 +530,8 @@
 			children = (
 				71FD2EDE1D5E7F5000CA5365 /* Decrease Font Filled-50.png */,
 				71FD2EDF1D5E7F5000CA5365 /* Increase Font Filled-50.png */,
+				7177E18B1E53A46F00439451 /* changeSizePlus.png */,
+				7177E18D1E53A47B00439451 /* changeSizeMinus.png */,
 			);
 			name = "Second Submenu";
 			sourceTree = "<group>";
@@ -725,6 +734,7 @@
 				71C23F311D21F41600D53E0C /* conversation-with-text-lines.png in Resources */,
 				716328B51D25F23E009DF56B /* photo-camera.png in Resources */,
 				715C60CD1D79197700DD6942 /* defaultVisualization12k.xml in Resources */,
+				7177E18C1E53A46F00439451 /* changeSizePlus.png in Resources */,
 				71D96BEF1D30347400CD1C49 /* light-bulb@2x.png in Resources */,
 				77E13DA21C011C1700105BB5 /* compass.png in Resources */,
 				71C23F221D21DF9900D53E0C /* cursorClick.png in Resources */,
@@ -745,6 +755,7 @@
 				71D96BE91D301D7A00CD1C49 /* Globe-50.png in Resources */,
 				71C23F2F1D21F23200D53E0C /* pen.png in Resources */,
 				71C23F281D21EF4800D53E0C /* textLetter.png in Resources */,
+				7177E18A1E53A07F00439451 /* changeSizePlusMinus.png in Resources */,
 				71FD2EE11D5E7F5000CA5365 /* Increase Font Filled-50.png in Resources */,
 				71D96BD41D2D997500CD1C49 /* User Groups-50.png in Resources */,
 				717F61CB1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png in Resources */,
@@ -755,6 +766,7 @@
 				71D96BEC1D301D8600CD1C49 /* alarm-bell@2x.png in Resources */,
 				71C23F371D2220CB00D53E0C /* fontSize.png in Resources */,
 				71D96BED1D301D8600CD1C49 /* light-bulb.png in Resources */,
+				7177E18E1E53A47B00439451 /* changeSizeMinus.png in Resources */,
 				71D96BDA1D2E0D5300CD1C49 /* back.png in Resources */,
 				77E13DA61C011CF200105BB5 /* folder.png in Resources */,
 				71C23F391D23081700D53E0C /* fontColor.png in Resources */,

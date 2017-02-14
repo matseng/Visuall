@@ -37,7 +37,7 @@
         }
 }
 
--(void) addArrowItemToMVC: (ArrowItem *) ai
+- (void) addArrowItemToMVC: (ArrowItem *) ai
 {
     [self.ArrowsView addSubview: ai];
     if (ai) [[[UserUtil sharedManager] getState] setValueArrow: ai];

@@ -429,7 +429,7 @@ UIColor *darkGrayBorderColor;
     segmentControlFont.autoresizingMask = UIViewAutoresizingNone;
     UIBarButtonItem *segmentControlFontItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControlFont];
 
-    UIImage *fontSize = [[UIImage imageNamed: @"fontSize"] imageWithExtraPadding: .1];
+    UIImage *fontSize = [[UIImage imageNamed: @"changeSizePlusMinus"] imageWithExtraPadding: .1];
     fontSize = [fontSize imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [segmentControlFont insertSegmentWithImage:fontSize atIndex:0 animated:YES];
     [segmentControlFont setMyTitle:@"fontSize" forSegmentAtIndex:0];
@@ -512,15 +512,15 @@ UIColor *darkGrayBorderColor;
     [self.secondSubmenuScrollView.layer addSublayer:bottomBorder];
     [self.Background addSubview: self.secondSubmenuScrollView];
     
-    UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"Decrease Font Filled-50" buttonSize: h andExtraPadding:0.5];
+    UIButton *decreaseFontSizeButton = [self makeButtonFromImage:@"changeSizeMinus" buttonSize: h andExtraPadding:0.1];
     [self.buttonDictionary setObject: decreaseFontSizeButton forKey:@"decreaseFontSize"];
-    [decreaseFontSizeButton setTitle:@"decreaseFontSize" forState:UIControlStateNormal];
+    [decreaseFontSizeButton setTitle:@"changeSizePlus" forState:UIControlStateNormal];
     UIBarButtonItem *decreaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: decreaseFontSizeButton];
     [decreaseFontSizeButton addTarget:self
                                action:@selector(decreaseFontSizeHandler:)
          forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *increaseFontSizeButton = [self makeButtonFromImage:@"Increase Font Filled-50" buttonSize: h andExtraPadding:0.5];
+    UIButton *increaseFontSizeButton = [self makeButtonFromImage:@"changeSizePlus" buttonSize: h andExtraPadding:0.1];
     [self.buttonDictionary setObject: increaseFontSizeButton forKey:@"increaseFontSize"];
     [increaseFontSizeButton setTitle:@"increaseFontSize" forState:UIControlStateNormal];
     UIBarButtonItem *increaseFontSizeItem = [[UIBarButtonItem alloc] initWithCustomView: increaseFontSizeButton];
@@ -529,8 +529,8 @@ UIColor *darkGrayBorderColor;
                      forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *spacer40 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    [spacer40 setWidth:30];
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [spacer setWidth: h * 2 + 10];
     
     CGRect rect = self.secondSubmenuScrollView.frame;
     rect.origin = CGPointZero;
@@ -542,7 +542,7 @@ UIColor *darkGrayBorderColor;
                           barMetrics:UIBarMetricsDefault];
     
     [toolbar2 setBackgroundColor:[UIColor clearColor]];
-    [toolbar2 setItems:@[flexibleSpace, spacer40, decreaseFontSizeItem, increaseFontSizeItem, flexibleSpace]];
+    [toolbar2 setItems:@[flexibleSpace, spacer, decreaseFontSizeItem, increaseFontSizeItem, flexibleSpace]];
 
     self.secondSubmenuScrollView.delaysContentTouches = NO;
     [self.secondSubmenuScrollView addSubview: toolbar2];
@@ -563,14 +563,17 @@ UIColor *darkGrayBorderColor;
     if ( [self.visuallState.selectedVisualItem isNoteItem] || [self.visuallState.selectedVisualItem isArrowItem] )
     {
         // change size buttons in active state
+        self.segmentControlFormattingOptions.tintColor = self.view.tintColor;
         [self enableButton:@"increaseFontSize"];
         [self enableButton:@"decreaseFontSize"];
     }
     else
     {
         // change size buttons in inactive state
+        self.segmentControlFormattingOptions.tintColor = [UIColor lightGrayColor];
         [self disableButton:@"increaseFontSize"];
         [self disableButton:@"decreaseFontSize"];
+
     }
 }
 

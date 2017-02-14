@@ -417,6 +417,7 @@
     self.BoundsTiledLayerView.frame = newBoundsTiledLayerRect;
     
     self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
+    
     CGRect convertedVisualItemsRectInNewBoundsTiledLayerView = [self.BoundsTiledLayerView convertRect: convertedVisualItemsRectInScrollView fromView: self.BackgroundScrollView];
     self.VisualItemsView.frame = convertedVisualItemsRectInNewBoundsTiledLayerView;
     
@@ -478,7 +479,6 @@
                                             self.VisualItemsView.frame.size.height);
 }
 
-
 - (CGRect) CGRectMakeFromPoint: (CGPoint) p1 andPoint: (CGPoint) p2
 {
     return CGRectMake(MIN(p1.x, p2.x),
@@ -486,7 +486,6 @@
                       fabs(p1.x - p2.x),
                       fabs(p1.y - p2.y));
 }
-
 
 - (CGPoint) findFarCornerPointOf: (CGRect) rect relativeToPoint: (CGPoint) point
 {
@@ -504,8 +503,9 @@
     return CGPointMake(x, y);  // (x, y) are RELATIVE to the given point
 }
 
-- (void) scrollViewWillBeginZooming:(UIScrollView *) scrollView withView:(UIView *)view
+- (void) scrollViewWillBeginZooming: (UIScrollView *) scrollView withView:(UIView *)view
 {
+    return;
     float velocity = scrollView.pinchGestureRecognizer.velocity;
 
     if ( velocity < 0 )
