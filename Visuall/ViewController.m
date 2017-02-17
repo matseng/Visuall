@@ -840,7 +840,7 @@
     
     if ( [self isEditModeOn]
         && [gestureRecognizer isKindOfClass: [UIPanGestureRecognizer class]]
-        && ( [self.BoundsTiledLayerView.hitTestView getGroupItem] == [self.visuallState.selectedVisualItem getGroupItem] )
+        && ( [[self.BoundsTiledLayerView.hitTestView getGroupItem] isEqual: [self.visuallState.selectedVisualItem getGroupItem]] )
 //        && [self.BoundsTiledLayerView.hitTestView isInBoundsOfView: self.BackgroundScrollView ])
 //        && [self.BoundsTiledLayerView.hitTestView isPartiallyInBoundsOfView: self.BackgroundScrollView ]
         )
