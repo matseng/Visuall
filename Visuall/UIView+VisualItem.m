@@ -148,6 +148,7 @@
 
 - (BOOL) isPartiallyInBoundsOfView: (UIView *) parentView
 {
+    if ( [self isDrawView] ) return YES;
 //    int counter = 0;
 //    CGPoint topLeft = [parentView.superview convertPoint: CGPointZero fromView:self];
 //    CGPoint topRight = [parentView.superview convertPoint: CGPointMake(self.frame.size.width, 0) fromView:self];

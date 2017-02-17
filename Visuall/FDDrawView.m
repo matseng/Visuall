@@ -375,6 +375,8 @@
     // draw completed path on its own shape layer
     PathItem *layer = [[PathItem alloc] init];
     layer.fdpath = self.currentPath;
+    self.hitTestPath = layer;
+    self.selectedPath = layer;
  
     [self addPathItemToMVCandFirebase: layer];
     

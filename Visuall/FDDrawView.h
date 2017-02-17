@@ -15,7 +15,7 @@
 @protocol FDDrawViewDelegate <NSObject>
 
 // called when a user finished drawing a line/path
-- (void)drawView:(FDDrawView *)view didFinishDrawingPath:(FDPath *)path;
+- (void) drawView:(FDDrawView *)view didFinishDrawingPath:(FDPath *)path;
 
 @end
 

@@ -194,6 +194,7 @@
     
     // this is the main view and used to show drawing from other users and let the user draw
      FDDrawView *DrawView = [[FDDrawView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    DrawView.delegate = self;
 //    DrawView.backgroundColor  = [UIColor greenColor];
     [[[UserUtil sharedManager] getState] setDrawView: DrawView];
     
@@ -352,6 +353,11 @@
     self.BackgroundScrollView.delegate = self;  // REQUIRED to enable pinch to zoom
     self.automaticallyAdjustsScrollViewInsets = NO;
 //    NSLog(@"NoteView dimensions: %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+}
+
+- (void) drawView:(FDDrawView *)view didFinishDrawingPath:(FDPath *)path
+{
+    [self setSelectedObject: view];
 }
 
 - (void) centerScrollViewContents
