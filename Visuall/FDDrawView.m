@@ -302,20 +302,11 @@
     CGPoint translation = [gestureRecognizer translationInView: [[[UserUtil sharedManager] getState] DrawView]];
 //    CGPoint translation = [gestureRecognizer translationInView: gestureRecognizer.view];
     [self translatePath: pi byPoint: translation];
-    self.currentPath = pi.fdpath;
-    [self highlightSelectedPath];
+//    self.currentPath = pi.fdpath;
+//    [self setNeedsDisplay];
+    [self highlightPath: pi];
     [gestureRecognizer setTranslation:CGPointZero inView: [[[UserUtil sharedManager] getState] DrawView]];
     [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
-}
-
-- (void) __translatePath: (PathItem *) pi byPoint: (CGPoint) translation
-{
-    for (NSUInteger i = 0; i < pi.fdpath.points.count; i++) {
-        FDPoint *point = pi.fdpath.points[i];
-        CGPoint translatedCGPoint = CGPointMake(point.x + translation.x, point.y + translation.y);
-        FDPoint *translatedPoint = [[FDPoint alloc] initWithCGPoint: translatedCGPoint];
-        pi.fdpath.points[i] = translatedPoint;
-    }
 }
 
 - (void) translatePath: (PathItem *) pi byPoint: (CGPoint) translation
@@ -328,7 +319,6 @@
     }
     [self drawPathItemOnShapeLayer: pi];
 }
-
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
 {
@@ -393,6 +383,7 @@
     
     // reset drawing state
     self.currentPath = nil;
+    self.shapeLayer.lineWidth = 0;
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -482,6 +473,14 @@ Problem:
     self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
     [self.shapeLayerBackground setFillColor: nil];
     [self.shapeLayerBackground setPath: self.selectedPath.path];
+}
+
+- (void) highlightPath: (PathItem *) pi
+{
+    self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
+    self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
+    [self.shapeLayerBackground setFillColor: nil];
+    [self.shapeLayerBackground setPath: pi.path];
 }
 
 - (void) removeHighlightFromPreviouslySelectedPath
