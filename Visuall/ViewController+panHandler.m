@@ -167,7 +167,7 @@
         }
         else if ( [self.visuallState.selectedVisualItemDuringPan isNoteItem] )
         {
-            [self updateTotalBounds: self.visuallState.selectedVisualItemDuringPan];
+            [self calculateTotalBounds: self.visuallState.selectedVisualItemDuringPan];
         }
         else if ( [self.visuallState.selectedVisualItemDuringPan isGroupItem] )
         {
@@ -177,7 +177,7 @@
                 [self refreshGroupsView];  // TODO (Aug 10, 2016): Get this working again
                 [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];  // To re-render the handles  // TODO (Aug 10, 2016): animate this step for a smoother transition
             }
-            [self updateTotalBounds: gi];
+            [self calculateTotalBounds: gi];
 //            [self centerScrollViewContents2];
             [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
         }

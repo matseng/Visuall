@@ -112,8 +112,6 @@
 
 - (void) calculateTotalBounds: (UIView *) view;
 
-- (void) updateTotalBounds: (UIView *) view;
-
 - (void) constrainWidthToSuperview: (UIView *) subView;
 
 - (void) centerScrollViewContents2;
