@@ -12,6 +12,12 @@
 
 @interface ScrollViewMod : UIScrollView
 
+@property BOOL zoomFromDoubleTapGesture;
+
+@property BOOL isZoomedToRect;
+
+@property UIView *doubleTapFocus;
+
 - (void)scrollRectToVisibleSuperclass:(CGRect)rect animated:(BOOL)animated;
 
 @end

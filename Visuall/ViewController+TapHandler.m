@@ -84,30 +84,63 @@ NoteItem2 *targetNoteForArrow;
     }
 }
 
+/*
+ * Name: isZoomedOut
+ * Description:
+ */
+- (BOOL) isZoomedOut
+{
+    CGRect rect = [self.visuallState selectedVisualItem].frame;
+    rect = [self.BackgroundScrollView convertRect: rect fromView:self.VisualItemsView];
+    if (rect.size.width < self.BackgroundScrollView.frame.size.width
+        && rect.size.height < self.BackgroundScrollView.frame.size.height)
+    {
+        return YES;
+    }
+    return NO;
+}
+
+
+/*
+ * Name: doubleTapHandler
+ * Description: (1) Zoom in by 2x or (2) Zoom directly to Group or Note
+ * Use variable to keep track of most recent double-tap target
+ */
 - (void) doubleTapHandler:(UITapGestureRecognizer *) gesture
 {
+ 
     NSLog(@"\n HERE doubleTapHandler");
+    float zoomFactor = 3;
     if (gesture.numberOfTouches == 1)
     {
-        if([self.visuallState selectedVisualItem])
+        if( [self.visuallState selectedVisualItem]
+           && !( [[self.visuallState selectedVisualItem] isDrawView] )
+           && [self isZoomedOut] )
         {
-            // Double tap visual item --> zoom to rect of a visual item
             CGRect rect = [self.visuallState selectedVisualItem].frame;
             rect = [self.BoundsTiledLayerView convertRect: rect fromView:self.VisualItemsView];
             [self.BackgroundScrollView zoomToRect:rect animated:YES];
+            self.BackgroundScrollView.isZoomedToRect = YES;
+            self.BackgroundScrollView.doubleTapFocus = self.visuallState.selectedVisualItem;
+            
         }
         else
         {
-            // Double tap background --> zoom in by a factor of 2
-            CGFloat scale = self.BackgroundScrollView.zoomScale;
-            [self.BackgroundScrollView setZoomScale: scale * 2 animated:YES];
+            CGPoint centerPoint = [gesture locationInView: self.BoundsTiledLayerView];
+            CGRect rect = [self.BoundsTiledLayerView convertRect: self.BackgroundScrollView.frame fromView: self.BackgroundScrollView];
+            rect = CGRectMake( centerPoint.x - rect.size.width / (2 * zoomFactor),
+                              centerPoint.y - rect.size.height / (2 * zoomFactor),
+                                     rect.size.width / zoomFactor,
+                                     rect.size.height / zoomFactor);
+            
+            [self.BackgroundScrollView zoomToRect:rect animated:YES];
         }
     }
     else if (gesture.numberOfTouches == 2)
     {
-        // Two finger double tap --> zoom out by a factor of 2
+        // Two finger double tap --> zoom out by zoomFactor
         CGFloat scale = self.BackgroundScrollView.zoomScale;
-        [self.BackgroundScrollView setZoomScale: scale / 2 animated:YES];
+        [self.BackgroundScrollView setZoomScale: scale / zoomFactor animated:YES];
     }
 }
 

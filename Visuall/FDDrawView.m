@@ -425,7 +425,7 @@ Problem:
                                                                      NULL,
 //                                                                     fmaxf(35.0f, path.lineWidth),
 //                                                                     path.lineWidth,
-                                                                     self.lineWidth * 3.0,
+                                                                     self.lineWidth * 6.0,
                                                                      path.lineCapStyle,
                                                                      path.lineJoinStyle,
                                                                      path.miterLimit);

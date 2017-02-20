@@ -298,6 +298,8 @@
     [self resizeBackgroundScrollView];
     
     self.BackgroundScrollView.multipleTouchEnabled = YES;
+    self.BackgroundScrollView.isZoomedToRect = NO;
+    self.BackgroundScrollView.zoomFromDoubleTapGesture = NO;
     
     TouchDownGestureRecognizer *touchDown = [[TouchDownGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchDown:)];
     touchDown.delegate = self;
@@ -509,17 +511,16 @@
     return CGPointMake(x, y);  // (x, y) are RELATIVE to the given point
 }
 
-- (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
+- (void) scrollViewWillBeginZooming:(UIScrollView *) scrollView withView:(UIView *)view
 {
     float velocity = scrollView.pinchGestureRecognizer.velocity;
     if ( ([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) && velocity < 0 )  // if ipad then proceed with this fix
     {
-        [self centerScrollViewContents2];
-        [self expandBoundsTiledLayerView: 8];  // Adds 1.75 screen widths to the self.BackgroundScrollView
+        [self expandBoundsTiledLayerView: 4];  // Adds 4 screen widths to the self.BackgroundScrollView
     }
 }
 
-- (void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+- (void) scrollViewDidEndZooming:(UIScrollView *) scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
     [self centerScrollViewContents2];
     [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
@@ -563,8 +564,6 @@
     self.BoundsTiledLayerView.frame = contentsFrame;
     }
 }
-
-
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
