@@ -252,10 +252,18 @@
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan ||
         gestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
+        CGPoint translation = [gestureRecognizer translationInView:self];
+        [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         if (self.handleSelected == handleBottomRight)
         {
-            CGPoint translation = [gestureRecognizer translationInView:self];
-            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            if ( fabs(translation.x / translation.y) > 1 )
+            {
+                translation.x = translation.y * self.group.width / self.group.height;
+            }
+            else
+            {
+                translation.y = translation.x * self.group.height / self.group.width;
+            }
             float width = self.group.width + translation.x;
             float height = self.group.height + translation.y;
             //        [self.group setHeight:height andWidth:width];
@@ -268,8 +276,14 @@
             }
         } else if (self.handleSelected == handleTopLeft)
         {
-            CGPoint translation = [gestureRecognizer translationInView:self];
-            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            if ( fabs(translation.x / translation.y) > 1 )
+            {
+                translation.x = translation.y * self.group.width / self.group.height;
+            }
+            else
+            {
+                translation.y = translation.x * self.group.height / self.group.width;
+            }
             float width = self.group.width - translation.x;
             float height = self.group.height - translation.y;
             if ( width > _handleDiameter )
@@ -283,23 +297,53 @@
             }
         } else if (self.handleSelected == handleTopRight)
         {
-            CGPoint translation = [gestureRecognizer translationInView:self];
-            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            if ( (translation.x > 0 && translation.y < 0)
+                || (translation.x < 0 && translation.y > 0) )
+            {
+                if ( fabs(translation.x / translation.y) > 1 )
+                {
+                    translation.x = - translation.y * self.group.width / self.group.height;
+                }
+                else
+                {
+                    translation.y = - translation.x * self.group.height / self.group.width;
+                }
+            }
+            else
+            {
+                return;
+            }
+            
             float width = self.group.width + translation.x;
             float height = self.group.height - translation.y;
+            
             if ( width > _handleDiameter )
             {
                 [self.group setWidth: width];
-                [self.group setX:self.group.x];
+                [self.group setX: self.group.x];
             }
             if (height > _handleDiameter * 1 ) {
                 [self.group setHeight: height];
-                [self.group setY:self.group.y + translation.y];
+                [self.group setY: self.group.y + translation.y];
             }
         } else if (self.handleSelected == handleBottomLeft)
         {
-            CGPoint translation = [gestureRecognizer translationInView:self];
-            [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
+            if ( (translation.x > 0 && translation.y < 0)
+                || (translation.x < 0 && translation.y > 0) )
+            {
+                if ( fabs(translation.x / translation.y) > 1 )
+                {
+                    translation.x = - translation.y * self.group.width / self.group.height;
+                }
+                else
+                {
+                    translation.y = - translation.x * self.group.height / self.group.width;
+                }
+            }
+            else
+            {
+                return;
+            }
             float width = self.group.width - translation.x;
             float height = self.group.height + translation.y;
             if ( width > _handleDiameter )
