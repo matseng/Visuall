@@ -256,13 +256,16 @@
         [gestureRecognizer setTranslation:CGPointZero inView:gestureRecognizer.view];
         if (self.handleSelected == handleBottomRight)
         {
-            if ( fabs(translation.x / translation.y) > 1 )
+            if ( [self isImage] )
             {
-                translation.x = translation.y * self.group.width / self.group.height;
-            }
-            else
-            {
-                translation.y = translation.x * self.group.height / self.group.width;
+                if ( fabs(translation.x / translation.y) > 1 )
+                {
+                    translation.x = translation.y * self.group.width / self.group.height;
+                }
+                else
+                {
+                    translation.y = translation.x * self.group.height / self.group.width;
+                }
             }
             float width = self.group.width + translation.x;
             float height = self.group.height + translation.y;
@@ -276,13 +279,16 @@
             }
         } else if (self.handleSelected == handleTopLeft)
         {
-            if ( fabs(translation.x / translation.y) > 1 )
+            if ( [self isImage] )
             {
-                translation.x = translation.y * self.group.width / self.group.height;
-            }
-            else
-            {
-                translation.y = translation.x * self.group.height / self.group.width;
+                if ( fabs(translation.x / translation.y) > 1 )
+                {
+                    translation.x = translation.y * self.group.width / self.group.height;
+                }
+                else
+                {
+                    translation.y = translation.x * self.group.height / self.group.width;
+                }
             }
             float width = self.group.width - translation.x;
             float height = self.group.height - translation.y;
@@ -297,21 +303,24 @@
             }
         } else if (self.handleSelected == handleTopRight)
         {
-            if ( (translation.x > 0 && translation.y < 0)
-                || (translation.x < 0 && translation.y > 0) )
+            if ( [self isImage] )
             {
-                if ( fabs(translation.x / translation.y) > 1 )
+                if ( (translation.x > 0 && translation.y < 0)
+                    || (translation.x < 0 && translation.y > 0) )
                 {
-                    translation.x = - translation.y * self.group.width / self.group.height;
+                    if ( fabs(translation.x / translation.y) > 1 )
+                    {
+                        translation.x = - translation.y * self.group.width / self.group.height;
+                    }
+                    else
+                    {
+                        translation.y = - translation.x * self.group.height / self.group.width;
+                    }
                 }
                 else
                 {
-                    translation.y = - translation.x * self.group.height / self.group.width;
+                    return;
                 }
-            }
-            else
-            {
-                return;
             }
             
             float width = self.group.width + translation.x;
@@ -328,21 +337,24 @@
             }
         } else if (self.handleSelected == handleBottomLeft)
         {
-            if ( (translation.x > 0 && translation.y < 0)
-                || (translation.x < 0 && translation.y > 0) )
+            if ( [self isImage] )
             {
-                if ( fabs(translation.x / translation.y) > 1 )
+                if ( (translation.x > 0 && translation.y < 0)
+                    || (translation.x < 0 && translation.y > 0) )
                 {
-                    translation.x = - translation.y * self.group.width / self.group.height;
+                    if ( fabs(translation.x / translation.y) > 1 )
+                    {
+                        translation.x = - translation.y * self.group.width / self.group.height;
+                    }
+                    else
+                    {
+                        translation.y = - translation.x * self.group.height / self.group.width;
+                    }
                 }
                 else
                 {
-                    translation.y = - translation.x * self.group.height / self.group.width;
+                    return;
                 }
-            }
-            else
-            {
-                return;
             }
             float width = self.group.width - translation.x;
             float height = self.group.height + translation.y;
@@ -362,7 +374,8 @@
     }
     else if ( gestureRecognizer.state == UIGestureRecognizerStateEnded )
     {
-        
+        float zoomScale =  [[[UserUtil sharedManager] getState] getZoomScale];
+        [self setViewAsSelectedForEditModeOn: YES andZoomScale: zoomScale];
     }
 }
 

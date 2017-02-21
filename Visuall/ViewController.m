@@ -513,6 +513,7 @@
 
 - (void) scrollViewWillBeginZooming:(UIScrollView *) scrollView withView:(UIView *)view
 {
+    return;
     float velocity = scrollView.pinchGestureRecognizer.velocity;
     if ( ([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) && velocity < 0 )  // if ipad then proceed with this fix
     {
@@ -1224,7 +1225,7 @@
         [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];
         [[self.view window] endEditing:YES];
         self.visuallState.selectedVisualItem = gi;
-        self.visuallState.selectedVisualItem = gi;
+//        self.visuallState.selectedVisualItem = gi;
     }
     else if ( [object isArrowItem] )
     {
