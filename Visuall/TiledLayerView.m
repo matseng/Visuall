@@ -62,7 +62,7 @@
     return NO;
 }
 
-- (UIView *) hitTestOnGroups: (CGPoint)point withEvent:(UIEvent *)event
+- (UIView *) hitTestOnGroups: (CGPoint) point withEvent:(UIEvent *)event
 {
     UIView *result;
     UIView *GroupsView = [[[UserUtil sharedManager] getState] GroupsView];

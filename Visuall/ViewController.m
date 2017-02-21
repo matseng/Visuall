@@ -818,11 +818,6 @@
         return NO;
     }
     
-//    if ( [[[UserUtil sharedManager] getState] isDrawButtonSelected] )
-//    {
-//        return YES;
-//    }
-    
     if( [gestureRecognizer isKindOfClass: [TouchDownGestureRecognizer class]])
     {
         return YES;

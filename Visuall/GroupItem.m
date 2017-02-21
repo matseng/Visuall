@@ -540,6 +540,9 @@
         //        [self renderGroup];
         [self renderHandles];
         [self updateFrame];
+    } else
+    {
+        [self setViewAsNotSelected];
     }
     self.innerGroupView.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
     self.innerGroupView.layer.borderWidth = floor(SELECTED_VIEW_BORDER_WIDTH / zoomScale);
@@ -553,6 +556,11 @@
     [handleTopRight removeFromSuperview];
     [handleBottomLeft removeFromSuperview];
     [handleBottomRight removeFromSuperview];
+    
+    handleBottomLeft = nil;
+    handleTopRight = nil;
+    handleBottomLeft = nil;
+    handleBottomRight = nil;
 }
 
 
