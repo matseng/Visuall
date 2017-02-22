@@ -1188,8 +1188,7 @@
             [[self.visuallState.selectedVisualItem getGroupItem] setViewAsNotSelected];
         } else if ( [self.visuallState.selectedVisualItem isArrowItem] )
         {
-            object = [object getArrowItem];
-            [[self.visuallState.selectedVisualItem getArrowItem] setViewAsNotSelected];  // if the object is a handle, then it gets mutated here. Hence the line above to get the arrow item
+            [[self.visuallState.selectedVisualItem getArrowItem] setViewAsNotSelected];
         }
         else if ( [self.visuallState.selectedVisualItem isDrawView] )
         {
@@ -1212,7 +1211,6 @@
         visualObject.layer.borderColor = SELECTED_VIEW_BORDER_COLOR;
         visualObject.layer.borderWidth = SELECTED_VIEW_BORDER_WIDTH;
         self.visuallState.selectedVisualItem = noteToSet;
-        self.visuallState.selectedVisualItem = noteToSet;
     }
     else if ( [object isGroupItem] )
     {
@@ -1220,12 +1218,10 @@
         [gi setViewAsSelectedForEditModeOn:[self.visuallState editModeOn] andZoomScale:[self.visuallState getZoomScale]];
         [[self.view window] endEditing:YES];
         self.visuallState.selectedVisualItem = gi;
-//        self.visuallState.selectedVisualItem = gi;
     }
     else if ( [object isArrowItem] )
     {
         ArrowItem *ai = [object getArrowItem];
-        self.visuallState.selectedVisualItem = ai;  // TODO (Aug 30, 2016): Stop using this property and instead use self.visuallState as below
         self.visuallState.selectedVisualItem = ai;
         [ai setViewAsSelected];
     }

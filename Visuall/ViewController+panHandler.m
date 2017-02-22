@@ -30,11 +30,14 @@
  */
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer
 {
+    UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
+    NSLog(@"panHandler viewHit %@", [viewHit class]);
     if ( [self isDrawGroupButtonSelected] )  // isGroupHandle
     {
         [self drawGroup: gestureRecognizer];
         return;
-    } else if ([self isArrowButtonSelected] )
+    } else if ([self isArrowButtonSelected]
+               && ![[viewHit getArrowItem] isEqual:[self.visuallState.selectedVisualItem getArrowItem]] ) // Allow draw arrow if not
     {
         [self panHandlerForDrawArrow: gestureRecognizer];
         return;
@@ -48,8 +51,7 @@
         || gestureRecognizer.state == UIGestureRecognizerStateChanged
         || gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
-        NSLog(@"panHandler viewHit %@", [viewHit class]);
+
         if ( ([self isPointerButtonSelected] || [self isNoteButtonSelected])
             && [self.visuallState.selectedVisualItemDuringPan isNoteItem])  // Pan a note
         {

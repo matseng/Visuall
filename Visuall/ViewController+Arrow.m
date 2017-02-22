@@ -26,14 +26,17 @@
         // State changed
         if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
             CGPoint endPoint = [gestureRecognizer locationInView: self.ArrowsView];
-            [self.NotesView.layer addSublayer:[ArrowItem makeArrowFromStartPointToEndPoint: endPoint]];  // temporarily added arrow to NotesView for aesthetics only
+            [self.DrawArrowShapeLayer removeFromSuperlayer];
+            self.DrawArrowShapeLayer = [ArrowItem makeArrowFromStartPointToEndPoint: endPoint];
+            [self.NotesView.layer addSublayer: self.DrawArrowShapeLayer];  // temporarily added arrow to NotesView for aesthetics only
         }
     
         // State ended
-        if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+        {
+            [self.DrawArrowShapeLayer removeFromSuperlayer];
             ArrowItem *ai = [[ArrowItem alloc] initArrowFromStartPointToEndPoint];
             [self addArrowItemToMVC: ai];
-            [self setSelectedObject: ai];
         }
 }
 

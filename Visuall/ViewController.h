@@ -65,6 +65,8 @@
 
 @property (strong, nonatomic) IBOutlet UIView *ArrowsView;
 
+@property (strong, nonatomic) CAShapeLayer *DrawArrowShapeLayer;
+
 @property UIView *drawGroupView;
 
 @property (strong, nonatomic) IBOutlet UIView *NotesView;

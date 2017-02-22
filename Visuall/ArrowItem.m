@@ -135,7 +135,6 @@ static CAShapeLayer *__tempShapeLayer;
         self.borderColor = [UIColor blueColor];
         
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];
-        [[[UserUtil sharedManager] getState] setSelectedVisualItem: self];
         [self addArrowSublayer];
         [self addHandles];
     }
