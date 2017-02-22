@@ -185,12 +185,11 @@
     CGRect frame = self.noteTextView.frame;
     frame.size.width = CGRectInfinite.size.width;
     self.noteTextView.frame = frame;
-    
     [self.noteTextView setScrollEnabled: YES];
     [self.noteTextView setText: text];
     [self.noteTextView sizeToFit];
     [self.noteTextView setScrollEnabled: NO];
-
+    self.noteTextView.clipsToBounds = NO;
     frame = self.noteTextView.frame;
     if ( !self.fontSizeScaleFactor ) self.fontSizeScaleFactor = 1.0;
     
