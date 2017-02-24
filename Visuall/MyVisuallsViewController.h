@@ -13,6 +13,6 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic)  NSArray *recipes;
+@property (strong, nonatomic)  NSMutableArray *recipes;
 
 @end

@@ -26,14 +26,36 @@
     self.tableView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-    self.recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
+//    self.recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
 
+    self.recipes = [NSMutableArray arrayWithObjects: @"n/a", nil];
     
     // TODO (Sep 21, 2016): get list of public and private Visualls loaded as CLASS variables in StateUtilFirebase
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"personalVisuallDidLoad" object:nil];
     [StateUtilFirebase loadVisuallsListForCurrentUser];
     
+    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"+ New"
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(addNewVisuall)];
+    self.navigationItem.rightBarButtonItem = anotherButton;
+    
 }
+
+- (void) addNewVisuall
+{
+    NSString *title = @"New Visuall goes here";
+    [self.recipes addObject: title];
+    [self.tableView beginUpdates];
+//    tblname.insertRowsAtIndexPaths([
+//                                    NSIndexPath(forRow: Yourarray.count-1, inSection: 0)
+//                                    ], withRowAnimation: .Automatic)
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath
+                                                   indexPathForRow:self.recipes.count - 1 inSection:0]]
+                           withRowAnimation:UITableViewRowAnimationBottom];
+     [self.tableView endUpdates];
+}
+
 
 -(void) personalVisuallsDidLoadNotification:(NSNotification*) notification
 {
@@ -105,7 +127,7 @@
     
     cell.textLabel.text = [self.recipes objectAtIndex:indexPath.row];
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+//    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     return cell;
 }
 
