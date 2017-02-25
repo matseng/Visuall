@@ -10,6 +10,7 @@
 #import "MyVisuallsDetailViewController.h"
 #import "ViewController.h"
 #import "UIImage+Extras.h"
+//#import "CustomTableViewCell.h"
 
 @interface MyVisuallsViewController ()
 
@@ -53,7 +54,10 @@
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath
                                                    indexPathForRow:self.recipes.count - 1 inSection:0]]
                            withRowAnimation:UITableViewRowAnimationBottom];
-     [self.tableView endUpdates];
+    [self.tableView endUpdates];
+    
+//    [self performSegueWithIdentifier:@"segueToInfoModal" sender:self];
+    [self performSegueWithIdentifier:@"segueToNewVisuall" sender:self];
 }
 
 
@@ -114,6 +118,10 @@
 {
     return [self.recipes count];
 }
+
+// TODO (Feb 23, 2017): Trying to create a custom table cell that has in-line editable text
+// http://stackoverflow.com/questions/9090102/allow-a-user-to-edit-the-text-in-a-uitableview-cell
+// https://code.tutsplus.com/tutorials/ios-sdk-crafting-custom-uitableview-cells--mobile-15702
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

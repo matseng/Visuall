@@ -10,6 +10,7 @@
 		210833191C0127AB00BA059F /* GroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 210833171C0127AB00BA059F /* GroupItem.m */; };
 		219E5FA41C00285E00CEE0D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 219E5FA31C00285E00CEE0D5 /* UIKit.framework */; };
 		710B0F481D81EE96000D6B9A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 710B0F471D81EE96000D6B9A /* GoogleService-Info.plist */; };
+		7116A2681E61199400FED276 /* NewVisuallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7116A2671E61199400FED276 /* NewVisuallViewController.m */; };
 		712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */ = {isa = PBXBuildFile; fileRef = 712682021D49997700A0A2F7 /* ScrollViewMod.m */; };
 		712EC95A1BEAF21500ED6803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9591BEAF21500ED6803 /* main.m */; };
 		712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC95C1BEAF21500ED6803 /* AppDelegate.m */; };
@@ -129,6 +130,8 @@
 		219E5FA31C00285E00CEE0D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		40A382F99E853FE4AB8D376B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		710B0F471D81EE96000D6B9A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7116A2661E61199400FED276 /* NewVisuallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewVisuallViewController.h; sourceTree = "<group>"; };
+		7116A2671E61199400FED276 /* NewVisuallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewVisuallViewController.m; sourceTree = "<group>"; };
 		712682011D49997700A0A2F7 /* ScrollViewMod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewMod.h; sourceTree = "<group>"; };
 		712682021D49997700A0A2F7 /* ScrollViewMod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewMod.m; sourceTree = "<group>"; };
 		712EC9541BEAF21500ED6803 /* Visuall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visuall.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -562,6 +565,8 @@
 				7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */,
 				71D96BC81D2C59AA00CD1C49 /* MyVisuallsViewController.h */,
 				71D96BC91D2C59AA00CD1C49 /* MyVisuallsViewController.m */,
+				7116A2661E61199400FED276 /* NewVisuallViewController.h */,
+				7116A2671E61199400FED276 /* NewVisuallViewController.m */,
 				71D96BCE1D2C66D000CD1C49 /* MyVisuallsDetailViewController.h */,
 				71D96BCF1D2C66D000CD1C49 /* MyVisuallsDetailViewController.m */,
 			);
@@ -850,6 +855,7 @@
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */,
 				71FD2EFE1D74DDF900CA5365 /* Collection.m in Sources */,
+				7116A2681E61199400FED276 /* NewVisuallViewController.m in Sources */,
 				716B51D61D36C2A40049A203 /* UIView+VisualItem.m in Sources */,
 				7161CF671D556C6E00B278EB /* GlobalViewController.m in Sources */,
 				7177E1821E4E5A0B00439451 /* ShuttleView.m in Sources */,
