@@ -15,4 +15,6 @@
 
 @property (strong, nonatomic)  NSMutableArray *recipes;
 
+@property (strong, nonatomic) NSDictionary *infoFromNewVisuallVC;
+
 @end

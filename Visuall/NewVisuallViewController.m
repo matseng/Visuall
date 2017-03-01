@@ -7,8 +7,11 @@
 //
 
 #import "NewVisuallViewController.h"
+#import "MyVisuallsViewController.h"
 
 @interface NewVisuallViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextField *TitleTextField;
 
 @end
 
@@ -21,11 +24,39 @@
     barButton.title = @"Cancel";
     self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
     
-    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                       style:UIBarButtonItemStylePlain
                                                                      target:self
-                                                                     action:@selector(done:)];
-    self.navigationItem.rightBarButtonItem = anotherButton;
+                                                                     action:@selector(doneHandler)];
+    self.navigationItem.rightBarButtonItem = doneButton;
+}
+
+/*
+ * Name: doneHandler
+ * Description: Passes object of information (title, author, etc.)
+ * http://stackoverflow.com/questions/12509422/how-to-perform-unwind-segue-programmatically?noredirect=1&lq=1
+ */
+- (void) doneHandler
+{
+//    UIStoryboardSegue *unwind = [self seguewith
+
+//    MyVisuallsViewController *controller = (MyVisuallsViewController *) segue.destinationViewController;
+    
+    
+    [self performSegueWithIdentifier: @"unwindToMyVisuallsVC" sender: self];
+    
+}
+                                 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
+    {
+        MyVisuallsViewController *controller = (MyVisuallsViewController *)segue.destinationViewController;
+        NSDictionary *info = @{
+                               @"title": self.TitleTextField.text
+                               };
+        controller.infoFromNewVisuallVC = info;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

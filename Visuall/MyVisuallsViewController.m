@@ -43,19 +43,29 @@
     
 }
 
+/*
+ * Name: unwindToContainerVC
+ * Description: Receives manual unwind from NewVisuallViewController
+ * Displays new Visuall name
+ * // TODO (Mar 1, 2017): Save new Visuall name in Firebase and load specific visuall
+ * Add info button that allows editing and deleting of a visuall
+ */
+- (IBAction) unwindToContainerVC:(UIStoryboardSegue *) segue
+{
+    if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
+    {
+        NSString *title = [self.infoFromNewVisuallVC valueForKey: @"title"];
+        [self.recipes addObject: title];
+        [self.tableView beginUpdates];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath
+                                                  indexPathForRow:self.recipes.count - 1 inSection:0]]
+                              withRowAnimation:UITableViewRowAnimationBottom];
+        [self.tableView endUpdates];
+    }
+}
+
 - (void) addNewVisuall
 {
-    NSString *title = @"New Visuall goes here";
-    [self.recipes addObject: title];
-    [self.tableView beginUpdates];
-//    tblname.insertRowsAtIndexPaths([
-//                                    NSIndexPath(forRow: Yourarray.count-1, inSection: 0)
-//                                    ], withRowAnimation: .Automatic)
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath
-                                                   indexPathForRow:self.recipes.count - 1 inSection:0]]
-                           withRowAnimation:UITableViewRowAnimationBottom];
-    [self.tableView endUpdates];
-    
 //    [self performSegueWithIdentifier:@"segueToInfoModal" sender:self];
     [self performSegueWithIdentifier:@"segueToNewVisuall" sender:self];
 }
