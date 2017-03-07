@@ -11,6 +11,7 @@
 #import "ViewController.h"
 #import "UIImage+Extras.h"
 //#import "CustomTableViewCell.h"
+#import "UserUtil.h"
 
 @interface MyVisuallsViewController ()
 
@@ -55,12 +56,8 @@
     if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
     {
         NSString *title = [self.infoFromNewVisuallVC valueForKey: @"title"];
-        [self.recipes addObject: title];
-        [self.tableView beginUpdates];
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath
-                                                  indexPathForRow:self.recipes.count - 1 inSection:0]]
-                              withRowAnimation:UITableViewRowAnimationBottom];
-        [self.tableView endUpdates];
+        [self appendVisuallToList: title];
+        [StateUtilFirebase setValueVisuall: title];
     }
 }
 
@@ -71,15 +68,29 @@
 }
 
 
--(void) personalVisuallsDidLoadNotification:(NSNotification*) notification
+- (void) personalVisuallsDidLoadNotification:(NSNotification*) notification
 {
     if ([notification.name isEqualToString:@"personalVisuallDidLoad"])
     {
+        /*
         NSDictionary* userInfo = notification.userInfo;
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]];
         cell.textLabel.text = userInfo[@"title"];  // TODO (Sep 21, 2016): Load data here that needed for table view display... and to load the visuall graph
+         */
+        [self appendVisuallToList: notification.userInfo[@"title"]];
     }
 }
+
+- (void) appendVisuallToList: (NSString *) title
+{
+    [self.recipes addObject: title];
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath
+                                              indexPathForRow:self.recipes.count - 1 inSection:0]]
+                          withRowAnimation:UITableViewRowAnimationBottom];
+    [self.tableView endUpdates];
+}
+
 
 //- (void)viewDidAppear:(BOOL)animated
 //{

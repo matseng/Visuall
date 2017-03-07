@@ -77,6 +77,8 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 + (void) loadVisuallsListForCurrentUser;
 
++ (void) setValueVisuall: (NSString *) title;
+
 - (void) setCallbackPublicVisuallLoaded: (void (^)(void)) callback;
 
 //- (void) loadVisuallsListForCurrentUser;
@@ -88,6 +90,8 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 - (void) loadFirebaseGroups: (void (^)(GroupItem *ni)) callback;
 
 - (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
+
+- (void) setValueVisuall: (NSString *) title;
 
 - (void) setValueNote: (NoteItem2 *) ni;
 

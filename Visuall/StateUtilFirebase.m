@@ -129,7 +129,7 @@ static NSMutableDictionary *__personalVisuallList;
         NSString *title = snapshot.value;
         [list setValue: title forKey: snapshot.key];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{@"title": title}];
-        NSLog(@"\n My title: %@", list[snapshot.key]);
+        NSLog(@"\n getVisuallDetailsForRef - My title: %@", list[snapshot.key]);
     }];
     
 }
@@ -167,17 +167,7 @@ static NSMutableDictionary *__personalVisuallList;
      {
          if ( ![snapshot exists] ) //create first Visuall for current user
          {
-             NSDictionary *visuallDictionary = @{
-                                                 @"title": @"My First Visuall",
-                                                 @"date-created": [FIRServerValue timestamp],
-                                                 @"created-by": [FIRAuth auth].currentUser.uid,
-                                                 @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" }
-                                                 };
-             _visuallsTable_currentVisuallRef = [self.visuallsTableRef childByAutoId];
-             _currentVisuallKey = self.visuallsTable_currentVisuallRef.key;
-             [self.visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
-             [visuallsPersonalRef updateChildValues: @{self.visuallsTable_currentVisuallRef.key: @"1"} ];
-             
+             [self setValueVisuall: @"My First Visuall"];
          } else
          {  // run thru list of Visualls
              NSDictionary *visuallPersonalKeys = (NSDictionary *) snapshot.value;
@@ -189,6 +179,43 @@ static NSMutableDictionary *__personalVisuallList;
              }
          }
      }];
+}
+
+- (void) setValueVisuall: (NSString *) title
+{
+    FIRDatabaseReference *visuallsPersonalRef =  [self.usersTableCurrentUser child: @"visualls-personal"];
+    NSDictionary *visuallDictionary = @{
+                                        @"title": title,
+                                        @"date-created": [FIRServerValue timestamp],
+                                        @"created-by": [FIRAuth auth].currentUser.uid,
+                                        @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" }
+                                        };
+    _visuallsTable_currentVisuallRef = [self.visuallsTableRef childByAutoId];
+    _currentVisuallKey = self.visuallsTable_currentVisuallRef.key;
+    [self.visuallsTable_currentVisuallRef updateChildValues: visuallDictionary];
+//    [visuallsPersonalRef updateChildValues: @{self.visuallsTable_currentVisuallRef.key: @"1"} ];
+    [visuallsPersonalRef updateChildValues: @{_currentVisuallKey: @"1"} ];
+}
+
++ (void) setValueVisuall: (NSString *) title
+{
+    NSString *userID = [[UserUtil sharedManager] userID];
+    FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
+    FIRDatabaseReference *visuallsPersonalRef =  [usersTableCurrentUser child: @"visualls-personal"];
+    FIRDatabaseReference *visuallsTableRef = [version01TableRef child: @"visualls"];
+    FIRDatabaseReference *currentVisuallRef = [visuallsTableRef childByAutoId];
+    
+    NSDictionary *visuallDictionary = @{
+                                        @"title": title,
+                                        @"date-created": [FIRServerValue timestamp],
+                                        @"created-by": [FIRAuth auth].currentUser.uid,
+                                        @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" }
+                                        };
+    NSString *currentVisuallKey = currentVisuallRef.key;
+    
+    [currentVisuallRef updateChildValues: visuallDictionary];
+    [visuallsPersonalRef updateChildValues: @{currentVisuallKey: @"1"} ];
 }
 
 - (void) loadPublicVisuallsList
@@ -443,6 +470,8 @@ static NSMutableDictionary *__personalVisuallList;
 //    [gi updateGroupItem: snapshot.key andValue: snapshot.value];
 //    return;
 //}
+
+
 
 /*
  * Name: setValueNote
