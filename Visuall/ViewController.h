@@ -53,27 +53,27 @@
 
 @property (nonatomic, strong) NSString *firebaseVisuallKeyToLoad;
 
-@property (strong, nonatomic) IBOutlet UIView *Background;
+@property (strong, nonatomic) UIView *Background;
 
-@property (strong, nonatomic) IBOutlet ScrollViewMod *BackgroundScrollView;
+@property (strong, nonatomic) ScrollViewMod *BackgroundScrollView;
 
-@property TiledLayerView *BoundsTiledLayerView;
+@property (strong, nonatomic) TiledLayerView *BoundsTiledLayerView;
 
-@property (strong, nonatomic) IBOutlet UIView *VisualItemsView;
+@property (strong, nonatomic) UIView *VisualItemsView;
 
-@property (strong, nonatomic) IBOutlet UIView *GroupsView;
+@property (strong, nonatomic) UIView *GroupsView;
 
-@property (strong, nonatomic) IBOutlet UIView *ArrowsView;
+@property (strong, nonatomic) UIView *ArrowsView;
 
 @property (strong, nonatomic) CAShapeLayer *DrawArrowShapeLayer;
 
-@property UIView *drawGroupView;
+@property (strong, nonatomic) UIView *drawGroupView;
 
-@property (strong, nonatomic) IBOutlet UIView *NotesView;
-
-@property CGRect totalBoundsRect;
+@property (strong, nonatomic) UIView *NotesView;
 
 @property (strong, nonatomic) UIScrollView *scrollViewButtonList;
+
+@property CGRect totalBoundsRect;
 
 //@property UIView *lastSelectedObject;
 
