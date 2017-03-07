@@ -62,7 +62,11 @@
     }
 }
 
-
+- (void) viewWillAppear:(BOOL) animated
+{
+    int count = self.navigationController.viewControllers.count;
+    NSLog(@"\n viewWillAppear, count: %i", count );
+}
 
 - (void) addNewVisuall
 {
