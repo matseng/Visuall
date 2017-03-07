@@ -77,11 +77,13 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 + (void) loadVisuallsListForCurrentUser;
 
-+ (void) setValueVisuall: (NSString *) title;
++ (NSDictionary *) setValueVisuall: (NSString *) title;
 
 - (void) setCallbackPublicVisuallLoaded: (void (^)(void)) callback;
 
 //- (void) loadVisuallsListForCurrentUser;
+
+- (void) loadVisuallFromKey: (NSString *) key;
 
 - (void) loadVisuallsForCurrentUser;
 

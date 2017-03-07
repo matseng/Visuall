@@ -105,7 +105,8 @@
     }
     else
     {
-        [self.visuallState loadVisuallsForCurrentUser];
+//        [self.visuallState loadVisuallsForCurrentUser];
+        [self.visuallState loadVisuallFromKey: self.firebaseURL];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(allGroupsDidLoadHandler) name:@"allGroupsDidLoad" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/

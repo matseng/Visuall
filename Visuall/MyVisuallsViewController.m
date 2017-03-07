@@ -30,7 +30,7 @@
 
 //    self.recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
 
-    self.recipes = [NSMutableArray arrayWithObjects: @"n/a", nil];
+    self.recipes = [NSMutableArray arrayWithObjects: @{@"title": @"n/a"}, nil];
     
     // TODO (Sep 21, 2016): get list of public and private Visualls loaded as CLASS variables in StateUtilFirebase
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"personalVisuallDidLoad" object:nil];
@@ -56,8 +56,9 @@
     if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
     {
         NSString *title = [self.infoFromNewVisuallVC valueForKey: @"title"];
-        [self appendVisuallToList: title];
-        [StateUtilFirebase setValueVisuall: title];
+        NSDictionary *dict = [StateUtilFirebase setValueVisuall: title];
+        [self appendVisuallToList: dict];
+        
     }
 }
 
@@ -77,13 +78,13 @@
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]];
         cell.textLabel.text = userInfo[@"title"];  // TODO (Sep 21, 2016): Load data here that needed for table view display... and to load the visuall graph
          */
-        [self appendVisuallToList: notification.userInfo[@"title"]];
+        [self appendVisuallToList: notification.userInfo];
     }
 }
 
-- (void) appendVisuallToList: (NSString *) title
+- (void) appendVisuallToList: (NSDictionary *) dict
 {
-    [self.recipes addObject: title];
+    [self.recipes addObject: dict];
     [self.tableView beginUpdates];
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath
                                               indexPathForRow:self.recipes.count - 1 inSection:0]]
@@ -154,7 +155,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
     
-    cell.textLabel.text = [self.recipes objectAtIndex:indexPath.row];
+    cell.textLabel.text = [self.recipes objectAtIndex:indexPath.row][@"title"];
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 //    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     return cell;
@@ -165,7 +166,7 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         ViewController *destViewController = segue.destinationViewController;
         NSLog(@"prep fro Segue: %@", [self.recipes objectAtIndex:indexPath.row]);
-        destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row];
+        destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
     }
 }
 

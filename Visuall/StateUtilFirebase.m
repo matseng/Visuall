@@ -128,7 +128,11 @@ static NSMutableDictionary *__personalVisuallList;
     [titleRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSString *title = snapshot.value;
         [list setValue: title forKey: snapshot.key];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{@"title": title}];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{@"title": title}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{
+                                                                                                                     @"key": ref.key,
+                                                                                                                     @"title": title
+                                                                                                                     }];
         NSLog(@"\n getVisuallDetailsForRef - My title: %@", list[snapshot.key]);
     }];
     
@@ -172,8 +176,8 @@ static NSMutableDictionary *__personalVisuallList;
          {  // run thru list of Visualls
              NSDictionary *visuallPersonalKeys = (NSDictionary *) snapshot.value;
              for (NSString *key in visuallPersonalKeys) {
-                 _currentVisuallKey = key;
-                 _visuallsTable_currentVisuallRef = [self.visuallsTableRef child: key];
+//                 _currentVisuallKey = key;
+//                 _visuallsTable_currentVisuallRef = [self.visuallsTableRef child: key];
                  [self loadVisuallFromKey: key];
                  return; // TODO: early termination here only loading the 1st and only visuall
              }
@@ -197,7 +201,7 @@ static NSMutableDictionary *__personalVisuallList;
     [visuallsPersonalRef updateChildValues: @{_currentVisuallKey: @"1"} ];
 }
 
-+ (void) setValueVisuall: (NSString *) title
++ (NSDictionary *) setValueVisuall: (NSString *) title
 {
     NSString *userID = [[UserUtil sharedManager] userID];
     FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
@@ -216,6 +220,10 @@ static NSMutableDictionary *__personalVisuallList;
     
     [currentVisuallRef updateChildValues: visuallDictionary];
     [visuallsPersonalRef updateChildValues: @{currentVisuallKey: @"1"} ];
+    return @{
+             @"key": currentVisuallKey,
+             @"title": title
+             };
 }
 
 - (void) loadPublicVisuallsList
@@ -298,6 +306,9 @@ static NSMutableDictionary *__personalVisuallList;
 
 - (void) loadVisuallFromKey: (NSString *) key
 {
+    _currentVisuallKey = key;
+    _visuallsTable_currentVisuallRef = [self.visuallsTableRef child: key];
+    
     FIRDatabaseReference *listOfNoteKeysRef = [[self.visuallsTableRef child:key] child: @"notes"];
     FIRDatabaseReference *listOfGroupKeysRef = [[self.visuallsTableRef child:key] child: @"groups"];
     FIRDatabaseReference *listOfArrowKeysRef = [[self.visuallsTableRef child:key] child: @"arrows"];
