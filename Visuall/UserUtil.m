@@ -55,7 +55,10 @@
 - (StateUtilFirebase *) getState
 {
     ViewController *vc = (ViewController *)[self topViewController];
-    if ( vc && vc.visuallState) return vc.visuallState;
+    if ( vc && vc.visuallState)
+    {
+        return vc.visuallState;
+    }
     return nil;
 }
 

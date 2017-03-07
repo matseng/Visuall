@@ -62,6 +62,8 @@
     }
 }
 
+
+
 - (void) addNewVisuall
 {
 //    [self performSegueWithIdentifier:@"segueToInfoModal" sender:self];
@@ -162,12 +164,23 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    return;
     if ([segue.identifier isEqualToString:@"showVisuallDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         ViewController *destViewController = segue.destinationViewController;
         NSLog(@"prep fro Segue: %@", [self.recipes objectAtIndex:indexPath.row]);
         destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
     }
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    ViewController *destViewController = [[ViewController alloc] init];
+//    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
+    [self.navigationController pushViewController: destViewController animated:YES];
+    
 }
 
 - (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

@@ -607,7 +607,9 @@
 
 - (void) backButtonHandler
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    UIViewController *vc = [self.navigationController popViewControllerAnimated:YES];
+    [vc removeFromParentViewController];
+    vc = nil;
 }
 
 - (UIImage*) makeImageFromImage:(UIImage*) source withBackgroundColor: (UIColor *) backgroundColor andForegroundColor: (UIColor *) foregroundColor
