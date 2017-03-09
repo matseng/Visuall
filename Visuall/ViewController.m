@@ -24,6 +24,7 @@
 #import "UserUtil.h"
 #import "TouchDownGestureRecognizer.h"
 #import "ViewController+xmlParser.h"
+#import "MyVisuallsViewController.h"
 
 @interface ViewController () <UITextViewDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate> {
     UIPinchGestureRecognizer *pinchGestureRecognizer; UITapGestureRecognizer *BackgroundScrollViewTapGesture;
@@ -54,19 +55,34 @@
 - (void) viewWillAppear:(BOOL)animated
 {
 //    [self restrictRotation:YES];  // http://stackoverflow.com/questions/31794317/how-can-i-lock-orientation-for-a-specific-view-an-objective-c-iphone-app-in-ios
+    NSLog(@"\n viewWillAppear, %@", self.firebaseURL);
+    
 }
 
-
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
+//    int count = self.navigationController.viewControllers.count;
+//    MyVisuallsViewController *listVC = (MyVisuallsViewController *) self.navigationController.viewControllers[count - 2];
+//    if (listVC.myGreenController.visuallState)
+//    {
+//        NSLog(@"\n will return here");
+//    }
+    
+    
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addNoteToViewWithHandlersNotification:) name:@"addNoteToViewWithHandlers" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addGroupToViewWithHandlersNotification:) name:@"addGroupToViewWithHandlers" object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(allGroupsDidLoadHandler) name:@"allGroupsDidLoad" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/
     
     self.visuallState = [[StateUtilFirebase alloc] init];
     
     [self buildViewHierarchyAndMenus];
     
     NSLog(@"Firebase URL: %@", self.firebaseURL);  // TODO (Aug 17, 2016): In the future this value will be populated from the previous selection of a Visuall
-
+    
     NSString *userID = [[UserUtil sharedManager] userID];
     
     [self.visuallState setUserID: userID];
@@ -78,38 +94,23 @@
     [self.visuallState setNotesView: self.NotesView];
     [self.visuallState setArrowsView: self.ArrowsView];
     
-//    [StateUtilFirebase setCallbackNoteItem:^(NoteItem2 *ni) {
-//        [self addNoteToViewWithHandlers: ni];
-//        [self calculateTotalBounds: ni];
-//    }];
-    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addNoteToViewWithHandlersNotification:) name:@"addNoteToViewWithHandlers" object:nil];
     
-//    [StateUtilFirebase setCallbackGroupItem:^(GroupItem *gi) {
-//        [[self.visuallState GroupsView] addSubview: gi];
-//        if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
-//        [self.visuallState.groupsCollection addGroup: gi withKey: gi.group.key];
-//        [self calculateTotalBounds: gi];
-//    }];
-    
-        [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(addGroupToViewWithHandlersNotification:) name:@"addGroupToViewWithHandlers" object:nil];
     
     [self.visuallState setCallbackPublicVisuallLoaded:^{
-//        [self loadAndUploadXML];
+        //        [self loadAndUploadXML];
     }];
     
-//    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
+    //    if ( /* DISABLES CODE */ (NO) && self.tabBarController.selectedIndex == 0)  // Global tab
     if (self.tabBarController.selectedIndex == 0)  // Public tab
     {
         [self.visuallState loadPublicVisuallsList];
-//        [self loadAndUploadXML];
+        //        [self loadAndUploadXML];
     }
     else
     {
-//        [self.visuallState loadVisuallsForCurrentUser];
+        //        [self.visuallState loadVisuallsForCurrentUser];
         [self.visuallState loadVisuallFromKey: self.firebaseURL];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(allGroupsDidLoadHandler) name:@"allGroupsDidLoad" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/
 }
 
 - (void) allGroupsDidLoadHandler
@@ -166,7 +167,7 @@
 - (void) buildViewHierarchyAndMenus
 {
     [self.Background removeFromSuperview];
-
+    self.view.backgroundColor = [UIColor whiteColor];
     self.Background = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
 //    self.Background.backgroundColor = [UIColor redColor];
     [self.Background setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -225,6 +226,7 @@
                       action:@selector(fontSizeEditingChangedHandler:)
             forControlEvents:UIControlEventEditingChanged];
     */
+    self.totalBoundsRect = CGRectZero;
     [self.Background setNeedsDisplay];
 }
 
@@ -419,6 +421,7 @@
 
 - (void) expandBoundsTiledLayerView: (float) scale
 {
+    
     CGRect convertedVisualItemsRectInScrollView = [self.BackgroundScrollView convertRect: self.VisualItemsView.frame fromView: self.BoundsTiledLayerView];
     CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
     
@@ -428,7 +431,11 @@
     self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
     
     CGRect convertedVisualItemsRectInNewBoundsTiledLayerView = [self.BoundsTiledLayerView convertRect: convertedVisualItemsRectInScrollView fromView: self.BackgroundScrollView];
-    self.VisualItemsView.frame = convertedVisualItemsRectInNewBoundsTiledLayerView;
+//    self.VisualItemsView.frame = convertedVisualItemsRectInNewBoundsTiledLayerView;
+    self.VisualItemsView.frame = CGRectMake(convertedVisualItemsRectInNewBoundsTiledLayerView.origin.x,
+                                            convertedVisualItemsRectInNewBoundsTiledLayerView.origin.y,
+                                            1,
+                                            1);
     
     UIEdgeInsets newContentInset = UIEdgeInsetsZero;
     CGSize newContentSize = newBoundsTiledLayerRect.size;
@@ -593,7 +600,8 @@
     {
         self.totalBoundsRect = CGRectUnion(self.totalBoundsRect, view.frame);
     }
-    [self expandBoundsTiledLayerView: 0];
+    
+//    [self expandBoundsTiledLayerView: 0];
     
 //    self.BoundsTiledLayerView.frame = CGRectMake(0, 0, self.totalBoundsRect.size.width, self.totalBoundsRect.size.height);
 //

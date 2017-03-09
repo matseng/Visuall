@@ -75,6 +75,8 @@ NoteItem2 *targetNoteForArrow;
             [newNote becomeFirstResponder];  // puts cursor on text field
             [newNote.noteTextView selectAll:nil];  // selects all text
 //            [self updateTotalBounds: newNote];
+            int count =  (int) self.visuallState.notesCollection.items.count;
+            NSLog(@"\n tapHandler, notes collection count: %i", count);
             return;
         }
         else

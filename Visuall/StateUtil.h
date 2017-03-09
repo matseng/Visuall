@@ -29,10 +29,10 @@
 @property float zoom;
 @property CGPoint pan;
 @property float _relativeScale;
-@property NotesCollection *notesCollection;
-@property GroupsCollection *groupsCollection;
-@property Collection *arrowsCollection;
-@property Collection *pathsCollection;
+@property (strong, nonatomic) NotesCollection *notesCollection;
+@property (strong, nonatomic) GroupsCollection *groupsCollection;
+@property (strong, nonatomic) Collection *arrowsCollection;
+@property (strong, nonatomic) Collection *pathsCollection;
 
 // New state properties (moving away from ViewController)
 @property FIRUser *firebaseUser;

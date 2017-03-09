@@ -56,9 +56,8 @@
     if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
     {
         NSString *title = [self.infoFromNewVisuallVC valueForKey: @"title"];
-        NSDictionary *dict = [StateUtilFirebase setValueVisuall: title];
-        [self appendVisuallToList: dict];
-        
+        self.infoFromNewVisuallVC = [StateUtilFirebase setValueVisuall: title];  // now includes key from Firebase
+        self.indexPath = [self appendVisuallToList: self.infoFromNewVisuallVC];
     }
 }
 
@@ -66,6 +65,13 @@
 {
     int count = self.navigationController.viewControllers.count;
     NSLog(@"\n viewWillAppear, count: %i", count );
+    if ( self.infoFromNewVisuallVC )
+    {
+        [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self manualSegueToNewViewController: self.infoFromNewVisuallVC];
+        self.infoFromNewVisuallVC = nil;
+        self.indexPath = nil;
+    }
 }
 
 - (void) addNewVisuall
@@ -88,14 +94,15 @@
     }
 }
 
-- (void) appendVisuallToList: (NSDictionary *) dict
+- (NSIndexPath *) appendVisuallToList: (NSDictionary *) dict
 {
     [self.recipes addObject: dict];
     [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath
-                                              indexPathForRow:self.recipes.count - 1 inSection:0]]
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:self.recipes.count - 1 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[ip]
                           withRowAnimation:UITableViewRowAnimationBottom];
     [self.tableView endUpdates];
+    return ip;
 }
 
 
@@ -177,15 +184,36 @@
     }
 }
 
+//- (void) __tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if ( !self.myGreenController )
+//    {
+//        self.myGreenController = [[ViewController alloc] init];
+//    }
+//    
+////    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//    self.myGreenController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
+//    [self.navigationController pushViewController: self.myGreenController animated:YES];
+//    
+//}
+
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    ViewController *destViewController = [[ViewController alloc] init];
-//    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
-    [self.navigationController pushViewController: destViewController animated:YES];
+   
+//    ViewController *destViewController = [[ViewController alloc] init];
+//    destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
+//    [self.navigationController pushViewController: destViewController animated:YES];
+    [self manualSegueToNewViewController: [self.recipes objectAtIndex:indexPath.row]];
     
 }
+
+- (void) manualSegueToNewViewController: (NSDictionary *) dict
+{
+    ViewController *destViewController = [[ViewController alloc] init];
+    destViewController.firebaseURL = dict[@"key"];
+    [self.navigationController pushViewController: destViewController animated:YES];
+}
+
 
 - (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {

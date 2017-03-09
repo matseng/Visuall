@@ -23,7 +23,7 @@
          }
         
          // 1 of 2. Read a note upon the initial load or if a new note is added from another user
-         if (![self.notesCollection getNoteFromKey: snapshot.key])
+         if ( ![self.notesCollection getItemFromKey: snapshot.key])
          {
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
              [self.notesCollection addNote:newNote withKey:snapshot.key];
@@ -56,7 +56,7 @@
              --self.numberOfGroupsToBeLoaded;
              return;
          }
-         if( ![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the note already exists in the collection then update it
+         if( ![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the group already exists in the collection then update it
          {
              GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
              [gi updateGroupItem: snapshot.key andValue: snapshot.value];

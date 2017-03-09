@@ -6,7 +6,7 @@
 //  Copyright © 2016 Visuall. All rights reserved.
 //
 
-//#import "ViewController.h"
+#import "ViewController.h"
 #import <UIKit/UIKit.h>
 
 @interface MyVisuallsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
@@ -16,5 +16,9 @@
 @property (strong, nonatomic)  NSMutableArray *recipes;
 
 @property (strong, nonatomic) NSDictionary *infoFromNewVisuallVC;
+
+@property (weak, nonatomic) NSIndexPath *indexPath;
+
+//@property (nonatomic, weak) ViewController* myGreenController;
 
 @end

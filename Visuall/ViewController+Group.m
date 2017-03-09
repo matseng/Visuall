@@ -298,10 +298,6 @@
         GroupItem *gi = [self.visuallState.groupsCollection getGroupItemFromKey:key];
         [self.GroupsView bringSubviewToFront: gi];
     }
-    
-    [self.drawGroupView setFrame:(CGRect){0,0,0,0}];
-    [self.drawGroupView removeFromSuperview];
-    
 }
 
 - (void) drawGroup: (UIPanGestureRecognizer *) gestureRecognizer
@@ -332,7 +328,7 @@
             // TODO (Aug 11, 2016): && we're not starting on another group's handle
         {
             self.drawGroupViewStart = [gestureRecognizer locationInView: self.GroupsView];
-            
+            [self.drawGroupView setFrame:(CGRect){0,0,1,1}];
             [self.GroupsView addSubview: self.drawGroupView];
         }
         
@@ -348,6 +344,7 @@
             self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
             GroupItem *currentGroupItem = [[GroupItem alloc] initWithRect: self.drawGroupView.frame];
             [self addGroupItemToMVC: currentGroupItem];
+            [self.drawGroupView removeFromSuperview];
         }
     }
 }
