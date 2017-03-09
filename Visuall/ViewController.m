@@ -67,7 +67,7 @@
 //    {
 //        NSLog(@"\n will return here");
 //    }
-    
+    if ( !self.firebaseURL) return;
     
     [super viewDidLoad];
     

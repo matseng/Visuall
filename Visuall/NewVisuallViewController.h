@@ -10,4 +10,6 @@
 
 @interface NewVisuallViewController : UIViewController
 
+@property (weak, nonatomic) NSMutableDictionary *metadata;
+
 @end

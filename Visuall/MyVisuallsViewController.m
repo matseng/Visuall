@@ -12,6 +12,7 @@
 #import "UIImage+Extras.h"
 //#import "CustomTableViewCell.h"
 #import "UserUtil.h"
+#import "NewVisuallViewController.h"
 
 @interface MyVisuallsViewController ()
 
@@ -53,11 +54,16 @@
  */
 - (IBAction) unwindToContainerVC:(UIStoryboardSegue *) segue
 {
+    self.segue = segue;
     if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
     {
         NSString *title = [self.infoFromNewVisuallVC valueForKey: @"title"];
         self.infoFromNewVisuallVC = [StateUtilFirebase setValueVisuall: title];  // now includes key from Firebase
         self.indexPath = [self appendVisuallToList: self.infoFromNewVisuallVC];
+    }
+    else if ([segue.identifier isEqualToString: @"doneEditingSegue"])
+    {
+        // TODO (Mar 8, 2017): UPDATE Visuall title here
     }
 }
 
@@ -65,12 +71,16 @@
 {
     int count = self.navigationController.viewControllers.count;
     NSLog(@"\n viewWillAppear, count: %i", count );
-    if ( self.infoFromNewVisuallVC )
+    if ([self.segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
     {
         [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [self manualSegueToNewViewController: self.infoFromNewVisuallVC];
         self.infoFromNewVisuallVC = nil;
         self.indexPath = nil;
+    }
+    else if ([self.segue.identifier isEqualToString: @"doneEditingSegue"])
+    {
+        
     }
 }
 
@@ -170,17 +180,27 @@
     
     cell.textLabel.text = [self.recipes objectAtIndex:indexPath.row][@"title"];
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     return cell;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    return;
-    if ([segue.identifier isEqualToString:@"showVisuallDetail"]) {
+    
+    /*
+    if ([segue.identifier isEqualToString:@"showVisuallDetail"]) 
+     {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         ViewController *destViewController = segue.destinationViewController;
         NSLog(@"prep fro Segue: %@", [self.recipes objectAtIndex:indexPath.row]);
         destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
+    }
+     */
+    
+    if ([segue.identifier isEqualToString:@"segueToNewVisuall"])
+    {
+        NewVisuallViewController *destViewController = (NewVisuallViewController *) segue.destinationViewController;
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        destViewController.metadata = [self.recipes objectAtIndex:indexPath.row];
     }
 }
 
@@ -218,6 +238,8 @@
 - (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"prep fro Segue: %@", [self.recipes objectAtIndex:indexPath.row]);
+    [self.tableView selectRowAtIndexPath: indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    [self performSegueWithIdentifier:@"segueToNewVisuall" sender:self];
 }
 
 

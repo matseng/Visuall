@@ -26,7 +26,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Am-8h-GBx" id="Sgt-RT-SF7">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -43,7 +43,6 @@
                     <navigationItem key="navigationItem" title="My Visualls" id="PFC-wU-CXk"/>
                     <connections>
                         <outlet property="tableView" destination="Ucd-xy-kIX" id="BJ8-jD-cdc"/>
-                        <segue destination="LPF-CH-TUv" kind="modal" identifier="segueToInfoModal" id="koP-6h-Uq3"/>
                         <segue destination="yZb-w5-jWA" kind="push" identifier="segueToNewVisuall" id="Up4-Nb-4SO"/>
                     </connections>
                 </viewController>
@@ -60,11 +59,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" misplaced="YES" id="EbU-oq-Ki8">
-                                <rect key="frame" x="32" y="88" width="310" height="134"/>
+                                <rect key="frame" x="16" y="77" width="107" height="134"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" id="VvS-jX-WJs">
-                                        <rect key="frame" x="27" y="22" width="260" height="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Title:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CK4-Zf-vJd">
+                                        <rect key="frame" x="39" y="27" width="38" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" misplaced="YES" id="tWC-or-oOk">
+                                <rect key="frame" x="131" y="77" width="203" height="134"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" id="VvS-jX-WJs">
+                                        <rect key="frame" x="16" y="25" width="170" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -73,6 +86,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="w6d-3V-Jz7">
+                                <rect key="frame" x="165" y="236" width="45" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Delete">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -82,42 +102,13 @@
                     <connections>
                         <outlet property="TitleTextField" destination="VvS-jX-WJs" id="tAk-CS-Whu"/>
                         <segue destination="qow-78-GnO" kind="unwind" identifier="unwindToMyVisuallsVC" unwindAction="unwindToContainerVC:" id="H8T-8V-0Pr"/>
+                        <segue destination="qow-78-GnO" kind="unwind" identifier="doneEditingSegue" unwindAction="unwindToContainerVC:" id="NLC-a4-7KE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QG6-OV-fgW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="qow-78-GnO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2256" y="2205"/>
-        </scene>
-        <!--Info Modal-->
-        <scene sceneID="Sqa-cs-F8y">
-            <objects>
-                <viewController modalPresentationStyle="overCurrentContext" id="LPF-CH-TUv" customClass="InfoModal" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="9Uf-2Y-Gq3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" id="lcX-Ls-mgH">
-                                <rect key="frame" x="34" y="46" width="310" height="134"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" id="hz4-ld-YBa">
-                                        <rect key="frame" x="27" y="22" width="260" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ssb-pf-jcw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2712" y="1761"/>
+            <point key="canvasLocation" x="2255.5" y="2204.5"/>
         </scene>
         <!--Root View Controller-->
         <scene sceneID="fmH-0x-nQs">
@@ -132,7 +123,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vtG-Uc-Gzu" id="nYT-GA-hIe">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -178,7 +169,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ljo-gy-ngA" id="r14-xb-5Mr">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -193,86 +184,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qLK-AR-5PE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1622" y="1341"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" id="pAz-ae-QjM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" id="vg0-Xp-mCM" userLabel="VisualItems View">
-                                        <rect key="frame" x="40" y="236" width="240" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" id="qkV-Pt-sir">
-                                                <rect key="frame" x="-180" y="-236" width="600" height="600"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </view>
-                                            <view contentMode="scaleToFill" id="Vtt-DE-NhF" userLabel="Arrows View">
-                                                <rect key="frame" x="0.0" y="-1" width="240" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </view>
-                                            <view contentMode="scaleToFill" id="k9c-x9-eal">
-                                                <rect key="frame" x="120" y="64" width="0.0" height="0.0"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </view>
-                                        </subviews>
-                                        <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" red="0.64313727620000005" green="0.84705883260000003" blue="0.40392157439999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <gestureRecognizers/>
-                    </view>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="T60-g4-YB5" colorLabel="IBBuiltInLabel-Blue"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="ArrowsView" destination="Vtt-DE-NhF" id="ExW-Cc-KQi"/>
-                        <outlet property="Background" destination="8bC-Xf-vdC" id="zVV-wg-dzI"/>
-                        <outlet property="BackgroundScrollView" destination="pAz-ae-QjM" id="qG7-hF-saT"/>
-                        <outlet property="GroupsView" destination="qkV-Pt-sir" id="3DH-gn-PVa"/>
-                        <outlet property="NotesView" destination="k9c-x9-eal" id="X2T-fJ-C5r"/>
-                        <outlet property="VisualItemsView" destination="vg0-Xp-mCM" id="ZsG-wy-H0e"/>
-                        <outlet property="searchDisplayController" destination="QYq-Br-oaW" id="MFG-bU-dgP"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <searchBar contentMode="redraw" id="tCq-0a-UEN">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <outlet property="delegate" destination="BYZ-38-t0r" id="AMH-AS-au0"/>
-                    </connections>
-                </searchBar>
-                <tapGestureRecognizer id="S4Z-tg-fOV">
-                    <connections>
-                        <action selector="handleTap:" destination="BYZ-38-t0r" id="hpY-18-GCb"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <searchDisplayController id="QYq-Br-oaW">
-                    <connections>
-                        <outlet property="delegate" destination="BYZ-38-t0r" id="HSz-wQ-mFP"/>
-                        <outlet property="searchBar" destination="tCq-0a-UEN" id="W8p-8o-87X"/>
-                        <outlet property="searchContentsController" destination="BYZ-38-t0r" id="cck-lF-eYj"/>
-                        <outlet property="searchResultsDataSource" destination="BYZ-38-t0r" id="s0d-96-VY3"/>
-                        <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="aCD-eb-9XX"/>
-                    </connections>
-                </searchDisplayController>
-            </objects>
-            <point key="canvasLocation" x="2235" y="1313"/>
         </scene>
         <!--Home Root View Controller -->
         <scene sceneID="oex-Kv-lgE">
@@ -476,7 +387,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hkA-7E-lRb" id="euX-kK-bpt">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

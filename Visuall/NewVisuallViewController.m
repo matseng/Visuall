@@ -19,16 +19,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
     barButton.title = @"Cancel";
     self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(doneHandler)];
-    self.navigationItem.rightBarButtonItem = doneButton;
+    if (self.metadata && self.metadata[@"key"])
+    {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                       style:UIBarButtonItemStyleDone
+                                                                      target:self
+                                                                      action:@selector(doneEditingHandler)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        self.TitleTextField.text = self.metadata[@"title"];
+    }
+    else
+    {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                       style:UIBarButtonItemStyleDone
+                                                                      target:self
+                                                                      action:@selector(doneHandler)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+//        self.navigationController.navigationBar.topItem.rightBarButtonItem = doneButton;
+        [self.TitleTextField becomeFirstResponder];
+    }
+}
+
+- (void) doneEditingHandler
+{
+    [self performSegueWithIdentifier: @"doneEditingSegue" sender: self];
 }
 
 /*
@@ -56,6 +74,7 @@
                                @"title": self.TitleTextField.text
                                };
         controller.infoFromNewVisuallVC = info;
+        self.metadata = nil;
     }
 }
 

@@ -62,7 +62,7 @@
     return nil;
 }
 
-- (UIViewController*)topViewController {
+- (UIViewController*) topViewController {
     return [self topViewControllerWithRootViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
 }
 
