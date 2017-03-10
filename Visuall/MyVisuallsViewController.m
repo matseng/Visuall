@@ -33,7 +33,6 @@
 
     self.recipes = [NSMutableArray arrayWithObjects: @{@"title": @"n/a"}, nil];
     
-    // TODO (Sep 21, 2016): get list of public and private Visualls loaded as CLASS variables in StateUtilFirebase
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"personalVisuallDidLoad" object:nil];
     [StateUtilFirebase loadVisuallsListForCurrentUser];
     
@@ -45,12 +44,26 @@
     
 }
 
+- (void) viewWillAppear:(BOOL) animated
+{
+    if ([self.segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
+    {
+        [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self manualSegueToNewViewController: self.infoFromNewVisuallVC];
+        self.infoFromNewVisuallVC = nil;
+        self.indexPath = nil;
+    }
+    else if ([self.segue.identifier isEqualToString: @"doneEditingSegue"])
+    {
+        
+    }
+}
+
+
 /*
  * Name: unwindToContainerVC
  * Description: Receives manual unwind from NewVisuallViewController
  * Displays new Visuall name
- * // TODO (Mar 1, 2017): Save new Visuall name in Firebase and load specific visuall
- * Add info button that allows editing and deleting of a visuall
  */
 - (IBAction) unwindToContainerVC:(UIStoryboardSegue *) segue
 {
@@ -65,22 +78,14 @@
     {
         // TODO (Mar 8, 2017): UPDATE Visuall title here
     }
-}
-
-- (void) viewWillAppear:(BOOL) animated
-{
-    int count = self.navigationController.viewControllers.count;
-    NSLog(@"\n viewWillAppear, count: %i", count );
-    if ([self.segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
+    else if ([segue.identifier isEqualToString: @"deleteVisuall"])
     {
-        [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        [self manualSegueToNewViewController: self.infoFromNewVisuallVC];
-        self.infoFromNewVisuallVC = nil;
-        self.indexPath = nil;
-    }
-    else if ([self.segue.identifier isEqualToString: @"doneEditingSegue"])
-    {
-        
+        NSLog(@"\n Delete visuall from list and firebase");
+        [self.tableView beginUpdates];
+        [self.recipes removeObjectAtIndex: self.indexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject: self.indexPath]
+                         withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
     }
 }
 
@@ -235,10 +240,11 @@
 }
 
 
-- (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+- (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *) indexPath
 {
     NSLog(@"prep fro Segue: %@", [self.recipes objectAtIndex:indexPath.row]);
     [self.tableView selectRowAtIndexPath: indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    self.indexPath = indexPath;
     [self performSegueWithIdentifier:@"segueToNewVisuall" sender:self];
 }
 

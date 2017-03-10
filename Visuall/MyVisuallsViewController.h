@@ -17,7 +17,7 @@
 
 @property (strong, nonatomic) NSDictionary *infoFromNewVisuallVC;
 
-@property (weak, nonatomic) NSIndexPath *indexPath;
+@property (strong, nonatomic) NSIndexPath *indexPath;
 
 @property (weak, nonatomic) UIStoryboardSegue *segue;
 

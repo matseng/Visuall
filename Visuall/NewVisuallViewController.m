@@ -13,6 +13,8 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *TitleTextField;
 
+- (IBAction) onDeleteButtonPressed: (id)sender;
+
 @end
 
 @implementation NewVisuallViewController
@@ -78,6 +80,8 @@
     }
 }
 
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -93,4 +97,24 @@
 }
 */
 
+- (IBAction)onDeleteButtonPressed:(id)sender
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle: nil message:[NSString stringWithFormat:@"Delete this Visuall?"] preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    {
+        NSLog(@"\n Confirm delete here");
+        // TODO (Mar 10, 2017): Go back to list view and delete visuall from firebase
+        [self performSegueWithIdentifier: @"deleteVisuall" sender: self];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
+    {
+        NSLog(@"\n Cancel");
+    }];
+    
+    [alertController addAction:alertAction];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 @end
