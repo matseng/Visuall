@@ -77,6 +77,8 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 + (void) loadVisuallsListForCurrentUser;
 
++ (void) removeVisuall: (NSString *) key;
+
 + (NSDictionary *) setValueVisuall: (NSString *) title;
 
 - (void) setCallbackPublicVisuallLoaded: (void (^)(void)) callback;

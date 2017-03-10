@@ -12,6 +12,7 @@
 #import "UIImage+Extras.h"
 //#import "CustomTableViewCell.h"
 #import "UserUtil.h"
+#import "StateUtilFirebase.h"
 #import "NewVisuallViewController.h"
 
 @interface MyVisuallsViewController ()
@@ -31,13 +32,15 @@
 
 //    self.recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
 
-    self.recipes = [NSMutableArray arrayWithObjects: @{@"title": @"n/a"}, nil];
+//    self.recipes = [NSMutableArray arrayWithObjects: @{@"title": @"n/a"}, nil];
+//    self.recipes = [NSMutableArray arrayWithObjects: nil, nil];
+    self.recipes = [[NSMutableArray alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"personalVisuallDidLoad" object:nil];
     [StateUtilFirebase loadVisuallsListForCurrentUser];
     
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"+ New"
-                                                                      style:UIBarButtonItemStylePlain
+                                                                      style:UIBarButtonItemStyleDone
                                                                      target:self
                                                                      action:@selector(addNewVisuall)];
     self.navigationItem.rightBarButtonItem = anotherButton;
@@ -81,11 +84,14 @@
     else if ([segue.identifier isEqualToString: @"deleteVisuall"])
     {
         NSLog(@"\n Delete visuall from list and firebase");
+        NSString *key = [self.recipes objectAtIndex: self.indexPath.row][@"key"];
         [self.tableView beginUpdates];
         [self.recipes removeObjectAtIndex: self.indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject: self.indexPath]
                          withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
+        [StateUtilFirebase removeVisuall: key];
+        self.indexPath = nil;
     }
 }
 

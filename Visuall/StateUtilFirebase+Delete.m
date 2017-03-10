@@ -7,8 +7,40 @@
 //
 
 #import "StateUtilFirebase+Delete.h"
+#import "UserUtil.h"
+
 
 @implementation StateUtilFirebase (Delete)
+
+/*
+ * Name:
+ * Description: Removes Visuall from Visuall's list AND
+ */
+
++ (void) removeVisuall: (NSString *) key
+{
+    NSString *userID = [[UserUtil sharedManager] userID];
+    FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
+    FIRDatabaseReference *visuallsPersonalRef =  [usersTableCurrentUser child: @"visualls-personal"];
+    FIRDatabaseReference *visuallsTableRef = [version01TableRef child: @"visualls"];
+    [[visuallsPersonalRef child: key] removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error) {
+            NSLog(@"Note could NOT be removed.");
+        } else {
+            NSLog(@"Note removed successfully.");
+        }
+    }];
+    
+    [[visuallsTableRef child: key] removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error) {
+            NSLog(@"Note could NOT be removed.");
+        } else {
+            NSLog(@"Note removed successfully.");
+        }
+    }];
+}
+
 
 
 /*
@@ -16,8 +48,6 @@
  * Param: (UIView *) view that is a note or group item
  * Description: Removes the item from its corresponding firebase table, removes the item's key from its visuall table, and decrements its counter
  */
-
-
 - (void) removeValue: (UIView *) view
 {
     if( [view isNoteItem])
