@@ -79,7 +79,7 @@
     }
     else if ([segue.identifier isEqualToString: @"doneEditingSegue"])
     {
-        // TODO (Mar 8, 2017): UPDATE Visuall title here
+        // TODO (Mar 10, 2017): Update Visuall title here!
     }
     else if ([segue.identifier isEqualToString: @"deleteVisuall"])
     {
@@ -207,7 +207,7 @@
     }
      */
     
-    if ([segue.identifier isEqualToString:@"segueToNewVisuall"])
+    if ([segue.identifier isEqualToString:@"segueToEditVisuall"])
     {
         NewVisuallViewController *destViewController = (NewVisuallViewController *) segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
@@ -251,7 +251,7 @@
     NSLog(@"prep fro Segue: %@", [self.recipes objectAtIndex:indexPath.row]);
     [self.tableView selectRowAtIndexPath: indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     self.indexPath = indexPath;
-    [self performSegueWithIdentifier:@"segueToNewVisuall" sender:self];
+    [self performSegueWithIdentifier:@"segueToEditVisuall" sender:self];
 }
 
 
