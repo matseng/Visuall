@@ -81,6 +81,9 @@
     else if ([segue.identifier isEqualToString: @"unwindFromEditVisuall"])
     {
         // TODO (Mar 10, 2017): Update local state and list view to show current title
+        self.recipes[self.indexPath.row] = self.metadataOfCurrentVisuall;
+        [self.tableView reloadData];
+        [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [StateUtilFirebase updateMetadataVisuall: [self.metadataOfCurrentVisuall mutableCopy]];
     }
     else if ([segue.identifier isEqualToString: @"unwindFromDeleteVisuall"])
