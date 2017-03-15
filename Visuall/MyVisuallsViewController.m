@@ -55,6 +55,7 @@
         [self manualSegueToNewViewController: self.infoFromNewVisuallVC];
         self.infoFromNewVisuallVC = nil;
         self.indexPath = nil;
+        self.segue = nil;
     }
     else if ([self.segue.identifier isEqualToString: @"doneEditingSegue"])
     {
@@ -68,7 +69,7 @@
  * Description: Receives manual unwind from NewVisuallViewController
  * Displays new Visuall name
  */
-- (IBAction) unwindToContainerVC:(UIStoryboardSegue *) segue
+- (IBAction) unwindToContainerVC: (UIStoryboardSegue *) segue
 {
     self.segue = segue;
     if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
@@ -234,6 +235,7 @@
 //    ViewController *destViewController = [[ViewController alloc] init];
 //    destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
 //    [self.navigationController pushViewController: destViewController animated:YES];
+    
     [self manualSegueToNewViewController: [self.recipes objectAtIndex:indexPath.row]];
     
 }
@@ -244,7 +246,6 @@
     destViewController.firebaseURL = dict[@"key"];
     [self.navigationController pushViewController: destViewController animated:YES];
 }
-
 
 - (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *) indexPath
 {

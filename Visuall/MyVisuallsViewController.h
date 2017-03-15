@@ -19,7 +19,7 @@
 
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
-@property (weak, nonatomic) UIStoryboardSegue *segue;
+@property (strong, nonatomic) UIStoryboardSegue *segue;
 
 //@property (nonatomic, weak) ViewController* myGreenController;
 
