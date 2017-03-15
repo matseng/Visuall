@@ -17,14 +17,29 @@
     [super viewDidLoad];
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+//    ViewController *visuallViewController = [self.viewControllers firstObject];
+//    visuallViewController.firebaseVisuallKeyToLoad = @"global";
+    ViewController *destViewController = [[ViewController alloc] init];
+    destViewController.firebaseURL = @"global";
+//    [self.navigationController pushViewController: destViewController animated:YES];
+    [self pushViewController: destViewController animated:YES];
+    
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    ViewController *visuallViewController = [self.viewControllers firstObject];
-    visuallViewController.firebaseVisuallKeyToLoad = @"global";
+//    ViewController *visuallViewController = [self.viewControllers firstObject];
+//    visuallViewController.firebaseVisuallKeyToLoad = @"global";
+
 
 }
+
+
+
 
 
 

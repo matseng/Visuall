@@ -49,7 +49,7 @@
 
 - (void) viewWillAppear:(BOOL) animated
 {
-    if ([self.segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
+    if ([self.segue.identifier isEqualToString: @"unwindFromNewVisuall"])
     {
         [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [self manualSegueToNewViewController: self.metadataOfCurrentVisuall];
@@ -57,12 +57,7 @@
         self.indexPath = nil;
         self.segue = nil;
     }
-    else if ([self.segue.identifier isEqualToString: @"doneEditingSegue"])
-    {
-        
-    }
 }
-
 
 /*
  * Name: unwindToContainerVC

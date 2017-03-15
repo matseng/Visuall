@@ -63,7 +63,7 @@
 //    MyVisuallsViewController *controller = (MyVisuallsViewController *) segue.destinationViewController;
     
     
-    [self performSegueWithIdentifier: @"unwindToMyVisuallsVC" sender: self];
+    [self performSegueWithIdentifier: @"unwindFromNewVisuall" sender: self];
     
 }
                                  
@@ -80,10 +80,20 @@
 //    }
     
     MyVisuallsViewController *controller = (MyVisuallsViewController *) segue.destinationViewController;
-    NSDictionary *info = @{
-                           @"key": self.metadata[@"key"],
-                           @"title": self.TitleTextField.text
-                           };
+    NSDictionary *info;
+    if (self.metadata)
+    {
+        info = @{
+                 @"key": self.metadata[@"key"],
+                 @"title": self.TitleTextField.text
+                 };
+    }
+    else
+    {
+        info = @{
+                 @"title": self.TitleTextField.text
+                 };
+    }
     controller.metadataOfCurrentVisuall = info;
     self.metadata = nil;
 }
