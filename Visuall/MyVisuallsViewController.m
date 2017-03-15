@@ -52,8 +52,8 @@
     if ([self.segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
     {
         [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        [self manualSegueToNewViewController: self.infoFromNewVisuallVC];
-        self.infoFromNewVisuallVC = nil;
+        [self manualSegueToNewViewController: self.metadataOfCurrentVisuall];
+        self.metadataOfCurrentVisuall = nil;
         self.indexPath = nil;
         self.segue = nil;
     }
@@ -72,17 +72,18 @@
 - (IBAction) unwindToContainerVC: (UIStoryboardSegue *) segue
 {
     self.segue = segue;
-    if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
+    if ([segue.identifier isEqualToString: @"unwindFromNewVisuall"])
     {
-        NSString *title = [self.infoFromNewVisuallVC valueForKey: @"title"];
-        self.infoFromNewVisuallVC = [StateUtilFirebase setValueVisuall: title];  // now includes key from Firebase
-        self.indexPath = [self appendVisuallToList: self.infoFromNewVisuallVC];
+        NSString *title = [self.metadataOfCurrentVisuall valueForKey: @"title"];
+        self.metadataOfCurrentVisuall = [StateUtilFirebase setValueVisuall: title];  // now includes key from Firebase
+        self.indexPath = [self appendVisuallToList: self.metadataOfCurrentVisuall];
     }
-    else if ([segue.identifier isEqualToString: @"doneEditingSegue"])
+    else if ([segue.identifier isEqualToString: @"unwindFromEditVisuall"])
     {
-        // TODO (Mar 10, 2017): Update Visuall title here!
+        // TODO (Mar 10, 2017): Update local state and list view to show current title
+        [StateUtilFirebase updateMetadataVisuall: [self.metadataOfCurrentVisuall mutableCopy]];
     }
-    else if ([segue.identifier isEqualToString: @"deleteVisuall"])
+    else if ([segue.identifier isEqualToString: @"unwindFromDeleteVisuall"])
     {
         NSLog(@"\n Delete visuall from list and firebase");
         NSString *key = [self.recipes objectAtIndex: self.indexPath.row][@"key"];

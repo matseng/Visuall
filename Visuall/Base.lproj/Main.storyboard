@@ -99,9 +99,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="TitleTextField" destination="VvS-jX-WJs" id="tAk-CS-Whu"/>
-                        <segue destination="qow-78-GnO" kind="unwind" identifier="unwindToMyVisuallsVC" unwindAction="unwindToContainerVC:" id="H8T-8V-0Pr"/>
-                        <segue destination="qow-78-GnO" kind="unwind" identifier="doneEditingSegue" unwindAction="unwindToContainerVC:" id="NLC-a4-7KE"/>
-                        <segue destination="qow-78-GnO" kind="unwind" identifier="deleteVisuall" unwindAction="unwindToContainerVC:" id="YC0-vf-LFV"/>
+                        <segue destination="qow-78-GnO" kind="unwind" identifier="unwindFromNewVisuall" unwindAction="unwindToContainerVC:" id="H8T-8V-0Pr"/>
+                        <segue destination="qow-78-GnO" kind="unwind" identifier="unwindFromEditVisuall" unwindAction="unwindToContainerVC:" id="NLC-a4-7KE"/>
+                        <segue destination="qow-78-GnO" kind="unwind" identifier="unwindFromDeleteVisuall" unwindAction="unwindToContainerVC:" id="YC0-vf-LFV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QG6-OV-fgW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -122,7 +122,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vtG-Uc-Gzu" id="nYT-GA-hIe">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

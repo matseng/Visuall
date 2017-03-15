@@ -81,6 +81,8 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 + (NSDictionary *) setValueVisuall: (NSString *) title;
 
++ (void) updateMetadataVisuall: (NSMutableDictionary *) dict;
+
 - (void) setCallbackPublicVisuallLoaded: (void (^)(void)) callback;
 
 //- (void) loadVisuallsListForCurrentUser;

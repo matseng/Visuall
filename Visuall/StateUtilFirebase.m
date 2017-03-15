@@ -226,6 +226,19 @@ static NSMutableDictionary *__personalVisuallList;
              };
 }
 
++ (void) updateMetadataVisuall: (NSMutableDictionary *) dict
+{
+    NSString *userID = [[UserUtil sharedManager] userID];
+    FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
+    FIRDatabaseReference *visuallsPersonalRef =  [usersTableCurrentUser child: @"visualls-personal"];
+    FIRDatabaseReference *visuallsTableRef = [version01TableRef child: @"visualls"];
+    FIRDatabaseReference *currentVisuallRef = [visuallsTableRef child: dict[@"key"]];
+    [dict removeObjectForKey: @"key"];
+    [currentVisuallRef updateChildValues: dict];
+}
+
+
 - (void) loadPublicVisuallsList
 {
     

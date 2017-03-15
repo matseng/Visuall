@@ -48,7 +48,7 @@
 
 - (void) doneEditingHandler
 {
-    [self performSegueWithIdentifier: @"doneEditingSegue" sender: self];
+    [self performSegueWithIdentifier: @"unwindFromEditVisuall" sender: self];
 }
 
 /*
@@ -69,15 +69,23 @@
                                  
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
-    {
-        MyVisuallsViewController *controller = (MyVisuallsViewController *)segue.destinationViewController;
-        NSDictionary *info = @{
-                               @"title": self.TitleTextField.text
-                               };
-        controller.infoFromNewVisuallVC = info;
-        self.metadata = nil;
-    }
+//    if ([segue.identifier isEqualToString: @"unwindToMyVisuallsVC"])
+//    {
+//        MyVisuallsViewController *controller = (MyVisuallsViewController *) segue.destinationViewController;
+//        NSDictionary *info = @{
+//                               @"title": self.TitleTextField.text
+//                               };
+//        controller.metadataOfCurrentVisuall = info;
+//        self.metadata = nil;
+//    }
+    
+    MyVisuallsViewController *controller = (MyVisuallsViewController *) segue.destinationViewController;
+    NSDictionary *info = @{
+                           @"key": self.metadata[@"key"],
+                           @"title": self.TitleTextField.text
+                           };
+    controller.metadataOfCurrentVisuall = info;
+    self.metadata = nil;
 }
 
 
@@ -105,7 +113,7 @@
     {
         NSLog(@"\n Confirm delete here");
         // TODO (Mar 10, 2017): Go back to list view and delete visuall from firebase
-        [self performSegueWithIdentifier: @"deleteVisuall" sender: self];
+        [self performSegueWithIdentifier: @"unwindFromDeleteVisuall" sender: self];
     }];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
