@@ -201,7 +201,7 @@ static NSMutableDictionary *__personalVisuallList;
     [visuallsPersonalRef updateChildValues: @{_currentVisuallKey: @"1"} ];
 }
 
-+ (NSDictionary *) setValueVisuall: (NSString *) title
++ (NSMutableDictionary *) setValueVisuall: (NSString *) title
 {
     NSString *userID = [[UserUtil sharedManager] userID];
     FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
@@ -220,10 +220,10 @@ static NSMutableDictionary *__personalVisuallList;
     
     [currentVisuallRef updateChildValues: visuallDictionary];
     [visuallsPersonalRef updateChildValues: @{currentVisuallKey: @"1"} ];
-    return @{
+    return [@{
              @"key": currentVisuallKey,
              @"title": title
-             };
+             } mutableCopy];
 }
 
 + (void) updateMetadataVisuall: (NSMutableDictionary *) dict

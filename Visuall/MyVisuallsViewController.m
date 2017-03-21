@@ -71,6 +71,7 @@
     {
         NSString *title = [self.metadataOfCurrentVisuall valueForKey: @"title"];
         self.metadataOfCurrentVisuall = [StateUtilFirebase setValueVisuall: title];  // now includes key from Firebase
+        [self.metadataOfCurrentVisuall setObject: @"YES" forKey: @"isNewVisuall"];
         self.indexPath = [self appendVisuallToList: self.metadataOfCurrentVisuall];
     }
     else if ([segue.identifier isEqualToString: @"unwindFromEditVisuall"])
@@ -234,15 +235,19 @@
 //    ViewController *destViewController = [[ViewController alloc] init];
 //    destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
 //    [self.navigationController pushViewController: destViewController animated:YES];
-    
-    [self manualSegueToNewViewController: [self.recipes objectAtIndex:indexPath.row]];
-    
+    NSMutableDictionary *metadata = [self.recipes objectAtIndex:indexPath.row];
+    if ([metadata objectForKey: @"isNewVisuall"])
+    {
+        [metadata removeObjectForKey: @"isNewVisuall"];
+    }
+    [self manualSegueToNewViewController: metadata];
 }
 
-- (void) manualSegueToNewViewController: (NSDictionary *) dict
+- (void) manualSegueToNewViewController: (NSMutableDictionary *) dict
 {
     ViewController *destViewController = [[ViewController alloc] init];
     destViewController.firebaseURL = dict[@"key"];
+    destViewController.metadataTemp = dict;
     [self.navigationController pushViewController: destViewController animated:YES];
 }
 

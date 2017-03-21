@@ -79,7 +79,7 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 + (void) removeVisuall: (NSString *) key;
 
-+ (NSDictionary *) setValueVisuall: (NSString *) title;
++ (NSMutableDictionary *) setValueVisuall: (NSString *) title;
 
 + (void) updateMetadataVisuall: (NSMutableDictionary *) dict;
 

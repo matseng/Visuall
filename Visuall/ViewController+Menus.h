@@ -34,4 +34,6 @@
 
 - (BOOL) isArrowButtonSelected;
 
+- (void) switchChanged:(id) sender;
+
 @end

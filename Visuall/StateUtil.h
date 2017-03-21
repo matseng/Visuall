@@ -29,6 +29,7 @@
 @property float zoom;
 @property CGPoint pan;
 @property float _relativeScale;
+@property (strong, nonatomic) NSMutableDictionary *metadata;  // 
 @property (strong, nonatomic) NotesCollection *notesCollection;
 @property (strong, nonatomic) GroupsCollection *groupsCollection;
 @property (strong, nonatomic) Collection *arrowsCollection;

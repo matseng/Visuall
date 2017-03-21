@@ -33,6 +33,7 @@
                                                                       action:@selector(doneEditingHandler)];
         self.navigationItem.rightBarButtonItem = doneButton;
         self.TitleTextField.text = self.metadata[@"title"];
+        self.navigationItem.title = self.TitleTextField.text;
     }
     else
     {

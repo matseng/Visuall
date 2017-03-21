@@ -53,6 +53,8 @@
 
 @property (nonatomic, strong) NSString *firebaseVisuallKeyToLoad;
 
+@property (nonatomic, weak) NSMutableDictionary *metadataTemp;  // used temporarily to load data from previous viewcontroller
+
 @property (strong, nonatomic) UIView *Background;
 
 @property (strong, nonatomic) ScrollViewMod *BackgroundScrollView;

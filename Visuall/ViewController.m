@@ -94,8 +94,6 @@
     [self.visuallState setNotesView: self.NotesView];
     [self.visuallState setArrowsView: self.ArrowsView];
     
-    
-    
     [self.visuallState setCallbackPublicVisuallLoaded:^{
         //        [self loadAndUploadXML];
     }];
@@ -110,7 +108,36 @@
     {
         //        [self.visuallState loadVisuallsForCurrentUser];
         [self.visuallState loadVisuallFromKey: self.firebaseURL];
+        self.visuallState.metadata = self.metadataTemp;
+        if ( [self.metadataTemp objectForKey: @"isNewVisuall"] )
+        {
+            [self addNoteToBrandNewVisuall];
+            
+        }
     }
+}
+
+- (void) addNoteToBrandNewVisuall
+{
+    [self.editSwitch setOn: YES animated: YES];
+    [self switchChanged: self.editSwitch];
+    
+    // TODO (Mar 20, 2017): Add text to middle of screen, set text to metadata title and select text
+    CGPoint point = CGPointMake(0, 0);
+    NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
+    [self.visuallState setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
+    [self addNoteToViewWithHandlers:newNote];
+    [self setSelectedObject:newNote];
+    [newNote becomeFirstResponder];  // puts cursor on text field
+    [newNote.noteTextView selectAll:nil];  // selects all text
+    //            [self updateTotalBounds: newNote];
+    int count =  (int) self.visuallState.notesCollection.items.count;
+    NSLog(@"\n tapHandler, notes collection count: %i", count);
+    
+//    [self centerScrollViewContents2];
+//    [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
+//    CGRect rect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect fromView:self.VisualItemsView];
+//    [self.BackgroundScrollView zoomToRect: self.BoundsTiledLayerView.frame animated:YES];
 }
 
 - (void) allGroupsDidLoadHandler

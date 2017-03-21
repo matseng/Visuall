@@ -158,7 +158,14 @@ UIColor *darkGrayBorderColor;
     
 //    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
     
-    [toolbar setItems:@[backBarItem, flexibleSpace, editBarItem, flexibleSpace] animated:YES];
+    if (self.tabBarController.selectedIndex == 0)  // Public tab
+    {
+        [toolbar setItems:@[flexibleSpace, editBarItem, flexibleSpace] animated:YES];
+    }
+    else
+    {
+        [toolbar setItems:@[backBarItem, flexibleSpace, editBarItem, flexibleSpace] animated:YES];
+    }
     
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];

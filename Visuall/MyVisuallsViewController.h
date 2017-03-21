@@ -15,7 +15,7 @@
 
 @property (strong, nonatomic)  NSMutableArray *recipes;
 
-@property (strong, nonatomic) NSDictionary *metadataOfCurrentVisuall;
+@property (strong, nonatomic) NSMutableDictionary *metadataOfCurrentVisuall;
 
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
