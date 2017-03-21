@@ -52,4 +52,13 @@
     return NO;
 }
 
+- (BOOL) isKeyInCollection: (NSString *) key
+{
+    if ( [self.items objectForKey: key] == nil )
+    {
+        return NO;
+    }
+    return YES;
+}
+
 @end

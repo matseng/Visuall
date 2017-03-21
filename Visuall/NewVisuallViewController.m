@@ -131,9 +131,8 @@
     {
         NSLog(@"\n Cancel");
     }];
-    
-    [alertController addAction:alertAction];
     [alertController addAction:cancelAction];
+    [alertController addAction:alertAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 @end

@@ -31,7 +31,6 @@
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer
 {
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
-    NSLog(@"panHandler viewHit %@", [viewHit class]);
     if ( [self isDrawGroupButtonSelected] )  // isGroupHandle
     {
         [self drawGroup: gestureRecognizer];

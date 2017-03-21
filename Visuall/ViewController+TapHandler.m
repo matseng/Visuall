@@ -41,7 +41,6 @@ NoteItem2 *targetNoteForArrow;
     {
         CGPoint point = [gestureRecognizer locationInView: self.BoundsTiledLayerView];
         UIView *viewHit = [self.BoundsTiledLayerView hitTest:point withEvent:nil];
-        NSLog(@"tapHandler viewHit %@", [viewHit class]);
         
         if ( [viewHit isNoteItem] )
         {

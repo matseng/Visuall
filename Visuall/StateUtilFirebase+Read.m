@@ -56,13 +56,13 @@
              --self.numberOfGroupsToBeLoaded;
              return;
          }
-         if( ![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key])  // If the group already exists in the collection then update it
+         if( ![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key] != nil)  // If the group already exists in the collection then update it
          {
              GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
              [gi updateGroupItem: snapshot.key andValue: snapshot.value];
              return;
          }
-         else if ( ![self.groupsCollection getGroupItemFromKey: snapshot.key] )
+         else if ( ![self.groupsCollection isKeyInCollection: snapshot.key] )
          {
              
              if( [snapshot.value[@"data"][@"image"] boolValue] )
@@ -110,7 +110,7 @@
          }
          
          // 1 of 2. Read a arrow upon the initial load:
-         if ( ![self.arrowsCollection getItemFromKey: snapshot.key])
+         if ( [self.arrowsCollection getItemFromKey: snapshot.key] == nil)
          {
              ArrowItem *ai = [[ArrowItem alloc] initArrowFromFirebase: arrowRef.key andValue:snapshot.value];
              [self.arrowsCollection addItem: ai withKey: arrowRef.key];
@@ -145,7 +145,7 @@
          }
          
          // 1 of 2. Read a path upon the initial load:
-         if ( ![self.pathsCollection getItemFromKey: snapshot.key])
+         if ( [self.pathsCollection getItemFromKey: snapshot.key] == nil)
          {
              PathItem *pi = [[PathItem alloc] initPathFromFirebase: pathRef.key andValue:snapshot.value];
              [self.DrawView addPathItemToMVC: pi];
@@ -170,16 +170,25 @@
 
 - (void) allNotesDidLoad
 {
-    self.allNotesLoadedBOOL = YES;
+    if (self.allNotesLoadedBOOL == YES)
+    {
+        return;
+    }
     NSLog(@"\n All notes loaded: %i", self.numberOfNotesLoaded);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"allNotesDidLoad" object: nil];
+    self.allNotesLoadedBOOL = YES;
 }
 
 - (void) allGroupsDidLoad
 {
-    self.allGroupsLoadedBOOL = YES;
+    if (self.allGroupsLoadedBOOL == YES)
+    {
+        return;
+    }
     NSLog(@"\n allGroupsLoaded loaded: %i", self.numberOfGroupsLoaded);
     //    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(refreshGroupsView:) name:@"refreshGroupsView" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"allGroupsDidLoad" object: nil];
+    self.allGroupsLoadedBOOL = YES;
 }
 
 @end

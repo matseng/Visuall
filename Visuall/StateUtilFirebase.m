@@ -556,6 +556,8 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *groupsRef = [self.version01TableRef child: @"groups"];
     FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
     gi.group.key = newGroupRef.key;
+    [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
+    NSLog(@"\n setValueGroup: %@", newGroupRef.key);
     if ( !_currentVisuallKey )
     {
         return;
@@ -569,7 +571,7 @@ static NSMutableDictionary *__personalVisuallList;
                                               } mutableCopy];
     [groupDictionary addEntriesFromDictionary: [self getGenericSetValueParameters]];
     [groupDictionary addEntriesFromDictionary: [self getCommonUpdateParameters]];
-    [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
+    
     if ( [vi isImage] )
     {
         [self setValueGroupImageHelperForVisualItem:vi andGroupDictionary: groupDictionary andRef: newGroupRef];

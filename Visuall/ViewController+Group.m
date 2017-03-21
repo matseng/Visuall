@@ -29,6 +29,7 @@
     drawGroupView.backgroundColor = GROUP_VIEW_BACKGROUND_COLOR;
     drawGroupView.layer.borderColor = GROUP_VIEW_BORDER_COLOR;
     drawGroupView.layer.borderWidth = GROUP_VIEW_BORDER_WIDTH;
+    drawGroupView.alpha = 0.2;
     return drawGroupView;
 }
 
@@ -292,7 +293,7 @@
     
     for (NSString *key in sortedArray) {
         float area = [self.visuallState.groupsCollection getGroupAreaFromKey:key];
-        NSLog(@"Group area: %f", area);
+//        NSLog(@"Group area: %f", area);
 //        [self.groupsCollection.groups2[key] removeFromSuperview];
 //        [self.GroupsView addSubview:self.groupsCollection.groups2[key]];
         GroupItem *gi = [self.visuallState.groupsCollection getGroupItemFromKey:key];

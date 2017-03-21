@@ -22,4 +22,6 @@
 
 - (BOOL) deleteItemGivenKey: (NSString *) key;
 
+- (BOOL) isKeyInCollection: (NSString *) key;
+
 @end

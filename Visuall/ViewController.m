@@ -77,6 +77,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(allGroupsDidLoadHandler) name:@"allGroupsDidLoad" object:nil];  // http://www.numbergrinder.com/2008/12/patterns-in-objective-c-observer-pattern/
     
+    [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(allNotesDidLoadHandler) name:@"allNotesDidLoad" object:nil];
+    
     self.visuallState = [[StateUtilFirebase alloc] init];
     
     [self buildViewHierarchyAndMenus];
@@ -144,9 +146,15 @@
 - (void) allGroupsDidLoadHandler
 {
     [self refreshGroupsView];
-    
-    // Center contents:
     [self centerScrollViewContents2];
+    [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
+    CGRect rect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect fromView:self.VisualItemsView];
+    [self.BackgroundScrollView zoomToRect: rect animated:YES];
+}
+
+- (void) allNotesDidLoadHandler
+{
+//    [self centerScrollViewContents2];
     [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
     CGRect rect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect fromView:self.VisualItemsView];
     [self.BackgroundScrollView zoomToRect: rect animated:YES];
@@ -808,7 +816,7 @@
 - (void) handleTouchDown:(TouchDownGestureRecognizer *) gestureRecognizer {
     UIView *viewHit = self.BoundsTiledLayerView.hitTestView;
     self.visuallState.touchDownPoint = [gestureRecognizer locationInView: self.visuallState.VisualItemsView];
-    NSLog(@"\n handleTouchDown viewHit %@", [viewHit class]);
+//    NSLog(@"\n handleTouchDown viewHit %@", [viewHit class]);
     
     if ( [viewHit isEqual: self.scrollViewButtonList] )
     {
