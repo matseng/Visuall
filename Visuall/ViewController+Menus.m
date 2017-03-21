@@ -842,8 +842,8 @@ UIColor *darkGrayBorderColor;
 {
     
     NSString *segmentSelectedTitle =  [self.segmentControlVisualItem getMyTitleForSegmentAtIndex: (int) self.segmentControlVisualItem.selectedSegmentIndex];
-    NSLog(@"segmentSelectedIndex: %li", self.segmentControlVisualItem.selectedSegmentIndex);
-    NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
+//    NSLog(@"segmentSelectedIndex: %li", self.segmentControlVisualItem.selectedSegmentIndex);
+//    NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
     if ( [segmentSelectedTitle isEqualToString:@"pointer"] )
     {
         [[self.view window] endEditing:YES];  // hide keyboard when dragging a note

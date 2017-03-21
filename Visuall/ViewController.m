@@ -108,36 +108,37 @@
     {
         //        [self.visuallState loadVisuallsForCurrentUser];
         [self.visuallState loadVisuallFromKey: self.firebaseURL];
-        self.visuallState.metadata = self.metadataTemp;
-        if ( [self.metadataTemp objectForKey: @"isNewVisuall"] )
-        {
-            [self addNoteToBrandNewVisuall];
-            
-        }
+    }
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    self.visuallState.metadata = self.metadataTemp;
+    if ( [self.metadataTemp objectForKey: @"isNewVisuall"] )
+    {
+        [self addNoteToBrandNewVisuall];
     }
 }
 
 - (void) addNoteToBrandNewVisuall
 {
+    /*
     [self.editSwitch setOn: YES animated: YES];
     [self switchChanged: self.editSwitch];
-    
-    // TODO (Mar 20, 2017): Add text to middle of screen, set text to metadata title and select text
-    CGPoint point = CGPointMake(0, 0);
-    NoteItem2 *newNote = [[NoteItem2 alloc] initNote:@"text..." withPoint:point];
+    */
+    CGPoint point = CGPointMake(self.BoundsTiledLayerView.frame.size.width / 2,
+                                self.BoundsTiledLayerView.frame.size.height / 4);
+    NoteItem2 *newNote = [[NoteItem2 alloc] initNote: self.metadataTemp[@"title"]
+                                           withPoint: point];
     [self.visuallState setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
     [self addNoteToViewWithHandlers:newNote];
+    [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
     [self setSelectedObject:newNote];
-    [newNote becomeFirstResponder];  // puts cursor on text field
+    /*
+    BOOL accept = [newNote becomeFirstResponder];  // puts cursor on text field
+    NSLog(@"\n addNoteToBrandNewVisuall, first responder: %s", accept ? "true" : "false");
     [newNote.noteTextView selectAll:nil];  // selects all text
-    //            [self updateTotalBounds: newNote];
-    int count =  (int) self.visuallState.notesCollection.items.count;
-    NSLog(@"\n tapHandler, notes collection count: %i", count);
-    
-//    [self centerScrollViewContents2];
-//    [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
-//    CGRect rect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect fromView:self.VisualItemsView];
-//    [self.BackgroundScrollView zoomToRect: self.BoundsTiledLayerView.frame animated:YES];
+     */
 }
 
 - (void) allGroupsDidLoadHandler

@@ -536,7 +536,6 @@ static NSMutableDictionary *__personalVisuallList;
             [self increaseOrDecreaseCounter: notesCounterRef byAmount:1];
         }
     }];
-    
 }
 
 - (void) increaseOrDecreaseCounter: (FIRDatabaseReference *) ref byAmount: (int) i
