@@ -13,17 +13,23 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *TitleTextField;
 
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
+
 - (IBAction) onDeleteButtonPressed: (id)sender;
+
+@property (weak, nonatomic) IBOutlet UIView *outerContainer;
 
 @end
 
 @implementation NewVisuallViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
     barButton.title = @"Cancel";
     self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
+    [self updateSubviews];
     
     if (self.metadata && self.metadata[@"key"])
     {
@@ -42,9 +48,18 @@
                                                                       target:self
                                                                       action:@selector(doneHandler)];
         self.navigationItem.rightBarButtonItem = doneButton;
-//        self.navigationController.navigationBar.topItem.rightBarButtonItem = doneButton;
+        [self.deleteButton removeFromSuperview];
+        
         [self.TitleTextField becomeFirstResponder];
     }
+    
+    [self.TitleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+- (void) textFieldDidChange: (UITextField *) textField
+{
+    self.navigationItem.title = textField.text;
 }
 
 - (void) doneEditingHandler
@@ -135,4 +150,37 @@
     [alertController addAction:alertAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
+
+/*
+ * Name: updateSubviews
+ * Description: Re-centers subviews upon change of device orientation
+ */
+- (void) updateSubviews
+{
+    UIDeviceOrientation Orientation=[[UIDevice currentDevice]orientation];
+    if(Orientation==UIDeviceOrientationLandscapeLeft || Orientation==UIDeviceOrientationLandscapeRight)
+    {
+        self.outerContainer.center = CGPointMake(self.view.center.x, self.view.frame.size.height * 1 / 4);
+    }
+    else
+    {
+        self.outerContainer.center = self.view.center;
+    }
+    
+}
+
+- (void) OrientationDidChange:(NSNotification*)notification
+{
+    UIDeviceOrientation Orientation=[[UIDevice currentDevice]orientation];
+    
+    if(Orientation==UIDeviceOrientationLandscapeLeft || Orientation==UIDeviceOrientationLandscapeRight)
+    {
+        [self updateSubviews];
+    }
+    else if(Orientation==UIDeviceOrientationPortrait)
+    {
+        [self updateSubviews];
+    }
+}
+
 @end
