@@ -168,6 +168,7 @@ UIColor *darkGrayBorderColor;
     }
     
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
+//    CGRect rect = toolBarItem.width
     self.navigationItem.leftBarButtonItems = @[negativeSpacer30, toolBarItem];
     //    self.navigationController.navigationBar.backgroundColor = self.backgroundColor;
     [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
@@ -395,6 +396,10 @@ UIColor *darkGrayBorderColor;
     NSMutableArray *buttonList = [[NSMutableArray alloc] init];
     float height = 44;
     float unit = 38;  //  previously 40 with 8 buttons
+    if ( [[UIScreen mainScreen] bounds].size.width < 375.0 )
+    {
+        unit = unit * [[UIScreen mainScreen] bounds].size.width / 375.0;  // Resize submenu for iPhone SE
+    }
     int numberOfButtons = 9;
 
 //    UIColor *backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
@@ -470,6 +475,9 @@ UIColor *darkGrayBorderColor;
     [negativeSpacer30 setWidth:-10];
     
     CGRect rect = CGRectMake(0, -height, [[UIScreen mainScreen] bounds].size.width, height);
+    
+    NSLog(@"\n [[UIScreen mainScreen] bounds].size.width: %f", [[UIScreen mainScreen] bounds].size.width);
+    
     UIToolbar *toolbar2 = [[UIToolbar alloc] initWithFrame: rect];
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, toolbar2.frame.size.height - 1.0f, toolbar2.frame.size.width, 0.5f);
@@ -477,16 +485,17 @@ UIColor *darkGrayBorderColor;
     [toolbar2.layer addSublayer:bottomBorder];
     toolbar2.autoresizesSubviews = NO;
     toolbar2.autoresizingMask = UIViewAutoresizingNone;
+    toolbar2.autoresizesSubviews = YES;
+    toolbar2.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [toolbar2 setBackgroundImage:[UIImage new]
                   forToolbarPosition:UIToolbarPositionAny
                           barMetrics:UIBarMetricsDefault];
     toolbar2.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
     
     [toolbar2 setItems:@[flexibleSpace, segmentControlItem, segmentControlFontItem, segmentControlInsertMediaItem, trashButtonItem, flexibleSpace]];
-   
+    
     [self.Background addSubview: toolbar2];
     self.submenu = toolbar2;
-//    if ( !self.topMenuViews ) self.topMenuViews = [[NSMutableDictionary alloc] init];
     [[[[UserUtil sharedManager] getState] topMenuViews] setValue: self.segmentControlVisualItem forKey: @"segmentControlVisualItem"];
 
     SegmentedControlMod *scm = [[[UserUtil sharedManager] getState] topMenuViews][@"segmentControlVisualItem"];

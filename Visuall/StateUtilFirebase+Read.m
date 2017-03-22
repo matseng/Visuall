@@ -145,7 +145,7 @@
          }
          
          // 1 of 2. Read a path upon the initial load:
-         if ( [self.pathsCollection getItemFromKey: snapshot.key] == nil)
+         if ( ![self.pathsCollection isKeyInCollection:snapshot.key] )
          {
              PathItem *pi = [[PathItem alloc] initPathFromFirebase: pathRef.key andValue:snapshot.value];
              [self.DrawView addPathItemToMVC: pi];

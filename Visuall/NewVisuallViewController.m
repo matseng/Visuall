@@ -23,7 +23,7 @@
 
 @implementation NewVisuallViewController
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
@@ -164,7 +164,8 @@
     }
     else
     {
-        self.outerContainer.center = self.view.center;
+//        self.outerContainer.center = self.view.center;
+        self.outerContainer.center = CGPointMake(self.view.center.x, self.view.frame.size.height * 1 / 2);
     }
     
 }
