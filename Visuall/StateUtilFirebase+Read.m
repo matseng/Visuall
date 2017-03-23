@@ -23,7 +23,9 @@
          }
         
          // 1 of 2. Read a note upon the initial load or if a new note is added from another user
-         if ( [self.notesCollection getItemFromKey: snapshot.key] == nil )
+//         if ( [self.notesCollection getItemFromKey: snapshot.key] == nil )
+         NSLog(@"\n loadNoteFromRef: %@", snapshot.key);
+         if ( ![self.notesCollection isKeyInCollection:snapshot.key] )
          {
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
              [self.notesCollection addNote:newNote withKey:snapshot.key];
@@ -51,12 +53,21 @@
 {
     [groupRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
+         NSLog(@"\n loadGroupFromRef: %@", snapshot.key);
+         NSLog(@"\n loadGroupFromRef, count: %lu", (unsigned long) self.groupsCollection.items.count);
+         
          if ( ![snapshot exists] || snapshot.value == [NSNull null])
          {
              --self.numberOfGroupsToBeLoaded;
              return;
          }
-         if( ![self isSnapshotFromLocalDevice: snapshot] && [self.groupsCollection getGroupItemFromKey: snapshot.key] != nil)  // If the group already exists in the collection then update it
+         
+         if ([self isSnapshotFromLocalDevice: snapshot] && self.allGroupsLoadedBOOL)
+         {
+             return;
+         }
+         
+         if( [self.groupsCollection isKeyInCollection: snapshot.key] )  // If the group already exists in the collection then update it
          {
              GroupItem *gi = [self.groupsCollection getGroupItemFromKey: snapshot.key];
              [gi updateGroupItem: snapshot.key andValue: snapshot.value];
@@ -64,7 +75,6 @@
          }
          else if ( ![self.groupsCollection isKeyInCollection: snapshot.key] )
          {
-             
              if( [snapshot.value[@"data"][@"image"] boolValue] )
              {
                  GroupItemImage *newGroup = [[GroupItemImage alloc] initGroup:snapshot.key andValue:snapshot.value];
@@ -83,6 +93,8 @@
              }
              else
              {
+                 NSLog(@"\n loadGroupFromRef: %@", snapshot.key);
+                 NSLog(@"\n loadGroupFromRef, count: %lu", (unsigned long) self.groupsCollection.items.count);
                  GroupItem *newGroup = [[GroupItem alloc] initGroup:snapshot.key andValue:snapshot.value];
                  [self.groupsCollection addGroup: newGroup withKey:snapshot.key];
                  [[NSNotificationCenter defaultCenter] postNotificationName:@"addGroupToViewWithHandlers" object: nil userInfo: @{@"data": newGroup}];
@@ -136,6 +148,7 @@
 
 - (void) loadPathFromRef: (FIRDatabaseReference *) pathRef
 {
+    [self.DrawView setNeedsDisplay];
     [pathRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
          if (snapshot.value == [NSNull null])

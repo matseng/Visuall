@@ -446,7 +446,8 @@ static NSMutableDictionary *__personalVisuallList;
         PathItem *pi = (PathItem *) [self.pathsCollection getItemFromKey: snapshot.key];
         if (pi)
         {
-            [[[[UserUtil sharedManager] getState] DrawView] deletePath: pi];
+//            [[[[UserUtil sharedManager] getState] DrawView] deletePath: pi];
+            [self.DrawView deletePath: pi];
         }
     } withCancelBlock:^(NSError * _Nonnull error) {
         NSLog(@"loadListOfPathsFromRef: %@", error.description);
@@ -518,6 +519,7 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *newNoteRef = [self.notesTableRef childByAutoId];
     ni.note.key = newNoteRef.key;
     [self.notesCollection addNote:ni withKey:newNoteRef.key];
+    NSLog(@"\n setValueNote, loadNoteFromRef: %@", newNoteRef.key);
     [newNoteRef setValue: @{@"parent-visuall": _currentVisuallKey}];  // HACK to allow for offline, local storage and avoid permission errors
     [newNoteRef updateChildValues: noteDictionary withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error) {
@@ -556,8 +558,9 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *groupsRef = [self.version01TableRef child: @"groups"];
     FIRDatabaseReference *newGroupRef = [groupsRef childByAutoId];
     gi.group.key = newGroupRef.key;
-    [self.groupsCollection addGroup: gi withKey: newGroupRef.key]; // TODO (Aug 23, 2016): Redundant?
+    [self.groupsCollection addGroup: gi withKey: newGroupRef.key];
     NSLog(@"\n setValueGroup: %@", newGroupRef.key);
+    NSLog(@"\n setValueGroup, count: %lu", (unsigned long) self.groupsCollection.items.count);
     if ( !_currentVisuallKey )
     {
         return;

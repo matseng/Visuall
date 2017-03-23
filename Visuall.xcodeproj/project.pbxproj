@@ -156,7 +156,7 @@
 		714847211D94B72200E73A7A /* FDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDViewController.h; sourceTree = "<group>"; };
 		714847221D94B72200E73A7A /* FDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDViewController.m; sourceTree = "<group>"; };
 		714847231D94B72200E73A7A /* FDDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDrawView.h; sourceTree = "<group>"; };
-		714847241D94B72200E73A7A /* FDDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDrawView.m; sourceTree = "<group>"; };
+		714847241D94B72200E73A7A /* FDDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDrawView.m; sourceTree = "<group>"; usesTabs = 0; };
 		714847251D94B72200E73A7A /* FDPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDPath.h; sourceTree = "<group>"; };
 		714847261D94B72200E73A7A /* FDPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDPath.m; sourceTree = "<group>"; };
 		714847271D94B72200E73A7A /* FDColorPickController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorPickController.h; sourceTree = "<group>"; };
