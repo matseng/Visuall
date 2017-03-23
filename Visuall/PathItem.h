@@ -21,4 +21,8 @@
 
 - (instancetype) initPathFromFirebase: (NSString *) key andValue: (NSDictionary *) value;
 
+- (void) drawPathOnShapeLayer: (CGFloat) lineWidth;
+
+- (void) increaseLineWidth;
+
 @end

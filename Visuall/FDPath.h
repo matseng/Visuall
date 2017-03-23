@@ -30,6 +30,9 @@
 // the color of this path
 @property (nonatomic, strong, readonly) UIColor *color;
 
+// the color of this path
+@property (nonatomic) CGFloat lineWidth;
+
 - (id)initWithColor:(UIColor *)color;
 - (id)initWithPoints:(NSArray *)points color:(UIColor *)color;
 

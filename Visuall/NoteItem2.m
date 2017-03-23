@@ -122,7 +122,6 @@
     }
 }
 
-
 - (void) addTextView
 {
     self.noteTextView = [[UITextView alloc] init];

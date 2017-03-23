@@ -576,7 +576,9 @@ UIColor *darkGrayBorderColor;
 
 - (void) updateSecondSubmenuState
 {
-    if ( [self.visuallState.selectedVisualItem isNoteItem] || [self.visuallState.selectedVisualItem isArrowItem] )
+    if ( [self.visuallState.selectedVisualItem isNoteItem]
+        || [self.visuallState.selectedVisualItem isArrowItem]
+        || [self.visuallState.selectedVisualItem isDrawView])
     {
         // change size buttons in active state
         self.segmentControlFormattingOptions.tintColor = self.view.tintColor;
@@ -683,6 +685,11 @@ UIColor *darkGrayBorderColor;
         ArrowItem *ai = [self.visuallState.selectedVisualItem getArrowItem];
         [ai increaseSize];
         [self.visuallState updateChildValue: ai Property: nil];
+    }
+    else if ( [self.visuallState.selectedVisualItem isDrawView] )
+    {
+        PathItem *pi = [self.visuallState.selectedVisualItem getPathItem];
+        [pi increaseLineWidth];
     }
 }
 

@@ -21,6 +21,14 @@
 //        [self addHandles];
         self.key = key;
         self.fdpath = [FDPath parse: value[@"data"][@"path"]];
+        if ( value[@"data"][@"path"][@"lineWidth"] != nil)
+        {
+            self.fdpath.lineWidth = [value[@"data"][@"path"][@"lineWidth"] floatValue];
+        }
+        else
+        {
+            self.fdpath.lineWidth = 4.0;
+        }
         if ( self.fdpath.points.count == 1 )
         {
             self.isPoint = YES;
@@ -29,40 +37,34 @@
     return self;
 }
 
-/*
-- (void) drawPathOnShapeLayer
+- (void) increaseLineWidth
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 0.5f);
-    
-    if (self.fdpath.points.count > 1) {
-        // make sure this is a new line
-        CGContextBeginPath(context);
-        
-        // set the color
-        CGContextSetStrokeColorWithColor(context, self.fdpath.color.CGColor);
-        
-        FDPoint *point = self.fdpath.points[0];
-        CGContextMoveToPoint(context, point.x, point.y);
+    self.fdpath.lineWidth = self.fdpath.lineWidth * 1.5;
+    [self drawPathOnSelf];
+}
+
+- (void) drawPathOnSelf
+{
+    FDPath *path = self.fdpath;
+    if (path.points.count > 1) {
+        // make sure this is a new line and starting point
+        UIBezierPath *bzPath = [UIBezierPath bezierPath];
+        FDPoint *point = path.points[0];
+        [bzPath moveToPoint: CGPointMake(point.x, point.y)];
         
         // draw all points on the path
-        for (NSUInteger i = 0; i < self.fdpath.points.count; i++) {
-            FDPoint *point = self.fdpath.points[i];
-            CGContextAddLineToPoint(context, point.x, point.y);
+        for (NSUInteger i = 0; i < path.points.count; i++) {
+            FDPoint *point = path.points[i];
+            [bzPath addLineToPoint:CGPointMake(point.x, point.y)];
         }
-        CGPathRef pathRef = CGContextCopyPath(context);
         
         // actually draw the path
-        self.strokeColor = [[UIColor blueColor] CGColor];
-        self.lineWidth = 4.0;
-        [self setFillColor:[[UIColor clearColor] CGColor]];
-        [self setPath: pathRef];
-    }
-    else
-    {
-        NSLog(@"\n Draw a point on load");
+        self.strokeColor = [[UIColor redColor] CGColor];
+        self.lineWidth = self.fdpath.lineWidth;
+        [self setFillColor: nil];
+        [self setPath: bzPath.CGPath];
     }
 }
-*/
+
 
 @end

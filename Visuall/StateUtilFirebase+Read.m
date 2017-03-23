@@ -148,7 +148,7 @@
 
 - (void) loadPathFromRef: (FIRDatabaseReference *) pathRef
 {
-    [self.DrawView setNeedsDisplay];
+    // [self.DrawView setNeedsDisplay];
     [pathRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
          if (snapshot.value == [NSNull null])
