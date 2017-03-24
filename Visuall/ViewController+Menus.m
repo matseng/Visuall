@@ -669,6 +669,13 @@ UIColor *darkGrayBorderColor;
         [ai decreaseSize];
         [self.visuallState updateChildValue: ai Property: nil];
     }
+    else if ( [self.visuallState.selectedVisualItem isDrawView] )
+    {
+        PathItem *pi = [self.visuallState.selectedVisualItem getPathItem];
+        [pi decreaseLineWidth];
+        [[[[UserUtil sharedManager] getState] DrawView] highlightSelectedPath];
+        [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
+    }
 }
 
 - (void) increaseFontSizeHandler: (UIButton *) button

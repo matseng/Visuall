@@ -463,10 +463,7 @@
             
             CGPathRef tapTargetPath = CGPathCreateCopyByStrokingPath(layer.path,
                                                                      NULL,
-                                                                     //                                                                     fmaxf(35.0f, path.lineWidth),
-                                                                     //                                                                     path.lineWidth,
-                                                                     // self.lineWidth * 6.0,
-                                                                     layer.fdpath.lineWidth * 6.0,
+                                                                     fmaxf(24.0f, layer.fdpath.lineWidth * 2.0),
                                                                      path.lineCapStyle,
                                                                      path.lineJoinStyle,
                                                                      path.miterLimit);

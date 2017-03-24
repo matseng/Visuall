@@ -23,4 +23,6 @@
 
 - (void) increaseLineWidth;
 
+- (void) decreaseLineWidth;
+
 @end

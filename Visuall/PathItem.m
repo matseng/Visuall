@@ -21,6 +21,7 @@
 //        [self addHandles];
         self.key = key;
         self.fdpath = [FDPath parse: value[@"data"][@"path"]];
+        self.fdpath.color = [UIColor blueColor];  // overwriting color for now
         if ( value[@"data"][@"path"][@"lineWidth"] != nil)
         {
             self.fdpath.lineWidth = [value[@"data"][@"path"][@"lineWidth"] floatValue];
@@ -40,6 +41,12 @@
 - (void) increaseLineWidth
 {
     self.fdpath.lineWidth = self.fdpath.lineWidth * 1.5;
+    [self drawPathOnSelf];
+}
+
+- (void) decreaseLineWidth
+{
+    self.fdpath.lineWidth = self.fdpath.lineWidth * 0.667;
     [self drawPathOnSelf];
 }
 
