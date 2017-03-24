@@ -24,6 +24,7 @@ UIImage *trashImg;
 UIImage *trashImgHilighted;
 UIColor *backgroundColor;
 UIColor *darkGrayBorderColor;
+UITextView *sizeView;
 
 - (void) createTopMenu
 {
@@ -544,9 +545,18 @@ UIColor *darkGrayBorderColor;
                                action:@selector(increaseFontSizeHandler:)
                      forControlEvents:UIControlEventTouchUpInside];
     
+    sizeView = [[UITextView alloc] init];  // defined at top of this file
+    sizeView.textAlignment = NSTextAlignmentCenter;
+    sizeView.layer.borderWidth = 1.0f;
+    sizeView.layer.borderColor = [self.view.tintColor CGColor];
+    sizeView.layer.cornerRadius = 5.0f;
+    [sizeView setUserInteractionEnabled:NO];
+    [self updateSizeView];
+    UIBarButtonItem *sizeItem = [[UIBarButtonItem alloc] initWithCustomView: sizeView];
+    
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    [spacer setWidth: h * 2 + 10];
+    [spacer setWidth: h * 2 + 10 - 15];
     
     CGRect rect = self.secondSubmenuScrollView.frame;
     rect.origin = CGPointZero;
@@ -558,7 +568,7 @@ UIColor *darkGrayBorderColor;
                           barMetrics:UIBarMetricsDefault];
     
     [toolbar2 setBackgroundColor:[UIColor clearColor]];
-    [toolbar2 setItems:@[flexibleSpace, spacer, decreaseFontSizeItem, increaseFontSizeItem, flexibleSpace]];
+    [toolbar2 setItems:@[flexibleSpace, spacer, decreaseFontSizeItem, sizeItem, increaseFontSizeItem, flexibleSpace]];
 
     self.secondSubmenuScrollView.delaysContentTouches = NO;
     [self.secondSubmenuScrollView addSubview: toolbar2];
@@ -591,9 +601,32 @@ UIColor *darkGrayBorderColor;
         self.segmentControlFormattingOptions.tintColor = [UIColor lightGrayColor];
         [self disableButton:@"increaseFontSize"];
         [self disableButton:@"decreaseFontSize"];
-
     }
+    [self updateSizeView];
 }
+
+- (void) updateSizeView
+{
+    float size = [self.visuallState.selectedVisualItem getSize];
+    if (size < 1)
+    {
+        sizeView.text = @"-";
+        sizeView.textColor = [UIColor grayColor];
+        sizeView.layer.borderColor = [[UIColor grayColor] CGColor];
+    }
+    else
+    {
+        sizeView.text = [NSString stringWithFormat:@"%.0f", size];
+        sizeView.textColor = [UIColor blueColor];
+        sizeView.layer.borderColor = [[UIColor blueColor] CGColor];
+    }
+    CGFloat fixedWidth = 35.0;
+    CGSize newSize = [sizeView sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
+    CGRect newFrame = sizeView.frame;
+    newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
+    sizeView.frame = newFrame;
+}
+
 
 - (void) enableButton: (NSString *) buttonName
 {
@@ -654,8 +687,6 @@ UIColor *darkGrayBorderColor;
 
 - (void) decreaseFontSizeHandler: (UIButton *) button
 {
-    // TODO (Aug 19, 2016): update note font size of currently selected note (double-check that it's viewable on screen) and save to firebase
-    
     NSLog(@"decreaseFontSizeButton title: %@", [button currentTitle]);
     NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
     if ( (ni) && [self.visuallState.selectedVisualItem isInBoundsOfView: self.BackgroundScrollView])
@@ -676,6 +707,7 @@ UIColor *darkGrayBorderColor;
         [[[[UserUtil sharedManager] getState] DrawView] highlightSelectedPath];
         [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
     }
+    [self updateSizeView];
 }
 
 - (void) increaseFontSizeHandler: (UIButton *) button
@@ -700,6 +732,7 @@ UIColor *darkGrayBorderColor;
         [[[[UserUtil sharedManager] getState] DrawView] highlightSelectedPath];
         [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
     }
+    [self updateSizeView];
 }
 
 - (UIButton *) makeButtonFromImage: (NSString *) imageName buttonSize: (float) unit andExtraPadding: (float) padding

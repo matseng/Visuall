@@ -185,6 +185,29 @@
     return nil;
 }
 
+- (float) getSize
+{
+    if ([self isNoteItem])
+    {
+        NoteItem2 *ni = [self getNoteItem];
+        return ni.note.fontSize;
+    }
+    if ([self isGroupItem])
+    {
+        return NO;
+    }
+    if ([self isArrowItem])
+    {
+        return [[self getArrowItem] tailWidth];
+    }
+    if ([self isDrawView])
+    {
+        PathItem *pi = [self getPathItem];
+        return pi.fdpath.lineWidth;
+    }
+    return NO;
+}
+
 - (UIViewController *) firstAvailableUIViewController {
     // convenience function for casting and to "mask" the recursive function
     return (UIViewController *)[self traverseResponderChainForUIViewController];

@@ -52,4 +52,6 @@
 
 - (id) traverseResponderChainForUIViewController;
 
+- (float) getSize;
+
 @end
