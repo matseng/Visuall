@@ -690,6 +690,8 @@ UIColor *darkGrayBorderColor;
     {
         PathItem *pi = [self.visuallState.selectedVisualItem getPathItem];
         [pi increaseLineWidth];
+        [[[[UserUtil sharedManager] getState] DrawView] highlightSelectedPath];
+        [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
     }
 }
 

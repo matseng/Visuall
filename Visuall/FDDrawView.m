@@ -54,13 +54,14 @@
     self.selectedPath = pi;
     [[[UserUtil sharedManager] getState] setValuePath: pi];  // save to firebase
     [self addPathItemToMVC: pi];
-    [self highlightSelectedPath];
+    // [self highlightSelectedPath];
 }
 
 - (void) addPathItemToMVC: (PathItem *) pi
 {
     [[[[UserUtil sharedManager] getState] pathsCollection] addItem: pi withKey: pi.key];
-    [self drawPathItemOnShapeLayer: pi];
+    // [self drawPathItemOnShapeLayer: pi];
+    [pi drawPathOnSelf];
     [self.layer addSublayer: pi];
 }
 
@@ -89,13 +90,27 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 0.5f);
-    
+    [self drawPathAndHighlight];
+
+}
+
+- (void) drawPathAndHighlight
+{
     if (self.currentPath != nil)
     {
-        [self drawPathOnShapeLayer: self.currentPath withContext: context];
-        [self drawPathOnBackgroundLayer: self.currentPath withContext: context];
+        // self.shapeLayerBackground.fdpath.points = [self.currentPath.points mutableCopy];
+        self.shapeLayerBackground.fdpath = self.currentPath;
+        self.shapeLayerBackground.fdpath.color = [UIColor yellowColor];
+        self.shapeLayerBackground.fdpath.lineWidth = 10.0;
+        [self.shapeLayerBackground drawPathOnSelf];
+        
+        self.currentPath.color = [UIColor blueColor];
+        self.currentPath.lineWidth = 4.0;
+        self.shapeLayer.fdpath = self.currentPath;
+        [self.shapeLayer drawPathOnSelf];
     }
 }
+
 
 - (void) drawPath:(FDPath *)path withContext:(CGContextRef)context
 {
@@ -153,7 +168,8 @@
     } else
     {
 //        [self drawPathOnShapeLayer: pi withPath: pi.fdpath withContext: context];
-        [self drawPathOnShapeLayer: pi];
+        //[self drawPathOnShapeLayer: pi];
+        [pi drawPathOnSelf];
     }
 }
 
@@ -366,8 +382,9 @@
     CGPoint touchPoint = [gestureRecognizer locationInView: self];
     [self.currentPath addPoint:touchDownPoint];
     [self.currentPath addPoint:touchPoint];
-    self.selectedPath = self.currentPath;
-    [self setNeedsDisplay];
+    self.selectedPath.fdpath = self.currentPath;
+    // [self setNeedsDisplay];
+    [self drawPathAndHighlight];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -389,7 +406,8 @@
 {
     CGPoint touchPoint = [gestureRecognizer locationInView: self];
     [self.currentPath addPoint:touchPoint];
-    [self setNeedsDisplay];
+    // [self setNeedsDisplay];
+    [self drawPathAndHighlight];
 }
 
 - (void) panEndedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
@@ -447,7 +465,8 @@
                                                                      NULL,
                                                                      //                                                                     fmaxf(35.0f, path.lineWidth),
                                                                      //                                                                     path.lineWidth,
-                                                                     self.lineWidth * 6.0,
+                                                                     // self.lineWidth * 6.0,
+                                                                     layer.fdpath.lineWidth * 6.0,
                                                                      path.lineCapStyle,
                                                                      path.lineJoinStyle,
                                                                      path.miterLimit);
@@ -494,7 +513,8 @@
 - (void) highlightSelectedPath
 {
     self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
-    self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
+    // self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
+    self.shapeLayerBackground.lineWidth = self.selectedPath.lineWidth * 2;
     [self.shapeLayerBackground setFillColor: nil];
     [self.shapeLayerBackground setPath: self.selectedPath.path];
 }

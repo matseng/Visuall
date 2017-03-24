@@ -25,10 +25,11 @@
 @interface FDPath : NSObject
 
 // the points of this path
-@property (nonatomic, strong, readonly) NSMutableArray *points;
+@property (nonatomic, strong) NSMutableArray *points;
 
 // the color of this path
-@property (nonatomic, strong, readonly) UIColor *color;
+//@property (nonatomic, strong, readonly) UIColor *color;
+@property (nonatomic, strong) UIColor *color;
 
 // the color of this path
 @property (nonatomic) CGFloat lineWidth;

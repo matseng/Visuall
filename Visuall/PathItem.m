@@ -59,7 +59,7 @@
         }
         
         // actually draw the path
-        self.strokeColor = [[UIColor redColor] CGColor];
+        self.strokeColor = [self.fdpath.color CGColor];
         self.lineWidth = self.fdpath.lineWidth;
         [self setFillColor: nil];
         [self setPath: bzPath.CGPath];

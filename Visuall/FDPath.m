@@ -59,8 +59,8 @@
 
 @interface FDPath ()
 
-@property (nonatomic, strong, readwrite) NSMutableArray *points;
-@property (nonatomic, strong, readwrite) UIColor *color;
+//@property (nonatomic, strong, readwrite) NSMutableArray *points;
+//@property (nonatomic, strong, readwrite) UIColor *color;
 
 @end
 
@@ -120,7 +120,10 @@
             NSLog(@"Not a valid point: %@", obj);
         }
     }
-    return [[FDPath alloc] initWithPoints:points color:color];
+    FDPath *fdp = [[FDPath alloc] initWithPoints:points color:color];
+    fdp.lineWidth = [(NSNumber *) dictionary[@"lineWidth"] floatValue];
+    
+    return fdp;
 }
 
 - (NSDictionary *)serialize
@@ -136,6 +139,8 @@
         [points addObject:@{ @"x": [NSNumber numberWithInteger:point.x], @"y": [NSNumber numberWithInteger:point.y]}];
     }
     dictionary[@"points"] = points;
+    
+    dictionary[@"lineWidth"] = [NSString stringWithFormat:@"%.3f", self.lineWidth];
 
     return dictionary;
 }

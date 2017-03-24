@@ -17,11 +17,9 @@
 
 @property BOOL isPoint;
 
-@property CGFloat lineWidth;
-
 - (instancetype) initPathFromFirebase: (NSString *) key andValue: (NSDictionary *) value;
 
-- (void) drawPathOnShapeLayer: (CGFloat) lineWidth;
+- (void) drawPathOnSelf;
 
 - (void) increaseLineWidth;
 
