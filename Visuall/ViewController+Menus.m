@@ -551,7 +551,7 @@ UITextView *sizeView;
     sizeView.layer.borderColor = [self.view.tintColor CGColor];
     sizeView.layer.cornerRadius = 5.0f;
     [sizeView setUserInteractionEnabled:NO];
-    [self updateSizeView];
+    [self updateSizeViewFromSelectedVisualItem];
     UIBarButtonItem *sizeItem = [[UIBarButtonItem alloc] initWithCustomView: sizeView];
     
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -584,16 +584,31 @@ UITextView *sizeView;
 //    [toolbar setItems:@[backBarItem, flexibleSpace, searchBarItem, editBarItem, negativeSpacer5, segmentControlBarItem, flexibleSpace, negativeSpacer5, starBarItem] animated:YES];
 }
 
-- (void) updateSecondSubmenuState
+- (void) updateSecondSubmenuStateFromSelectedVisualItem
 {
     if ( [self.visuallState.selectedVisualItem isNoteItem]
         || [self.visuallState.selectedVisualItem isArrowItem]
         || [self.visuallState.selectedVisualItem isDrawView])
     {
+        [self setSecondSubmenuToActive:YES];
+    }
+    else
+    {
+        [self setSecondSubmenuToActive: NO];
+    }
+    [self updateSizeViewFromSelectedVisualItem];
+}
+
+- (void) setSecondSubmenuToActive: (BOOL) on
+{
+    if ( on )
+    {
         // change size buttons in active state
         self.segmentControlFormattingOptions.tintColor = self.view.tintColor;
         [self enableButton:@"increaseFontSize"];
         [self enableButton:@"decreaseFontSize"];
+        sizeView.textColor = [UIColor blueColor];
+        sizeView.layer.borderColor = [[UIColor blueColor] CGColor];
     }
     else
     {
@@ -601,11 +616,13 @@ UITextView *sizeView;
         self.segmentControlFormattingOptions.tintColor = [UIColor lightGrayColor];
         [self disableButton:@"increaseFontSize"];
         [self disableButton:@"decreaseFontSize"];
+        sizeView.text = @"-";
+        sizeView.textColor = [UIColor grayColor];
+        sizeView.layer.borderColor = [[UIColor grayColor] CGColor];
     }
-    [self updateSizeView];
 }
 
-- (void) updateSizeView
+- (void) updateSizeViewFromSelectedVisualItem
 {
     float size = [self.visuallState.selectedVisualItem getSize];
     if (size < 1)
@@ -625,6 +642,19 @@ UITextView *sizeView;
     CGRect newFrame = sizeView.frame;
     newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
     sizeView.frame = newFrame;
+    
+    if ( [self.visuallState.selectedVisualItem isNoteItem] )
+    {
+        self.visuallState.textFontSize = [self.visuallState.selectedVisualItem getSize];
+    }
+    else if ( [self.visuallState.selectedVisualItem isArrowItem])
+    {
+        self.visuallState.arrowHeadSize = [self.visuallState.selectedVisualItem getSize];
+    }
+    else if ( [self.visuallState.selectedVisualItem isDrawView] )
+    {
+        self.visuallState.pathLineWidth = [self.visuallState.selectedVisualItem getSize];
+    }
 }
 
 
@@ -688,9 +718,9 @@ UITextView *sizeView;
 - (void) decreaseFontSizeHandler: (UIButton *) button
 {
     NSLog(@"decreaseFontSizeButton title: %@", [button currentTitle]);
-    NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
-    if ( (ni) && [self.visuallState.selectedVisualItem isInBoundsOfView: self.BackgroundScrollView])
+    if ( [self.visuallState.selectedVisualItem isNoteItem] )
     {
+        NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
         [ni decreaseFontSize];
         [self.visuallState updateChildValue:ni Property: @"fontSize"];
     }
@@ -707,17 +737,20 @@ UITextView *sizeView;
         [[[[UserUtil sharedManager] getState] DrawView] highlightSelectedPath];
         [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
     }
-    [self updateSizeView];
+    [self updateSizeViewFromSelectedVisualItem];
 }
 
 - (void) increaseFontSizeHandler: (UIButton *) button
 {
     NSLog(@"increaseFontSizeButton: %@", [button currentTitle]);
-    NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
-    if ( (ni) && [self.visuallState.selectedVisualItem isInBoundsOfView: self.BackgroundScrollView])
+    
+//    if ( (ni) && [self.visuallState.selectedVisualItem isInBoundsOfView: self.BackgroundScrollView])
+    if ( [self.visuallState.selectedVisualItem isNoteItem] )
     {
+        NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
         [ni increaseFontSize];
         [self.visuallState updateChildValue:ni Property: @"fontSize"];
+        
     }
     else if ( [self.visuallState.selectedVisualItem isArrowItem])
     {
@@ -732,7 +765,7 @@ UITextView *sizeView;
         [[[[UserUtil sharedManager] getState] DrawView] highlightSelectedPath];
         [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
     }
-    [self updateSizeView];
+    [self updateSizeViewFromSelectedVisualItem];
 }
 
 - (UIButton *) makeButtonFromImage: (NSString *) imageName buttonSize: (float) unit andExtraPadding: (float) padding
@@ -898,13 +931,32 @@ UITextView *sizeView;
 
 -(void) segmentChangeViewValueChanged
 {
-    
+    [self setSelectedObject: nil];
     NSString *segmentSelectedTitle =  [self.segmentControlVisualItem getMyTitleForSegmentAtIndex: (int) self.segmentControlVisualItem.selectedSegmentIndex];
-//    NSLog(@"segmentSelectedIndex: %li", self.segmentControlVisualItem.selectedSegmentIndex);
-//    NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
+    NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
+    
     if ( [segmentSelectedTitle isEqualToString:@"pointer"] )
     {
         [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
+    }
+    else if ( [segmentSelectedTitle isEqualToString:@"note"] )
+    {
+        sizeView.text = [NSString stringWithFormat:@"%.0f", [self.visuallState textFontSize]];
+        [self setSecondSubmenuToActive: YES];
+    }
+    else if ( [segmentSelectedTitle isEqualToString:@"group"] )
+    {
+        
+    }
+    else if ( [segmentSelectedTitle isEqualToString:@"arrow"] )
+    {
+        sizeView.text = [NSString stringWithFormat:@"%.0f", [self.visuallState arrowHeadSize]];
+        [self setSecondSubmenuToActive: YES];
+    }
+    else if ( [segmentSelectedTitle isEqualToString:@"draw"] )
+    {
+        sizeView.text = [NSString stringWithFormat:@"%.0f", [self.visuallState pathLineWidth]];
+        [self setSecondSubmenuToActive: YES];
     }
 }
 

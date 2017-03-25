@@ -198,7 +198,7 @@
     }
     if ([self isArrowItem])
     {
-        return [[self getArrowItem] tailWidth];
+        return [[self getArrowItem] headWidth];
     }
     if ([self isDrawView])
     {

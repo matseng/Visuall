@@ -52,6 +52,11 @@
 
 @property NSMutableDictionary *topMenuViews;
 
+// Default properties for Text, Arrows and Paths
+@property float textFontSize;
+@property float arrowHeadSize;
+@property float pathLineWidth;
+
 - (void) handlePanBackground: (UIPanGestureRecognizer *) pan withNotes: (NotesCollection *) Notes withGroups: (GroupsCollection *) GroupItems;
 
 - (void) transformGroupItem: (GroupItem *) groupItem;
@@ -70,6 +75,7 @@
 
 - (BOOL) isDrawButtonSelected;
 
+- (void) setDefaultSizes;
 
 @end
 

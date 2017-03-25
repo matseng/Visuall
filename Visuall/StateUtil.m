@@ -344,6 +344,15 @@
     return [self.topMenuViews[@"editSwitch"] isOn] && [[scm getMyTitleForCurrentlySelectedSegment] isEqualToString:@"draw"];
 }
 
+- (void) setDefaultSizes
+{
+    self.textFontSize = 12.0f;
+    self.arrowHeadSize = 24.0f;
+    self.pathLineWidth = 4.0f;
+    
+}
+
+
 
 @end
 

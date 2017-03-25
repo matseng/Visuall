@@ -94,7 +94,7 @@
 @property NSMutableDictionary *buttonDictionary;
 @property UIButton *trashButton;
 
-- (void) updateSecondSubmenuState; // Utilized in ViewController+Menus.m
+- (void) updateSecondSubmenuStateFromSelectedVisualItem; // Utilized in ViewController+Menus.m
 
 - (BOOL) setSelectedObject:(UIView *) object;
 

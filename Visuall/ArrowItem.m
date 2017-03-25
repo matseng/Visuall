@@ -71,9 +71,10 @@ static CAShapeLayer *__tempShapeLayer;
     
 //    [[UIColor redColor] setStroke];
     
-    tailWidth = 4;
-    headWidth = 8 * 3;
-    headLength = 8 * 3;
+    
+    headWidth =  [[[UserUtil sharedManager] getState] arrowHeadSize] ;
+    headLength = headWidth;
+    tailWidth = headWidth / 6;
     path = [UIBezierPath bezierPathWithArrowFromPoint:(CGPoint)__startPoint
                                               toPoint:(CGPoint)endPoint
                                             tailWidth:(CGFloat)tailWidth
@@ -129,9 +130,9 @@ static CAShapeLayer *__tempShapeLayer;
         self.endItem = [self hitTestOnNotesAndGroups: __endPoint];
         self.startPoint = __startPoint;
         self.endPoint = __endPoint;
-        self.tailWidth = TAIL_WIDTH;
-        self.headWidth = HEAD_WIDTH;
-        self.headLength = HEAD_LENGTH;
+        self.headWidth =  [[[UserUtil sharedManager] getState] arrowHeadSize];
+        self.headLength = self.headWidth;
+        self.tailWidth = self.headWidth / 6;
         self.borderColor = [UIColor blueColor];
         
         if (__tempShapeLayer) [__tempShapeLayer removeFromSuperlayer];

@@ -95,6 +95,7 @@
     [self.visuallState setGroupsView: self.GroupsView];
     [self.visuallState setNotesView: self.NotesView];
     [self.visuallState setArrowsView: self.ArrowsView];
+    [self.visuallState setDefaultSizes];
     
     [self.visuallState setCallbackPublicVisuallLoaded:^{
         //        [self loadAndUploadXML];
@@ -1289,7 +1290,7 @@
         [[self.view window] endEditing:YES];
     }
 
-    [self updateSecondSubmenuState];
+    [self updateSecondSubmenuStateFromSelectedVisualItem];
     return YES;
 }
 

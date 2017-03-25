@@ -41,7 +41,7 @@
         note.title = title;
         note.x = point.x;
         note.y = point.y;
-        note.fontSize = DEFAULT_FONTSIZE;
+        note.fontSize =  [[[UserUtil sharedManager] getState] textFontSize];
         [self setNote: note];
         
 //        self.noteTextView = [[UITextView alloc] init];
