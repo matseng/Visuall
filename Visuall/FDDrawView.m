@@ -356,6 +356,7 @@
         pi.fdpath.points[i] = translatedPoint;
     }
     [self drawPathItemOnShapeLayer: pi];
+    [self highlightPath: pi];
 }
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
@@ -519,7 +520,7 @@
 - (void) highlightPath: (PathItem *) pi
 {
     self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
-    self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
+    self.shapeLayerBackground.lineWidth = pi.fdpath.lineWidth * 2;
     [self.shapeLayerBackground setFillColor: nil];
     [self.shapeLayerBackground setPath: pi.path];
 }

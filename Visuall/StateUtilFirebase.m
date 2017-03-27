@@ -326,10 +326,10 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *listOfGroupKeysRef = [[self.visuallsTableRef child:key] child: @"groups"];
     FIRDatabaseReference *listOfArrowKeysRef = [[self.visuallsTableRef child:key] child: @"arrows"];
     FIRDatabaseReference *listOfPathKeysRef = [[self.visuallsTableRef child:key] child: @"paths"];
-    [self loadListOfNotesFromRef: listOfNoteKeysRef];
+//    [self loadListOfNotesFromRef: listOfNoteKeysRef];
     [self loadListOfGroupsFromRef: listOfGroupKeysRef];
-    [self loadListOfArrowsFromRef: listOfArrowKeysRef];
-    [self loadListOfPathsFromRef: listOfPathKeysRef];
+//    [self loadListOfArrowsFromRef: listOfArrowKeysRef];
+//    [self loadListOfPathsFromRef: listOfPathKeysRef];
 }
 
 //if ( [self isSnapshotFromLocalDevice: snapshot] && self.allNotesLoadedBool )

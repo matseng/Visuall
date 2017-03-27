@@ -931,15 +931,18 @@ UITextView *sizeView;
 
 -(void) segmentChangeViewValueChanged
 {
-    [self setSelectedObject: nil];
     NSString *segmentSelectedTitle =  [self.segmentControlVisualItem getMyTitleForSegmentAtIndex: (int) self.segmentControlVisualItem.selectedSegmentIndex];
     NSLog(@"segmentSelectedTitle: %@", segmentSelectedTitle);
     
     if ( [segmentSelectedTitle isEqualToString:@"pointer"] )
     {
         [[self.view window] endEditing:YES];  // hide keyboard when dragging a note
+        return;
     }
-    else if ( [segmentSelectedTitle isEqualToString:@"note"] )
+
+    [self setSelectedObject: nil];
+
+    if ( [segmentSelectedTitle isEqualToString:@"note"] )
     {
         sizeView.text = [NSString stringWithFormat:@"%.0f", [self.visuallState textFontSize]];
         [self setSecondSubmenuToActive: YES];

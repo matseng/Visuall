@@ -178,10 +178,10 @@
     {
         NSDictionary* userInfo = notification.userInfo;
         GroupItem *gi = (GroupItem *) userInfo[@"data"];
-                [[self.visuallState GroupsView] addSubview: gi];
-                if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
-                [self.visuallState.groupsCollection addGroup: gi withKey: gi.group.key];
-                [self calculateTotalBounds: gi];
+        [[self.visuallState GroupsView] addSubview: gi];
+        if ( !self.visuallState.groupsCollection ) self.visuallState.groupsCollection = [GroupsCollection new];
+        [self.visuallState.groupsCollection addGroup: gi withKey: gi.group.key];
+        [self calculateTotalBounds: gi];
     }
 }
 
@@ -463,6 +463,7 @@
     CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
     
     CGRect newBoundsTiledLayerRect = [self addExtraScrollPaddingToBoundsRect: convertedBoundsRectInScrollView byMultiple: scale];
+    newBoundsTiledLayerRect = CGRectUnion(newBoundsTiledLayerRect, convertedBoundsRectInScrollView);
     self.BoundsTiledLayerView.frame = newBoundsTiledLayerRect;
     
     self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
