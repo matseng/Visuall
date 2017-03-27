@@ -149,6 +149,7 @@
     [self refreshGroupsView];
     [self centerScrollViewContents2];
     [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
+    self.BoundsTiledLayerView.frame = CGRectUnion(self.BoundsTiledLayerView.frame, self.BackgroundScrollView.frame);
      CGRect rect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect fromView:self.VisualItemsView];
      [self.BackgroundScrollView zoomToRect: rect animated:YES];
 }
@@ -161,8 +162,7 @@
      [self.BackgroundScrollView zoomToRect: rect animated:YES];
 }
 
-
--(void) addNoteToViewWithHandlersNotification:(NSNotification*) notification
+- (void) addNoteToViewWithHandlersNotification:(NSNotification*) notification
 {
     if ([notification.name isEqualToString:@"addNoteToViewWithHandlers"])
     {
@@ -463,7 +463,9 @@
     CGRect convertedBoundsRectInScrollView = [self.BackgroundScrollView convertRect: self.totalBoundsRect fromView: self.VisualItemsView];
     
     CGRect newBoundsTiledLayerRect = [self addExtraScrollPaddingToBoundsRect: convertedBoundsRectInScrollView byMultiple: scale];
-    newBoundsTiledLayerRect = CGRectUnion(newBoundsTiledLayerRect, convertedBoundsRectInScrollView);
+    
+//    newBoundsTiledLayerRect = CGRectUnion(newBoundsTiledLayerRect, convertedBoundsRectInScrollView);
+    
     self.BoundsTiledLayerView.frame = newBoundsTiledLayerRect;
     
     self.BackgroundScrollView.contentSize = newBoundsTiledLayerRect.size;
