@@ -23,10 +23,9 @@
          }
         
          // 1 of 2. Read a note upon the initial load or if a new note is added from another user
-//         if ( [self.notesCollection getItemFromKey: snapshot.key] == nil )
-         NSLog(@"\n loadNoteFromRef: %@", snapshot.key);
          if ( ![self.notesCollection isKeyInCollection:snapshot.key] )
          {
+             NSLog(@"\n loadNoteFromRef: %@", snapshot.key);
              NoteItem2 *newNote = [[NoteItem2 alloc] initNoteFromFirebase: noteRef.key andValue:snapshot.value];
              [self.notesCollection addNote:newNote withKey:snapshot.key];
              [[NSNotificationCenter defaultCenter] postNotificationName:@"addNoteToViewWithHandlers" object: nil userInfo: @{@"data": newNote}];

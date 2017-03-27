@@ -29,11 +29,11 @@
 @property float zoom;
 @property CGPoint pan;
 @property float _relativeScale;
-@property (strong, nonatomic) NSMutableDictionary *metadata;  // 
-@property (strong, nonatomic) NotesCollection *notesCollection;
-@property (strong, nonatomic) GroupsCollection *groupsCollection;
-@property (strong, nonatomic) Collection *arrowsCollection;
-@property (strong, nonatomic) Collection *pathsCollection;
+@property (strong, atomic) NSMutableDictionary *metadata;  //
+@property (strong, atomic) NotesCollection *notesCollection;
+@property (strong, atomic) GroupsCollection *groupsCollection;
+@property (strong, atomic) Collection *arrowsCollection;
+@property (strong, atomic) Collection *pathsCollection;
 
 // New state properties (moving away from ViewController)
 @property FIRUser *firebaseUser;

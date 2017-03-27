@@ -60,7 +60,7 @@
 - (void) addPathItemToMVC: (PathItem *) pi
 {
     [[[[UserUtil sharedManager] getState] pathsCollection] addItem: pi withKey: pi.key];
-    // [self drawPathItemOnShapeLayer: pi];
+    NSLog(@"\n addPathItemToMVC: key: %@", pi.key);
     [pi drawPathOnSelf];
     [self.layer addSublayer: pi];
 }
