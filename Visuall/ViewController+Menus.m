@@ -129,6 +129,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
     UIImage *reading = [[UIImage imageNamed: @"Reading-50"] imageWithExtraPadding: .1];
     [segmentControlTopMenuRight insertSegmentWithImage:reading atIndex:0 animated:YES];
     [segmentControlTopMenuRight setEnabled:NO forSegmentAtIndex:0];
+    segmentControlTopMenuRight.tintColor = [UIColor lightGrayColor];
     
     UIImage *sharing = [UIImage imageNamed: @"User Groups-50"];
     sharing = [UIImage imageWithCGImage:sharing.CGImage scale:1.5 orientation:sharing.imageOrientation];
@@ -168,7 +169,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
     toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     UIBarButtonItem *spacer50 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    [spacer50 setWidth:50];
+    [spacer50 setWidth: buttonUnit / 2];
     UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer30 setWidth:-30];
     UIBarButtonItem *negativeSpacer10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -216,7 +217,10 @@ SegmentedControlMod *segmentControlTopMenuRight;
     NSLog(@"\n segmentControlTopMenuRightHandler");
     SpeedReadingViewController *myNewVC = [[SpeedReadingViewController alloc] init];
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController: myNewVC];/*Here dateVC is controller you want to show in popover*/
-    myNewVC.preferredContentSize = CGSizeMake(280,200);
+//    myNewVC.preferredContentSize = CGSizeMake(280,200);
+    myNewVC.preferredContentSize = CGSizeMake(self.BackgroundScrollView.frame.size.width,
+                                              self.BackgroundScrollView.frame.size.height - self.tabBarController.tabBar.frame.size.height * 1.5);
+//    self.BackgroundScrollView.frame.size;
     destNav.modalPresentationStyle = UIModalPresentationPopover;
     self.dateTimePopover8 = destNav.popoverPresentationController;
     self.dateTimePopover8.delegate = self;

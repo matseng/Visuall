@@ -18,12 +18,11 @@
     [super viewDidLoad];
     NSLog(@"\n SpeedReadingViewController.h");
     UILabel *label = [[UILabel alloc] init];
-    label.text = @"Select a group with text to proceed with Speed Reading";
-//    label.center = self.view.center;
-//    [label sizeToFit];
-    CGRect rect = self.view.frame;
-    rect.origin = CGPointMake(0, 0);
-    label.frame = rect;
+    label.numberOfLines = 0;
+    label.text = @"Select a group that contains text \n to proceed with Speed Reading";
+    [label setFont: [UIFont fontWithName:@"Arial Rounded MT Bold" size:14.0f]];
+    [label sizeToFit];
+    label.center = CGPointMake(self.preferredContentSize.width / 2, self.preferredContentSize.height / 2);
     [self.view addSubview: label];
 }
 
