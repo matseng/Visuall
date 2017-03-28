@@ -27,6 +27,7 @@ UIColor *backgroundColor;
 UIColor *darkGrayBorderColor;
 UITextView *sizeView;
 float buttonUnit;
+SegmentedControlMod *segmentControlTopMenuRight;
 
 - (void) createTopMenu
 {
@@ -100,7 +101,7 @@ float buttonUnit;
     
 //    int i = 3;
     int i = 1;
-    SegmentedControlMod *segmentControlTopMenuRight = [[SegmentedControlMod alloc] init];
+    segmentControlTopMenuRight = [[SegmentedControlMod alloc] init];
     segmentControlTopMenuRight.frame = CGRectMake(0, 0, buttonUnit * i, buttonUnit);
 //    segmentControl.backgroundColor = backgroundColor;
     segmentControlTopMenuRight.backgroundColor = [UIColor clearColor];
@@ -127,7 +128,7 @@ float buttonUnit;
 //    reading = [reading imageWithRoundedCornersSize:5.0f];
     UIImage *reading = [[UIImage imageNamed: @"Reading-50"] imageWithExtraPadding: .1];
     [segmentControlTopMenuRight insertSegmentWithImage:reading atIndex:0 animated:YES];
-    
+    [segmentControlTopMenuRight setEnabled:NO forSegmentAtIndex:0];
     
     UIImage *sharing = [UIImage imageNamed: @"User Groups-50"];
     sharing = [UIImage imageWithCGImage:sharing.CGImage scale:1.5 orientation:sharing.imageOrientation];
@@ -203,7 +204,6 @@ float buttonUnit;
     NSMutableDictionary *md = [[[UserUtil sharedManager] getState] topMenuViews];
     SevenSwitch *ss = md[@"editSwitch"];
     NSLog(@"\n SegmentedControlMod: %@", [ss isOn] );
-
 }
 
 /*
@@ -221,12 +221,15 @@ float buttonUnit;
     self.dateTimePopover8 = destNav.popoverPresentationController;
     self.dateTimePopover8.delegate = self;
     self.dateTimePopover8.sourceView = self.view;
-    self.dateTimePopover8.sourceRect = self.view.frame;
+    CGRect rect = segmentControlTopMenuRight.frame;
+     rect.origin = CGPointMake(rect.origin.x - buttonUnit / 2, rect.origin.y - buttonUnit);
+    self.dateTimePopover8.sourceRect = rect;
     destNav.navigationBarHidden = YES;
     [self presentViewController:destNav animated:YES completion:nil];
 }
 
-- (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController: (UIPresentationController * ) controller {
+- (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController: (UIPresentationController * ) controller
+{
     return UIModalPresentationNone;
 }
 

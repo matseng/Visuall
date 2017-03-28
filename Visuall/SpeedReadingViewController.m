@@ -17,6 +17,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"\n SpeedReadingViewController.h");
+    UILabel *label = [[UILabel alloc] init];
+    label.text = @"Select a group with text to proceed with Speed Reading";
+//    label.center = self.view.center;
+//    [label sizeToFit];
+    CGRect rect = self.view.frame;
+    rect.origin = CGPointMake(0, 0);
+    label.frame = rect;
+    [self.view addSubview: label];
 }
 
 - (void)didReceiveMemoryWarning {
