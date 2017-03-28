@@ -135,6 +135,11 @@
                                            withPoint: point];
     [self.visuallState setValueNote: newNote];  // TODO: add a callback to indicate if the note was sync'd successfully
     [self addNoteToViewWithHandlers:newNote];
+//    CGRect rect = newNote.frame;
+//    rect.origin = CGPointMake(rect.origin.x - rect.size.width / 2,  rect.origin.y);
+//    newNote.frame = rect;
+    [newNote translateTx: -newNote.frame.size.width / 2 andTy: -newNote.frame.size.height / 2];
+    [self.visuallState updateChildValue: newNote Property: nil];  // save note coordinates
     [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
     [self setSelectedObject:newNote];
     /*
@@ -158,8 +163,14 @@
 {
     [self centerScrollViewContents2];
     [self expandBoundsTiledLayerView: 1.75];  // Adds 1.75 screen widths to the self.BackgroundScrollView
-     CGRect rect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect fromView:self.VisualItemsView];
-     [self.BackgroundScrollView zoomToRect: rect animated:YES];
+    CGRect rect = [self.BoundsTiledLayerView convertRect: self.totalBoundsRect fromView:self.VisualItemsView];
+    CGRect minRect = self.BoundsTiledLayerView.frame;
+    if (rect.size.width * rect.size.height < minRect.size.width * minRect.size.height)
+    {
+        rect.origin = CGPointMake(rect.origin.x - minRect.size.width / 2, rect.origin.y - minRect.size.height / 2);
+        rect.size = minRect.size;
+    }
+    [self.BackgroundScrollView zoomToRect: rect animated:YES];
 }
 
 - (void) addNoteToViewWithHandlersNotification:(NSNotification*) notification
