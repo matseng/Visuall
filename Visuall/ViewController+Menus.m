@@ -25,6 +25,7 @@ UIImage *trashImgHilighted;
 UIColor *backgroundColor;
 UIColor *darkGrayBorderColor;
 UITextView *sizeView;
+float buttonUnit;
 
 - (void) createTopMenu
 {
@@ -34,6 +35,13 @@ UITextView *sizeView;
     float h = 42;
     float w = 42;
     float padding = 10;
+    buttonUnit = 42;
+    if ( [[UIScreen mainScreen] bounds].size.width < 375.0 )
+    {
+        buttonUnit = buttonUnit * [[UIScreen mainScreen] bounds].size.width / 375.0;  // Resize submenu for iPhone SE
+    }
+    int numberOfButtons = 9;
+
     backgroundColor = [UIColor colorWithRed: 249/255.0f green: 249/255.0f blue: 249/255.0f alpha:1.0f];
     darkGrayBorderColor = [UIColor colorWithRed: 174/255.0f green: 174/255.0f blue: 174/255.0f alpha:1.0f];
     UIColor *blueButtonColor = self.view.tintColor;
@@ -89,38 +97,46 @@ UITextView *sizeView;
     
     UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithCustomView: mySwitch];
     
-    int i = 3;
-    UISegmentedControl *segmentControl = [[UISegmentedControl alloc] init];
-    segmentControl.frame = CGRectMake(0, 0, w * i, h);
-    segmentControl.backgroundColor = backgroundColor;
-//    segmentControl.backgroundColor = [UIColor clearColor];
-    segmentControl.layer.cornerRadius = 0.0f;
-    segmentControl.layer.borderColor = backgroundColor.CGColor;
+//    int i = 3;
+    int i = 1;
+    SegmentedControlMod *segmentControlTopMenuRight = [[SegmentedControlMod alloc] init];
+    segmentControlTopMenuRight.frame = CGRectMake(0, 0, buttonUnit * i, buttonUnit);
+//    segmentControl.backgroundColor = backgroundColor;
+    segmentControlTopMenuRight.backgroundColor = [UIColor clearColor];
+    segmentControlTopMenuRight.layer.cornerRadius = 0.0f;
+    segmentControlTopMenuRight.layer.borderColor = backgroundColor.CGColor;
 //    segmentControl.layer.borderColor = [UIColor clearColor].CGColor;
-    segmentControl.layer.borderWidth = 2.0f;
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, segmentControl.frame.size.height), NO, 0.0);
+    segmentControlTopMenuRight.layer.borderWidth = 2.0f;
+    segmentControlTopMenuRight.layer.borderColor = [[UIColor clearColor] CGColor];
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, segmentControlTopMenuRight.frame.size.height), NO, 0.0);
     UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    [segmentControl setDividerImage:blank
+    [segmentControlTopMenuRight setDividerImage:blank
                 forLeftSegmentState:UIControlStateNormal
                   rightSegmentState:UIControlStateNormal
                          barMetrics:UIBarMetricsDefault];
-    segmentControl.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    segmentControlTopMenuRight.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
-    UIImage *reading = [UIImage imageNamed: @"Reading-50"];
-    reading = [UIImage imageWithCGImage:reading.CGImage scale:1.7 orientation:reading.imageOrientation];
-    reading = [reading imageWithRoundedCornersSize:5.0f];
-    [segmentControl insertSegmentWithImage:reading atIndex:0 animated:YES];
+    [segmentControlTopMenuRight addTarget:self
+                         action:@selector(segmentControlTopMenuRightHandler)
+               forControlEvents: UIControlEventValueChanged];
+    
+//    UIImage *reading = [UIImage imageNamed: @"Reading-50"];
+//    reading = [UIImage imageWithCGImage:reading.CGImage scale:1.7 orientation:reading.imageOrientation];
+//    reading = [reading imageWithRoundedCornersSize:5.0f];
+    UIImage *reading = [[UIImage imageNamed: @"Reading-50"] imageWithExtraPadding: .1];
+    [segmentControlTopMenuRight insertSegmentWithImage:reading atIndex:0 animated:YES];
+    
     
     UIImage *sharing = [UIImage imageNamed: @"User Groups-50"];
     sharing = [UIImage imageWithCGImage:sharing.CGImage scale:1.5 orientation:sharing.imageOrientation];
-    [segmentControl insertSegmentWithImage:sharing atIndex:1 animated:YES];
+//    [segmentControl insertSegmentWithImage:sharing atIndex:1 animated:YES];
     
     UIImage *info = [UIImage imageNamed: @"Info-50"];
     info = [UIImage imageWithCGImage:info.CGImage scale:1.7 orientation:info.imageOrientation];
-    [segmentControl insertSegmentWithImage:info atIndex:2 animated:YES];
+//    [segmentControl insertSegmentWithImage:info atIndex:2 animated:YES];
     
-    UIBarButtonItem *segmentControlBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
+    UIBarButtonItem *segmentControlBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControlTopMenuRight];
     
     UIButton *starButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *starImg = [UIImage imageNamed: @"Star-50"];
@@ -149,6 +165,8 @@ UITextView *sizeView;
     toolbar.translucent = NO;
     toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
+    UIBarButtonItem *spacer50 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [spacer50 setWidth:50];
     UIBarButtonItem *negativeSpacer30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     [negativeSpacer30 setWidth:-30];
     UIBarButtonItem *negativeSpacer10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -165,7 +183,7 @@ UITextView *sizeView;
     }
     else
     {
-        [toolbar setItems:@[backBarItem, flexibleSpace, editBarItem, flexibleSpace] animated:YES];
+        [toolbar setItems:@[backBarItem, flexibleSpace, editBarItem, flexibleSpace, segmentControlBarItem, flexibleSpace] animated:YES];
     }
     
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
@@ -186,6 +204,12 @@ UITextView *sizeView;
     NSLog(@"\n SegmentedControlMod: %@", [ss isOn] );
 
 }
+
+- (void) segmentControlTopMenuRightHandler
+{
+    NSLog(@"\n segmentControlTopMenuRightHandler");
+}
+
 
 - (void) __addSubmenu
 {
