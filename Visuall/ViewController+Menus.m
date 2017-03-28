@@ -17,6 +17,7 @@
 #import "UIBezierPath+arrowhead.h"
 #import "ViewController+Group.h"
 #import "UserUtil.h"
+#import "SpeedReadingViewController.h"
 
 @implementation ViewController (Menus) 
 
@@ -205,11 +206,34 @@ float buttonUnit;
 
 }
 
+/*
+ * Name:
+ * Description:
+ * http://stackoverflow.com/questions/25319179/uipopoverpresentationcontroller-on-ios-8-iphone
+ */
 - (void) segmentControlTopMenuRightHandler
 {
     NSLog(@"\n segmentControlTopMenuRightHandler");
+    SpeedReadingViewController *myNewVC = [[SpeedReadingViewController alloc] init];
+    UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController: myNewVC];/*Here dateVC is controller you want to show in popover*/
+    myNewVC.preferredContentSize = CGSizeMake(280,200);
+    destNav.modalPresentationStyle = UIModalPresentationPopover;
+    self.dateTimePopover8 = destNav.popoverPresentationController;
+    self.dateTimePopover8.delegate = self;
+    self.dateTimePopover8.sourceView = self.view;
+    self.dateTimePopover8.sourceRect = self.view.frame;
+    destNav.navigationBarHidden = YES;
+    [self presentViewController:destNav animated:YES completion:nil];
 }
 
+- (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController: (UIPresentationController * ) controller {
+    return UIModalPresentationNone;
+}
+
+-(void)hideIOS8PopOver
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (void) __addSubmenu
 {

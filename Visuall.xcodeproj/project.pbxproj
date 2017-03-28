@@ -10,6 +10,7 @@
 		210833191C0127AB00BA059F /* GroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 210833171C0127AB00BA059F /* GroupItem.m */; };
 		219E5FA41C00285E00CEE0D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 219E5FA31C00285E00CEE0D5 /* UIKit.framework */; };
 		710B0F481D81EE96000D6B9A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 710B0F471D81EE96000D6B9A /* GoogleService-Info.plist */; };
+		711066891E89EFCC003AF899 /* SpeedReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 711066881E89EFCC003AF899 /* SpeedReadingViewController.m */; };
 		7116A2681E61199400FED276 /* NewVisuallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7116A2671E61199400FED276 /* NewVisuallViewController.m */; };
 		712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */ = {isa = PBXBuildFile; fileRef = 712682021D49997700A0A2F7 /* ScrollViewMod.m */; };
 		712EC95A1BEAF21500ED6803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9591BEAF21500ED6803 /* main.m */; };
@@ -130,6 +131,8 @@
 		219E5FA31C00285E00CEE0D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		40A382F99E853FE4AB8D376B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		710B0F471D81EE96000D6B9A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		711066871E89EFCC003AF899 /* SpeedReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeedReadingViewController.h; sourceTree = "<group>"; };
+		711066881E89EFCC003AF899 /* SpeedReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeedReadingViewController.m; sourceTree = "<group>"; };
 		7116A2661E61199400FED276 /* NewVisuallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewVisuallViewController.h; sourceTree = "<group>"; };
 		7116A2671E61199400FED276 /* NewVisuallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewVisuallViewController.m; sourceTree = "<group>"; };
 		712682011D49997700A0A2F7 /* ScrollViewMod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewMod.h; sourceTree = "<group>"; };
@@ -325,6 +328,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		711066861E89EF58003AF899 /* Speed Reading */ = {
+			isa = PBXGroup;
+			children = (
+				711066871E89EFCC003AF899 /* SpeedReadingViewController.h */,
+				711066881E89EFCC003AF899 /* SpeedReadingViewController.m */,
+			);
+			name = "Speed Reading";
+			sourceTree = "<group>";
+		};
 		712EC94B1BEAF21500ED6803 = {
 			isa = PBXGroup;
 			children = (
@@ -354,6 +366,7 @@
 				71FD2EF51D6CB71D00CA5365 /* OtherViewControllers */,
 				71FD2EF61D6CB76300CA5365 /* ViewController */,
 				71710A811D5D033C0038D883 /* Menus */,
+				711066861E89EF58003AF899 /* Speed Reading */,
 				71FD2EF81D6D0D5E00CA5365 /* ViewMods */,
 				71710A801D5D00630038D883 /* GestureRelated */,
 				71FD2EF41D6CB6FD00CA5365 /* Groups and Images */,
@@ -863,6 +876,7 @@
 				715C60C11D78BBF300DD6942 /* DDFileReader.m in Sources */,
 				71E1AF621D4C278900B818A0 /* WelcomeViewController.m in Sources */,
 				7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */,
+				711066891E89EFCC003AF899 /* SpeedReadingViewController.m in Sources */,
 				7148472C1D94B72200E73A7A /* FDColorPickController.m in Sources */,
 				71B0EF041CB83E6D009D8F5C /* NoteItem2.m in Sources */,
 				88ED061F1C040AC100C0486D /* Group.m in Sources */,

@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SpeedReadingViewController.h">
+   </FileRef>
+   <FileRef
+      location = "group:SpeedReadingViewController.m">
+   </FileRef>
+   <FileRef
       location = "group:Visuall.xcodeproj">
    </FileRef>
    <FileRef
