@@ -60,11 +60,29 @@ NSMutableArray *__wordsToRead;
     }
     if (__notesToRead == nil || __notesToRead.count == 0)
     {
-        return NO;
+        return NO;  // given there are no notes to read
     }
     else
     {
-        // TODO (Mar 28, 2017): Sort list of notes by Y-coordinate
+         // Sort by notes by Y coordinate:
+         [__notesToRead sortUsingComparator: ^(NoteItem2 *ni1, NoteItem2 *ni2)
+        {
+         
+            float y1 = ni1.note.y;
+            float y2 = ni2.note.y;
+         
+         if ( y1 < y2 ) {
+         
+         return (NSComparisonResult) NSOrderedAscending;
+         }
+         if ( y1 > y2 ) {
+         
+         return (NSComparisonResult) NSOrderedDescending;
+         }
+         
+         return (NSComparisonResult)NSOrderedSame;
+         }];
+         
         for (NoteItem2 *ni in __notesToRead)
         {
 //            NSString *noteString = ni.note.title;
@@ -76,8 +94,7 @@ NSMutableArray *__wordsToRead;
             }
         }
     }
-    return YES;
-    
+    return YES;  // given there are notes to read
 }
 
 
