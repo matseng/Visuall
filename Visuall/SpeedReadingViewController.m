@@ -15,7 +15,9 @@
 
 @implementation SpeedReadingViewController
 
-NSMutableArray *__notesToRead;
+NSMutableArray *__notesInGroup;
+NSMutableArray *__notesSorted;
+NSMutableArray *__arrowsInGroup;
 NSMutableArray *__wordsToRead;
 
 - (void)viewDidLoad {
@@ -43,60 +45,161 @@ NSMutableArray *__wordsToRead;
 
 - (BOOL) setupSpeedReading
 {
-    
+    GroupItem *gi;
     if( [self.visuallState selectedVisualItem] != nil
        && [[self.visuallState selectedVisualItem] isGroupItem] )
     {
-        GroupItem *gi = [[self.visuallState selectedVisualItem] getGroupItem];
-        __notesToRead = [[NSMutableArray alloc] init];
+        gi = [[self.visuallState selectedVisualItem] getGroupItem];
+        __notesInGroup = [[NSMutableArray alloc] init];
         [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
          {
              if ( [gi isNoteInGroup:ni])
              {
-                 [__notesToRead addObject: ni];
+                 [__notesInGroup addObject: ni];
              }
          }];
         
     }
-    if (__notesToRead == nil || __notesToRead.count == 0)
+    if (__notesInGroup == nil || __notesInGroup.count == 0)
     {
         return NO;  // given there are no notes to read
     }
-    else
-    {
-         // Sort by notes by Y coordinate:
-         [__notesToRead sortUsingComparator: ^(NoteItem2 *ni1, NoteItem2 *ni2)
-        {
+    __arrowsInGroup = [[NSMutableArray alloc] init];
+    [[self.visuallState arrowsCollection] myForIn:^(ArrowItem *ai)
+     {
+         if ( [gi isArrowInGroup: ai] )
+         {
+             [__arrowsInGroup addObject:ai];
+         }
+     }];
+
+    /*
+     Get all arrows in group
+     Sort notes by Y coor as below
+     Start at top note and add to result array.
+     Find all outbound arrows (only need to check subset of arrows from list above).
+        - If no outbound arrows, then go to next highest note and restart this step
+     Sort each array of arrows by X coor of its head
+     For each arrow, follow to next note
+     Recusively
+     */
+    
+    // Sort by notes by Y coordinate:
+    [__notesInGroup sortUsingComparator: ^(NoteItem2 *ni1, NoteItem2 *ni2)
+     {
          
-            float y1 = ni1.note.y;
-            float y2 = ni2.note.y;
+         float y1 = ni1.note.y;
+         float y2 = ni2.note.y;
          
          if ( y1 < y2 ) {
-         
-         return (NSComparisonResult) NSOrderedAscending;
+             
+             return (NSComparisonResult) NSOrderedAscending;
          }
          if ( y1 > y2 ) {
-         
-         return (NSComparisonResult) NSOrderedDescending;
+             
+             return (NSComparisonResult) NSOrderedDescending;
          }
          
          return (NSComparisonResult)NSOrderedSame;
-         }];
-         
-        for (NoteItem2 *ni in __notesToRead)
+     }];
+    
+    for (NoteItem2 *ni in __notesInGroup)
+    {
+        //            NSString *noteString = ni.note.title;
+        NSArray *words = [ni.note.title componentsSeparatedByString: @" "];
+        for (NSString *word in words)
         {
-//            NSString *noteString = ni.note.title;
-            NSArray *words = [ni.note.title componentsSeparatedByString: @" "];
-            for (NSString *word in words)
-            {
-                [__wordsToRead addObject:word];
-                NSLog(@"\n setupSpeedReading %@:", word);
-            }
+            [__wordsToRead addObject:word];
+            NSLog(@"\n setupSpeedReading %@:", word);
         }
     }
+    
+    NoteItem2 *ni;
+    while (__notesInGroup.count > 1)
+    {
+        ni = __notesInGroup[0];
+        [self depthFirstTraverse: ni];
+    }
+    
     return YES;  // given there are notes to read
 }
 
+- (void) depthFirstTraverse: (NoteItem2 *) ni
+{
+    [__notesInGroup removeObject: ni];
+    [__notesSorted addObject: ni];
+    NSArray *targetNotesSorted = [self getTargetNotes: ni];
+    // TODO (Mar 29, 2017): iterate over sorted notes and recursively call this method
+}
+
+- (NSMutableArray *) getTargetNotes: (NoteItem2 *) ni
+{
+    NSMutableArray *notesSortedLeftToRight = [[NSMutableArray alloc] init];
+    // Get outbound arrows of ni
+    NSMutableArray *outboundArrows = [[NSMutableArray alloc] init];
+    for (ArrowItem *ai in __arrowsInGroup)
+    {
+        if (CGRectContainsPoint(ni.frame, ai.startPoint))
+        {
+            [outboundArrows addObject: ai];
+        }
+    }
+    
+    // Return early if no outbound arrows
+    if (outboundArrows.count == 0)
+    {
+        return notesSortedLeftToRight;  // will have count of zero?
+    }
+    
+    // Sort by arrows by X coordinate:
+    [outboundArrows sortUsingComparator: ^(ArrowItem *ai1, ArrowItem *ai2)
+     {
+         
+         float x1 = ai1.endPoint.x;
+         float x2 = ai2.endPoint.y;
+         
+         if ( x1 > x2 ) {
+             
+             return (NSComparisonResult) NSOrderedAscending;
+         }
+         if ( x1 < x2 ) {
+             
+             return (NSComparisonResult) NSOrderedDescending;
+         }
+         
+         return (NSComparisonResult)NSOrderedSame;
+     }];
+    
+    // Check each outbound arrow to see if it terminates on a note
+    for (ArrowItem *ai in outboundArrows)
+    {
+        for (NoteItem2 *ni in __notesInGroup)
+        {
+            if (CGRectContainsPoint(ni.frame, ai.endPoint))
+            {
+                [notesSortedLeftToRight addObject: ni];
+            }
+        }
+    }
+    
+    return notesSortedLeftToRight;
+}
+
+/*
+ [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai) {
+ CGRect rect = self.frame;
+ 
+ if ( CGRectContainsPoint(rect, ai.startPoint) )
+ {
+ [self.arrowTailsInGroup addObject: ai];  // add overlapping arrow TAILS to this note
+ }
+ 
+ if ( CGRectContainsPoint(rect, ai.endPoint) )
+ {
+ [self.arrowHeadsInGroup addObject: ai];  // add overlapping arrow HEADS to this note
+ }
+ }];
+ */
 
 
 - (void)didReceiveMemoryWarning {
