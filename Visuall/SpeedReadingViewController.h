@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupItem.h"
+#import "StateUtilFirebase.h"
 
 @interface SpeedReadingViewController : UIViewController
+
+@property (nonatomic, strong) StateUtilFirebase *visuallState;
 
 @end

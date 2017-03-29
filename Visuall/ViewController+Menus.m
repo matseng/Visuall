@@ -186,7 +186,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
     }
     else
     {
-        [toolbar setItems:@[backBarItem, flexibleSpace, editBarItem, flexibleSpace, segmentControlBarItem, flexibleSpace] animated:YES];
+        [toolbar setItems:@[backBarItem, flexibleSpace, editBarItem, flexibleSpace, segmentControlBarItem, spacer50] animated:YES];
     }
     
     UIBarButtonItem *toolBarItem = [[UIBarButtonItem alloc] initWithCustomView: toolbar];
@@ -217,18 +217,19 @@ SegmentedControlMod *segmentControlTopMenuRight;
     NSLog(@"\n segmentControlTopMenuRightHandler");
     SpeedReadingViewController *myNewVC = [[SpeedReadingViewController alloc] init];
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController: myNewVC];/*Here dateVC is controller you want to show in popover*/
-//    myNewVC.preferredContentSize = CGSizeMake(280,200);
     myNewVC.preferredContentSize = CGSizeMake(self.BackgroundScrollView.frame.size.width,
                                               self.BackgroundScrollView.frame.size.height - self.tabBarController.tabBar.frame.size.height * 1.5);
-//    self.BackgroundScrollView.frame.size;
     destNav.modalPresentationStyle = UIModalPresentationPopover;
     self.dateTimePopover8 = destNav.popoverPresentationController;
     self.dateTimePopover8.delegate = self;
     self.dateTimePopover8.sourceView = self.view;
+//    self.view.alpha = 0.2;
+//    self.dateTimePopover8.containerView.alpha = 0.2;
     CGRect rect = segmentControlTopMenuRight.frame;
      rect.origin = CGPointMake(rect.origin.x - buttonUnit / 2, rect.origin.y - buttonUnit);
     self.dateTimePopover8.sourceRect = rect;
     destNav.navigationBarHidden = YES;
+    myNewVC.visuallState = self.visuallState;
     [self presentViewController:destNav animated:YES completion:nil];
 }
 
@@ -240,6 +241,19 @@ SegmentedControlMod *segmentControlTopMenuRight;
 -(void)hideIOS8PopOver
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
+{
+    [segmentControlTopMenuRight setEnabled:NO forSegmentAtIndex:0];
+    [segmentControlTopMenuRight setEnabled:YES forSegmentAtIndex:0];
+    segmentControlTopMenuRight.tintColor = [UIColor blueColor];
+}
+
+- (void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    // do something now that it's been dismissed
+    [segmentControlTopMenuRight setEnabled:YES forSegmentAtIndex:0];
+    segmentControlTopMenuRight.tintColor = [UIColor blueColor];
 }
 
 - (void) __addSubmenu
@@ -641,11 +655,19 @@ SegmentedControlMod *segmentControlTopMenuRight;
 
 - (void) updateSecondSubmenuStateFromSelectedVisualItem
 {
+    [segmentControlTopMenuRight setEnabled:NO forSegmentAtIndex:0];
+    segmentControlTopMenuRight.tintColor = [UIColor lightGrayColor];
+    
     if ( [self.visuallState.selectedVisualItem isNoteItem]
         || [self.visuallState.selectedVisualItem isArrowItem]
         || [self.visuallState.selectedVisualItem isDrawView])
     {
         [self setSecondSubmenuToActive:YES];
+    }
+    else if ([self.visuallState.selectedVisualItem isGroupItem])
+    {
+        [segmentControlTopMenuRight setEnabled:YES forSegmentAtIndex:0];
+        segmentControlTopMenuRight.tintColor = [UIColor blueColor];
     }
     else
     {
