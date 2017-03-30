@@ -108,7 +108,7 @@ NSMutableArray *__wordsToRead;
     while (__notesInGroup.count > 0)
     {
         ni = __notesInGroup[0];
-        [self depthFirstTraverse: ni];
+        [self depthFirstTraverseAroundPerimeter: ni];
     }
     
     for (NoteItem2 *ni in __notesSorted)
@@ -125,16 +125,39 @@ NSMutableArray *__wordsToRead;
     return YES;  // given there are notes to read
 }
 
-- (void) depthFirstTraverse: (NoteItem2 *) ni
+- (void) depthFirstTraverseNormalPattern: (NoteItem2 *) ni
 {
     [__notesInGroup removeObject: ni];
     [__notesSorted addObject: ni];
     NSArray *targetNotesSorted = [self getTargetNotes: ni];
     for (NoteItem2 *niTarget in targetNotesSorted)
     {
-        [self depthFirstTraverse: niTarget];
+        [self depthFirstTraverseNormalPattern: niTarget];
     }
 }
+
+/*
+ * Name:
+ * Description:
+ */
+- (void) depthFirstTraverseAroundPerimeter: (NoteItem2 *) ni
+{
+    [__notesInGroup removeObject: ni];
+    NSArray *targetNotesSorted = [self getTargetNotes: ni];
+    if (targetNotesSorted.count > 0 )
+    {
+        for (NoteItem2 *niTarget in targetNotesSorted)
+        {
+            [__notesSorted addObject: ni];
+            [self depthFirstTraverseAroundPerimeter: niTarget];
+        }
+    }
+    else
+    {
+        [__notesSorted addObject: ni];
+    }
+}
+
 
 - (NSMutableArray *) getTargetNotes: (NoteItem2 *) ni
 {
@@ -160,7 +183,7 @@ NSMutableArray *__wordsToRead;
      {
          
          float x1 = ai1.endPoint.x;
-         float x2 = ai2.endPoint.y;
+         float x2 = ai2.endPoint.x;
          
          if ( x1 < x2 ) {
              
