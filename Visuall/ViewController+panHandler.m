@@ -79,7 +79,8 @@
             {
                 [gi resizeGroup: gestureRecognizer];
                 [self.visuallState updateChildValue:gi Property:@"frame"];
-            } else
+            }
+            else
             {
                 [self handlePanGroup: gestureRecognizer andGroupItem:gi];
                 [self.visuallState updateChildValue:gi Property:@"frame"];

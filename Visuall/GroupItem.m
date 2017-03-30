@@ -386,9 +386,7 @@
 
 - (BOOL) isNoteInGroup: (NoteItem2 *) ni
 {
-//    CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
-    CGRect groupRect = self.frame;
-//    CGPoint noteCenterPoint = CGPointMake(ni.note.x + ni.note.width/2, ni.note.y + ni.note.height/2);
+    CGRect groupRect = CGRectMake(self.group.x, self.group.y, self.group.width, self.group.height);
     CGPoint noteCenterPoint = CGPointMake(ni.frame.origin.x + ni.frame.size.width/2, ni.frame.origin.y + ni.frame.size.height/2);
     
     if ( CGRectContainsPoint(groupRect, noteCenterPoint))
