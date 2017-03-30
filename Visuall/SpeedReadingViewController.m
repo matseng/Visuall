@@ -103,7 +103,15 @@ NSMutableArray *__wordsToRead;
          return (NSComparisonResult)NSOrderedSame;
      }];
     
-    for (NoteItem2 *ni in __notesInGroup)
+    NoteItem2 *ni;
+    __notesSorted = [[NSMutableArray alloc] init];
+    while (__notesInGroup.count > 0)
+    {
+        ni = __notesInGroup[0];
+        [self depthFirstTraverse: ni];
+    }
+    
+    for (NoteItem2 *ni in __notesSorted)
     {
         //            NSString *noteString = ni.note.title;
         NSArray *words = [ni.note.title componentsSeparatedByString: @" "];
@@ -114,13 +122,6 @@ NSMutableArray *__wordsToRead;
         }
     }
     
-    NoteItem2 *ni;
-    while (__notesInGroup.count > 1)
-    {
-        ni = __notesInGroup[0];
-        [self depthFirstTraverse: ni];
-    }
-    
     return YES;  // given there are notes to read
 }
 
@@ -129,7 +130,10 @@ NSMutableArray *__wordsToRead;
     [__notesInGroup removeObject: ni];
     [__notesSorted addObject: ni];
     NSArray *targetNotesSorted = [self getTargetNotes: ni];
-    // TODO (Mar 29, 2017): iterate over sorted notes and recursively call this method
+    for (NoteItem2 *niTarget in targetNotesSorted)
+    {
+        [self depthFirstTraverse: niTarget];
+    }
 }
 
 - (NSMutableArray *) getTargetNotes: (NoteItem2 *) ni
@@ -158,11 +162,11 @@ NSMutableArray *__wordsToRead;
          float x1 = ai1.endPoint.x;
          float x2 = ai2.endPoint.y;
          
-         if ( x1 > x2 ) {
+         if ( x1 < x2 ) {
              
              return (NSComparisonResult) NSOrderedAscending;
          }
-         if ( x1 < x2 ) {
+         if ( x1 > x2 ) {
              
              return (NSComparisonResult) NSOrderedDescending;
          }
