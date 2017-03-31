@@ -10,6 +10,9 @@
 #import "UserUtil.h"
 
 @interface SpeedReadingViewController ()
+@property (weak, nonatomic) IBOutlet UIView *squareOuterContainer;
+@property (weak, nonatomic) IBOutlet UIView *topHalfContainer;
+@property (weak, nonatomic) IBOutlet UIView *bottomHalfContainer;
 
 @end
 
@@ -42,7 +45,7 @@ NSTimer *__timer;
         self.label.text = @"Select a group that contains text \n to proceed with Speed Reading";
     }
     [self updateLabelStyle];
-    [self.view addSubview: self.label];
+    [self.topHalfContainer addSubview: self.label];
 }
 
 - (void) actionTimer
@@ -56,8 +59,6 @@ NSTimer *__timer;
     self.index++;
 }
 
-
-
 - (void) __updateLabelStyle
 {
 //    [self.label removeFromSuperview];
@@ -68,14 +69,13 @@ NSTimer *__timer;
 //    [self.view addSubview: self.label];
 }
 
-
 - (void) updateLabelStyle
 {
     CGRect frame = self.label.frame;
     frame.size.width = CGRectInfinite.size.width;
     self.label.frame = frame;
     [self.label sizeToFit];
-    self.label.center = CGPointMake(self.preferredContentSize.width / 2, self.preferredContentSize.height / 2);
+    self.label.center = CGPointMake(self.topHalfContainer.frame.size.width / 2, self.topHalfContainer.frame.size.height / 2);
 }
 
 

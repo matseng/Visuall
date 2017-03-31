@@ -215,7 +215,12 @@ SegmentedControlMod *segmentControlTopMenuRight;
 - (void) segmentControlTopMenuRightHandler
 {
     NSLog(@"\n segmentControlTopMenuRightHandler");
-    SpeedReadingViewController *myNewVC = [[SpeedReadingViewController alloc] init];
+//    SpeedReadingViewController *myNewVC = [[SpeedReadingViewController alloc] init];
+    ViewController *myNewVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"HelloWorld"];
+//    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    
+//    ViewController *myNewVC = [sb instantiateViewControllerWithIdentifier:@"HelloWorldId"];
+    
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController: myNewVC];/*Here dateVC is controller you want to show in popover*/
     myNewVC.preferredContentSize = CGSizeMake(self.BackgroundScrollView.frame.size.width,
                                               self.BackgroundScrollView.frame.size.height - self.tabBarController.tabBar.frame.size.height * 1.5);
