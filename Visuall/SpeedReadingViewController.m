@@ -20,28 +20,64 @@ NSMutableArray *__notesSorted;
 NSMutableArray *__arrowsInGroup;
 NSMutableArray *__wordsToRead;
 
+NSTimer *__timer;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"\n SpeedReadingViewController.h");
     
-    UILabel *label = [[UILabel alloc] init];
+    self.label = [[UILabel alloc] init];
+    
+    self.wordsPerMinute = 120.0f;
+    self.index = 0;
     
     if( [self setupSpeedReading] )
     {
-        label.text = @"Will speed read here";
+        self.label.text = @"1 2 3 4 5 6";
+        __timer = [NSTimer scheduledTimerWithTimeInterval: 60 / self.wordsPerMinute  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
+
     }
     else
     {
-        label.text = @"Select a group that contains text \n to proceed with Speed Reading";
+        self.label.text = @"Select a group that contains text \n to proceed with Speed Reading";
     }
-    
-    label.numberOfLines = 0;
-    [label setFont: [UIFont fontWithName:@"Arial Rounded MT Bold" size:14.0f]];
-    [label sizeToFit];
-    label.center = CGPointMake(self.preferredContentSize.width / 2, self.preferredContentSize.height / 2);
-    
-    [self.view addSubview: label];
+    [self updateLabelStyle];
+    [self.view addSubview: self.label];
 }
+
+- (void) actionTimer
+{
+    if ( self.index >= __wordsToRead.count)
+    {
+        self.index = 0;
+    }
+    self.label.text = __wordsToRead[self.index];
+    [self updateLabelStyle];
+    self.index++;
+}
+
+
+
+- (void) __updateLabelStyle
+{
+//    [self.label removeFromSuperview];
+    self.label.numberOfLines = 0;
+    [self.label setFont: [UIFont fontWithName:@"Arial Rounded MT Bold" size:14.0f]];
+    [self.label sizeToFit];
+    self.label.center = CGPointMake(self.preferredContentSize.width / 2, self.preferredContentSize.height / 2);
+//    [self.view addSubview: self.label];
+}
+
+
+- (void) updateLabelStyle
+{
+    CGRect frame = self.label.frame;
+    frame.size.width = CGRectInfinite.size.width;
+    self.label.frame = frame;
+    [self.label sizeToFit];
+    self.label.center = CGPointMake(self.preferredContentSize.width / 2, self.preferredContentSize.height / 2);
+}
+
 
 - (BOOL) setupSpeedReading
 {
@@ -111,6 +147,7 @@ NSMutableArray *__wordsToRead;
         [self depthFirstTraverseAroundPerimeter: ni];
     }
     
+    __wordsToRead = [[NSMutableArray alloc] init];
     for (NoteItem2 *ni in __notesSorted)
     {
         //            NSString *noteString = ni.note.title;

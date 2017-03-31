@@ -14,4 +14,10 @@
 
 @property (nonatomic, strong) StateUtilFirebase *visuallState;
 
+@property UILabel *label;
+
+@property float wordsPerMinute;
+
+@property int index;
+
 @end
