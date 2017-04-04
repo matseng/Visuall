@@ -107,6 +107,9 @@
                                                             <rect key="frame" x="13" y="7" width="51" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <state key="normal" title="Rewind"/>
+                                                            <connections>
+                                                                <action selector="rewindButtonTapped:" destination="S8m-j8-Bgg" eventType="touchUpInside" id="9el-r1-XiK"/>
+                                                            </connections>
                                                         </button>
                                                     </barButtonItem>
                                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="PV8-ah-eNo"/>

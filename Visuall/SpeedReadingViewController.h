@@ -20,4 +20,7 @@
 
 @property int index;
 
+- (IBAction)rewindButtonTapped:(id)sender;
+
+
 @end

@@ -23,8 +23,8 @@ NSMutableArray *__notesInGroup;
 NSMutableArray *__notesSorted;
 NSMutableArray *__arrowsInGroup;
 NSMutableArray *__wordsToRead;
-
 NSTimer *__timer;
+BOOL __rewindOn;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,20 +51,38 @@ NSTimer *__timer;
 
 - (void) actionTimer
 {
+    if (self.index < 0 )
+    {
+        // Stop timer if rewind hits
+        [self updateProgressViewOfWordsRead];
+        return;
+    }
     if ( self.index >= __wordsToRead.count)
     {
         self.index = 0;
     }
     self.label.text = __wordsToRead[self.index];
     [self updateLabelStyle];
-    self.index++;
     [self updateProgressViewOfWordsRead];
+    if ( __rewindOn == YES)
+    {
+        self.index--;
+    }
+    else
+    {
+        self.index++;
+    }
 }
 
 - (void) updateProgressViewOfWordsRead
 {
-    float progress = (float) self.index / __wordsToRead.count;
+    float progress = (float) (self.index + 1) / __wordsToRead.count;
     self.progressViewOfWordsRead.progress = progress;
+}
+
+- (IBAction) rewindButtonTapped:(id)sender
+{
+    __rewindOn = YES;
 }
 
 - (void) __updateLabelStyle
@@ -288,5 +306,4 @@ NSTimer *__timer;
     // Pass the selected object to the new view controller.
 }
 */
-
 @end
