@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UIView *squareOuterContainer;
 @property (weak, nonatomic) IBOutlet UIView *topHalfContainer;
 @property (weak, nonatomic) IBOutlet UIView *bottomHalfContainer;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressViewOfWordsRead;
 
 @end
 
@@ -57,6 +58,13 @@ NSTimer *__timer;
     self.label.text = __wordsToRead[self.index];
     [self updateLabelStyle];
     self.index++;
+    [self updateProgressViewOfWordsRead];
+}
+
+- (void) updateProgressViewOfWordsRead
+{
+    float progress = (float) self.index / __wordsToRead.count;
+    self.progressViewOfWordsRead.progress = progress;
 }
 
 - (void) __updateLabelStyle
