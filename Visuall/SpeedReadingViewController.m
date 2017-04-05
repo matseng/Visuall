@@ -57,7 +57,7 @@ NSMutableDictionary *__buttonState;
     }
     [self updateLabelStyle];
     [self updateProgressViewOfWordsRead];
-    [self setPlayOff];
+    [self setPlayToOff];
     [self.topHalfContainer addSubview: self.label];
 }
 
@@ -75,6 +75,16 @@ NSMutableDictionary *__buttonState;
                                               repeats:YES];
 }
 
+- (void) setButtonStateOnForKey: (NSString *) key
+{
+    for (NSString *k in __buttonState.allKeys)
+    {
+        [__buttonState setValue: @(NO) forKey: k];  // turn the rest of the button states to NO (off)
+    }
+    [__buttonState setValue: @(YES) forKey: key];
+}
+
+
 - (void) actionTimer
 {
     // If paused then don't change the index
@@ -85,18 +95,17 @@ NSMutableDictionary *__buttonState;
         return;
     }
     
-    
     if (self.index < 0 )  // Stop timer if fully rewound
     {
         self.index = 0;
         [self updateProgressViewOfWordsRead];
         __rewindOn = NO;
-        [self setPlayOff];
+        [self setPlayToOff];
     }
     else if ( self.index >= __wordsToRead.count) // Finished reading all words
     {
         [self updateProgressViewOfWordsRead];
-        [self setPlayOff];
+        [self setPlayToOff];
         [self.playPauseButton setTitle: @"Replay" forState: UIControlStateNormal];
     }
     else  // Play or rewind in progress
@@ -138,16 +147,13 @@ NSMutableDictionary *__buttonState;
 
 - (IBAction) playPauseButtonTapped:(id)sender
 {
-//    __rewindOn = NO;
-    if ( __buttonState[@"paused"] )  // change from paused to play
+    if ( [__buttonState[@"paused"] boolValue] )  // change from paused to play
     {
-        [__buttonState setValue: @(NO) forKey:@"paused"];
-        [__buttonState setValue: @(YES) forKey:@"play"];
+        [self setPlayToOn];
     }
     else  // change from play to paused
     {
-        [__buttonState setValue: @(YES) forKey:@"paused"];
-        [__buttonState setValue: @(NO) forKey:@"play"];
+        [self setPlayToOff];
     }
 }
 
@@ -156,11 +162,11 @@ NSMutableDictionary *__buttonState;
     __rewindOn = NO;
     if ( __playOn )
     {
-        [self setPlayOff];
+        [self setPlayToOff];
     }
     else
     {
-        [self setPlayOn];
+        [self setPlayToOn];
     }
 }
 
@@ -168,37 +174,24 @@ NSMutableDictionary *__buttonState;
 {
     float newTimerInterval = __timer.timeInterval / 2;
     [self setTimerWithTimeInterval: newTimerInterval];
-    [self setPlayOff];
+    [self setPlayToOff];
     __rewindOn = NO;
 }
 
-- (void) setPlayOn
+- (void) setPlayToOn
 {
-    __playOn = YES;
+    [self setButtonStateOnForKey: @"play"];
     [self.playPauseButton setTitle: @"Pause" forState: UIControlStateNormal];
     if (self.index >= __wordsToRead.count)
     {
         self.index = 0;
     }
-//    [self set]
 }
 
-- (void) setPlayOff
+- (void) setPlayToOff
 {
-    __playOn = NO;  // set to paused
+    [self setButtonStateOnForKey: @"paused"];
     [self.playPauseButton setTitle: @"Play" forState: UIControlStateNormal];
-}
-
-
-
-- (void) __updateLabelStyle
-{
-//    [self.label removeFromSuperview];
-    self.label.numberOfLines = 0;
-    [self.label setFont: [UIFont fontWithName:@"Arial Rounded MT Bold" size:14.0f]];
-    [self.label sizeToFit];
-    self.label.center = CGPointMake(self.preferredContentSize.width / 2, self.preferredContentSize.height / 2);
-//    [self.view addSubview: self.label];
 }
 
 - (void) updateLabelStyle
