@@ -25,10 +25,21 @@ NSMutableArray *__arrowsInGroup;
 NSMutableArray *__wordsToRead;
 NSTimer *__timer;
 BOOL __rewindOn;
+BOOL __playOn;
+BOOL __fastForwardOn;
+
+NSMutableDictionary *__buttonState;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"\n SpeedReadingViewController.h");
+    
+    __buttonState = [@{
+                      @"rewind": @(NO),
+                      @"play": @(NO),
+                      @"paused": @(YES),
+                      @"fastForward": @(NO)
+                      } mutableCopy];
     
     self.label = [[UILabel alloc] init];
     
@@ -38,52 +49,147 @@ BOOL __rewindOn;
     if( [self setupSpeedReading] )
     {
         self.label.text = @"1 2 3 4 5 6";
-        __timer = [NSTimer scheduledTimerWithTimeInterval: 60 / self.wordsPerMinute  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
-
+        [self setTimerWithCurrentWordsPerMinute];
     }
     else
     {
         self.label.text = @"Select a group that contains text \n to proceed with Speed Reading";
     }
     [self updateLabelStyle];
+    [self updateProgressViewOfWordsRead];
+    [self setPlayOff];
     [self.topHalfContainer addSubview: self.label];
+}
+
+- (void) setTimerWithCurrentWordsPerMinute
+{
+    [self setTimerWithTimeInterval: (1 / self.wordsPerMinute * 60) ];
+}
+
+- (void) setTimerWithTimeInterval: (float) interval
+{
+    [__timer invalidate];
+    __timer = [NSTimer scheduledTimerWithTimeInterval: interval
+                                               target:self
+                                             selector:@selector(actionTimer)userInfo:nil
+                                              repeats:YES];
 }
 
 - (void) actionTimer
 {
-    if (self.index < 0 )
+    // If paused then don't change the index
+//    if ( __playOn == NO && __rewindOn == NO && __fastForwardOn == NO )
+    if ( [__buttonState[@"paused"] boolValue] )
     {
-        // Stop timer if rewind hits
         [self updateProgressViewOfWordsRead];
         return;
     }
-    if ( self.index >= __wordsToRead.count)
+    
+    
+    if (self.index < 0 )  // Stop timer if fully rewound
     {
         self.index = 0;
+        [self updateProgressViewOfWordsRead];
+        __rewindOn = NO;
+        [self setPlayOff];
     }
-    self.label.text = __wordsToRead[self.index];
-    [self updateLabelStyle];
-    [self updateProgressViewOfWordsRead];
-    if ( __rewindOn == YES)
+    else if ( self.index >= __wordsToRead.count) // Finished reading all words
     {
-        self.index--;
+        [self updateProgressViewOfWordsRead];
+        [self setPlayOff];
+        [self.playPauseButton setTitle: @"Replay" forState: UIControlStateNormal];
     }
-    else
+    else  // Play or rewind in progress
     {
-        self.index++;
+        self.label.text = __wordsToRead[self.index];
+        [self updateLabelStyle];
+        [self updateProgressViewOfWordsRead];
+        if ( __rewindOn == YES)
+        {
+            self.index--;
+        }
+        else
+        {
+            self.index++;
+        }
     }
 }
 
 - (void) updateProgressViewOfWordsRead
 {
-    float progress = (float) (self.index + 1) / __wordsToRead.count;
+    float progress = (float) (self.index) / (__wordsToRead.count - 1);
     self.progressViewOfWordsRead.progress = progress;
 }
 
 - (IBAction) rewindButtonTapped:(id)sender
 {
-    __rewindOn = YES;
+    if (__rewindOn == NO && __playOn == NO)
+    {
+        self.index--;
+        [self updateProgressViewOfWordsRead];
+    }
+    else
+    {
+        __rewindOn = YES;
+        __playOn = NO;
+        self.index--;
+    }
 }
+
+- (IBAction) playPauseButtonTapped:(id)sender
+{
+//    __rewindOn = NO;
+    if ( __buttonState[@"paused"] )  // change from paused to play
+    {
+        [__buttonState setValue: @(NO) forKey:@"paused"];
+        [__buttonState setValue: @(YES) forKey:@"play"];
+    }
+    else  // change from play to paused
+    {
+        [__buttonState setValue: @(YES) forKey:@"paused"];
+        [__buttonState setValue: @(NO) forKey:@"play"];
+    }
+}
+
+- (IBAction) __playPauseButtonTapped:(id)sender
+{
+    __rewindOn = NO;
+    if ( __playOn )
+    {
+        [self setPlayOff];
+    }
+    else
+    {
+        [self setPlayOn];
+    }
+}
+
+- (IBAction) fastForwardButtonTapped:(id)sender
+{
+    float newTimerInterval = __timer.timeInterval / 2;
+    [self setTimerWithTimeInterval: newTimerInterval];
+    [self setPlayOff];
+    __rewindOn = NO;
+}
+
+- (void) setPlayOn
+{
+    __playOn = YES;
+    [self.playPauseButton setTitle: @"Pause" forState: UIControlStateNormal];
+    if (self.index >= __wordsToRead.count)
+    {
+        self.index = 0;
+    }
+//    [self set]
+}
+
+- (void) setPlayOff
+{
+    __playOn = NO;  // set to paused
+    [self.playPauseButton setTitle: @"Play" forState: UIControlStateNormal];
+}
+
+
 
 - (void) __updateLabelStyle
 {

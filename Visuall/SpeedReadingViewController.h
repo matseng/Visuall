@@ -20,7 +20,13 @@
 
 @property int index;
 
+@property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
+
 - (IBAction)rewindButtonTapped:(id)sender;
+
+- (IBAction)playPauseButtonTapped:(id)sender;
+
+- (IBAction)fastForwardButtonTapped:(id)sender;
 
 
 @end
