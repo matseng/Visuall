@@ -22,11 +22,12 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
 
+@property (weak, nonatomic) IBOutlet UIView *progessViewContainer;
+
 - (IBAction)rewindButtonTapped:(id)sender;
 
 - (IBAction)playPauseButtonTapped:(id)sender;
 
 - (IBAction)fastForwardButtonTapped:(id)sender;
-
 
 @end

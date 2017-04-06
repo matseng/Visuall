@@ -103,10 +103,11 @@
                                                 <items>
                                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="UyQ-rb-Rde"/>
                                                     <barButtonItem style="plain" id="n9U-o8-M73">
-                                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ci2-0Y-GOc">
-                                                            <rect key="frame" x="5" y="7" width="59" height="30"/>
+                                                        <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" id="ci2-0Y-GOc">
+                                                            <rect key="frame" x="6" y="1.5" width="52" height="41"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <state key="normal" title=" Rewind "/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                            <state key="normal" title="Step Back"/>
                                                             <connections>
                                                                 <action selector="rewindButtonTapped:" destination="S8m-j8-Bgg" eventType="touchUpInside" id="9el-r1-XiK"/>
                                                             </connections>
@@ -115,7 +116,7 @@
                                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="PV8-ah-eNo"/>
                                                     <barButtonItem style="plain" id="smC-Z4-3OH">
                                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LWU-KX-TqU">
-                                                            <rect key="frame" x="63" y="7" width="54" height="30"/>
+                                                            <rect key="frame" x="58" y="7" width="54" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                             <state key="normal" title=" Replay "/>
@@ -126,10 +127,11 @@
                                                     </barButtonItem>
                                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Jeh-iV-ZMJ"/>
                                                     <barButtonItem style="plain" id="hGK-nC-JeT">
-                                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="jSN-bs-ezx">
-                                                            <rect key="frame" x="116" y="7" width="64" height="30"/>
+                                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" id="jSN-bs-ezx">
+                                                            <rect key="frame" x="113" y="-2" width="64" height="48"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <state key="normal" title=" Forward "/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                            <state key="normal" title="  Step Forward "/>
                                                             <connections>
                                                                 <action selector="fastForwardButtonTapped:" destination="S8m-j8-Bgg" eventType="touchUpInside" id="jeT-OF-x09"/>
                                                             </connections>
@@ -138,7 +140,7 @@
                                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="UFI-R5-OFM"/>
                                                     <barButtonItem style="plain" id="4UP-G4-d1X">
                                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zYY-Kn-VA1">
-                                                            <rect key="frame" x="179" y="7" width="30" height="30"/>
+                                                            <rect key="frame" x="177" y="7" width="30" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                                             <state key="normal" title="-"/>
@@ -147,7 +149,7 @@
                                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="acO-Pq-fRP"/>
                                                     <barButtonItem style="plain" id="qCr-E6-gNa">
                                                         <view key="customView" contentMode="scaleToFill" id="7RL-jY-Ic9">
-                                                            <rect key="frame" x="208" y="5.5" width="47" height="33"/>
+                                                            <rect key="frame" x="207" y="5.5" width="47" height="33"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BDw-Tl-4q5">
@@ -184,6 +186,7 @@
                     <connections>
                         <outlet property="bottomHalfContainer" destination="YJv-hI-Qqr" id="iVV-Ov-Fii"/>
                         <outlet property="playPauseButton" destination="LWU-KX-TqU" id="ZBt-cH-Vx2"/>
+                        <outlet property="progessViewContainer" destination="0O1-UO-7XY" id="I59-ZV-Gz0"/>
                         <outlet property="progressViewOfWordsRead" destination="HlT-ZS-3vg" id="j5h-rR-HYl"/>
                         <outlet property="squareOuterContainer" destination="FQQ-TH-0UG" id="vVv-Ju-ZTv"/>
                         <outlet property="topHalfContainer" destination="zRG-OH-iaH" id="wfQ-N8-vRE"/>
