@@ -24,6 +24,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *progessViewContainer;
 
+@property (weak, nonatomic) IBOutlet UISlider *progressSlider;
+
 - (IBAction)rewindButtonTapped:(id)sender;
 
 - (IBAction)playPauseButtonTapped:(id)sender;

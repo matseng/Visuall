@@ -90,12 +90,17 @@
                                                 <rect key="frame" x="0.0" y="8" width="300" height="40"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <subviews>
-                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" progress="0.5" id="HlT-ZS-3vg">
-                                                        <rect key="frame" x="8" y="19" width="284" height="2"/>
+                                                    <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" progress="0.5" id="HlT-ZS-3vg">
+                                                        <rect key="frame" x="10" y="20" width="280" height="2"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </progressView>
+                                                    <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="al1-Pn-Naa">
+                                                        <rect key="frame" x="10" y="5" width="280" height="31"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </slider>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <gestureRecognizers/>
                                             </view>
                                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" id="6zr-9o-5nn">
                                                 <rect key="frame" x="0.0" y="48" width="300" height="44"/>
@@ -187,6 +192,7 @@
                         <outlet property="bottomHalfContainer" destination="YJv-hI-Qqr" id="iVV-Ov-Fii"/>
                         <outlet property="playPauseButton" destination="LWU-KX-TqU" id="ZBt-cH-Vx2"/>
                         <outlet property="progessViewContainer" destination="0O1-UO-7XY" id="I59-ZV-Gz0"/>
+                        <outlet property="progressSlider" destination="al1-Pn-Naa" id="9xD-Sq-5QN"/>
                         <outlet property="progressViewOfWordsRead" destination="HlT-ZS-3vg" id="j5h-rR-HYl"/>
                         <outlet property="squareOuterContainer" destination="FQQ-TH-0UG" id="vVv-Ju-ZTv"/>
                         <outlet property="topHalfContainer" destination="zRG-OH-iaH" id="wfQ-N8-vRE"/>

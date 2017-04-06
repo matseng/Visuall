@@ -30,6 +30,8 @@ BOOL __fastForwardOn;
 
 NSMutableDictionary *__buttonState;
 
+UIColor *__thumbTintColor;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"\n SpeedReadingViewController.h");
@@ -40,6 +42,8 @@ NSMutableDictionary *__buttonState;
                       @"paused": @(YES),
                       @"fastForward": @(NO)
                       } mutableCopy];
+    
+    __thumbTintColor = self.progressSlider.thumbTintColor;
     
     self.label = [[UILabel alloc] init];
     
@@ -59,6 +63,26 @@ NSMutableDictionary *__buttonState;
     [self updateProgressViewOfWordsRead];
     [self setPauseToOn];
     [self.topHalfContainer addSubview: self.label];
+
+    self.progressSlider.continuous = YES;
+    [self.progressSlider addTarget:self
+               action:@selector(progessSliderChanged)
+     forControlEvents:UIControlEventValueChanged];
+}
+
+- (void) progessSliderChanged
+{
+    float percentage = self.progressSlider.value;
+    self.index = (int) round(__wordsToRead.count * percentage);
+    self.label.text = __wordsToRead[self.index];
+    [self setPauseToOn];
+}
+
+- (void) handleSingleTap:(UITapGestureRecognizer *) recognizer
+{
+    CGPoint location = [recognizer locationInView:[recognizer.view superview]];
+    
+    //Do stuff here...
 }
 
 - (void) setTimerWithCurrentWordsPerMinute
@@ -89,7 +113,7 @@ NSMutableDictionary *__buttonState;
 {
     if ( [__buttonState[@"paused"] boolValue] )
     {
-        [self updateProgressViewOfWordsRead];
+//        [self updateProgressViewOfWordsRead];
         return;
     }
     
@@ -125,36 +149,16 @@ NSMutableDictionary *__buttonState;
 - (void) updateProgressViewOfWordsRead
 {
     float progress = (float) (self.index) / (__wordsToRead.count - 1);
-    self.progressViewOfWordsRead.progress = progress;
+//    self.progressViewOfWordsRead.progress = progress;
+    [self.progressSlider setValue: progress animated: YES];
 }
 
 - (IBAction) rewindButtonTapped:(id)sender
 {
-//    if (__rewindOn == NO && __playOn == NO)
-//    {
-//        self.index--;
-//        [self updateProgressViewOfWordsRead];
-//    }
-//    else
-//    {
-//        __rewindOn = YES;
-//        __playOn = NO;
-//        self.index--;
-//    }
-    if ( [__buttonState[@"rewind"] boolValue] )
-    {
-        [self setPauseToOn];
-    }
-    else if ( [__buttonState[@"paused"] boolValue] )
-    {
-        self.index--;
-        [self updateLabelStyle];
-        [self updateProgressViewOfWordsRead];
-    }
-    else
-    {
-        [self setButtonStateOnForKey: @"rewind"];
-    }
+    [self setPauseToOn];
+    self.index--;
+    [self updateLabelStyle];
+    [self updateProgressViewOfWordsRead];
 }
 
 - (IBAction) playPauseButtonTapped:(id)sender
@@ -181,6 +185,7 @@ NSMutableDictionary *__buttonState;
 {
     [self setButtonStateOnForKey: @"play"];
     [self.playPauseButton setTitle: @"Pause" forState: UIControlStateNormal];
+    self.progressSlider.thumbTintColor = [UIColor clearColor];
     if (self.index >= __wordsToRead.count)
     {
         self.index = 0;
@@ -191,6 +196,7 @@ NSMutableDictionary *__buttonState;
 {
     [self setButtonStateOnForKey: @"paused"];
     [self.playPauseButton setTitle: @"Play" forState: UIControlStateNormal];
+    self.progressSlider.thumbTintColor = __thumbTintColor;
 }
 
 - (void) updateLabelStyle
