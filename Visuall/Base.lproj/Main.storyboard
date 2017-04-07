@@ -190,6 +190,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomHalfContainer" destination="YJv-hI-Qqr" id="iVV-Ov-Fii"/>
+                        <outlet property="labelForWordToRead" destination="f2l-LG-aJP" id="1Pa-NR-O27"/>
                         <outlet property="playPauseButton" destination="LWU-KX-TqU" id="ZBt-cH-Vx2"/>
                         <outlet property="progessViewContainer" destination="0O1-UO-7XY" id="I59-ZV-Gz0"/>
                         <outlet property="progressSlider" destination="al1-Pn-Naa" id="9xD-Sq-5QN"/>

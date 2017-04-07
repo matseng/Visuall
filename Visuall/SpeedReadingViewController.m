@@ -45,24 +45,24 @@ UIColor *__thumbTintColor;
     
     __thumbTintColor = self.progressSlider.thumbTintColor;
     
-    self.label = [[UILabel alloc] init];
+//    self.labelForWordToRead = [[UILabel alloc] init];
     
     self.wordsPerMinute = 120.0f;
     self.index = 0;
     
     if( [self setupSpeedReading] )
     {
-        self.label.text = @"1 2 3 4 5 6";
+        self.labelForWordToRead.text = @"1 2 3 4 5 6";
         [self setTimerWithCurrentWordsPerMinute];
     }
     else
     {
-        self.label.text = @"Select a group that contains text \n to proceed with Speed Reading";
+        self.labelForWordToRead.text = @"Select a group that contains text \n to proceed with Speed Reading";
     }
     [self updateLabelStyle];
     [self updateProgressViewOfWordsRead];
     [self setPauseToOn];
-    [self.topHalfContainer addSubview: self.label];
+    [self.topHalfContainer addSubview: self.labelForWordToRead];
 
     self.progressSlider.continuous = YES;
     [self.progressSlider addTarget:self
@@ -74,7 +74,7 @@ UIColor *__thumbTintColor;
 {
     float percentage = self.progressSlider.value;
     self.index = (int) round(__wordsToRead.count * percentage);
-    self.label.text = __wordsToRead[self.index];
+    self.labelForWordToRead.text = __wordsToRead[self.index];
     [self setPauseToOn];
 }
 
@@ -113,7 +113,6 @@ UIColor *__thumbTintColor;
 {
     if ( [__buttonState[@"paused"] boolValue] )
     {
-//        [self updateProgressViewOfWordsRead];
         return;
     }
     
@@ -121,7 +120,6 @@ UIColor *__thumbTintColor;
     {
         self.index = 0;
         [self updateProgressViewOfWordsRead];
-        __rewindOn = NO;
         [self setPauseToOn];
     }
     else if ( self.index >= __wordsToRead.count) // Finished reading all words
@@ -130,16 +128,12 @@ UIColor *__thumbTintColor;
         [self setPauseToOn];
         [self.playPauseButton setTitle: @"Replay" forState: UIControlStateNormal];
     }
-    else  // Play or rewind in progress
+    else  // Play in progress, or step backward or forward
     {
-        self.label.text = __wordsToRead[self.index];
+        self.labelForWordToRead.text = __wordsToRead[self.index];
         [self updateLabelStyle];
         [self updateProgressViewOfWordsRead];
-        if ( [__buttonState[@"rewind"] boolValue] )
-        {
-            self.index--;
-        }
-        else
+        if ( [__buttonState[@"play"] boolValue] )
         {
             self.index++;
         }
@@ -156,7 +150,7 @@ UIColor *__thumbTintColor;
 - (IBAction) rewindButtonTapped:(id)sender
 {
     [self setPauseToOn];
-    self.index--;
+    --self.index;
     [self updateLabelStyle];
     [self updateProgressViewOfWordsRead];
 }
@@ -169,16 +163,17 @@ UIColor *__thumbTintColor;
     }
     else  // change from play to paused
     {
+        --self.index;  // equivalent of rounding down so that index matches currently displaced word
         [self setPauseToOn];
     }
 }
 
 - (IBAction) fastForwardButtonTapped:(id)sender
 {
-    float newTimerInterval = __timer.timeInterval / 2;
-    [self setTimerWithTimeInterval: newTimerInterval];
-    [self setPauseToOn];
-    __rewindOn = NO;
+        [self setPauseToOn];
+        ++self.index;
+        [self updateLabelStyle];
+        [self updateProgressViewOfWordsRead];
 }
 
 - (void) setPlayToOn
@@ -201,11 +196,12 @@ UIColor *__thumbTintColor;
 
 - (void) updateLabelStyle
 {
-    CGRect frame = self.label.frame;
+    self.labelForWordToRead.text = __wordsToRead[self.index];
+    CGRect frame = self.labelForWordToRead.frame;
     frame.size.width = CGRectInfinite.size.width;
-    self.label.frame = frame;
-    [self.label sizeToFit];
-    self.label.center = CGPointMake(self.topHalfContainer.frame.size.width / 2, self.topHalfContainer.frame.size.height / 2);
+    self.labelForWordToRead.frame = frame;
+    [self.labelForWordToRead sizeToFit];
+    self.labelForWordToRead.center = CGPointMake(self.topHalfContainer.frame.size.width / 2, self.topHalfContainer.frame.size.height / 2);
 }
 
 - (BOOL) setupSpeedReading

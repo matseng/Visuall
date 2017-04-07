@@ -14,6 +14,8 @@
 
 @property (nonatomic, strong) StateUtilFirebase *visuallState;
 
+@property (weak, nonatomic) IBOutlet UILabel *labelForWordToRead;
+
 @property UILabel *label;
 
 @property float wordsPerMinute;
