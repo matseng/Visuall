@@ -22,6 +22,11 @@
 
 @property int index;
 
+//@property (weak, nonatomic) IBOutlet UILabel *wordsPerMinuteLabel;
+
+@property (weak, nonatomic) IBOutlet UITextField *wordsPerMinueTextField;
+
+
 @property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
 
 @property (weak, nonatomic) IBOutlet UIView *progessViewContainer;
@@ -33,5 +38,9 @@
 - (IBAction)playPauseButtonTapped:(id)sender;
 
 - (IBAction)fastForwardButtonTapped:(id)sender;
+
+- (IBAction)minusButtonTapped:(id)sender;
+
+- (IBAction)plusButtonTapped:(id)sender;
 
 @end

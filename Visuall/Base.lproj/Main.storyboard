@@ -149,6 +149,9 @@
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                                             <state key="normal" title="-"/>
+                                                            <connections>
+                                                                <action selector="minusButtonTapped:" destination="S8m-j8-Bgg" eventType="touchUpInside" id="h7v-8L-KSa"/>
+                                                            </connections>
                                                         </button>
                                                     </barButtonItem>
                                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="acO-Pq-fRP"/>
@@ -157,13 +160,13 @@
                                                             <rect key="frame" x="207" y="5.5" width="47" height="33"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BDw-Tl-4q5">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="47" height="33"/>
+                                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="500" borderStyle="roundedRect" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" id="5Ab-JE-Itp">
+                                                                    <rect key="frame" x="0.0" y="2" width="47" height="30"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <textInputTraits key="textInputTraits"/>
+                                                                </textField>
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         </view>
@@ -175,6 +178,9 @@
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                                             <state key="normal" title="+"/>
+                                                            <connections>
+                                                                <action selector="plusButtonTapped:" destination="S8m-j8-Bgg" eventType="touchUpInside" id="NTC-g1-czf"/>
+                                                            </connections>
                                                         </button>
                                                     </barButtonItem>
                                                 </items>
@@ -197,6 +203,7 @@
                         <outlet property="progressViewOfWordsRead" destination="HlT-ZS-3vg" id="j5h-rR-HYl"/>
                         <outlet property="squareOuterContainer" destination="FQQ-TH-0UG" id="vVv-Ju-ZTv"/>
                         <outlet property="topHalfContainer" destination="zRG-OH-iaH" id="wfQ-N8-vRE"/>
+                        <outlet property="wordsPerMinueTextField" destination="5Ab-JE-Itp" id="bz2-Jp-bun"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WOO-sp-LDr" userLabel="First Responder" sceneMemberID="firstResponder"/>

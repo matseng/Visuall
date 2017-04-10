@@ -9,7 +9,7 @@
 #import "SpeedReadingViewController.h"
 #import "UserUtil.h"
 
-@interface SpeedReadingViewController ()
+@interface SpeedReadingViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView *squareOuterContainer;
 @property (weak, nonatomic) IBOutlet UIView *topHalfContainer;
 @property (weak, nonatomic) IBOutlet UIView *bottomHalfContainer;
@@ -34,6 +34,7 @@ UIColor *__thumbTintColor;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.wordsPerMinueTextField.delegate = self;
     NSLog(@"\n SpeedReadingViewController.h");
     
     __buttonState = [@{
@@ -47,9 +48,11 @@ UIColor *__thumbTintColor;
     
 //    self.labelForWordToRead = [[UILabel alloc] init];
     
-    self.wordsPerMinute = 120.0f;
+    self.wordsPerMinute = 1000.0f;
     self.index = 0;
     
+    
+    self.wordsPerMinueTextField.text = [[NSNumber numberWithFloat: self.wordsPerMinute] stringValue];
     if( [self setupSpeedReading] )
     {
         self.labelForWordToRead.text = @"1 2 3 4 5 6";
@@ -68,6 +71,11 @@ UIColor *__thumbTintColor;
     [self.progressSlider addTarget:self
                action:@selector(progessSliderChanged)
      forControlEvents:UIControlEventValueChanged];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                          action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void) progessSliderChanged
@@ -147,10 +155,64 @@ UIColor *__thumbTintColor;
     [self.progressSlider setValue: progress animated: YES];
 }
 
+- (IBAction) minusButtonTapped:(id)sender {
+
+    if (self.wordsPerMinute > 20)
+    {
+        self.wordsPerMinute = self.wordsPerMinute - 20;
+        self.wordsPerMinueTextField.text = [[NSNumber numberWithFloat: self.wordsPerMinute] stringValue];
+        [self setTimerWithCurrentWordsPerMinute];
+    }
+}
+
+- (IBAction) plusButtonTapped:(id)sender
+{
+    self.wordsPerMinute = self.wordsPerMinute + 20;
+    self.wordsPerMinueTextField.text = [[NSNumber numberWithFloat: self.wordsPerMinute] stringValue];
+    [self setTimerWithCurrentWordsPerMinute];
+}
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self setPauseToOn];
+    [textField selectAll: nil];
+}
+
+- (void) textFieldDidEndEditing:(UITextField *)textField
+{
+    float wpm = [textField.text floatValue];
+    if ( wpm >= 0)
+    {
+        self.wordsPerMinute = wpm;
+        self.wordsPerMinueTextField.text = [[NSNumber numberWithFloat: self.wordsPerMinute] stringValue];
+        [self setTimerWithCurrentWordsPerMinute];
+    }
+    [self setPlayToOn];
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
+- (void) dismissKeyboard
+{
+    [self.wordsPerMinueTextField resignFirstResponder];
+}
+
 - (IBAction) rewindButtonTapped:(id)sender
 {
     [self setPauseToOn];
-    --self.index;
+    if (self.index == __wordsToRead.count)
+    {
+        self.index = self.index - 2;  // extra adjustment required for this edge case to get to second to last word
+    }
+    else if (self.index > 0)
+    {
+        --self.index;
+    }
     [self updateLabelStyle];
     [self updateProgressViewOfWordsRead];
 }
@@ -171,7 +233,15 @@ UIColor *__thumbTintColor;
 - (IBAction) fastForwardButtonTapped:(id)sender
 {
         [self setPauseToOn];
-        ++self.index;
+    
+        if (self.index >= __wordsToRead.count - 1)
+        {
+            self.index = 0;
+        } else
+        {
+            ++self.index;
+        }
+    
         [self updateLabelStyle];
         [self updateProgressViewOfWordsRead];
 }
@@ -196,6 +266,7 @@ UIColor *__thumbTintColor;
 
 - (void) updateLabelStyle
 {
+    if (self.index < 0 || self.index >= __wordsToRead.count) return;
     self.labelForWordToRead.text = __wordsToRead[self.index];
     CGRect frame = self.labelForWordToRead.frame;
     frame.size.width = CGRectInfinite.size.width;
