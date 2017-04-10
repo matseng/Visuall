@@ -14,7 +14,12 @@
 
 @property (nonatomic, strong) StateUtilFirebase *visuallState;
 
+@property (weak, nonatomic) IBOutlet UILabel *firstSubstringLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *labelForWordToRead;
+
+@property (weak, nonatomic) IBOutlet UILabel *thirdSubstringLabel;
+
 
 @property UILabel *label;
 

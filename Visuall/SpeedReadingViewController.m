@@ -267,12 +267,57 @@ UIColor *__thumbTintColor;
 - (void) updateLabelStyle
 {
     if (self.index < 0 || self.index >= __wordsToRead.count) return;
-    self.labelForWordToRead.text = __wordsToRead[self.index];
+    
+//    self.labelForWordToRead.text = __wordsToRead[self.index];
+    NSString *wordToRead = __wordsToRead[self.index];
+    NSString *firstSegment = @"";
+    NSString *middleCharacter = @"";
+    NSString *thirdSegment = @"";
+    if (wordToRead.length == 0)
+    {
+        // do nothing
+    }
+    else if (wordToRead.length == 1)
+    {
+        middleCharacter = wordToRead;
+    }
+    else if (wordToRead.length == 2)
+    {
+        firstSegment = @"";
+        NSRange secondRange = NSMakeRange(0, 1);
+        middleCharacter = [wordToRead substringWithRange: secondRange];
+        thirdSegment = [wordToRead substringFromIndex: 1];
+    }
+    else if (wordToRead.length % 2 != 0)  // test for odd length of word
+    {
+        int middleIndex = (wordToRead.length + 1) / 2 - 1;
+        NSRange firstRange = NSMakeRange(0, middleIndex);
+        firstSegment = [wordToRead substringWithRange: firstRange];
+        NSRange secondRange = NSMakeRange(middleIndex, middleIndex + 1 - 1);
+        middleCharacter = [wordToRead substringWithRange: secondRange];
+        thirdSegment = [wordToRead subst: middleIndex];
+    }
+    else if (wordToRead.length % 2 == 0)  // test for even length of word
+    {
+        int middleIndex = (wordToRead.length / 2) - 1;
+        NSRange firstRange = NSMakeRange(0, middleIndex);
+        firstSegment = [wordToRead substringWithRange: firstRange];
+        NSRange secondRange = NSMakeRange(middleIndex, middleIndex + 1 - 1);
+        middleCharacter = [wordToRead substringWithRange: secondRange];
+        thirdSegment = [wordToRead substringFromIndex: middleIndex];
+    }
+    
+    self.labelForWordToRead.text = middleCharacter;
+    /*
     CGRect frame = self.labelForWordToRead.frame;
     frame.size.width = CGRectInfinite.size.width;
     self.labelForWordToRead.frame = frame;
     [self.labelForWordToRead sizeToFit];
     self.labelForWordToRead.center = CGPointMake(self.topHalfContainer.frame.size.width / 2, self.topHalfContainer.frame.size.height / 2);
+    */
+     
+    self.firstSubstringLabel.text = firstSegment;
+    self.thirdSubstringLabel.text = thirdSegment;
 }
 
 - (BOOL) setupSpeedReading
