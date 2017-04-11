@@ -27,6 +27,7 @@ NSTimer *__timer;
 BOOL __rewindOn;
 BOOL __playOn;
 BOOL __fastForwardOn;
+CGPoint __pointOfCenterSubstringToRead;
 
 NSMutableDictionary *__buttonState;
 
@@ -51,6 +52,9 @@ UIColor *__thumbTintColor;
     self.wordsPerMinute = 1000.0f;
     self.index = 0;
     
+    self.labelForWordToRead.textColor = [UIColor redColor];
+    
+    __pointOfCenterSubstringToRead = self.labelForWordToRead.center;
     
     self.wordsPerMinueTextField.text = [[NSNumber numberWithFloat: self.wordsPerMinute] stringValue];
     if( [self setupSpeedReading] )
@@ -291,23 +295,26 @@ UIColor *__thumbTintColor;
     else if (wordToRead.length % 2 != 0)  // test for odd length of word
     {
         int middleIndex = (wordToRead.length + 1) / 2 - 1;
-        NSRange firstRange = NSMakeRange(0, middleIndex);
-        firstSegment = [wordToRead substringWithRange: firstRange];
-        NSRange secondRange = NSMakeRange(middleIndex, middleIndex + 1 - 1);
-        middleCharacter = [wordToRead substringWithRange: secondRange];
-        thirdSegment = [wordToRead subst: middleIndex];
+        firstSegment = [wordToRead substringToIndex: middleIndex];
+        NSRange middleRange = NSMakeRange(middleIndex, 1);
+        middleCharacter = [wordToRead substringWithRange: middleRange];
+        thirdSegment = [wordToRead substringFromIndex: middleIndex + 1];
     }
     else if (wordToRead.length % 2 == 0)  // test for even length of word
     {
         int middleIndex = (wordToRead.length / 2) - 1;
-        NSRange firstRange = NSMakeRange(0, middleIndex);
-        firstSegment = [wordToRead substringWithRange: firstRange];
-        NSRange secondRange = NSMakeRange(middleIndex, middleIndex + 1 - 1);
-        middleCharacter = [wordToRead substringWithRange: secondRange];
-        thirdSegment = [wordToRead substringFromIndex: middleIndex];
+        firstSegment = [wordToRead substringToIndex: middleIndex];
+        NSRange middleRange = NSMakeRange(middleIndex, 1);
+        middleCharacter = [wordToRead substringWithRange: middleRange];
+        thirdSegment = [wordToRead substringFromIndex: middleIndex + 1];
+
     }
     
     self.labelForWordToRead.text = middleCharacter;
+    float widthInitial = self.labelForWordToRead.frame.size.width;
+    [self autosizeLabel: self.labelForWordToRead];
+    float widthDelta = widthInitial - self.labelForWordToRead.frame.size.width;
+    NSLog(@"\n Autosized width delta: %f", widthDelta);
     /*
     CGRect frame = self.labelForWordToRead.frame;
     frame.size.width = CGRectInfinite.size.width;
@@ -318,6 +325,49 @@ UIColor *__thumbTintColor;
      
     self.firstSubstringLabel.text = firstSegment;
     self.thirdSubstringLabel.text = thirdSegment;
+    
+    self.firstSubstringLabel.center = CGPointMake(self.firstSubstringLabel.center.x + widthDelta / 2 * 1.0,
+                                                  self.firstSubstringLabel.center.y);
+    self.thirdSubstringLabel.center = CGPointMake(self.thirdSubstringLabel.center.x - widthDelta / 2 * 1.0,
+                                                  self.firstSubstringLabel.center.y);
+//    [self postitionSubstringsAroundMiddleLetter];
+}
+
+/*
+ * Name:
+ * Description: p0***Center***p2
+ */
+- (void) postitionSubstringsAroundMiddleLetter
+{
+    [self autosizeLabel: self.firstSubstringLabel];
+    [self autosizeLabel: self.labelForWordToRead];
+    [self autosizeLabel: self.thirdSubstringLabel];
+    
+    self.labelForWordToRead.center = __pointOfCenterSubstringToRead;
+    
+    CGPoint p0 = CGPointMake(__pointOfCenterSubstringToRead.x - self.labelForWordToRead.frame.size.width / 2 - self.firstSubstringLabel.frame.size.width,
+                             self.labelForWordToRead.frame.origin.y);
+    CGRect r0 = self.firstSubstringLabel.frame;
+    r0.origin = p0;
+    self.firstSubstringLabel.frame = r0;
+    
+    CGPoint p2 = CGPointMake(__pointOfCenterSubstringToRead.x + self.labelForWordToRead.frame.size.width / 2,
+                             self.labelForWordToRead.frame.origin.y);
+    CGRect r2 = self.thirdSubstringLabel.frame;
+    r2.origin = p2;
+    self.thirdSubstringLabel.frame = r0;
+    
+}
+
+
+- (UILabel *) autosizeLabel: (UILabel *) label
+{
+    CGRect frame = label.frame;
+    frame.size.width = CGRectInfinite.size.width;
+    label.frame = frame;
+    [label sizeToFit];
+    self.labelForWordToRead.center = __pointOfCenterSubstringToRead;
+    return label;
 }
 
 - (BOOL) setupSpeedReading
