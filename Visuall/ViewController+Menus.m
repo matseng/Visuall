@@ -222,20 +222,39 @@ SegmentedControlMod *segmentControlTopMenuRight;
 //    ViewController *myNewVC = [sb instantiateViewControllerWithIdentifier:@"HelloWorldId"];
     
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController: myNewVC];/*Here dateVC is controller you want to show in popover*/
-    myNewVC.preferredContentSize = CGSizeMake(self.BackgroundScrollView.frame.size.width,
-                                              self.BackgroundScrollView.frame.size.height - self.tabBarController.tabBar.frame.size.height * 1.5);
+    float minLength = MIN(self.BackgroundScrollView.frame.size.width,
+//                          self.BackgroundScrollView.frame.size.height - self.tabBarController.tabBar.frame.size.height * 1.5);
+                          self.BackgroundScrollView.frame.size.height);
+    NSLog(@"\n minLength: %f", minLength);
+//    myNewVC.preferredContentSize = CGSizeMake(self.BackgroundScrollView.frame.size.width,
+//                                              self.BackgroundScrollView.frame.size.height - self.tabBarController.tabBar.frame.size.height * 1.5);
+    myNewVC.preferredContentSize = CGSizeMake(300, 240);
     destNav.modalPresentationStyle = UIModalPresentationPopover;
+    
     self.dateTimePopover8 = destNav.popoverPresentationController;
     self.dateTimePopover8.delegate = self;
     self.dateTimePopover8.sourceView = self.view;
+    
+    self.dateTimePopover8.sourceRect = [self sourceRectForCenteredAlertController];
+    self.dateTimePopover8.permittedArrowDirections = 0;
+    self.dateTimePopover8.backgroundColor = [UIColor blackColor];
 //    self.view.alpha = 0.2;
 //    self.dateTimePopover8.containerView.alpha = 0.2;
     CGRect rect = segmentControlTopMenuRight.frame;
-     rect.origin = CGPointMake(rect.origin.x - buttonUnit / 2, rect.origin.y - buttonUnit);
-    self.dateTimePopover8.sourceRect = rect;
+    rect.origin = CGPointMake(rect.origin.x - buttonUnit / 2, rect.origin.y - buttonUnit);
+//    self.dateTimePopover8.sourceRect = rect;
     destNav.navigationBarHidden = YES;
     myNewVC.visuallState = self.visuallState;
     [self presentViewController:destNav animated:YES completion:nil];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    // Check if your alert controller is still being presented
+    if (self.dateTimePopover8.presentedView)
+    {
+        self.dateTimePopover8.sourceRect = [self sourceRectForCenteredAlertController];
+    }
 }
 
 - (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController: (UIPresentationController * ) controller
@@ -1231,5 +1250,12 @@ SegmentedControlMod *segmentControlTopMenuRight;
 //    return self.scrollViewButtonList;
 //}
 
+- (CGRect) sourceRectForCenteredAlertController
+{
+    CGRect sourceRect = CGRectZero;
+    sourceRect.origin.x = CGRectGetMidX(self.view.bounds)-self.view.frame.origin.x/2.0;
+    sourceRect.origin.y = CGRectGetMidY(self.view.bounds)-self.view.frame.origin.y/2.0;
+    return sourceRect;
+}
 
 @end
