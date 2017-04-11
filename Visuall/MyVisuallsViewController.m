@@ -45,6 +45,14 @@
                                                                      action:@selector(addNewVisuall)];
     self.navigationItem.rightBarButtonItem = anotherButton;
     
+    self.av = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.av.frame = CGRectMake(round((self.view.frame.size.width - 25) / 2), round((self.view.frame.size.height - 25) / 2), 25, 25);
+    //        self.av.center = CGPointMake(self.signInButton.center.x, self.signInButton.center.y + 50);
+    self.av.tag  = 1;
+    [self.av removeFromSuperview];
+    [self.view addSubview: self.av];
+    [self.av startAnimating];
+    
 }
 
 - (void) viewWillAppear:(BOOL) animated
@@ -113,6 +121,7 @@
         cell.textLabel.text = userInfo[@"title"];  // TODO (Sep 21, 2016): Load data here that needed for table view display... and to load the visuall graph
          */
         [self appendVisuallToList: notification.userInfo];
+        [self.av removeFromSuperview];
     }
 }
 

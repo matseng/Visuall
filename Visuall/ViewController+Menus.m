@@ -639,6 +639,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
                      forControlEvents:UIControlEventTouchUpInside];
     
     sizeView = [[UITextView alloc] init];  // defined at top of this file
+    sizeView.editable = NO;
     sizeView.textAlignment = NSTextAlignmentCenter;
     sizeView.layer.borderWidth = 1.0f;
     sizeView.layer.borderColor = [self.view.tintColor CGColor];
@@ -688,18 +689,21 @@ SegmentedControlMod *segmentControlTopMenuRight;
     {
         [self setSecondSubmenuToActive:YES];
     }
+    else
+    {
+        [self setSecondSubmenuToActive: NO];
+    }
+
+    [self updateSizeViewFromSelectedVisualItem];
     
+    // Speed Reading Button Style
     if ([self.visuallState.selectedVisualItem isGroupItem]
              || [self.visuallState.selectedVisualItem isNoteItem])
     {
         [segmentControlTopMenuRight setEnabled:YES forSegmentAtIndex:0];
         segmentControlTopMenuRight.tintColor = self.view.tintColor;
     }
-    else
-    {
-        [self setSecondSubmenuToActive: NO];
-    }
-    [self updateSizeViewFromSelectedVisualItem];
+    
 }
 
 - (void) setSecondSubmenuToActive: (BOOL) on
@@ -710,8 +714,8 @@ SegmentedControlMod *segmentControlTopMenuRight;
         self.segmentControlFormattingOptions.tintColor = self.view.tintColor;
         [self enableButton:@"increaseFontSize"];
         [self enableButton:@"decreaseFontSize"];
-        sizeView.textColor = [UIColor blueColor];
-        sizeView.layer.borderColor = [[UIColor blueColor] CGColor];
+        sizeView.textColor = self.view.tintColor;
+        sizeView.layer.borderColor = [self.view.tintColor CGColor];
     }
     else
     {
@@ -728,17 +732,25 @@ SegmentedControlMod *segmentControlTopMenuRight;
 - (void) updateSizeViewFromSelectedVisualItem
 {
     float size = [self.visuallState.selectedVisualItem getSize];
-    if (size < 1)
+    if (size < 0)
     {
+        size = [sizeView.text floatValue];
         sizeView.text = @"-";
         sizeView.textColor = [UIColor grayColor];
-        sizeView.layer.borderColor = [[UIColor grayColor] CGColor];
+        sizeView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    }
+    else if (size < 1)
+    {
+        size = [sizeView.text floatValue];
+        sizeView.text = [NSString stringWithFormat:@"%.0f", size];
+        sizeView.textColor = [UIColor blueColor];
+        sizeView.layer.borderColor = [self.view.tintColor CGColor];
     }
     else
     {
         sizeView.text = [NSString stringWithFormat:@"%.0f", size];
         sizeView.textColor = [UIColor blueColor];
-        sizeView.layer.borderColor = [[UIColor blueColor] CGColor];
+        sizeView.layer.borderColor = [self.view.tintColor CGColor];
     }
     CGFloat fixedWidth = 35.0;
     CGSize newSize = [sizeView sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
@@ -840,6 +852,24 @@ SegmentedControlMod *segmentControlTopMenuRight;
         [[[[UserUtil sharedManager] getState] DrawView] highlightSelectedPath];
         [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
     }
+    else // No visual item is selected. Increase size based on current selection (e.g. note, arror or draw path)
+    {
+        float fontSize = [sizeView.text floatValue] - 2;
+        sizeView.text = [[NSNumber numberWithFloat: fontSize] stringValue];
+        if ([self isNoteButtonSelected])
+        {
+            self.visuallState.textFontSize = fontSize;
+        }
+        else if ([self isArrowButtonSelected])
+        {
+            self.visuallState.arrowHeadSize = fontSize;
+        }
+        else if ([self isDrawButtonSelected])
+        {
+            self.visuallState.pathLineWidth = fontSize;
+        }
+        
+    }
     [self updateSizeViewFromSelectedVisualItem];
 }
 
@@ -867,6 +897,24 @@ SegmentedControlMod *segmentControlTopMenuRight;
         [pi increaseLineWidth];
         [[[[UserUtil sharedManager] getState] DrawView] highlightSelectedPath];
         [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
+    }
+    else // No visual item is selected. Increase size based on current selection (e.g. note, arror or draw path)
+    {
+        float fontSize = [sizeView.text floatValue] + 2;
+        sizeView.text = [[NSNumber numberWithFloat: fontSize] stringValue];
+        if ([self isNoteButtonSelected])
+        {
+            self.visuallState.textFontSize = fontSize;
+        }
+        else if ([self isArrowButtonSelected])
+        {
+            self.visuallState.arrowHeadSize = fontSize;
+        }
+        else if ([self isDrawButtonSelected])
+        {
+            self.visuallState.pathLineWidth = fontSize;
+        }
+        
     }
     [self updateSizeViewFromSelectedVisualItem];
 }

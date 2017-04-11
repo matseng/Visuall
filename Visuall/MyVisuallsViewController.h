@@ -23,4 +23,6 @@
 
 //@property (nonatomic, weak) ViewController* myGreenController;
 
+@property UIActivityIndicatorView  *av;
+
 @end

@@ -105,7 +105,8 @@
         [self.shapeLayerBackground drawPathOnSelf];
         
         self.currentPath.color = [UIColor blueColor];
-        self.currentPath.lineWidth = 4.0;
+//        self.currentPath.lineWidth = 4.0;
+        self.currentPath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth];
         self.shapeLayer.fdpath = self.currentPath;
         [self.shapeLayer drawPathOnSelf];
     }
