@@ -237,7 +237,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
     
     self.dateTimePopover8.sourceRect = [self sourceRectForCenteredAlertController];
     self.dateTimePopover8.permittedArrowDirections = 0;
-    self.dateTimePopover8.backgroundColor = [UIColor blackColor];
+
 //    self.view.alpha = 0.2;
 //    self.dateTimePopover8.containerView.alpha = 0.2;
     CGRect rect = segmentControlTopMenuRight.frame;
@@ -251,7 +251,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     // Check if your alert controller is still being presented
-    if (self.dateTimePopover8.presentedView)
+    if (self.dateTimePopover8.presentingViewController)
     {
         self.dateTimePopover8.sourceRect = [self sourceRectForCenteredAlertController];
     }
@@ -688,10 +688,12 @@ SegmentedControlMod *segmentControlTopMenuRight;
     {
         [self setSecondSubmenuToActive:YES];
     }
-    else if ([self.visuallState.selectedVisualItem isGroupItem])
+    
+    if ([self.visuallState.selectedVisualItem isGroupItem]
+             || [self.visuallState.selectedVisualItem isNoteItem])
     {
         [segmentControlTopMenuRight setEnabled:YES forSegmentAtIndex:0];
-        segmentControlTopMenuRight.tintColor = [UIColor blueColor];
+        segmentControlTopMenuRight.tintColor = self.view.tintColor;
     }
     else
     {

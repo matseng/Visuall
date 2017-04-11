@@ -49,7 +49,7 @@ UIColor *__thumbTintColor;
     
 //    self.labelForWordToRead = [[UILabel alloc] init];
     
-    self.wordsPerMinute = 1000.0f;
+    self.wordsPerMinute = 360.0f;
     self.index = 0;
     
     self.labelForWordToRead.textColor = [UIColor redColor];
@@ -191,7 +191,7 @@ UIColor *__thumbTintColor;
         self.wordsPerMinueTextField.text = [[NSNumber numberWithFloat: self.wordsPerMinute] stringValue];
         [self setTimerWithCurrentWordsPerMinute];
     }
-    [self setPlayToOn];
+//    [self setPlayToOn];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
@@ -287,10 +287,10 @@ UIColor *__thumbTintColor;
     }
     else if (wordToRead.length == 2)
     {
-        firstSegment = @"";
         NSRange secondRange = NSMakeRange(0, 1);
-        middleCharacter = [wordToRead substringWithRange: secondRange];
-        thirdSegment = [wordToRead substringFromIndex: 1];
+        firstSegment = [wordToRead substringWithRange: secondRange];
+        middleCharacter = [wordToRead substringFromIndex: 1];
+        thirdSegment = @"";
     }
     else if (wordToRead.length % 2 != 0)  // test for odd length of word
     {
@@ -372,7 +372,20 @@ UIColor *__thumbTintColor;
 
 - (BOOL) setupSpeedReading
 {
+    __notesSorted = [[NSMutableArray alloc] init];
+    __wordsToRead = [[NSMutableArray alloc] init];
     GroupItem *gi;
+    if( [self.visuallState selectedVisualItem] != nil
+       && [[self.visuallState selectedVisualItem] isNoteItem] )
+    {
+        [self addWordsToReadFromNote: [[self.visuallState selectedVisualItem] getNoteItem]];
+        if (__wordsToRead.count > 0)
+        {
+            return YES;
+        }
+        return NO;
+    }
+    
     if( [self.visuallState selectedVisualItem] != nil
        && [[self.visuallState selectedVisualItem] isGroupItem] )
     {
@@ -387,6 +400,7 @@ UIColor *__thumbTintColor;
          }];
         
     }
+    
     if (__notesInGroup == nil || __notesInGroup.count == 0)
     {
         return NO;  // given there are no notes to read
@@ -430,27 +444,31 @@ UIColor *__thumbTintColor;
          return (NSComparisonResult)NSOrderedSame;
      }];
     
-    NoteItem2 *ni;
-    __notesSorted = [[NSMutableArray alloc] init];
     while (__notesInGroup.count > 0)
     {
-        ni = __notesInGroup[0];
+        NoteItem2 *ni = __notesInGroup[0];
         [self depthFirstTraverseAroundPerimeter: ni];
     }
     
-    __wordsToRead = [[NSMutableArray alloc] init];
     for (NoteItem2 *ni in __notesSorted)
     {
-        //            NSString *noteString = ni.note.title;
-        NSArray *words = [ni.note.title componentsSeparatedByString: @" "];
-        for (NSString *word in words)
-        {
-            [__wordsToRead addObject:word];
-            NSLog(@"\n setupSpeedReading %@:", word);
-        }
+        [self addWordsToReadFromNote: ni];
     }
     
     return YES;  // given there are notes to read
+}
+
+- (void) addWordsToReadFromNote: (NoteItem2 *) ni
+{
+    NSString *tempTitle = [ni.note.title stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    tempTitle = [tempTitle stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    NSArray *words = [tempTitle componentsSeparatedByString: @" "];
+    for (NSString *word in words)
+    {
+        [__wordsToRead addObject:word];
+        NSLog(@"\n setupSpeedReading %@:", word);
+    }
+
 }
 
 - (void) depthFirstTraverseNormalPattern: (NoteItem2 *) ni
