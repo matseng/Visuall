@@ -81,5 +81,9 @@
     }
 }
 
+//- (void) setAutoSignInIndicator: (BOOL) yesOrNo
+//{
+//    self.autoSignInIndicatorOn = yesOrNo;
+//}
 
 @end

@@ -82,7 +82,8 @@ didSignInForUser:(GIDGoogleUser *)user
                                       }
                                   }];
     } else {
-        NSLog(@"AppDelegate: %@", error.localizedDescription);
+        NSLog(@"AppDelegate auto signIn failed: %@", error.localizedDescription);
+        [[UserUtil sharedManager] setAutoSignInIndicator: NO];
         
         // TODO: only temporary for testing
 //        UIWindow *window = [UIApplication sharedApplication].keyWindow;

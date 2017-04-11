@@ -13,7 +13,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    [[UserUtil sharedManager] setAutoSignInIndicator: YES];
     [GIDSignIn sharedInstance].uiDelegate = self;
     [[GIDSignIn sharedInstance] signInSilently];  // Uncomment to automatically sign in the user
     
@@ -55,6 +55,17 @@
     self.welcomeLabel.center = CGPointMake(self.view.center.x,
                                            (self.iconImageView.frame.origin.y + self.iconImageView.frame.size.height + self.signInButton.frame.origin.y) / 2);
     self.welcomeLabel.textAlignment = NSTextAlignmentCenter;
+    
+    if ([[UserUtil sharedManager] autoSignInIndicator])
+    {
+        self.av = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.av.frame = CGRectMake(round((self.view.frame.size.width - 25) / 2), round((self.view.frame.size.height - 25) / 2), 25, 25);
+        self.av.center = CGPointMake(self.signInButton.center.x, self.signInButton.center.y + 50);
+        self.av.tag  = 1;
+        [self.av removeFromSuperview];
+        [self.view addSubview: self.av];
+        [self.av startAnimating];
+    }
 }
 
 

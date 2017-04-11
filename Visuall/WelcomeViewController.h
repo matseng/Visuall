@@ -18,6 +18,8 @@
 
 @property(strong, nonatomic) IBOutlet GIDSignInButton *signInButton;
 
+@property UIActivityIndicatorView  *av;
+
 - (IBAction) skipThisStep:(id)sender;
 
 - (IBAction) signoutHandler:(id)sender;

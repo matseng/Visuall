@@ -16,6 +16,8 @@
 
 @property NSString *userID;
 
+@property BOOL autoSignInIndicator;
+
 +(id) sharedManager;
 
 - (void) userIsSignedInHandler: (FIRUser *) firebaseUser;  // Implemented in StateUtil+Firebase.m
@@ -23,5 +25,7 @@
 - (void) GIDdisconnect;
 
 - (StateUtilFirebase *) getState;
+
+//- (void) setAutoSignInIndicator: (BOOL) yesOrNo;
 
 @end
