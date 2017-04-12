@@ -562,6 +562,10 @@ SegmentedControlMod *segmentControlTopMenuRight;
     [self.trashButton addTarget:self
                          action:@selector(buttonTapped:)
                forControlEvents:UIControlEventTouchUpInside];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(trashLongPress:)];
+    [self.trashButton addGestureRecognizer:longPress];
+    
     UIBarButtonItem *trashButtonItem = [[UIBarButtonItem alloc] initWithCustomView: self.trashButton];
     
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];

@@ -124,6 +124,8 @@
 
 - (void) expandBoundsTiledLayerView: (float) scale;
 
+- (void) trashLongPress: (UILongPressGestureRecognizer*) gesture;
+
 @end
 
 

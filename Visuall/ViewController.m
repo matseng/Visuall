@@ -773,6 +773,53 @@
     }
 }
 
+- (void) trashButtonHelper: (VisualItem *) vi
+{
+    
+}
+
+
+- (void) trashLongPress: (UILongPressGestureRecognizer*) gesture
+{
+//    if ( gesture.state == UIGestureRecognizerStateEnded )
+    if ( gesture.state == UIGestureRecognizerStateBegan )
+    {
+        NSLog(@"Long Press");
+        if ([self.visuallState.selectedVisualItem isGroupItem])
+        {
+            GroupItem *gi = [self.visuallState.selectedVisualItem getGroupItem];
+            [[self.visuallState groupsCollection] deleteGroupGivenKey: gi.group.key];
+            
+            [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
+             {
+                 if ( [gi isNoteInGroup:ni]) {
+                     
+                 }
+                 
+             }];
+            
+            [[self.visuallState groupsCollection] myForIn:^(GroupItem *gi)
+             {
+                 if ([gi isGroupInGroup:gi]) {
+                     
+                 }
+             }];
+            
+            [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai){
+                if ([gi isArrowInGroup: ai]) {
+                    
+                }
+            }];
+            
+            [[[[UserUtil sharedManager] getState] pathsCollection] myForIn:^(PathItem *pi) {
+                if ([gi isPathInGroup: pi]) {
+                    
+                }
+            }];
+        }
+    }
+}
+
 - (void)handleTapGesture:(UITapGestureRecognizer *) gestureRecognizer {
     if (gestureRecognizer.state == UIGestureRecognizerStateRecognized) {
         [self findChildandTitleNotes];  // TODO: move this message elsewhere?
