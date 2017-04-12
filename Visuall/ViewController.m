@@ -735,6 +735,8 @@
 
 - (void) trashButtonHandler
 {
+    [self trashButtonHelper: (VisualItem *) self.visuallState.selectedVisualItem];
+    /*
     if ([self.visuallState.selectedVisualItem isPartiallyInBoundsOfView: self.BackgroundScrollView])
     {
         if ([self.visuallState.selectedVisualItem isNoteItem])
@@ -771,51 +773,98 @@
 
         [self normalizeTrashButton];
     }
+     */
 }
 
 - (void) trashButtonHelper: (VisualItem *) vi
 {
-    
+    if ([vi isPartiallyInBoundsOfView: self.BackgroundScrollView])
+    {
+        if ([vi isNoteItem])
+        {
+            NoteItem2 *ni = [vi getNoteItem];
+            [self.visuallState.notesCollection deleteNoteGivenKey: ni.note.key];
+        }
+        
+        else if ([vi isGroupItem])
+        {
+            GroupItem *gi = [vi getGroupItem];
+            [[self.visuallState groupsCollection] deleteGroupGivenKey: gi.group.key];
+        }
+        
+        else if ( [vi isArrowItem] )
+        {
+            ArrowItem *ai = [vi getArrowItem];
+            [self.visuallState.arrowsCollection deleteItemGivenKey: ai.key];
+        }
+        
+        else if ( [vi isDrawView] )
+        {
+            NSLog(@"\n TODO: delete PathItem");
+            FDDrawView *dv = [vi getDrawView];
+            [self.visuallState removeValue: dv];
+            [dv deleteSelectedPath];
+            return;  // return here because we don't want to delete DrawView, rather we delete the selected path as above
+        }
+        
+        [vi removeFromSuperview];
+        [self.visuallState removeValue: vi];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
+        //        [self.lastSelectedObject delete:nil];  // TODO: untested
+        //        self.lastSelectedObject = nil;
+        
+        [self normalizeTrashButton];
+    }
 }
 
 
 - (void) trashLongPress: (UILongPressGestureRecognizer*) gesture
 {
-//    if ( gesture.state == UIGestureRecognizerStateEnded )
+    NSMutableArray *groupsInGroup = [[NSMutableArray alloc] init];  // temp array to hold groups to be deleted
     if ( gesture.state == UIGestureRecognizerStateBegan )
     {
         NSLog(@"Long Press");
         if ([self.visuallState.selectedVisualItem isGroupItem])
         {
             GroupItem *gi = [self.visuallState.selectedVisualItem getGroupItem];
-            [[self.visuallState groupsCollection] deleteGroupGivenKey: gi.group.key];
             
-            [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
+            [[self.visuallState groupsCollection] myForIn:^(GroupItem *giIter)
              {
-                 if ( [gi isNoteInGroup:ni]) {
-                     
-                 }
-                 
-             }];
-            
-            [[self.visuallState groupsCollection] myForIn:^(GroupItem *gi)
-             {
-                 if ([gi isGroupInGroup:gi]) {
-                     
+                 if ([gi isGroupInGroup:giIter])
+                 {
+                     [groupsInGroup addObject: giIter];
                  }
              }];
             
-            [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai){
-                if ([gi isArrowInGroup: ai]) {
-                    
-                }
-            }];
+//            [[self.visuallState notesCollection] myForIn:^(NoteItem2 *ni)
+//             {
+//                 if ( [gi isNoteInGroup:ni]) {
+//                     [self trashButtonHelper: ni];
+//                 }
+//                 
+//             }];
+//            
+//            [[[[UserUtil sharedManager] getState] arrowsCollection] myForIn:^(ArrowItem *ai){
+//                if ([gi isArrowInGroup: ai]) {
+//                    [self trashButtonHelper: ai];
+//                }
+//            }];
+//            
+//            [[[[UserUtil sharedManager] getState] pathsCollection] myForIn:^(PathItem *pi) {
+//                if ([gi isPathInGroup: pi]) {
+//                    FDDrawView *dv =  [[[UserUtil sharedManager] getState] DrawView];
+//                    dv.selectedPath = pi;
+//                    [self trashButtonHelper: (VisualItem *) dv];
+//                }
+//            }];
             
-            [[[[UserUtil sharedManager] getState] pathsCollection] myForIn:^(PathItem *pi) {
-                if ([gi isPathInGroup: pi]) {
-                    
-                }
-            }];
+            while (groupsInGroup.count > 0 ) {
+                GroupItem *giIter = groupsInGroup[0];
+                [self trashButtonHelper: giIter];
+                [groupsInGroup removeObjectAtIndex: 0];
+            }
+            
+            [self trashButtonHelper: gi];
+            
         }
     }
 }
