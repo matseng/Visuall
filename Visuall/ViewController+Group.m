@@ -328,9 +328,11 @@
         if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
             // TODO (Aug 11, 2016): && we're not starting on another group's handle
         {
-            self.drawGroupViewStart = [gestureRecognizer locationInView: self.GroupsView];
+            self.drawGroupViewStart = self.visuallState.touchDownPoint; // determined from handleTouchDown method for more precise start locationdd
             [self.drawGroupView setFrame:(CGRect){0,0,1,1}];
             [self.GroupsView addSubview: self.drawGroupView];
+            CGPoint currentGroupViewEnd = [gestureRecognizer locationInView: self.GroupsView];
+            self.drawGroupView.frame = [self createGroupViewRect:self.drawGroupViewStart withEnd:currentGroupViewEnd];
         }
         
         // State changed
