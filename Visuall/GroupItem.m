@@ -555,7 +555,7 @@
     [handleBottomLeft removeFromSuperview];
     [handleBottomRight removeFromSuperview];
     
-    handleBottomLeft = nil;
+    handleTopLeft = nil;
     handleTopRight = nil;
     handleBottomLeft = nil;
     handleBottomRight = nil;
