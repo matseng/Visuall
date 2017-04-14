@@ -87,6 +87,7 @@ UIColor *__thumbTintColor;
     float percentage = self.progressSlider.value;
     self.index = (int) round(__wordsToRead.count * percentage);
     self.labelForWordToRead.text = __wordsToRead[self.index];
+    [self updateLabelStyle];
     [self setPauseToOn];
 }
 

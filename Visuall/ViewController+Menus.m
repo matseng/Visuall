@@ -215,38 +215,30 @@ SegmentedControlMod *segmentControlTopMenuRight;
 - (void) segmentControlTopMenuRightHandler
 {
     NSLog(@"\n segmentControlTopMenuRightHandler");
-//    SpeedReadingViewController *myNewVC = [[SpeedReadingViewController alloc] init];
     ViewController *myNewVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"HelloWorld"];
-//    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    
-//    ViewController *myNewVC = [sb instantiateViewControllerWithIdentifier:@"HelloWorldId"];
-    
-    UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController: myNewVC];/*Here dateVC is controller you want to show in popover*/
+    UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController: myNewVC];/*Here myNewVC is controller you want to show in popover*/
     float minLength = MIN(self.BackgroundScrollView.frame.size.width,
-//                          self.BackgroundScrollView.frame.size.height - self.tabBarController.tabBar.frame.size.height * 1.5);
                           self.BackgroundScrollView.frame.size.height);
     NSLog(@"\n minLength: %f", minLength);
-//    myNewVC.preferredContentSize = CGSizeMake(self.BackgroundScrollView.frame.size.width,
-//                                              self.BackgroundScrollView.frame.size.height - self.tabBarController.tabBar.frame.size.height * 1.5);
+
     myNewVC.preferredContentSize = CGSizeMake(300, 240);
     destNav.modalPresentationStyle = UIModalPresentationPopover;
     
     self.dateTimePopover8 = destNav.popoverPresentationController;
     self.dateTimePopover8.delegate = self;
     self.dateTimePopover8.sourceView = self.view;
-    
     self.dateTimePopover8.sourceRect = [self sourceRectForCenteredAlertController];
     self.dateTimePopover8.permittedArrowDirections = 0;
 
-//    self.view.alpha = 0.2;
-//    self.dateTimePopover8.containerView.alpha = 0.2;
     CGRect rect = segmentControlTopMenuRight.frame;
     rect.origin = CGPointMake(rect.origin.x - buttonUnit / 2, rect.origin.y - buttonUnit);
-//    self.dateTimePopover8.sourceRect = rect;
     destNav.navigationBarHidden = YES;
     myNewVC.visuallState = self.visuallState;
+    
+    self.providesPresentationContextTransitionStyle = YES;
     [self presentViewController:destNav animated:YES completion:nil];
 }
+
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
@@ -264,7 +256,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
 
 -(void)hideIOS8PopOver
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];  // For future reference to prevent a modal from being dismissed: http://stackoverflow.com/questions/8317252/can-you-stop-a-modal-view-from-dismissing
 }
 
 - (void) popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
