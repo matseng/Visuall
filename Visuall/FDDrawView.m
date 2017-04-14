@@ -62,6 +62,7 @@
     [[[[UserUtil sharedManager] getState] pathsCollection] addItem: pi withKey: pi.key];
     NSLog(@"\n addPathItemToMVC: key: %@", pi.key);
     [pi drawPathOnSelf];
+
     [self.layer addSublayer: pi];
 }
 
@@ -98,14 +99,17 @@
 {
     if (self.currentPath != nil)
     {
+        
         // self.shapeLayerBackground.fdpath.points = [self.currentPath.points mutableCopy];
         self.shapeLayerBackground.fdpath = self.currentPath;
         self.shapeLayerBackground.fdpath.color = [UIColor yellowColor];
-        self.shapeLayerBackground.fdpath.lineWidth = 10.0;
+//        self.shapeLayerBackground.fdpath.lineWidth = 10.0;
+//        self.shapeLayerBackground.fdpath.lineWidth = 0;
+        self.currentPath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth] * 2;
         [self.shapeLayerBackground drawPathOnSelf];
+         
         
         self.currentPath.color = [UIColor blueColor];
-//        self.currentPath.lineWidth = 4.0;
         self.currentPath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth];
         self.shapeLayer.fdpath = self.currentPath;
         [self.shapeLayer drawPathOnSelf];
@@ -325,17 +329,6 @@
     }
 }
 
-- (void) tapHandler: (UIGestureRecognizer *) gestureRecognizer
-{
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
-        self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
-        CGPoint touchPoint = [gestureRecognizer locationInView: self];
-        [self.currentPath addPoint: touchPoint];
-        [self makePathItemFromPoint: touchPoint];
-    }
-}
-
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer withPathItem: (PathItem *) pi
 {
     CGPoint translation = [gestureRecognizer translationInView: [[[UserUtil sharedManager] getState] DrawView]];
@@ -377,18 +370,6 @@
     }
 }
 
-- (void) panBeganWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
-{
-    CGPoint touchDownPoint = [[[UserUtil sharedManager] getState] touchDownPoint];
-    self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
-    CGPoint touchPoint = [gestureRecognizer locationInView: self];
-    [self.currentPath addPoint:touchDownPoint];
-    [self.currentPath addPoint:touchPoint];
-    self.selectedPath.fdpath = self.currentPath;
-    // [self setNeedsDisplay];
-    [self drawPathAndHighlight];
-}
-
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if (self.currentPath != nil) {
@@ -404,6 +385,17 @@
     }
 }
 
+- (void) panBeganWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
+{
+    self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
+    CGPoint touchPoint = [gestureRecognizer locationInView: self];
+    [self.currentPath addPoint: [[[UserUtil sharedManager] getState] touchDownPoint]];
+    [self.currentPath addPoint:touchPoint];
+    self.selectedPath.fdpath = self.currentPath;
+    // [self setNeedsDisplay];
+    [self drawPathAndHighlight];
+}
+
 - (void) panChangedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
 {
     CGPoint touchPoint = [gestureRecognizer locationInView: self];
@@ -415,12 +407,12 @@
 - (void) panEndedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
 {
     // draw completed path on its own shape layer
-    PathItem *layer = [[PathItem alloc] init];
-    layer.fdpath = self.currentPath;
-    self.hitTestPath = layer;
-    self.selectedPath = layer;
+    PathItem *pi = [[PathItem alloc] init];
+    pi.fdpath = self.currentPath;
+    self.hitTestPath = pi;
+    self.selectedPath = pi;
     
-    [self addPathItemToMVCandFirebase: layer];
+    [self addPathItemToMVCandFirebase: pi];
     
     // notify the delegate
     [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
@@ -428,6 +420,47 @@
     // reset drawing state
     self.currentPath = nil;
     self.shapeLayer.lineWidth = 0;
+}
+
+- (void) tapHandler: (UIGestureRecognizer *) gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
+        CGPoint touchPoint = [gestureRecognizer locationInView: self];
+        [self.currentPath addPoint: touchPoint];
+        self.currentPath.isCircle = YES;
+        [self drawPathAndHighlight];
+        [self panEndedWithGestureRecognizer: gestureRecognizer];
+    }
+}
+
+- (void) __tapHandler: (UIGestureRecognizer *) gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
+        CGPoint touchPoint = [gestureRecognizer locationInView: self];
+        [self.currentPath addPoint: touchPoint];
+        [self makePathItemFromPoint: touchPoint];
+        
+        // notify the delegate
+        [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
+        
+        // reset drawing state
+        self.currentPath = nil;
+    }
+}
+
+- (void) __makePathItemFromPoint: (CGPoint) point
+{
+    PathItem *circleLayer = [PathItem layer];
+    circleLayer.fdpath = self.currentPath;
+    circleLayer.isPoint = YES;
+    
+    [self addPathItemToMVCandFirebase: circleLayer];
+    
+
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

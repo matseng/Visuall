@@ -34,6 +34,9 @@
 // the color of this path
 @property (nonatomic) CGFloat lineWidth;
 
+// is a cicular dot (not a line)
+@property (nonatomic) BOOL isCircle;
+
 - (id)initWithColor:(UIColor *)color;
 - (id)initWithPoints:(NSArray *)points color:(UIColor *)color;
 
