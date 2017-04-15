@@ -619,6 +619,10 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *arrowsRef = [self.version01TableRef child: @"arrows"];
     FIRDatabaseReference *newArrowRef = [arrowsRef childByAutoId];
     ai.key = newArrowRef.key;
+    [self.arrowsCollection addItem: ai withKey: ai.key];
+    NSLog(@"\n setValueArrow: %@", ai.key);
+    NSLog(@"\n setValueArrow, count: %lu", (unsigned long) self.arrowsCollection.items.count);
+
     if ( !_currentVisuallKey )
     {
         return;
@@ -648,6 +652,9 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *pathsRef = [self.version01TableRef child: @"paths"];
     FIRDatabaseReference *newPathRef = [pathsRef childByAutoId];
     pi.key = newPathRef.key;
+    [self.pathsCollection addItem: pi withKey: pi.key];
+    NSLog(@"\n setValuePath: %@", pi.key);
+    NSLog(@"\n setValuePath, count: %lu", (unsigned long) self.pathsCollection.items.count);
     if ( !_currentVisuallKey )
     {
         return;

@@ -22,7 +22,7 @@
 
 //@property (nonatomic, strong) UIView *currentView;
 
-@property (nonatomic, strong) PathItem *shapeLayer;
+//@property (nonatomic, strong) PathItem *shapeLayer;
 
 @property (nonatomic, strong) PathItem *shapeLayerBackground;
 
@@ -52,7 +52,7 @@
 - (void) addPathItemToMVCandFirebase: (PathItem *) pi
 {
     self.selectedPath = pi;
-    [[[UserUtil sharedManager] getState] setValuePath: pi];  // save to firebase
+    [[[UserUtil sharedManager] getState] setValuePath: pi];  // save to firebase and add to collection within
     [self addPathItemToMVC: pi];
     // [self highlightSelectedPath];
 }
@@ -99,7 +99,7 @@
 {
     if (self.currentPath != nil)
     {
-        
+        /*
         // self.shapeLayerBackground.fdpath.points = [self.currentPath.points mutableCopy];
         self.shapeLayerBackground.fdpath = self.currentPath;
         self.shapeLayerBackground.fdpath.color = [UIColor yellowColor];
@@ -107,12 +107,14 @@
 //        self.shapeLayerBackground.fdpath.lineWidth = 0;
         self.currentPath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth] * 2;
         [self.shapeLayerBackground drawPathOnSelf];
-         
+         */
         
         self.currentPath.color = [UIColor blueColor];
         self.currentPath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth];
         self.shapeLayer.fdpath = self.currentPath;
         [self.shapeLayer drawPathOnSelf];
+        
+        [self highlightPath: self.shapeLayer];
     }
 }
 
@@ -336,9 +338,14 @@
     [self translatePath: pi byPoint: translation];
     //    self.currentPath = pi.fdpath;
     //    [self setNeedsDisplay];
+//    [self highlightPath: pi];
+//    self.currentPath = pi.fdpath;
+//    [self drawPathAndHighlight];
+    [pi drawPathOnSelf];
     [self highlightPath: pi];
     [gestureRecognizer setTranslation:CGPointZero inView: [[[UserUtil sharedManager] getState] DrawView]];
     [[[UserUtil sharedManager] getState] updateValuePath: pi];  // update to firebase
+    
 }
 
 - (void) translatePath: (PathItem *) pi byPoint: (CGPoint) translation
@@ -349,8 +356,8 @@
         FDPoint *translatedPoint = [[FDPoint alloc] initWithCGPoint: translatedCGPoint];
         pi.fdpath.points[i] = translatedPoint;
     }
-    [self drawPathItemOnShapeLayer: pi];
-    [self highlightPath: pi];
+//    [self drawPathItemOnShapeLayer: pi];
+//    [self highlightPath: pi];
 }
 
 - (void) panHandler: (UIGestureRecognizer *) gestureRecognizer
@@ -420,6 +427,8 @@
     // reset drawing state
     self.currentPath = nil;
     self.shapeLayer.lineWidth = 0;
+//    [self.shapeLayer setPath: nil];
+//    [self.shapeLayer setNeedsDisplay];
 }
 
 - (void) tapHandler: (UIGestureRecognizer *) gestureRecognizer
@@ -433,34 +442,6 @@
         [self drawPathAndHighlight];
         [self panEndedWithGestureRecognizer: gestureRecognizer];
     }
-}
-
-- (void) __tapHandler: (UIGestureRecognizer *) gestureRecognizer
-{
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
-        self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
-        CGPoint touchPoint = [gestureRecognizer locationInView: self];
-        [self.currentPath addPoint: touchPoint];
-        [self makePathItemFromPoint: touchPoint];
-        
-        // notify the delegate
-        [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
-        
-        // reset drawing state
-        self.currentPath = nil;
-    }
-}
-
-- (void) __makePathItemFromPoint: (CGPoint) point
-{
-    PathItem *circleLayer = [PathItem layer];
-    circleLayer.fdpath = self.currentPath;
-    circleLayer.isPoint = YES;
-    
-    [self addPathItemToMVCandFirebase: circleLayer];
-    
-
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -492,7 +473,7 @@
     for (NSString *key in items)
     {
         PathItem *layer = items[key];
-        if ( layer.path && !layer.isPoint)
+        if ( layer.path && !layer.fdpath.isCircle)
         {
             UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:layer.path];
             
@@ -517,7 +498,7 @@
                 self.hitTestPath = layer;
                 return layer;
             }
-        } else if (layer.path && layer.isPoint)
+        } else if (layer.path && layer.fdpath.isCircle)
         {
             FDPoint *fdpoint = [layer.fdpath getFirstPoint];
             double dist = hypot((point.x - fdpoint.x), (point.y - fdpoint.y));
@@ -538,15 +519,15 @@
 - (void) setSelectedPathFromHitTestPath
 {
     self.selectedPath = self.hitTestPath;
-    [self highlightSelectedPath];
+//    [self highlightSelectedPath];
+    [self highlightPath: self.selectedPath];
 }
 
 
 - (void) highlightSelectedPath
 {
     self.shapeLayerBackground.strokeColor = [[UIColor yellowColor] CGColor];
-    // self.shapeLayerBackground.lineWidth = self.lineWidth * 2;
-    self.shapeLayerBackground.lineWidth = self.selectedPath.lineWidth * 2;
+    self.shapeLayerBackground.lineWidth = self.selectedPath.fdpath.lineWidth * 2;
     [self.shapeLayerBackground setFillColor: nil];
     [self.shapeLayerBackground setPath: self.selectedPath.path];
 }

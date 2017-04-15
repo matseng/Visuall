@@ -53,8 +53,9 @@
 - (void) drawPathOnSelf
 {
     FDPath *path = self.fdpath;
-    if (path.isCircle || path.points.count == 0)
+    if (path.isCircle || path.points.count == 1)
     {
+        path.isCircle = YES;
         FDPoint *point = self.fdpath.points[0];
 //        [self setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(point.x - self.lineWidth / 2, point.y - self.lineWidth / 2, self.lineWidth, self.lineWidth)] CGPath]];
         [self setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(point.x - self.fdpath.lineWidth / 2, point.y - self.fdpath.lineWidth / 2, self.fdpath.lineWidth, self.fdpath.lineWidth)] CGPath]];

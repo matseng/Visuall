@@ -1403,7 +1403,7 @@
     {
         FDDrawView *dv = (FDDrawView *) object;
         [dv setSelectedPathFromHitTestPath];
-        [dv highlightSelectedPath];
+//        [dv highlightSelectedPath];
         self.visuallState.selectedVisualItem = dv;
     }
     else

@@ -60,7 +60,7 @@ didSignInForUser:(GIDGoogleUser *)user
      withError:(NSError *)error {
     if (error == nil) {
         GIDAuthentication *authentication = user.authentication;
-        [FIRDatabase database].persistenceEnabled = YES;
+//        [FIRDatabase database].persistenceEnabled = YES;
         FIRAuthCredential *credential =
         [FIRGoogleAuthProvider credentialWithIDToken:authentication.idToken
                                          accessToken:authentication.accessToken];
