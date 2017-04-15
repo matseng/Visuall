@@ -150,6 +150,9 @@
     // [self.DrawView setNeedsDisplay];
     [pathRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
+         NSLog(@"\n loadPathFromRef: %@", snapshot.key);
+         NSLog(@"\n loadPathFromRef, count: %lu", (unsigned long) self.pathsCollection.items.count);
+         
          if (snapshot.value == [NSNull null])
          {
              --self.numberOfPathsToBeLoaded;
@@ -157,7 +160,7 @@
          }
          
          // 1 of 2. Read a path upon the initial load:
-         if ( ![self.pathsCollection isKeyInCollection:snapshot.key] )
+         if ( ![self.pathsCollection isKeyInCollection:snapshot.key] && !self.allPathsLoadedBOOL)
          {
              PathItem *pi = [[PathItem alloc] initPathFromFirebase: pathRef.key andValue:snapshot.value];
              [self.DrawView addPathItemToMVC: pi];

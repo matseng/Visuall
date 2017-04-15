@@ -28,8 +28,6 @@
 
 @property (nonatomic, strong) PathItem *selectedPath;
 
-@property (nonatomic, strong) PathItem *previouslySelectedPath;
-
 // the delegate that is notified about any drawing by the user
 @property (nonatomic, weak) id<FDDrawViewDelegate> delegate;
 

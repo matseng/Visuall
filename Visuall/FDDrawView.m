@@ -15,14 +15,14 @@
 @property (nonatomic, strong) NSMutableArray *paths;
 
 // the current path the user is drawing
-@property (nonatomic, strong) FDPath *currentPath;
+//@property (nonatomic, strong) FDPath *currentPath;
 
 // the touch that is used to currently draw this path
 @property (nonatomic, strong) UITouch *currentTouch;
 
 //@property (nonatomic, strong) UIView *currentView;
 
-//@property (nonatomic, strong) PathItem *shapeLayer;
+@property (nonatomic, strong) PathItem *shapeLayer;
 
 @property (nonatomic, strong) PathItem *shapeLayerBackground;
 
@@ -49,7 +49,7 @@
     return self;
 }
 
-- (void) addPathItemToMVCandFirebase: (PathItem *) pi
+- (void) __addPathItemToMVCandFirebase: (PathItem *) pi
 {
     self.selectedPath = pi;
     [[[UserUtil sharedManager] getState] setValuePath: pi];  // save to firebase and add to collection within
@@ -62,7 +62,6 @@
     [[[[UserUtil sharedManager] getState] pathsCollection] addItem: pi withKey: pi.key];
     NSLog(@"\n addPathItemToMVC: key: %@", pi.key);
     [pi drawPathOnSelf];
-
     [self.layer addSublayer: pi];
 }
 
@@ -91,33 +90,7 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 0.5f);
-    [self drawPathAndHighlight];
-
 }
-
-- (void) drawPathAndHighlight
-{
-    if (self.currentPath != nil)
-    {
-        /*
-        // self.shapeLayerBackground.fdpath.points = [self.currentPath.points mutableCopy];
-        self.shapeLayerBackground.fdpath = self.currentPath;
-        self.shapeLayerBackground.fdpath.color = [UIColor yellowColor];
-//        self.shapeLayerBackground.fdpath.lineWidth = 10.0;
-//        self.shapeLayerBackground.fdpath.lineWidth = 0;
-        self.currentPath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth] * 2;
-        [self.shapeLayerBackground drawPathOnSelf];
-         */
-        
-        self.currentPath.color = [UIColor blueColor];
-        self.currentPath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth];
-        self.shapeLayer.fdpath = self.currentPath;
-        [self.shapeLayer drawPathOnSelf];
-        
-        [self highlightPath: self.shapeLayer];
-    }
-}
-
 
 - (void) drawPath:(FDPath *)path withContext:(CGContextRef)context
 {
@@ -291,44 +264,11 @@
     }
 }
 
-- (void) makePathItemFromPoint: (CGPoint) point
-{
-    PathItem *circleLayer = [PathItem layer];
-    circleLayer.fdpath = self.currentPath;
-    circleLayer.isPoint = YES;
-    
-    [self addPathItemToMVCandFirebase: circleLayer];
-    
-    // notify the delegate
-    [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
-    
-    // reset drawing state
-    self.currentPath = nil;
-}
-
 - (void) drawPointFromPathItemOnShapeLayer: (PathItem *) pi
 {
     FDPoint *point = pi.fdpath.points[0];
     [pi setPath:[[UIBezierPath bezierPathWithOvalInRect:CGRectMake(point.x - self.lineWidth / 2, point.y - self.lineWidth / 2, self.lineWidth, self.lineWidth)] CGPath]];
     [pi setFillColor: [[UIColor blueColor] CGColor]];
-}
-
-- (void)touchesBegan:(NSSet *)touches
-           withEvent:(UIEvent *)event
-{
-    if (self.currentPath == nil) {
-        // the user is currently not drawing a line so start a new one
-        
-        // remember the touch to not mix up multitouch
-        self.currentTouch = [touches anyObject];
-        self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
-        
-        // add the current point on the path
-        CGPoint touchPoint = [self.currentTouch locationInView:self];
-        [self.currentPath addPoint:touchPoint];
-        
-        [self setNeedsDisplay];
-    }
 }
 
 - (void) panHandler: (UIPanGestureRecognizer *) gestureRecognizer withPathItem: (PathItem *) pi
@@ -377,84 +317,53 @@
     }
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    if (self.currentPath != nil) {
-        // look if any of the touches that moved is the one currently used to draw a line
-        for (UITouch *touch in touches) {
-            if (self.currentTouch == touch) {
-                // we found the touch so update the line
-                CGPoint touchPoint = [self.currentTouch locationInView:self];
-                [self.currentPath addPoint:touchPoint];
-                [self setNeedsDisplay];
-            }
-        }
-    }
-}
-
 - (void) panBeganWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
 {
-    self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
+    self.shapeLayer = [[PathItem alloc] init];
+    self.shapeLayer.fdpath = [[FDPath alloc] initWithColor:self.drawColor];
+    self.shapeLayer.fdpath.color = [UIColor blueColor];
+    self.shapeLayer.fdpath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth];
+    
     CGPoint touchPoint = [gestureRecognizer locationInView: self];
-    [self.currentPath addPoint: [[[UserUtil sharedManager] getState] touchDownPoint]];
-    [self.currentPath addPoint:touchPoint];
-    self.selectedPath.fdpath = self.currentPath;
-    // [self setNeedsDisplay];
-    [self drawPathAndHighlight];
+    [self.shapeLayer.fdpath addPoint: [[[UserUtil sharedManager] getState] touchDownPoint]];
+    [self.shapeLayer.fdpath addPoint:touchPoint];
+    
+    [self.shapeLayer drawPathOnSelf];
+    [self.layer addSublayer: self.shapeLayer];
 }
 
 - (void) panChangedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
 {
     CGPoint touchPoint = [gestureRecognizer locationInView: self];
-    [self.currentPath addPoint:touchPoint];
-    // [self setNeedsDisplay];
-    [self drawPathAndHighlight];
+    [self.shapeLayer.fdpath addPoint:touchPoint];
+    [self.shapeLayer drawPathOnSelf];
+    [self highlightPath: self.shapeLayer];
 }
 
 - (void) panEndedWithGestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
 {
-    // draw completed path on its own shape layer
-    PathItem *pi = [[PathItem alloc] init];
-    pi.fdpath = self.currentPath;
-    self.hitTestPath = pi;
-    self.selectedPath = pi;
-    
-    [self addPathItemToMVCandFirebase: pi];
+    [[[UserUtil sharedManager] getState] setValuePath: self.shapeLayer];  // save to firebase and add to collection within
+    self.hitTestPath = self.shapeLayer;
+    self.selectedPath = self.shapeLayer;
     
     // notify the delegate
-    [self.delegate drawView:self didFinishDrawingPath:self.currentPath];
-    
-    // reset drawing state
-    self.currentPath = nil;
-    self.shapeLayer.lineWidth = 0;
-//    [self.shapeLayer setPath: nil];
-//    [self.shapeLayer setNeedsDisplay];
+    [self.delegate drawView:self didFinishDrawingPath:self.shapeLayer.fdpath];
 }
 
 - (void) tapHandler: (UIGestureRecognizer *) gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        self.currentPath = [[FDPath alloc] initWithColor:self.drawColor];
-        CGPoint touchPoint = [gestureRecognizer locationInView: self];
-        [self.currentPath addPoint: touchPoint];
-        self.currentPath.isCircle = YES;
-        [self drawPathAndHighlight];
+        self.shapeLayer = [[PathItem alloc] init];
+        self.shapeLayer.fdpath = [[FDPath alloc] initWithColor:self.drawColor];
+        self.shapeLayer.fdpath.color = [UIColor blueColor];
+        self.shapeLayer.fdpath.lineWidth =  [[[UserUtil sharedManager] getState] pathLineWidth];
+        self.shapeLayer.fdpath.isCircle = YES;
+//        CGPoint touchPoint = [gestureRecognizer locationInView: self];
+//        [self.shapeLayer.fdpath addPoint: touchPoint];
+        [self panChangedWithGestureRecognizer: gestureRecognizer];
         [self panEndedWithGestureRecognizer: gestureRecognizer];
-    }
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    if (self.currentPath != nil) {
-        for (UITouch *touch in touches) {
-            if (self.currentTouch == touch) {
-                // the touch was cancelled reset drawing state
-                self.currentPath = nil;
-                self.currentTouch = nil;
-                [self setNeedsDisplay];
-            }
-        }
+        [self.layer addSublayer: self.shapeLayer];
     }
 }
 
@@ -493,8 +402,6 @@
             
             if ([tapTarget containsPoint:point])
             {
-                //                self.previouslySelectedPath = self.selectedPath;
-                //                self.selectedPath = layer;
                 self.hitTestPath = layer;
                 return layer;
             }

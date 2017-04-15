@@ -138,6 +138,7 @@
                 for (PathItem *pi in groupItem.pathsInGroup)
                 {
                     [dv translatePath: pi byPoint: groupItem.sv.frame.origin];
+                    [pi drawPathOnSelf];
                     [[[[[UserUtil sharedManager] getState] DrawView] layer] addSublayer: pi];
                     [self.visuallState updateValuePath: pi];
                 }
