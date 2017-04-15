@@ -880,6 +880,7 @@
             
         }
     }
+    [self normalizeTrashButton];
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer *) gestureRecognizer {

@@ -1284,17 +1284,8 @@ SegmentedControlMod *segmentControlTopMenuRight;
 
 - (void) normalizeTrashButton
 {
-        [self.trashButton setImage:trashImg forState:UIControlStateNormal];
-//    [trashButton sendActionsForControlEvents:UIControlEventTouchDragExit];
-//    [trashButton sendActionsForControlEvents:UIControlEventTouchCancel];
-//        [trashButton sendActionsForControlEvents:UIControlEvent
+//    [self.trashButton setImage:trashImg forState:UIControlStateNormal];
 }
-
-
-//if ([self.scrollViewButtonList hitTest:[gestureRecognizer locationInView: self.scrollViewButtonList] withEvent:NULL])
-//{
-//    return self.scrollViewButtonList;
-//}
 
 - (CGRect) sourceRectForCenteredAlertController
 {

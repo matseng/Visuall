@@ -21,6 +21,11 @@
              [self removeNoteGivenKey: noteRef.key];
             return;
          }
+         
+         if ([self isSnapshotFromLocalDevice: snapshot] && self.allNotesLoadedBOOL)
+         {
+             return;
+         }
         
          // 1 of 2. Read a note upon the initial load or if a new note is added from another user
          if ( ![self.notesCollection isKeyInCollection:snapshot.key] )
@@ -117,6 +122,11 @@
          if (snapshot.value == [NSNull null])
          {
              --self.numberOfArrowsToBeLoaded;
+             return;
+         }
+         
+         if ([self isSnapshotFromLocalDevice: snapshot] && self.allArrowsLoadedBOOL)
+         {
              return;
          }
          
