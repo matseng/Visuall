@@ -96,17 +96,20 @@ static NSMutableDictionary *__personalVisuallList;
     NSString *userID = [[UserUtil sharedManager] userID];
     FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
     FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
+    [usersTableCurrentUser keepSynced:YES]; // not sure if this is helping keep data btw firebase and ipad/iphone in sync
+//    FIRDatabaseReference *personalVisuallsListRef = [usersTableCurrentUser child:@"visualls-personal"];
     
     [usersTableCurrentUser observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
      {
          if ( ![snapshot exists] )  // we have a new user
          {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"newUserWithNoVisualls" object: nil userInfo: nil];
-         } else {
-             NSLog(@"%@", snapshot.value );
+         } else
+         {
+             NSLog(@"My user info: %@", snapshot.value );
+             NSLog(@"Number of visualls: %lu", [[snapshot.value[@"visualls-personal"] allKeys] count] );
              for (NSString *key in snapshot.value[@"visualls-personal"])
              {
-                 NSLog(@"\n key: %@", key);
                  FIRDatabaseReference *currentVisuallRef = [[version01TableRef child: @"visualls"] child: key];
                  [self getVisuallDetailsForRef: currentVisuallRef andSetToList: __personalVisuallList];
              }
@@ -116,6 +119,8 @@ static NSMutableDictionary *__personalVisuallList;
      } withCancelBlock:^(NSError * _Nonnull error) {
          NSLog(@"%@", error.localizedDescription);
      }];
+    
+    // TODO (Apr 16, 2017): Offline
 }
 
 /*
@@ -134,8 +139,11 @@ static NSMutableDictionary *__personalVisuallList;
                                                                                                                      @"title": title
                                                                                                                      }];
         NSLog(@"\n getVisuallDetailsForRef - My title: %@", list[snapshot.key]);
+        
+    } withCancelBlock:^(NSError * _Nonnull error) {
+        NSLog(@"getVisuallDetailsForRef:: %@", error.localizedDescription);
     }];
-    
+
 }
 
 - (void) setNewUser
