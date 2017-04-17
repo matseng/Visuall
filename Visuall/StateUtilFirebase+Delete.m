@@ -24,29 +24,105 @@
     FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
     FIRDatabaseReference *visuallsPersonalRef =  [usersTableCurrentUser child: @"visualls-personal"];
     FIRDatabaseReference *visuallsTableRef = [version01TableRef child: @"visualls"];
+    FIRDatabaseReference *currentVisuallRef = [visuallsPersonalRef child: key];
     
-    /*
+    FIRDatabaseReference *listOfItemKeysRef = [[visuallsTableRef child:key] child: @"paths"];
+    [listOfItemKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         // Delete path from paths table
+         NSString *key = snapshot.key;
+         FIRDatabaseReference *itemsTableRef = [version01TableRef child: @"paths"];
+         FIRDatabaseReference *deleteItemRef = [itemsTableRef child: key];
+         [deleteItemRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+             if (error) {
+                 NSLog(@"Path could not be removed.");
+             } else {
+                 NSLog(@"Path removed successfully.");
+             }
+         }];
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"Trying to delete all paths and references: %@", error.description);
+     }];
+    
+    listOfItemKeysRef = [[visuallsTableRef child:key] child: @"arrows"];
+    [listOfItemKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         // Delete path from paths table
+         NSString *key = snapshot.key;
+         FIRDatabaseReference *itemsTableRef = [version01TableRef child: @"arrows"];
+         FIRDatabaseReference *deleteItemRef = [itemsTableRef child: key];
+         [deleteItemRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+             if (error) {
+                 NSLog(@"arrow could not be removed.");
+             } else {
+                 NSLog(@"arrow removed successfully.");
+             }
+         }];
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"Trying to delete all arrows and references: %@", error.description);
+     }];
+    
+    listOfItemKeysRef = [[visuallsTableRef child:key] child: @"groups"];
+    [listOfItemKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         // Delete path from paths table
+         NSString *key = snapshot.key;
+         FIRDatabaseReference *itemsTableRef = [version01TableRef child: @"groups"];
+         FIRDatabaseReference *deleteItemRef = [itemsTableRef child: key];
+         [deleteItemRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+             if (error) {
+                 NSLog(@"group could not be removed.");
+             } else {
+                 NSLog(@"group removed successfully.");
+             }
+         }];
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"Trying to delete all groups and references: %@", error.description);
+     }];
+    
+    listOfItemKeysRef = [[visuallsTableRef child:key] child: @"notes"];
+    [listOfItemKeysRef observeEventType: FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot *snapshot)
+     {
+         // Delete path from paths table
+         NSString *key = snapshot.key;
+         FIRDatabaseReference *itemsTableRef = [version01TableRef child: @"notes"];
+         FIRDatabaseReference *deleteItemRef = [itemsTableRef child: key];
+         [deleteItemRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+             if (error) {
+                 NSLog(@"note could not be removed.");
+             } else {
+                 NSLog(@"note removed successfully.");
+             }
+         }];
+         
+     } withCancelBlock:^(NSError *error)
+     {
+         NSLog(@"Trying to delete all note and references: %@", error.description);
+     }];
+    
     [[visuallsPersonalRef child: key] removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error) {
-            NSLog(@"Visuall NOT removed from user's personal list of Visualls.");
+            NSLog(@"Visuall ref NOT removed from user's personal list of Visualls.");
         } else {
-            NSLog(@"Visuall removed from user's personal list of Visualls sucessfully.");
+            NSLog(@"Visuall ref removed from user's personal list of Visualls sucessfully.");
         }
     }];
     
     [[visuallsTableRef child: key] removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error) {
-            NSLog(@"Note could NOT be removed.");
+            NSLog(@"Visuall could NOT be removed.");
         } else {
-            NSLog(@"Note removed successfully.");
+            NSLog(@"Visuall removed successfully.");
         }
     }];
-     */
-    NSMutableArray *visualItemsInGroup = [[NSMutableArray alloc] init];  // array to hold visual items to be deleted to avoid for loop mutation
-    NSMutableArray *pathsInGroup = [[NSMutableArray alloc] init];  // array to hold visual items to be deleted to avoid for loop mutation
+    
 }
-
-
 
 /*
  * Name: removeValue

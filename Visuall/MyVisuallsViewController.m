@@ -117,6 +117,13 @@
 {
     if ([notification.name isEqualToString:@"personalVisuallDidLoad"])
     {
+        NSString *title = notification.userInfo[@"title"];
+        if ( !title || (title == (id)[NSNull null] || title.length == 0 ) )
+        {
+            [StateUtilFirebase removeVisuall: notification.userInfo[@"key"]];
+            return;  // do not load a "null" visual
+
+        }
         [self appendVisuallToList: notification.userInfo];
         [self.av removeFromSuperview];
     }
