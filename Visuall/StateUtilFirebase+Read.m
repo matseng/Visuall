@@ -169,8 +169,13 @@
              return;
          }
          
+         if ([self isSnapshotFromLocalDevice: snapshot] && self.allPathsLoadedBOOL)
+         {
+             return;
+         }
+         
          // 1 of 2. Read a path upon the initial load:
-         if ( ![self.pathsCollection isKeyInCollection:snapshot.key] && !self.allPathsLoadedBOOL)
+         if ( ![self.pathsCollection isKeyInCollection:snapshot.key])
          {
              PathItem *pi = [[PathItem alloc] initPathFromFirebase: pathRef.key andValue:snapshot.value];
              [self.DrawView addPathItemToMVC: pi];

@@ -101,7 +101,7 @@ static NSMutableDictionary *__personalVisuallList;
      {
          if ( ![snapshot exists] )  // we have a new user
          {
-//             [self setNewUser];  // TODO (Sep 21, 2016): Change this method to a class method
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"newUserWithNoVisualls" object: nil userInfo: nil];
          } else {
              NSLog(@"%@", snapshot.value );
              for (NSString *key in snapshot.value[@"visualls-personal"])
@@ -128,7 +128,7 @@ static NSMutableDictionary *__personalVisuallList;
     [titleRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSString *title = snapshot.value;
         [list setValue: title forKey: snapshot.key];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{@"title": title}];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{
                                                                                                                      @"key": ref.key,
                                                                                                                      @"title": title
@@ -425,7 +425,7 @@ static NSMutableDictionary *__personalVisuallList;
          return;
      } withCancelBlock:^(NSError *error)
      {
-         NSLog(@"loadListOfGroupsFromRef: %@", error.description);
+         NSLog(@"loadListOfArrowsFromRef: %@", error.description);
      }];
 }
 
@@ -446,8 +446,9 @@ static NSMutableDictionary *__personalVisuallList;
         PathItem *pi = (PathItem *) [self.pathsCollection getItemFromKey: snapshot.key];
         if (pi)
         {
-//            [[[[UserUtil sharedManager] getState] DrawView] deletePath: pi];
-            [self.DrawView deletePath: pi];
+//            [self.DrawView deletePath: pi]; // TODO (Apr 16, 2017): Investigate further - causing errors. Simple remove from model below.
+            [pi removeFromSuperlayer];
+            [self.pathsCollection deleteItemGivenKey: pi.key];
         }
     } withCancelBlock:^(NSError * _Nonnull error) {
         NSLog(@"loadListOfPathsFromRef: %@", error.description);

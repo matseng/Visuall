@@ -736,44 +736,6 @@
 - (void) trashButtonHandler
 {
     [self trashButtonHelper: (VisualItem *) self.visuallState.selectedVisualItem];
-    /*
-    if ([self.visuallState.selectedVisualItem isPartiallyInBoundsOfView: self.BackgroundScrollView])
-    {
-        if ([self.visuallState.selectedVisualItem isNoteItem])
-        {
-            NoteItem2 *ni = [self.visuallState.selectedVisualItem getNoteItem];
-            [self.visuallState.notesCollection deleteNoteGivenKey: ni.note.key];
-        }
-        
-        else if ([self.visuallState.selectedVisualItem isGroupItem])
-        {
-            GroupItem *gi = [self.visuallState.selectedVisualItem getGroupItem];
-            [[self.visuallState groupsCollection] deleteGroupGivenKey: gi.group.key];
-        }
-        
-        else if ( [self.visuallState.selectedVisualItem isArrowItem] )
-        {
-            ArrowItem *ai = [self.visuallState.selectedVisualItem getArrowItem];
-            [self.visuallState.arrowsCollection deleteItemGivenKey: ai.key];
-        }
-        
-        else if ( [self.visuallState.selectedVisualItem isDrawView] )
-        {
-            NSLog(@"\n TODO: delete PathItem");
-            FDDrawView *dv = [self.visuallState.selectedVisualItem getDrawView];
-            [self.visuallState removeValue: dv];
-            [dv deleteSelectedPath];
-            return;  // return here because we don't want to delete DrawView, rather we delete the selected path as above
-        }
-        
-        [self.visuallState.selectedVisualItem removeFromSuperview];
-        [self.visuallState removeValue: self.visuallState.selectedVisualItem];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
-        //        [self.lastSelectedObject delete:nil];  // TODO: untested
-        //        self.lastSelectedObject = nil;
-
-        [self normalizeTrashButton];
-    }
-     */
 }
 
 - (void) trashButtonHelper: (id) vi

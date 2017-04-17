@@ -24,11 +24,13 @@
     FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
     FIRDatabaseReference *visuallsPersonalRef =  [usersTableCurrentUser child: @"visualls-personal"];
     FIRDatabaseReference *visuallsTableRef = [version01TableRef child: @"visualls"];
+    
+    /*
     [[visuallsPersonalRef child: key] removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error) {
-            NSLog(@"Note could NOT be removed.");
+            NSLog(@"Visuall NOT removed from user's personal list of Visualls.");
         } else {
-            NSLog(@"Note removed successfully.");
+            NSLog(@"Visuall removed from user's personal list of Visualls sucessfully.");
         }
     }];
     
@@ -39,6 +41,9 @@
             NSLog(@"Note removed successfully.");
         }
     }];
+     */
+    NSMutableArray *visualItemsInGroup = [[NSMutableArray alloc] init];  // array to hold visual items to be deleted to avoid for loop mutation
+    NSMutableArray *pathsInGroup = [[NSMutableArray alloc] init];  // array to hold visual items to be deleted to avoid for loop mutation
 }
 
 

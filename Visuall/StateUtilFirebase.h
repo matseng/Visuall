@@ -55,19 +55,19 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 @property __block int numberOfGroupsToBeLoaded;
 @property __block int numberOfGroupsLoaded;
-@property BOOL allGroupsLoadedBOOL;
+@property __block BOOL allGroupsLoadedBOOL;
 
 @property __block int numberOfNotesToBeLoaded;
 @property __block int numberOfNotesLoaded;
-@property BOOL allNotesLoadedBOOL;
+@property __block BOOL allNotesLoadedBOOL;
 
 @property __block int numberOfArrowsToBeLoaded;
 @property __block int numberOfArrowsLoaded;
-@property BOOL allArrowsLoadedBOOL;
+@property __block BOOL allArrowsLoadedBOOL;
 
 @property __block int numberOfPathsToBeLoaded;
 @property __block int numberOfPathsLoaded;
-@property BOOL allPathsLoadedBOOL;
+@property __block BOOL allPathsLoadedBOOL;
 
 @property NSInteger childrenCountNotes;
 
