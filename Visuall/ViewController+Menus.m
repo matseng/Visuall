@@ -182,7 +182,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
     
     if (self.tabBarController.selectedIndex == 0)  // Public tab
     {
-        [toolbar setItems:@[flexibleSpace, editBarItem, flexibleSpace] animated:YES];
+        [toolbar setItems:@[flexibleSpace, editBarItem, flexibleSpace, segmentControlBarItem, spacer50] animated:YES];
     }
     else
     {

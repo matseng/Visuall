@@ -49,7 +49,7 @@ UIColor *__thumbTintColor;
     
 //    self.labelForWordToRead = [[UILabel alloc] init];
     
-    self.wordsPerMinute = 360.0f;
+    self.wordsPerMinute = 300.0f;
     self.index = 0;
     
     self.labelForWordToRead.textColor = [UIColor redColor];
@@ -86,6 +86,10 @@ UIColor *__thumbTintColor;
 {
     float percentage = self.progressSlider.value;
     self.index = (int) round(__wordsToRead.count * percentage);
+    if (self.index >= __wordsToRead.count)
+    {
+        self.index = (int) __wordsToRead.count - 1;
+    }
     self.labelForWordToRead.text = __wordsToRead[self.index];
     [self updateLabelStyle];
     [self setPauseToOn];
