@@ -640,7 +640,7 @@ SegmentedControlMod *segmentControlTopMenuRight;
     sizeView.layer.borderWidth = 1.0f;
     sizeView.layer.borderColor = [self.view.tintColor CGColor];
     sizeView.layer.cornerRadius = 5.0f;
-    [sizeView setUserInteractionEnabled:NO];
+//    [sizeView setUserInteractionEnabled:NO];
     [self updateSizeViewFromSelectedVisualItem];
     UIBarButtonItem *sizeItem = [[UIBarButtonItem alloc] initWithCustomView: sizeView];
     

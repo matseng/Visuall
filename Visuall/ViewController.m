@@ -736,10 +736,15 @@
 - (void) trashButtonHandler
 {
     [self trashButtonHelper: (VisualItem *) self.visuallState.selectedVisualItem];
+    [[[UserUtil sharedManager] getState] setSelectedVisualItem: nil];
 }
 
 - (void) trashButtonHelper: (id) vi
 {
+    if (!vi)
+    {
+        return;
+    }
     if ([vi isPartiallyInBoundsOfView: self.BackgroundScrollView])
     {
         if ([vi isNoteItem])
@@ -772,8 +777,9 @@
         
         [vi removeFromSuperview];
         [self.visuallState removeValue: vi];  // TODO (Aug 16, 2016): add a callback here... e.g. use to confirm item was deleted from Firebase, otherwise maybe keep the item in view?
-        //        [self.lastSelectedObject delete:nil];  // TODO: untested
-        //        self.lastSelectedObject = nil;
+
+        vi = nil;
+
         
         [self normalizeTrashButton];
     }
@@ -839,9 +845,10 @@
             }
             
             [self trashButtonHelper: gi];
-            
+            [[[UserUtil sharedManager] getState] setSelectedVisualItem: nil];
         }
     }
+    
     [self normalizeTrashButton];
 }
 
