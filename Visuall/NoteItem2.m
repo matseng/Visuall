@@ -287,7 +287,12 @@
     float previousWidth = self.frame.size.width;
     float size = self.note.fontSize * 12 / 10;
     size = floorf(size * 10 + 0.5) / 10;  // round to nearest 1/10th
-    [self setFontSize: size];
+    int sizeInt = (int) size;
+    if ( sizeInt % 2 == 1 )
+    {
+        sizeInt = sizeInt + 1;
+    }
+    [self setFontSize: (float) sizeInt];
     deltaX = (previousWidth - self.frame.size.width) / 2;
     [self translateTx: deltaX andTy:0];
 }
@@ -298,7 +303,12 @@
     float previousWidth = self.frame.size.width;
     float size = self.note.fontSize * 10.0 / 12.0;
     size = floorf(size * 10 + 0.5) / 10;  // round to nearest 1/10th e.g.
-    [self setFontSize: size];
+    int sizeInt = (int) size;
+    if ( sizeInt % 2 == 1 )
+    {
+        sizeInt = sizeInt + 1;
+    }
+    [self setFontSize: (float) sizeInt];
     deltaX = (previousWidth - self.frame.size.width) / 2;
     [self translateTx: deltaX andTy:0];
 }

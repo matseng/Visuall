@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController (Menus) <UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TopMenuProtocol, UIPopoverPresentationControllerDelegate>  // added UINavigationControllerDelegate to suppress a warning
+@interface ViewController (Menus) <UIScrollViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TopMenuProtocol, UIPopoverPresentationControllerDelegate, UITextViewDelegate>  // added UINavigationControllerDelegate to suppress a warning
 
 - (void) createTopMenu;
 

@@ -77,6 +77,8 @@
 
 - (void) setDefaultSizes;
 
+- (float) roundUpToEven: (float) size;
+
 @end
 
 

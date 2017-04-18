@@ -474,19 +474,22 @@ static CAShapeLayer *__tempShapeLayer;
 
 - (void) increaseSize
 {
-    CGFloat scale = 12.0 / 10.0;
-    self.headWidth = self.headWidth * scale;
-    self.headLength = self.headLength * scale;
-    self.tailWidth = self.tailWidth * scale;
-    [self setViewAsSelected];
+    [self scaleSize: 12.0 / 10.0];
 }
 
 - (void) decreaseSize
 {
-    CGFloat scale = 10.0 / 12.0;
-    self.headWidth = self.headWidth * scale;
-    self.headLength = self.headLength * scale;
+    [self scaleSize: 10.0 / 12.0];
+}
+
+- (void) scaleSize: (float) scale
+{
+    float prevHeadWidth = self.headWidth;
+    self.headWidth =  [[[UserUtil sharedManager] getState] roundUpToEven: self.headWidth * scale];
+    scale = self.headWidth / prevHeadWidth;
+    
     self.tailWidth = self.tailWidth * scale;
+    self.headLength = self.headLength * scale;
     [self setViewAsSelected];
 }
 

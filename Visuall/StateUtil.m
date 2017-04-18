@@ -352,7 +352,15 @@
     
 }
 
-
+- (float) roundUpToEven: (float) size
+{
+    int sizeInt = (int) size;
+    if ( sizeInt % 2 == 1 )
+    {
+        sizeInt = sizeInt + 1;
+    }
+    return (float) sizeInt;
+}
 
 @end
 

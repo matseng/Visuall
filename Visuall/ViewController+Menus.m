@@ -850,7 +850,15 @@ SegmentedControlMod *segmentControlTopMenuRight;
     }
     else // No visual item is selected. Increase size based on current selection (e.g. note, arror or draw path)
     {
-        float fontSize = [sizeView.text floatValue] - 2;
+        float fontSize;
+        if ( [sizeView.text intValue] % 2 == 1 )
+        {
+            fontSize = [sizeView.text floatValue] - 1;
+        }
+        else
+        {
+            fontSize = [sizeView.text floatValue] - 2;
+        }
         sizeView.text = [[NSNumber numberWithFloat: fontSize] stringValue];
         if ([self isNoteButtonSelected])
         {
@@ -896,7 +904,16 @@ SegmentedControlMod *segmentControlTopMenuRight;
     }
     else // No visual item is selected. Increase size based on current selection (e.g. note, arror or draw path)
     {
-        float fontSize = [sizeView.text floatValue] + 2;
+        float fontSize;
+        if ( [sizeView.text intValue] % 2 == 1 )
+        {
+            fontSize = [sizeView.text floatValue] + 1;
+        }
+        else
+        {
+            fontSize = [sizeView.text floatValue] + 2;
+        }
+
         sizeView.text = [[NSNumber numberWithFloat: fontSize] stringValue];
         if ([self isNoteButtonSelected])
         {
