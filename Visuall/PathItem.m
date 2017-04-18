@@ -40,13 +40,13 @@
 
 - (void) increaseLineWidth
 {
-    self.fdpath.lineWidth = self.fdpath.lineWidth * 1.5;
+    self.fdpath.lineWidth = [[[UserUtil sharedManager] getState] roundUpToEven: self.fdpath.lineWidth * 1.5];
     [self drawPathOnSelf];
 }
 
 - (void) decreaseLineWidth
 {
-    self.fdpath.lineWidth = self.fdpath.lineWidth * 0.667;
+    self.fdpath.lineWidth =  [[[UserUtil sharedManager] getState] roundUpToEven: self.fdpath.lineWidth * 0.667];
     [self drawPathOnSelf];
 }
 

@@ -679,18 +679,20 @@ SegmentedControlMod *segmentControlTopMenuRight;
     [segmentControlTopMenuRight setEnabled:NO forSegmentAtIndex:0];
     segmentControlTopMenuRight.tintColor = [UIColor lightGrayColor];
     
+    [self updateSizeViewFromSelectedVisualItem];
     if ( [self.visuallState.selectedVisualItem isNoteItem]
         || [self.visuallState.selectedVisualItem isArrowItem]
         || [self.visuallState.selectedVisualItem isDrawView])
     {
         [self setSecondSubmenuToActive:YES];
+        
     }
     else
     {
         [self setSecondSubmenuToActive: NO];
     }
 
-    [self updateSizeViewFromSelectedVisualItem];
+//    [self updateSizeViewFromSelectedVisualItem];
     
     // Speed Reading Button Style
     if ([self.visuallState.selectedVisualItem isGroupItem]
