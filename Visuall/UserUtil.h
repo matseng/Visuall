@@ -16,6 +16,8 @@
 
 @property NSString *userID;
 
+@property (strong) NSString *displayName;
+
 @property BOOL autoSignInIndicator;
 
 +(id) sharedManager;
@@ -25,6 +27,8 @@
 - (void) GIDdisconnect;
 
 - (StateUtilFirebase *) getState;
+
+- (NSString *) getDisplayName;
 
 //- (void) setAutoSignInIndicator: (BOOL) yesOrNo;
 

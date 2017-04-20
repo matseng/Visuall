@@ -59,7 +59,7 @@
 
 - (void) viewWillAppear:(BOOL) animated
 {
-    if ([self.segue.identifier isEqualToString: @"unwindFromNewVisuall"])
+    if ([self.segue.identifier isEqualToString: @"unwindFromNewVisuall"])  // the automatically open the newly created visuall
     {
         [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [self manualSegueToNewViewController: self.metadataOfCurrentVisuall];
@@ -228,7 +228,7 @@
     {
         NewVisuallViewController *destViewController = (NewVisuallViewController *) segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        destViewController.metadata = [self.recipes objectAtIndex:indexPath.row];
+        destViewController.metadata = [[self.recipes objectAtIndex:indexPath.row] mutableCopy];
     }
 }
 
@@ -251,7 +251,7 @@
 //    ViewController *destViewController = [[ViewController alloc] init];
 //    destViewController.firebaseURL = [self.recipes objectAtIndex:indexPath.row][@"key"];
 //    [self.navigationController pushViewController: destViewController animated:YES];
-    NSMutableDictionary *metadata = [self.recipes objectAtIndex:indexPath.row];
+    NSMutableDictionary *metadata = [[self.recipes objectAtIndex:indexPath.row] mutableCopy];
     if ([metadata objectForKey: @"isNewVisuall"])
     {
         [metadata removeObjectForKey: @"isNewVisuall"];

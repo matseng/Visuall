@@ -31,13 +31,12 @@
 {
     self.firebaseUser = user;
     self.userID = [FIRAuth auth].currentUser.uid;
-    NSString *name;
     NSString *email;
     NSString *provider;
     for ( id <FIRUserInfo> profile in user.providerData) {
         NSString *providerID = profile.providerID;
         NSString *uid = profile.uid;  // Provider-specific UID
-        name = profile.displayName;
+        self.displayName = profile.displayName;
         email = profile.email;
         //        provider = profile.email;
         NSURL *photoURL = profile.photoURL;
@@ -79,6 +78,11 @@
     } else {
         return rootViewController;
     }
+}
+
+- (NSString *) getDisplayName
+{
+    return self.displayName;
 }
 
 //- (void) setAutoSignInIndicator: (BOOL) yesOrNo

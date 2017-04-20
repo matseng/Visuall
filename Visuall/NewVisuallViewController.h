@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewVisuallViewController : UIViewController
+@interface NewVisuallViewController : UIViewController <UITextViewDelegate>
 
-@property (weak, nonatomic) NSMutableDictionary *metadata;
+@property (strong, nonatomic) NSMutableDictionary *metadata;
+
+@property (weak, nonatomic) IBOutlet UILabel *createdByLabel;
+
+@property (weak, nonatomic) IBOutlet UITextView *sharedWithTextArea;
 
 @end

@@ -15,6 +15,7 @@
 #import "RegExCategories.h"
 #import "StateUtilFirebase+Read.h"
 #import "StateUtilFirebase+Update.h"
+#import <GoogleSignIn/GoogleSignIn.h>
 
 static NSMutableDictionary *__personalVisuallList;
 
@@ -200,6 +201,9 @@ static NSMutableDictionary *__personalVisuallList;
                                         @"title": title,
                                         @"date-created": [FIRServerValue timestamp],
                                         @"created-by": [FIRAuth auth].currentUser.uid,
+                                        @"created-by-first-name": [[[[GIDSignIn sharedInstance] currentUser] profile] givenName],
+                                        @"created-by-last-name": [[[[GIDSignIn sharedInstance] currentUser] profile] familyName],
+                                        @"created-by-email": [[[[GIDSignIn sharedInstance] currentUser] profile] email],
                                         @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" }
                                         };
     _visuallsTable_currentVisuallRef = [self.visuallsTableRef childByAutoId];

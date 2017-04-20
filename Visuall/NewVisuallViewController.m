@@ -8,6 +8,7 @@
 
 #import "NewVisuallViewController.h"
 #import "MyVisuallsViewController.h"
+#import "UserUtil.h"
 
 @interface NewVisuallViewController ()
 
@@ -18,6 +19,8 @@
 - (IBAction) onDeleteButtonPressed: (id)sender;
 
 @property (weak, nonatomic) IBOutlet UIView *outerContainer;
+
+@property NSArray *sharedWithArrayOfEmailAddresses;
 
 @end
 
@@ -40,6 +43,7 @@
         self.navigationItem.rightBarButtonItem = doneButton;
         self.TitleTextField.text = self.metadata[@"title"];
         self.navigationItem.title = self.TitleTextField.text;
+        self.sharedWithTextArea.text = self.metadata[@"sharedWith"];
     }
     else
     {
@@ -53,13 +57,27 @@
         [self.TitleTextField becomeFirstResponder];
     }
     
+    self.createdByLabel.text =  [[UserUtil sharedManager] displayName]; // TODO (Apr 20, 2017): replace later in above if else (if visuall was created by another)
     [self.TitleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    self.sharedWithTextArea.layer.borderWidth = 1.0f;
+    self.sharedWithTextArea.layer.borderColor = [[UIColor grayColor] CGColor];
+    self.sharedWithTextArea.delegate = self;
+    self.sharedWithArrayOfEmailAddresses = [NSNull null];
 }
 
 - (void) textFieldDidChange: (UITextField *) textField
 {
     self.navigationItem.title = textField.text;
+    self.metadata[@"title"] = textField.text;
+}
+
+- (void) textViewDidChange:(UITextView *) textView
+{
+//    self.sharedWithArrayOfEmailAddresses = [[NSArray alloc] initWithObjects: textView.text, nil];
+//    [self.metadata setObject: textView.text forKey: @"sharedWith"];
+    self.metadata[@"sharedWith"] = textView.text;
 }
 
 - (void) doneEditingHandler
@@ -97,21 +115,24 @@
     
     MyVisuallsViewController *controller = (MyVisuallsViewController *) segue.destinationViewController;
     NSDictionary *info;
-    if (self.metadata)
-    {
-        info = @{
-                 @"key": self.metadata[@"key"],
-                 @"title": self.TitleTextField.text
-                 };
-    }
-    else
-    {
-        info = @{
-                 @"title": self.TitleTextField.text
-                 };
-    }
-    controller.metadataOfCurrentVisuall = info;
-    self.metadata = nil;
+//    if (self.metadata)
+//    {
+//        info = @{
+//                 @"key": self.metadata[@"key"],
+//                 @"title": self.TitleTextField.text,
+//                 @"sharedWith": self.sharedWithArrayOfEmailAddresses
+//                 };
+//    }
+//    else
+//    {
+//        info = @{
+//                 @"title": self.TitleTextField.text,
+//                 @"sharedWith": self.sharedWithArrayOfEmailAddresses
+//                 };
+//    }
+    
+    controller.metadataOfCurrentVisuall = self.metadata;
+//    self.metadata = nil;
 }
 
 
@@ -165,7 +186,7 @@
     else
     {
 //        self.outerContainer.center = self.view.center;
-        self.outerContainer.center = CGPointMake(self.view.center.x, self.view.frame.size.height * 1 / 2);
+        self.outerContainer.center = CGPointMake(self.view.center.x, self.view.frame.size.height * 1 / 3);
     }
     
 }
