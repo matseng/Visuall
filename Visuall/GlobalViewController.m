@@ -38,7 +38,18 @@
 
 }
 
-
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    if ([tabBarController.viewControllers indexOfObject:viewController] == tabBarController.selectedIndex
+        && tabBarController.selectedIndex == 0)
+    {
+        return NO; // Prevent Public / Global tab from going back to a blank screen
+    }
+    else
+    {
+        return YES;
+    }
+}
 
 
 

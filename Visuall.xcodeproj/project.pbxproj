@@ -28,11 +28,7 @@
 		7148472B1D94B72200E73A7A /* FDPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847261D94B72200E73A7A /* FDPath.m */; };
 		7148472C1D94B72200E73A7A /* FDColorPickController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847281D94B72200E73A7A /* FDColorPickController.m */; };
 		715C60C11D78BBF300DD6942 /* DDFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C60C01D78BBF300DD6942 /* DDFileReader.m */; };
-		715C60C41D78BCAF00DD6942 /* defaultVisualizationSmall.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60C31D78BCAF00DD6942 /* defaultVisualizationSmall.xml */; };
 		715C60C71D78EC0100DD6942 /* ViewController+xmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C60C61D78EC0100DD6942 /* ViewController+xmlParser.m */; };
-		715C60C91D7908CF00DD6942 /* defaultVisualization500.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60C81D7908CF00DD6942 /* defaultVisualization500.xml */; };
-		715C60CB1D79175700DD6942 /* defaultVisualization1773.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60CA1D79175700DD6942 /* defaultVisualization1773.xml */; };
-		715C60CD1D79197700DD6942 /* defaultVisualization12k.xml in Resources */ = {isa = PBXBuildFile; fileRef = 715C60CC1D79197700DD6942 /* defaultVisualization12k.xml */; };
 		715C8BAF1DC8189E008BC2A8 /* PathItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C8BAE1DC8189E008BC2A8 /* PathItem.m */; };
 		7161CF641D55202700B278EB /* MyVisuallsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161CF631D55202700B278EB /* MyVisuallsNavigationController.m */; };
 		7161CF671D556C6E00B278EB /* GlobalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161CF661D556C6E00B278EB /* GlobalViewController.m */; };
@@ -49,8 +45,6 @@
 		7177E18A1E53A07F00439451 /* changeSizePlusMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7177E1891E53A07F00439451 /* changeSizePlusMinus.png */; };
 		7177E18C1E53A46F00439451 /* changeSizePlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7177E18B1E53A46F00439451 /* changeSizePlus.png */; };
 		7177E18E1E53A47B00439451 /* changeSizeMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7177E18D1E53A47B00439451 /* changeSizeMinus.png */; };
-		717F61C71D8C66CB0002157B /* defaultVisualization100.xml in Resources */ = {isa = PBXBuildFile; fileRef = 717F61C61D8C66CB0002157B /* defaultVisualization100.xml */; };
-		717F61C91D8C6F3C0002157B /* defaultVisualization13.xml in Resources */ = {isa = PBXBuildFile; fileRef = 717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */; };
 		717F61CB1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png in Resources */ = {isa = PBXBuildFile; fileRef = 717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */; };
 		7195EBCF1D3D55E700F609DE /* TiledLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBCE1D3D55E700F609DE /* TiledLayerView.m */; };
 		7195EBD21D4664BC00F609DE /* ArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7195EBD11D4664BB00F609DE /* ArrowItem.m */; };
@@ -166,12 +160,8 @@
 		714847281D94B72200E73A7A /* FDColorPickController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorPickController.m; sourceTree = "<group>"; };
 		715C60BF1D78BBF300DD6942 /* DDFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileReader.h; sourceTree = "<group>"; };
 		715C60C01D78BBF300DD6942 /* DDFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileReader.m; sourceTree = "<group>"; };
-		715C60C31D78BCAF00DD6942 /* defaultVisualizationSmall.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualizationSmall.xml; sourceTree = "<group>"; };
 		715C60C51D78EC0100DD6942 /* ViewController+xmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+xmlParser.h"; sourceTree = "<group>"; };
 		715C60C61D78EC0100DD6942 /* ViewController+xmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+xmlParser.m"; sourceTree = "<group>"; };
-		715C60C81D7908CF00DD6942 /* defaultVisualization500.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization500.xml; sourceTree = "<group>"; };
-		715C60CA1D79175700DD6942 /* defaultVisualization1773.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization1773.xml; sourceTree = "<group>"; };
-		715C60CC1D79197700DD6942 /* defaultVisualization12k.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization12k.xml; sourceTree = "<group>"; };
 		715C8BAD1DC8189E008BC2A8 /* PathItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathItem.h; sourceTree = "<group>"; };
 		715C8BAE1DC8189E008BC2A8 /* PathItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathItem.m; sourceTree = "<group>"; };
 		7161CF621D55202700B278EB /* MyVisuallsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVisuallsNavigationController.h; sourceTree = "<group>"; };
@@ -195,8 +185,6 @@
 		7177E1891E53A07F00439451 /* changeSizePlusMinus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeSizePlusMinus.png; sourceTree = "<group>"; };
 		7177E18B1E53A46F00439451 /* changeSizePlus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeSizePlus.png; sourceTree = "<group>"; };
 		7177E18D1E53A47B00439451 /* changeSizeMinus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeSizeMinus.png; sourceTree = "<group>"; };
-		717F61C61D8C66CB0002157B /* defaultVisualization100.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization100.xml; sourceTree = "<group>"; };
-		717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultVisualization13.xml; sourceTree = "<group>"; };
 		717F61CA1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Microsoft-Visual-Studio-icon_v3.png"; sourceTree = "<group>"; };
 		7195EBCD1D3D55E700F609DE /* TiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledLayerView.h; sourceTree = "<group>"; };
 		7195EBCE1D3D55E700F609DE /* TiledLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiledLayerView.m; sourceTree = "<group>"; };
@@ -436,12 +424,6 @@
 		715C60C21D78BC5A00DD6942 /* xml */ = {
 			isa = PBXGroup;
 			children = (
-				715C60C31D78BCAF00DD6942 /* defaultVisualizationSmall.xml */,
-				717F61C81D8C6F3C0002157B /* defaultVisualization13.xml */,
-				715C60C81D7908CF00DD6942 /* defaultVisualization500.xml */,
-				717F61C61D8C66CB0002157B /* defaultVisualization100.xml */,
-				715C60CA1D79175700DD6942 /* defaultVisualization1773.xml */,
-				715C60CC1D79197700DD6942 /* defaultVisualization12k.xml */,
 			);
 			name = xml;
 			sourceTree = "<group>";
@@ -748,10 +730,8 @@
 				716328BB1D25F867009DF56B /* picture.png in Resources */,
 				71C23F351D221A7800D53E0C /* Trash-50.png in Resources */,
 				77E13DAC1C01211E00105BB5 /* delete.png in Resources */,
-				715C60C41D78BCAF00DD6942 /* defaultVisualizationSmall.xml in Resources */,
 				71C23F311D21F41600D53E0C /* conversation-with-text-lines.png in Resources */,
 				716328B51D25F23E009DF56B /* photo-camera.png in Resources */,
-				715C60CD1D79197700DD6942 /* defaultVisualization12k.xml in Resources */,
 				7177E18C1E53A46F00439451 /* changeSizePlus.png in Resources */,
 				71D96BEF1D30347400CD1C49 /* light-bulb@2x.png in Resources */,
 				77E13DA21C011C1700105BB5 /* compass.png in Resources */,
@@ -762,9 +742,6 @@
 				71C23F1E1D1E0F3900D53E0C /* leftRightUpDown.png in Resources */,
 				77E13DA81C011D5F00105BB5 /* linkarrow.png in Resources */,
 				712EC9631BEAF21500ED6803 /* Main.storyboard in Resources */,
-				715C60CB1D79175700DD6942 /* defaultVisualization1773.xml in Resources */,
-				717F61C71D8C66CB0002157B /* defaultVisualization100.xml in Resources */,
-				717F61C91D8C6F3C0002157B /* defaultVisualization13.xml in Resources */,
 				71D96BD21D2D974C00CD1C49 /* Reading-50.png in Resources */,
 				71D96BD61D2DA58000CD1C49 /* Info-50.png in Resources */,
 				712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */,
@@ -777,7 +754,6 @@
 				71FD2EE11D5E7F5000CA5365 /* Increase Font Filled-50.png in Resources */,
 				71D96BD41D2D997500CD1C49 /* User Groups-50.png in Resources */,
 				717F61CB1D90A9CD0002157B /* Microsoft-Visual-Studio-icon_v3.png in Resources */,
-				715C60C91D7908CF00DD6942 /* defaultVisualization500.xml in Resources */,
 				71D96BD81D2DA5A400CD1C49 /* Star-50.png in Resources */,
 				712EC9651BEAF21500ED6803 /* Images.xcassets in Resources */,
 				77E13DAA1C011DC100105BB5 /* plane.png in Resources */,

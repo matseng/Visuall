@@ -25,6 +25,14 @@
     [GIDSignIn sharedInstance].clientID = [FIRApp defaultApp].options.clientID;
     [GIDSignIn sharedInstance].delegate = self;
     
+    // https://console.developers.google.com/iam-admin/projects
+    // https://developers.google.com/google-apps/contacts/v3/#retrieving_all_contacts
+    // https://developers.google.com/people/v1/libraries
+    // https://github.com/google/google-api-objectivec-client-for-rest
+    // https://github.com/google/google-api-objectivec-client-for-rest/wiki/BuildingTheLibrary
+//    [[GIDSignIn sharedInstance] setScopes:@[@"https://www.googleapis.com/auth/contacts.readonly", @"https://www.googleapis.com/auth/user.emails.read"]];
+//    [[GIDSignIn sharedInstance] setScopes:@[@"https://www.googleapis.com/auth/user.emails.read"]];
+    
 //    UINavigationController *localNavigationController = self.window.rootViewController.navigationController;
 //    [localNavigationController setNavigationBarHidden:YES animated:YES];
     

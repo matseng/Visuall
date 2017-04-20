@@ -69,7 +69,7 @@
     UITabBarItem *tabBarItem1 = [tabBar.items objectAtIndex:1];
 //    UITabBarItem *tabBarItem2 = [tabBar.items objectAtIndex:2];
     
-    tabBarItem0.title = @"Global";
+    tabBarItem0.title = @"Public";
     tabBarItem1.title = @"My Visualls";
 //    tabBarItem2.title = @"My Visualls List";
     
