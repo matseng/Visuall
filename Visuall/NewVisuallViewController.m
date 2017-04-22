@@ -43,9 +43,9 @@
         self.navigationItem.rightBarButtonItem = doneButton;
         self.TitleTextField.text = self.metadata[@"title"];
         self.navigationItem.title = self.TitleTextField.text;
-        self.sharedWithTextArea.text = self.metadata[@"sharedWith"];
+//        self.sharedWithTextArea.text = self.metadata[@"sharedWith"];
     }
-    else
+    else  // setup for new visuall
     {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                        style:UIBarButtonItemStyleDone
@@ -53,8 +53,8 @@
                                                                       action:@selector(doneHandler)];
         self.navigationItem.rightBarButtonItem = doneButton;
         [self.deleteButton removeFromSuperview];
-        
         [self.TitleTextField becomeFirstResponder];
+        self.metadata = [[NSMutableDictionary alloc] init];
     }
     
     self.createdByLabel.text =  [[UserUtil sharedManager] displayName]; // TODO (Apr 20, 2017): replace later in above if else (if visuall was created by another)
@@ -70,14 +70,11 @@
 - (void) textFieldDidChange: (UITextField *) textField
 {
     self.navigationItem.title = textField.text;
-    self.metadata[@"title"] = textField.text;
+    
 }
 
 - (void) textViewDidChange:(UITextView *) textView
 {
-//    self.sharedWithArrayOfEmailAddresses = [[NSArray alloc] initWithObjects: textView.text, nil];
-//    [self.metadata setObject: textView.text forKey: @"sharedWith"];
-    self.metadata[@"sharedWith"] = textView.text;
 }
 
 - (void) doneEditingHandler
@@ -130,12 +127,36 @@
 //                 @"sharedWith": self.sharedWithArrayOfEmailAddresses
 //                 };
 //    }
-    
+    self.metadata[@"title"] = self.TitleTextField.text;
+//    self.sharedWithArrayOfEmailAddresses = [[NSArray alloc] initWithObjects: self.sharedWithTextArea.text, nil];
+//    NSDictionary *emailAddressesAreKeys = [[NSDictionary alloc] initWithObjectsAndKeys:@1, self.sharedWithArrayOfEmailAddresses[0], nil];
+    NSDictionary *emailAddressesAreKeys = [self getEmailAddressesDictFromString: self.sharedWithTextArea.text withDelimiter: @","];
+    self.metadata[@"shared-with"] = emailAddressesAreKeys ? emailAddressesAreKeys : [NSNull null];
+
     controller.metadataOfCurrentVisuall = self.metadata;
 //    self.metadata = nil;
 }
 
-
+- (NSMutableDictionary *) getEmailAddressesDictFromString: (NSString *) string withDelimiter: (NSString *) delimiter
+{
+    NSMutableDictionary *result = [[NSMutableDictionary alloc] init];
+    NSString *strTemp;
+    NSArray *arrayOfStrings = [string componentsSeparatedByString: delimiter];
+    for (NSString *str in arrayOfStrings)
+    {
+        if ([str containsString: @"@"] && [str containsString:@"."])
+        {
+            strTemp = [str stringByReplacingOccurrencesOfString: @"." withString: @"%2E"];
+            [result setObject: @1 forKey: strTemp];
+            
+        }
+    }
+    if ( [result count] == 0)
+    {
+        result = nil;
+    }
+    return result;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

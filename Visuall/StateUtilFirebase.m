@@ -130,11 +130,44 @@ static NSMutableDictionary *__personalVisuallList;
  */
 + (void) getVisuallDetailsForRef: (FIRDatabaseReference *) ref andSetToList: (NSMutableDictionary *) list
 {
+    FIRDatabaseReference *metadataRef = [ref child: @"metadata"];
+    
+    [metadataRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+     {
+//         NSString *title = snapshot.value;
+//         [list setValue: title forKey: snapshot.key];
+         
+         if (snapshot.value != [NSNull null])
+         {
+             NSMutableDictionary *dict = [snapshot.value mutableCopy];
+            [dict setValuesForKeysWithDictionary:@{@"key": ref.key}];
+            [list setValue: snapshot.value[@"title"] forKey: snapshot.key];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: dict];
+         }
+         else
+         {
+           [self getVisuallDetailsForRefOld: ref andSetToList: list];
+         }
+         NSLog(@"\n getVisuallDetailsForRef - My title: %@", list[snapshot.key]);
+         
+     } withCancelBlock:^(NSError * _Nonnull error) {
+         NSLog(@"getVisuallDetailsForRef: %@", error.localizedDescription);
+         NSLog(@"for key: %@", ref.key);
+     }];
+}
+
+/*
+ * Name:
+ * Description:
+ */
++ (void) getVisuallDetailsForRefOld: (FIRDatabaseReference *) ref andSetToList: (NSMutableDictionary *) list
+{
     FIRDatabaseReference *titleRef = [ref child: @"title"];
-    [titleRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+    
+    [titleRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+    {
         NSString *title = snapshot.value;
         [list setValue: title forKey: snapshot.key];
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{
                                                                                                                      @"key": ref.key,
                                                                                                                      @"title": title
@@ -142,9 +175,9 @@ static NSMutableDictionary *__personalVisuallList;
         NSLog(@"\n getVisuallDetailsForRef - My title: %@", list[snapshot.key]);
         
     } withCancelBlock:^(NSError * _Nonnull error) {
-        NSLog(@"getVisuallDetailsForRef:: %@", error.localizedDescription);
+        NSLog(@"getVisuallDetailsForRef: %@", error.localizedDescription);
+        NSLog(@"for key: %@", ref.key);
     }];
-
 }
 
 - (void) setNewUser
@@ -213,7 +246,11 @@ static NSMutableDictionary *__personalVisuallList;
     [visuallsPersonalRef updateChildValues: @{_currentVisuallKey: @"1"} ];
 }
 
-+ (NSMutableDictionary *) setValueVisuall: (NSString *) title
+/*
+ * Name: setValueVisuall
+ * Description: Class method to create a new Visuall and add it's key to the current user's list of Visualls
+ */
++ (NSMutableDictionary *) setValueVisuall: (NSMutableDictionary *) metadata
 {
     NSString *userID = [[UserUtil sharedManager] userID];
     FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
@@ -221,22 +258,27 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *visuallsPersonalRef =  [usersTableCurrentUser child: @"visualls-personal"];
     FIRDatabaseReference *visuallsTableRef = [version01TableRef child: @"visualls"];
     FIRDatabaseReference *currentVisuallRef = [visuallsTableRef childByAutoId];
+    //    FIRDatabaseReference *currentVisuallMetatdataRef = [currentVisuallRef child: @"metadata"];
     
     NSDictionary *visuallDictionary = @{
-                                        @"title": title,
                                         @"date-created": [FIRServerValue timestamp],
                                         @"created-by": [FIRAuth auth].currentUser.uid,
+                                        @"created-by-first-name": [[[[GIDSignIn sharedInstance] currentUser] profile] givenName],
+                                        @"created-by-last-name": [[[[GIDSignIn sharedInstance] currentUser] profile] familyName],
+                                        @"created-by-email": [[[[GIDSignIn sharedInstance] currentUser] profile] email],
                                         @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" }
                                         };
-    NSString *currentVisuallKey = currentVisuallRef.key;
-    
-    [currentVisuallRef updateChildValues: visuallDictionary];
-    [visuallsPersonalRef updateChildValues: @{currentVisuallKey: @"1"} ];
-    return [@{
-             @"key": currentVisuallKey,
-             @"title": title
-             } mutableCopy];
+    [metadata setValuesForKeysWithDictionary: visuallDictionary];
+    NSMutableDictionary *dict = [@{@"metadata": metadata,
+                                            @"write-permission" : @{ [FIRAuth auth].currentUser.uid : @"1" }} mutableCopy];
+    [currentVisuallRef updateChildValues: dict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref)
+    {
+        [visuallsPersonalRef updateChildValues: @{currentVisuallRef.key: @"1"} ];
+    }];
+    [metadata setObject: currentVisuallRef.key forKey:@"key"];
+    return metadata;
 }
+
 
 + (void) updateMetadataVisuall: (NSMutableDictionary *) dict
 {
@@ -246,10 +288,10 @@ static NSMutableDictionary *__personalVisuallList;
     FIRDatabaseReference *visuallsPersonalRef =  [usersTableCurrentUser child: @"visualls-personal"];
     FIRDatabaseReference *visuallsTableRef = [version01TableRef child: @"visualls"];
     FIRDatabaseReference *currentVisuallRef = [visuallsTableRef child: dict[@"key"]];
+    FIRDatabaseReference *currentVisuallMetadataRef = [currentVisuallRef child: @"metadata"];
     [dict removeObjectForKey: @"key"];
-    [currentVisuallRef updateChildValues: dict];
+    [currentVisuallMetadataRef updateChildValues: dict];
 }
-
 
 - (void) loadPublicVisuallsList
 {

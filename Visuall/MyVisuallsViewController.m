@@ -79,8 +79,9 @@
     self.segue = segue;
     if ([segue.identifier isEqualToString: @"unwindFromNewVisuall"])
     {
-        NSString *title = [self.metadataOfCurrentVisuall valueForKey: @"title"];
-        self.metadataOfCurrentVisuall = [StateUtilFirebase setValueVisuall: title];  // now includes key from Firebase
+//        NSString *title = [self.metadataOfCurrentVisuall[@"metadata"] valueForKey: @"title"];
+//        self.metadataOfCurrentVisuall = [StateUtilFirebase setValueVisuall: title];
+        self.metadataOfCurrentVisuall = [StateUtilFirebase setValueVisuall: self.metadataOfCurrentVisuall];
         [self.metadataOfCurrentVisuall setObject: @"YES" forKey: @"isNewVisuall"];
         self.indexPath = [self appendVisuallToList: self.metadataOfCurrentVisuall];
     }
@@ -120,7 +121,7 @@
         NSString *title = notification.userInfo[@"title"];
         if ( !title || (title == (id)[NSNull null] || title.length == 0 ) )
         {
-            [StateUtilFirebase removeVisuall: notification.userInfo[@"key"]];
+//            [StateUtilFirebase removeVisuall: notification.userInfo[@"key"]];
             return;  // do not load a "null" visual
 
         }
@@ -262,7 +263,7 @@
 - (void) manualSegueToNewViewController: (NSMutableDictionary *) dict
 {
     ViewController *destViewController = [[ViewController alloc] init];
-    destViewController.firebaseURL = dict[@"key"];
+    destViewController.firebaseURL = (dict[@"key"]) ? dict[@"key"] : dict[@"metadata"][@"key"];
     destViewController.metadataTemp = dict;
     [self.navigationController pushViewController: destViewController animated:YES];
 }
