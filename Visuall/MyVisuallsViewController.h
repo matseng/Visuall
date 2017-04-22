@@ -25,4 +25,6 @@
 
 @property UIActivityIndicatorView  *av;
 
+@property (strong, nonatomic) NSDictionary *sharedWithPrevious;
+
 @end

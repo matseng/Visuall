@@ -92,6 +92,18 @@
         [self.tableView reloadData];
         [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [StateUtilFirebase updateMetadataVisuall: [self.metadataOfCurrentVisuall mutableCopy]];
+        
+        NSMutableSet *keysAdded = [[NSMutableSet alloc] init];
+        NSMutableSet *keysRemoved = [[NSMutableSet alloc] init];
+        NSMutableSet *keysInA = [NSMutableSet setWithArray:[self.sharedWithPrevious allKeys]];
+        NSMutableSet *keysInB = [NSMutableSet setWithArray:[self.metadataOfCurrentVisuall[@"shared-with"] allKeys]];
+        [keysAdded setSet:keysInB];
+        [keysAdded minusSet:keysInA];
+        [keysRemoved setSet: keysInA];
+        [keysRemoved minusSet: keysInB];
+        NSLog(@"keys in A that are not in B: %@", keysAdded); // TODO (Apr 21, 2017): Create a new TABLE of these email address added called Invites... each email is a key with an object of visuall keys
+        NSLog(@"keys in A that are not in B: %@", keysRemoved);  // TODO: remove email address from share list
+        
     }
     else if ([segue.identifier isEqualToString: @"unwindFromDeleteVisuall"])
     {
@@ -230,6 +242,7 @@
         NewVisuallViewController *destViewController = (NewVisuallViewController *) segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         destViewController.metadata = [[self.recipes objectAtIndex:indexPath.row] mutableCopy];
+        self.sharedWithPrevious = [destViewController.metadata[@"shared-with"] copy];
     }
 }
 

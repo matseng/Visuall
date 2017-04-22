@@ -43,7 +43,7 @@
         self.navigationItem.rightBarButtonItem = doneButton;
         self.TitleTextField.text = self.metadata[@"title"];
         self.navigationItem.title = self.TitleTextField.text;
-//        self.sharedWithTextArea.text = self.metadata[@"sharedWith"];
+        self.sharedWithTextArea.text = [[[self.metadata[@"shared-with"] allKeys] componentsJoinedByString: @", "] stringByReplacingOccurrencesOfString:@"%2E" withString:@"."];
     }
     else  // setup for new visuall
     {
@@ -141,14 +141,15 @@
 {
     NSMutableDictionary *result = [[NSMutableDictionary alloc] init];
     NSString *strTemp;
-    NSArray *arrayOfStrings = [string componentsSeparatedByString: delimiter];
+//    [string stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSArray* words = [string componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString* nospacestring = [words componentsJoinedByString: delimiter];
+    NSArray *arrayOfStrings = [nospacestring componentsSeparatedByString: delimiter];
     for (NSString *str in arrayOfStrings)
     {
         if ([str containsString: @"@"] && [str containsString:@"."])
         {
-            strTemp = [str stringByReplacingOccurrencesOfString: @"." withString: @"%2E"];
-            [result setObject: @1 forKey: strTemp];
-            
+            [result setObject: @1 forKey: [str stringByReplacingOccurrencesOfString: @"." withString: @"%2E"]];
         }
     }
     if ( [result count] == 0)
@@ -157,6 +158,14 @@
     }
     return result;
 }
+
+//- (NSString *) getStringFromDictionaryKeys: (NSDictionary *) dict withDelimiter: (NSString *) string
+//{
+//    NSString *result = [[NSString alloc] init];
+//    for (NSString *key in [dict allKeys]) {
+//        [result stringByAppendingString: key];
+//    }
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
