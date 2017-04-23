@@ -10,7 +10,6 @@
 
 @implementation StateUtilFirebase (Read)
 
-
 - (void) loadNoteFromRef: (FIRDatabaseReference *) noteRef
 {
     [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)

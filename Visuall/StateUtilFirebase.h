@@ -14,6 +14,8 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 @protocol Create
 
++ (void) setSharedVisuall: (NSString *) visuallKey withEmails: (NSArray *) emails;
+
 @end
 
 @protocol Read

@@ -13,6 +13,7 @@
 //#import "CustomTableViewCell.h"
 #import "UserUtil.h"
 #import "StateUtilFirebase.h"
+#import "StateUtilFirebase+Create.h"
 #import "NewVisuallViewController.h"
 
 @interface MyVisuallsViewController ()
@@ -101,6 +102,7 @@
         [keysAdded minusSet:keysInA];
         [keysRemoved setSet: keysInA];
         [keysRemoved minusSet: keysInB];
+        [StateUtilFirebase setSharedVisuall: self.metadataOfCurrentVisuall[@"key"] withEmails: [keysAdded allObjects]];
         NSLog(@"keys in A that are not in B: %@", keysAdded); // TODO (Apr 21, 2017): Create a new TABLE of these email address added called Invites... each email is a key with an object of visuall keys
         NSLog(@"keys in A that are not in B: %@", keysRemoved);  // TODO: remove email address from share list
         

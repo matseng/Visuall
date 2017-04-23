@@ -108,7 +108,10 @@ static NSMutableDictionary *__personalVisuallList;
          } else
          {
              NSLog(@"My user info: %@", snapshot.value );
-             NSLog(@"Number of visualls: %lu", [[snapshot.value[@"visualls-personal"] allKeys] count] );
+             NSLog(@"Number of visualls: %u", [[snapshot.value[@"visualls-personal"] allKeys] count] );
+             // TODO (Apr 22, 2017): Similar to below, go to shared-visuall-invites and get list of shared visuall refs
+             // [self getVisuallDetailsForRef: currentVisuallRef andSetToList: __personalVisuallList];
+
              for (NSString *key in snapshot.value[@"visualls-personal"])
              {
                  FIRDatabaseReference *currentVisuallRef = [[version01TableRef child: @"visualls"] child: key];
@@ -278,7 +281,6 @@ static NSMutableDictionary *__personalVisuallList;
     [metadata setObject: currentVisuallRef.key forKey:@"key"];
     return metadata;
 }
-
 
 + (void) updateMetadataVisuall: (NSMutableDictionary *) dict
 {

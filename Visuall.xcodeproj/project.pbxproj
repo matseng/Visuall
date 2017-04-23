@@ -12,6 +12,7 @@
 		710B0F481D81EE96000D6B9A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 710B0F471D81EE96000D6B9A /* GoogleService-Info.plist */; };
 		711066891E89EFCC003AF899 /* SpeedReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 711066881E89EFCC003AF899 /* SpeedReadingViewController.m */; };
 		7116A2681E61199400FED276 /* NewVisuallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7116A2671E61199400FED276 /* NewVisuallViewController.m */; };
+		711C1B5A1EAC243B00178782 /* StateUtilFirebase+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 711C1B591EAC243B00178782 /* StateUtilFirebase+Create.m */; };
 		712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */ = {isa = PBXBuildFile; fileRef = 712682021D49997700A0A2F7 /* ScrollViewMod.m */; };
 		712EC95A1BEAF21500ED6803 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9591BEAF21500ED6803 /* main.m */; };
 		712EC95D1BEAF21500ED6803 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC95C1BEAF21500ED6803 /* AppDelegate.m */; };
@@ -129,6 +130,8 @@
 		711066881E89EFCC003AF899 /* SpeedReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeedReadingViewController.m; sourceTree = "<group>"; };
 		7116A2661E61199400FED276 /* NewVisuallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewVisuallViewController.h; sourceTree = "<group>"; };
 		7116A2671E61199400FED276 /* NewVisuallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewVisuallViewController.m; sourceTree = "<group>"; };
+		711C1B581EAC243B00178782 /* StateUtilFirebase+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StateUtilFirebase+Create.h"; sourceTree = "<group>"; };
+		711C1B591EAC243B00178782 /* StateUtilFirebase+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StateUtilFirebase+Create.m"; sourceTree = "<group>"; };
 		712682011D49997700A0A2F7 /* ScrollViewMod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewMod.h; sourceTree = "<group>"; };
 		712682021D49997700A0A2F7 /* ScrollViewMod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewMod.m; sourceTree = "<group>"; };
 		712EC9541BEAF21500ED6803 /* Visuall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visuall.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -441,6 +444,8 @@
 				716B04691BFC210300DA9451 /* StateUtil.m */,
 				71FD2EEB1D662F8300CA5365 /* StateUtilFirebase.h */,
 				71FD2EEC1D662F8300CA5365 /* StateUtilFirebase.m */,
+				711C1B581EAC243B00178782 /* StateUtilFirebase+Create.h */,
+				711C1B591EAC243B00178782 /* StateUtilFirebase+Create.m */,
 				71C167F91D877D8100961374 /* StateUtilFirebase+Read.h */,
 				71C167FA1D877D8100961374 /* StateUtilFirebase+Read.m */,
 				71C167FC1D879E5A00961374 /* StateUtilFirebase+Update.h */,
@@ -842,6 +847,7 @@
 				71D96BD01D2C66D000CD1C49 /* MyVisuallsDetailViewController.m in Sources */,
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
+				711C1B5A1EAC243B00178782 /* StateUtilFirebase+Create.m in Sources */,
 				712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */,
 				71FD2EFE1D74DDF900CA5365 /* Collection.m in Sources */,
 				7116A2681E61199400FED276 /* NewVisuallViewController.m in Sources */,
