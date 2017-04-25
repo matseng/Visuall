@@ -27,6 +27,8 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 - (void) allNotesDidLoad;
 - (void) allGroupsDidLoad;
 
+
+
 @end
 
 @protocol Update
@@ -39,6 +41,7 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 @protocol Delete
 
 - (void) removeValue: (UIView *) view;
++ (void) removeSharedVisuallInvite: (NSString *) visuallKey withEmails: (NSArray *) emails;
 
 @end
 

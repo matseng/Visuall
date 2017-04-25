@@ -14,6 +14,7 @@
 #import "UserUtil.h"
 #import "StateUtilFirebase.h"
 #import "StateUtilFirebase+Create.h"
+#import "StateUtilFirebase+Delete.h"
 #import "NewVisuallViewController.h"
 
 @interface MyVisuallsViewController ()
@@ -80,11 +81,10 @@
     self.segue = segue;
     if ([segue.identifier isEqualToString: @"unwindFromNewVisuall"])
     {
-//        NSString *title = [self.metadataOfCurrentVisuall[@"metadata"] valueForKey: @"title"];
-//        self.metadataOfCurrentVisuall = [StateUtilFirebase setValueVisuall: title];
         self.metadataOfCurrentVisuall = [StateUtilFirebase setValueVisuall: self.metadataOfCurrentVisuall];
         [self.metadataOfCurrentVisuall setObject: @"YES" forKey: @"isNewVisuall"];
         self.indexPath = [self appendVisuallToList: self.metadataOfCurrentVisuall];
+        [self updateMetadata];
     }
     else if ([segue.identifier isEqualToString: @"unwindFromEditVisuall"])
     {
@@ -92,20 +92,7 @@
         self.recipes[self.indexPath.row] = self.metadataOfCurrentVisuall;
         [self.tableView reloadData];
         [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        [StateUtilFirebase updateMetadataVisuall: [self.metadataOfCurrentVisuall mutableCopy]];
-        
-        NSMutableSet *keysAdded = [[NSMutableSet alloc] init];
-        NSMutableSet *keysRemoved = [[NSMutableSet alloc] init];
-        NSMutableSet *keysInA = [NSMutableSet setWithArray:[self.sharedWithPrevious allKeys]];
-        NSMutableSet *keysInB = [NSMutableSet setWithArray:[self.metadataOfCurrentVisuall[@"shared-with"] allKeys]];
-        [keysAdded setSet:keysInB];
-        [keysAdded minusSet:keysInA];
-        [keysRemoved setSet: keysInA];
-        [keysRemoved minusSet: keysInB];
-        [StateUtilFirebase setSharedVisuall: self.metadataOfCurrentVisuall[@"key"] withEmails: [keysAdded allObjects]];
-        NSLog(@"keys in A that are not in B: %@", keysAdded); // TODO (Apr 21, 2017): Create a new TABLE of these email address added called Invites... each email is a key with an object of visuall keys
-        NSLog(@"keys in A that are not in B: %@", keysRemoved);  // TODO: remove email address from share list
-        
+        [self updateMetadata];
     }
     else if ([segue.identifier isEqualToString: @"unwindFromDeleteVisuall"])
     {
@@ -125,6 +112,26 @@
 {
 //    [self performSegueWithIdentifier:@"segueToInfoModal" sender:self];
     [self performSegueWithIdentifier:@"segueToNewVisuall" sender:self];
+}
+
+- (void) updateMetadata
+{
+    [StateUtilFirebase updateMetadataVisuall: [self.metadataOfCurrentVisuall mutableCopy]];
+    NSMutableSet *keysAdded = [[NSMutableSet alloc] init];
+    NSMutableSet *keysRemoved = [[NSMutableSet alloc] init];
+    NSMutableSet *keysInA = [self.sharedWithPrevious allKeys] ?
+    [NSMutableSet setWithArray:[self.sharedWithPrevious allKeys]] : [[NSMutableSet alloc] init];
+    NSMutableSet *keysInB = [self.metadataOfCurrentVisuall[@"shared-with"] allKeys] ?
+    [NSMutableSet setWithArray:[self.metadataOfCurrentVisuall[@"shared-with"] allKeys]] : [[NSMutableSet alloc] init];
+    [keysAdded setSet:keysInB];
+    [keysAdded minusSet:keysInA];
+    [keysRemoved setSet: keysInA];
+    [keysRemoved minusSet: keysInB];
+    NSLog(@"keys in A that are not in B: %@", keysAdded);
+    NSLog(@"keys in A that are not in B: %@", keysRemoved);
+    [StateUtilFirebase setSharedVisuall: self.metadataOfCurrentVisuall[@"key"] withEmails: [keysAdded allObjects]];
+    [StateUtilFirebase removeSharedVisuallInvite: self.metadataOfCurrentVisuall[@"key"] withEmails: [keysRemoved allObjects]];
+
 }
 
 

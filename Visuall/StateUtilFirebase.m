@@ -17,9 +17,6 @@
 #import "StateUtilFirebase+Update.h"
 #import <GoogleSignIn/GoogleSignIn.h>
 
-static NSMutableDictionary *__personalVisuallList;
-
-
 @interface StateUtilFirebase()
 
 @property FIRDatabaseReference *version01TableRef;
@@ -93,13 +90,11 @@ static NSMutableDictionary *__personalVisuallList;
 
 + (void) loadVisuallsListForCurrentUser
 {
-    __personalVisuallList = [[NSMutableDictionary alloc] init];
     NSString *userID = [[UserUtil sharedManager] userID];
     FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
     FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
-    [usersTableCurrentUser keepSynced:YES]; // not sure if this is helping keep data btw firebase and ipad/iphone in sync
-//    FIRDatabaseReference *personalVisuallsListRef = [usersTableCurrentUser child:@"visualls-personal"];
-    
+    [usersTableCurrentUser keepSynced:YES]; // // TODO (Apr 24, 2017): not sure if this is helping keep data btw firebase and ipad/iphone in sync
+
     [usersTableCurrentUser observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
      {
          if ( ![snapshot exists] )  // we have a new user
@@ -108,14 +103,14 @@ static NSMutableDictionary *__personalVisuallList;
          } else
          {
              NSLog(@"My user info: %@", snapshot.value );
-             NSLog(@"Number of visualls: %u", [[snapshot.value[@"visualls-personal"] allKeys] count] );
+             NSLog(@"Number of visualls: %lu", [[snapshot.value[@"visualls-personal"] allKeys] count] );
              // TODO (Apr 22, 2017): Similar to below, go to shared-visuall-invites and get list of shared visuall refs
              // [self getVisuallDetailsForRef: currentVisuallRef andSetToList: __personalVisuallList];
 
              for (NSString *key in snapshot.value[@"visualls-personal"])
              {
                  FIRDatabaseReference *currentVisuallRef = [[version01TableRef child: @"visualls"] child: key];
-                 [self getVisuallDetailsForRef: currentVisuallRef andSetToList: __personalVisuallList];
+                 [self getVisuallDetailsForRef: currentVisuallRef];
              }
              [[[version01TableRef child:@"users"] child: userID] updateChildValues:@{@"date_last_visit": [FIRServerValue timestamp]}];
          }
@@ -123,15 +118,34 @@ static NSMutableDictionary *__personalVisuallList;
      } withCancelBlock:^(NSError * _Nonnull error) {
          NSLog(@"%@", error.localizedDescription);
      }];
-    
-    // TODO (Apr 16, 2017): Offline
+    [self loadSharedVisuallInvites];
+}
+
++ (void) loadSharedVisuallInvites
+{
+    FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    NSString *emailKey = [[[[GIDSignIn sharedInstance] currentUser] profile] email];
+    emailKey = [emailKey stringByReplacingOccurrencesOfString: @"." withString:@"%2E"];
+    FIRDatabaseReference *sharedVisuallInvites = [[version01TableRef child: @"shared-visuall-invites"] child: emailKey];
+    [sharedVisuallInvites observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+    {
+        if ([snapshot exists])
+        {
+            for (NSString *key in [snapshot.value allKeys])
+            {
+                NSLog(@"Invite list: %@", key );
+                FIRDatabaseReference *currentVisuallRef = [[version01TableRef child: @"visualls"] child: key];
+                [self getVisuallDetailsForRef: currentVisuallRef];
+            }
+        }
+    }];
 }
 
 /*
  * Name:
  * Description:
  */
-+ (void) getVisuallDetailsForRef: (FIRDatabaseReference *) ref andSetToList: (NSMutableDictionary *) list
++ (void) getVisuallDetailsForRef: (FIRDatabaseReference *) ref
 {
     FIRDatabaseReference *metadataRef = [ref child: @"metadata"];
     
@@ -144,14 +158,14 @@ static NSMutableDictionary *__personalVisuallList;
          {
              NSMutableDictionary *dict = [snapshot.value mutableCopy];
             [dict setValuesForKeysWithDictionary:@{@"key": ref.key}];
-            [list setValue: snapshot.value[@"title"] forKey: snapshot.key];
+//            [list setValue: snapshot.value[@"title"] forKey: snapshot.key];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: dict];
          }
          else
          {
-           [self getVisuallDetailsForRefOld: ref andSetToList: list];
+           [self getVisuallDetailsForRefOld: ref];
          }
-         NSLog(@"\n getVisuallDetailsForRef - My title: %@", list[snapshot.key]);
+
          
      } withCancelBlock:^(NSError * _Nonnull error) {
          NSLog(@"getVisuallDetailsForRef: %@", error.localizedDescription);
@@ -163,20 +177,17 @@ static NSMutableDictionary *__personalVisuallList;
  * Name:
  * Description:
  */
-+ (void) getVisuallDetailsForRefOld: (FIRDatabaseReference *) ref andSetToList: (NSMutableDictionary *) list
++ (void) getVisuallDetailsForRefOld: (FIRDatabaseReference *) ref
 {
     FIRDatabaseReference *titleRef = [ref child: @"title"];
     
     [titleRef observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
     {
         NSString *title = snapshot.value;
-        [list setValue: title forKey: snapshot.key];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"personalVisuallDidLoad" object: nil userInfo: @{
                                                                                                                      @"key": ref.key,
                                                                                                                      @"title": title
                                                                                                                      }];
-        NSLog(@"\n getVisuallDetailsForRef - My title: %@", list[snapshot.key]);
-        
     } withCancelBlock:^(NSError * _Nonnull error) {
         NSLog(@"getVisuallDetailsForRef: %@", error.localizedDescription);
         NSLog(@"for key: %@", ref.key);

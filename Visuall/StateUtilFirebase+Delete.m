@@ -12,11 +12,27 @@
 
 @implementation StateUtilFirebase (Delete)
 
+//+ (void) setSharedVisuall: (NSString *) visuallKey withEmails: (NSArray *) emails
+
++ (void) removeSharedVisuallInvite: (NSString *) visuallKey withEmails: (NSArray *) emails
+{
+    FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    FIRDatabaseReference *sharedVisuallInvites = [version01TableRef child: @"shared-visuall-invites"];
+    FIRDatabaseReference *emailVisuallKeyRef;
+    for (NSString *email in emails)
+    {
+        emailVisuallKeyRef = [[sharedVisuallInvites child: email] child: visuallKey];
+        [emailVisuallKeyRef removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref)
+        {
+            NSLog(@"\n removeSharedVisuallInvite invited %@:", emailVisuallKeyRef.key);
+        }];
+    }
+}
+
 /*
  * Name:
  * Description: Removes Visuall from Visuall's list AND
  */
-
 + (void) removeVisuall: (NSString *) key
 {
     NSString *userID = [[UserUtil sharedManager] userID];
