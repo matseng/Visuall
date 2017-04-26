@@ -127,7 +127,7 @@
     NSString *emailKey = [[[[GIDSignIn sharedInstance] currentUser] profile] email];
     emailKey = [emailKey stringByReplacingOccurrencesOfString: @"." withString:@"%2E"];
     FIRDatabaseReference *sharedVisuallInvites = [[version01TableRef child: @"shared-visuall-invites"] child: emailKey];
-    [sharedVisuallInvites observeSingleEventOfType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
+    [sharedVisuallInvites observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
     {
         if ([snapshot exists])
         {

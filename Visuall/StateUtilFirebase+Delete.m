@@ -27,7 +27,7 @@
             NSLog(@"\n removeSharedVisuallInvite invited %@:", emailVisuallKeyRef.key);
         }];
     }
-    [self removeSharedWith: visuallKey withEmails: emails];
+//    [self removeSharedWith: visuallKey withEmails: emails];  // Not currently need bc taken care of (deleted) by + (void) updateMetadataVisuall: (NSMutableDictionary *) dict
 }
 
 + (void) removeSharedWith: (NSString *) visuallKey withEmails: (NSArray *) emails

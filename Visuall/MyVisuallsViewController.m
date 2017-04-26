@@ -119,8 +119,17 @@
     [StateUtilFirebase updateMetadataVisuall: [self.metadataOfCurrentVisuall mutableCopy]];
     NSMutableSet *keysAdded = [[NSMutableSet alloc] init];
     NSMutableSet *keysRemoved = [[NSMutableSet alloc] init];
-    NSMutableSet *keysInA = (self.sharedWithPrevious != [NSNull null]) ?
-    [NSMutableSet setWithArray:[self.sharedWithPrevious allKeys]] : [[NSMutableSet alloc] init];
+
+    NSMutableSet *keysInA;
+    if ( self.sharedWithPrevious != [NSNull null] && self.sharedWithPrevious[@"shared-with"] != [NSNull null] )
+    {
+        keysInA = [NSMutableSet setWithArray:[self.sharedWithPrevious allKeys]];
+    }
+    else
+    {
+        keysInA = [[NSMutableSet alloc] init];
+    }
+
     NSMutableSet *keysInB = (self.metadataOfCurrentVisuall[@"shared-with"] != [NSNull null]) ?
     [NSMutableSet setWithArray:[self.metadataOfCurrentVisuall[@"shared-with"] allKeys]] : [[NSMutableSet alloc] init];
     [keysAdded setSet:keysInB];
@@ -156,7 +165,18 @@
 
 - (NSIndexPath *) appendVisuallToList: (NSDictionary *) dict
 {
+    
+    for (NSDictionary *iterDict in self.recipes)  // TODO (Apr 25, 2017): Brute force method for updating metadata in list of visualls
+    {
+        if(iterDict[@"key"] == dict[@"key"] || [(NSString *) iterDict[@"key"] isEqualToString: (NSString *) dict[@"key"]] )
+        {
+            [iterDict setValuesForKeysWithDictionary: dict];
+            [self.tableView reloadData];
+            return nil;
+        }
+    }
     [self.recipes addObject: dict];
+    
     [self.tableView beginUpdates];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:self.recipes.count - 1 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[ip]
