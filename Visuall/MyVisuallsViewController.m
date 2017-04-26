@@ -24,6 +24,7 @@
 @implementation MyVisuallsViewController
 {
 //    NSArray *self.recipes;
+    UIRefreshControl *__refreshControl;
 }
 
 - (void) viewDidLoad {
@@ -57,6 +58,9 @@
     [self.view addSubview: self.av];
     [self.av startAnimating];
     
+    __refreshControl = [[UIRefreshControl alloc]init];
+    [self.tableView addSubview: __refreshControl];
+    [__refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void) viewWillAppear:(BOOL) animated
@@ -69,6 +73,16 @@
         self.indexPath = nil;
         self.segue = nil;
     }
+}
+
+- (void) refreshTable
+{
+    NSLog(@"\n Now refreshing table");
+    [self.recipes removeAllObjects];
+//    self.tableView.dataSource = nil;
+    [self.tableView reloadData];
+    [StateUtilFirebase loadVisuallsListForCurrentUser];
+    [__refreshControl endRefreshing];
 }
 
 /*
@@ -250,6 +264,7 @@
     cell.textLabel.text = [self.recipes objectAtIndex:indexPath.row][@"title"];
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    
     return cell;
 }
 
