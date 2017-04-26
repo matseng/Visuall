@@ -128,6 +128,6 @@ static void (^__callbackNoteItem)(NoteItem2 *ni);
 
 - (BOOL) isSnapshotFromLocalDevice: (FIRDataSnapshot*) snapshot;
 
-- (void) removeNoteGivenKey: (NSString *) key;
+- (void) removeNoteKeyFromParentVisuall: (NSString *) key;
 
 @end

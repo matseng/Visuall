@@ -43,7 +43,10 @@
         self.navigationItem.rightBarButtonItem = doneButton;
         self.TitleTextField.text = self.metadata[@"title"];
         self.navigationItem.title = self.TitleTextField.text;
-        self.sharedWithTextArea.text = [[[self.metadata[@"shared-with"] allKeys] componentsJoinedByString: @", "] stringByReplacingOccurrencesOfString:@"%2E" withString:@"."];
+        if ( self.metadata[@"shared-with"] != [NSNull null])
+        {
+            self.sharedWithTextArea.text = [[[self.metadata[@"shared-with"] allKeys] componentsJoinedByString: @", "] stringByReplacingOccurrencesOfString:@"%2E" withString:@"."];
+        }
     }
     else  // setup for new visuall
     {

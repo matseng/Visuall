@@ -136,6 +136,7 @@
                 NSLog(@"Invite list: %@", key );
                 FIRDatabaseReference *currentVisuallRef = [[version01TableRef child: @"visualls"] child: key];
                 [self getVisuallDetailsForRef: currentVisuallRef];
+//                [self updateWritePermissionForNewUser:currentVisuallRef.key];
             }
         }
     }];
@@ -304,6 +305,21 @@
     FIRDatabaseReference *currentVisuallMetadataRef = [currentVisuallRef child: @"metadata"];
     [dict removeObjectForKey: @"key"];
     [currentVisuallMetadataRef updateChildValues: dict];
+}
+
++ (void) updateWritePermissionForNewUser: (NSString *) visuallKey
+{
+    NSString *userID = [[UserUtil sharedManager] userID];
+    FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    FIRDatabaseReference *usersTableCurrentUser = [[version01TableRef child:@"users"] child: userID];
+    FIRDatabaseReference *visuallsPersonalRef =  [usersTableCurrentUser child: @"visualls-personal"];
+    FIRDatabaseReference *visuallsTableRef = [version01TableRef child: @"visualls"];
+//    FIRDatabaseReference *currentVisuallRef = [visuallsTableRef child: dict[@"key"]];
+    FIRDatabaseReference *currentVisuallRef = [visuallsTableRef child: visuallKey];
+    FIRDatabaseReference *currentVisuallWritePermissionRef = [currentVisuallRef child: @"write-permission"];
+//    FIRDatabaseReference *currentVisuallWritePermissionCurrentUserIDRef = [currentVisuallWritePermissionRef child: [FIRAuth auth].currentUser.uid];
+//    [dict removeObjectForKey: @"key"];
+    [currentVisuallWritePermissionRef updateChildValues:@{[FIRAuth auth].currentUser.uid : @1}];
 }
 
 - (void) loadPublicVisuallsList
@@ -904,24 +920,8 @@
     }
 }
 
-- (void) removeNoteGivenKey: (NSString *) key
+- (void) removeNoteKeyFromParentVisuall: (NSString *) key
 {
-    // TODO (Aug 11, 2016): Consider changing operations below to nested callbacks or promises.
-    // Also need to delete note from NotesCollection and set note to nil via [ni delete:nil];
-    // Step 1 of 3: Delete note from notes table
-    FIRDatabaseReference *deleteNoteRef = [self.notesTableRef child: key];
-    [deleteNoteRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
-        NSLog(@"error: %@", error);
-        NSLog(@"key: %@", ref.key);
-        if (error) {
-            NSLog(@"Note could NOT be removed.");
-        } else {
-            NSLog(@"Note removed successfully.");
-            //            [ni removeFromSuperview];
-        }
-    }];
-    
-    // Step 2 of 3: Delete note key from current visuall table
     FIRDatabaseReference *deleteNoteKeyFromVisuallRef = [[self.visuallsTable_currentVisuallRef child: @"notes"] child: key];
     [deleteNoteKeyFromVisuallRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
         if (error) {
@@ -931,7 +931,6 @@
         }
     }];
     
-    // Step 3 of 3: Decrement notes counter in visuall table
     FIRDatabaseReference *notesCounterRef = [self.visuallsTable_currentVisuallRef child: @"notes_counter"];
     [self increaseOrDecreaseCounter: notesCounterRef byAmount:-1];
     

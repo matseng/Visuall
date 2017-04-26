@@ -14,11 +14,22 @@
 {
     [noteRef observeEventType: FIRDataEventTypeValue withBlock:^(FIRDataSnapshot *snapshot)
      {
+         if (snapshot.value == [NSNull null] && !self.allNotesLoadedBOOL)
+         {
+             --self.numberOfNotesToBeLoaded;
+             [self removeNoteKeyFromParentVisuall: noteRef.key];  // Clean up method for keys with no corresponding notes
+            return;
+         }
+         
          if (snapshot.value == [NSNull null])
          {
              --self.numberOfNotesToBeLoaded;
-             [self removeNoteGivenKey: noteRef.key];
-            return;
+             NoteItem2 *ni = [self.notesCollection getNoteItemFromKey: snapshot.key];
+             if (ni)
+             {
+                 [ni removeFromSuperview];
+             }
+             return;
          }
          
          if ([self isSnapshotFromLocalDevice: snapshot] && self.allNotesLoadedBOOL)

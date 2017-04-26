@@ -27,6 +27,29 @@
             NSLog(@"\n removeSharedVisuallInvite invited %@:", emailVisuallKeyRef.key);
         }];
     }
+    [self removeSharedWith: visuallKey withEmails: emails];
+}
+
++ (void) removeSharedWith: (NSString *) visuallKey withEmails: (NSArray *) emails
+{
+    FIRDatabaseReference *version01TableRef = [[[FIRDatabase database] reference] child:@"version_01"];
+    FIRDatabaseReference *sharedWithRef = [version01TableRef child: @"metadata/shared-with"];
+    FIRDatabaseReference *sharedWithEmailRef;
+    for (NSString *email in emails)
+    {
+        sharedWithEmailRef = [sharedWithRef child: email];
+        [sharedWithEmailRef removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref)
+         {
+             if(error)
+             {
+                 NSLog(@"\n error removeSharedWith: %@", error);
+             }
+             else
+             {
+                 NSLog(@"\n Success removeSharedWith %@:", sharedWithEmailRef.key);
+             }
+         }];
+    }
 }
 
 /*
@@ -154,7 +177,9 @@
         // Step 1 of 3: Delete note from notes table
         NoteItem2 *ni = [view getNoteItem];
         FIRDatabaseReference *deleteNoteRef = [self.notesTableRef child: ni.note.key];
-        [deleteNoteRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref) {
+        
+        [deleteNoteRef removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref)
+        {
             NSLog(@"error: %@", error);
             NSLog(@"key: %@", ref.key);
             if (error) {
@@ -174,6 +199,7 @@
                 NSLog(@"Note key removed successfully.");
             }
         }];
+        
         
         // Step 3 of 3: Decrement notes counter in visuall table
 //        FIRDatabaseReference *notesCounterRef = [self.visuallsTable_currentVisuallRef child: @"notes_counter"];

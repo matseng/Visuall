@@ -119,21 +119,20 @@
     [StateUtilFirebase updateMetadataVisuall: [self.metadataOfCurrentVisuall mutableCopy]];
     NSMutableSet *keysAdded = [[NSMutableSet alloc] init];
     NSMutableSet *keysRemoved = [[NSMutableSet alloc] init];
-    NSMutableSet *keysInA = [self.sharedWithPrevious allKeys] ?
+    NSMutableSet *keysInA = (self.sharedWithPrevious != [NSNull null]) ?
     [NSMutableSet setWithArray:[self.sharedWithPrevious allKeys]] : [[NSMutableSet alloc] init];
-    NSMutableSet *keysInB = [self.metadataOfCurrentVisuall[@"shared-with"] allKeys] ?
+    NSMutableSet *keysInB = (self.metadataOfCurrentVisuall[@"shared-with"] != [NSNull null]) ?
     [NSMutableSet setWithArray:[self.metadataOfCurrentVisuall[@"shared-with"] allKeys]] : [[NSMutableSet alloc] init];
     [keysAdded setSet:keysInB];
     [keysAdded minusSet:keysInA];
     [keysRemoved setSet: keysInA];
     [keysRemoved minusSet: keysInB];
-    NSLog(@"keys in A that are not in B: %@", keysAdded);
-    NSLog(@"keys in A that are not in B: %@", keysRemoved);
+    NSLog(@"keysAdded: %@", keysAdded);
+    NSLog(@"keysRemoved: %@", keysRemoved);
     [StateUtilFirebase setSharedVisuall: self.metadataOfCurrentVisuall[@"key"] withEmails: [keysAdded allObjects]];
     [StateUtilFirebase removeSharedVisuallInvite: self.metadataOfCurrentVisuall[@"key"] withEmails: [keysRemoved allObjects]];
 
 }
-
 
 - (void) personalVisuallsDidLoadNotification:(NSNotification*) notification
 {
