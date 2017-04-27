@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewVisuallViewController : UIViewController <UITextViewDelegate>
+@interface NewVisuallViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSMutableDictionary *metadata;
 
 @property (weak, nonatomic) IBOutlet UILabel *createdByLabel;
 
 @property (weak, nonatomic) IBOutlet UITextView *sharedWithTextArea;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
 
 @end
