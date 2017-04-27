@@ -37,7 +37,7 @@
         NSString *providerID = profile.providerID;
         NSString *uid = profile.uid;  // Provider-specific UID
         self.displayName = profile.displayName;
-        email = profile.email;
+        self.email = profile.email;
         //        provider = profile.email;
         NSURL *photoURL = profile.photoURL;
         NSLog(@"userID: %@", self.userID);

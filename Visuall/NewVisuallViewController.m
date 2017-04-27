@@ -36,7 +36,7 @@
     
     if (self.metadata && self.metadata[@"key"])
     {
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Save & Close"
                                                                        style:UIBarButtonItemStyleDone
                                                                       target:self
                                                                       action:@selector(doneEditingHandler)];
@@ -50,7 +50,7 @@
     }
     else  // setup for new visuall
     {
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Save & Close"
                                                                        style:UIBarButtonItemStyleDone
                                                                       target:self
                                                                       action:@selector(doneHandler)];
@@ -60,12 +60,23 @@
         self.metadata = [[NSMutableDictionary alloc] init];
     }
     
-    self.createdByLabel.text =  [[UserUtil sharedManager] displayName]; // TODO (Apr 20, 2017): replace later in above if else (if visuall was created by another)
+//    self.createdByLabel.text = [NSString stringWithFormat:@" %@ (%@) ", [[UserUtil sharedManager] displayName], [[UserUtil sharedManager] email]];
+    self.createdByLabel.text = [NSString stringWithFormat:@" %@ %@ (%@) ", self.metadata[@"created-by-first-name"], self.metadata[@"created-by-last-name"], self.metadata[@"created-by-email"]];
+//    [self.createdByLabel sizeToFit];
+    self.createdByLabel.adjustsFontSizeToFitWidth = true;
+//    self.createdByLabel.text =  [[[UserUtil sharedManager] displayName] stringByAppendingString: [[UserUtil sharedManager] email]]; // TODO (Apr 20, 2017): replace later in above if else (if visuall was created by another)
+//    self.createdByLabel.layer.borderWidth = 1.0f;
+//    self.createdByLabel.layer.borderColor = self.TitleTextField.layer.borderColor;
+//    self.createdByLabel.layer.cornerRadius = self.TitleTextField.layer.cornerRadius;
+//    self.createdByLabel.layer.cornerRadius = 8.0f;
+    
+    
     [self.TitleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     self.sharedWithTextArea.layer.borderWidth = 1.0f;
-    self.sharedWithTextArea.layer.borderColor = [[UIColor grayColor] CGColor];
+    self.sharedWithTextArea.layer.cornerRadius = 4.0f;
+    self.sharedWithTextArea.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     self.sharedWithTextArea.delegate = self;
     self.sharedWithArrayOfEmailAddresses = [NSNull null];
 }
@@ -162,28 +173,17 @@
     return result;
 }
 
-//- (NSString *) getStringFromDictionaryKeys: (NSDictionary *) dict withDelimiter: (NSString *) string
-//{
-//    NSString *result = [[NSString alloc] init];
-//    for (NSString *key in [dict allKeys]) {
-//        [result stringByAppendingString: key];
-//    }
-//}
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)onDeleteButtonPressed:(id)sender
 {
@@ -211,6 +211,7 @@
  */
 - (void) updateSubviews
 {
+    return;
     UIDeviceOrientation Orientation=[[UIDevice currentDevice]orientation];
     if(Orientation==UIDeviceOrientationLandscapeLeft || Orientation==UIDeviceOrientationLandscapeRight)
     {

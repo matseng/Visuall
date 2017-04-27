@@ -18,6 +18,9 @@
 
 @property (strong) NSString *displayName;
 
+@property (strong) NSString *email;
+
+
 @property BOOL autoSignInIndicator;
 
 +(id) sharedManager;
