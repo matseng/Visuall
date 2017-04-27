@@ -262,10 +262,52 @@
     }
     
     cell.textLabel.text = [self.recipes objectAtIndex:indexPath.row][@"title"];
-//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     
+    [self addSharingIndicatorToCell: cell andIndexPath: indexPath];
     return cell;
+}
+
+- (void) addSharingIndicatorToCell: (UITableViewCell *) cell andIndexPath: (NSIndexPath *) indexPath
+{
+    // Remove sharing indicator button from re-useable cell
+    if ([self.recipes objectAtIndex:indexPath.row][@"shared-with"] == [NSNull null])
+    {
+        UIView *subview = [cell subviews][0];
+        for (UIView *subview in [cell.contentView subviews])
+        {
+            if (subview.tag == 2)  // shared-with indicator button
+            {
+                [subview removeFromSuperview];
+            }
+        }
+        return;
+    }
+
+    NSDictionary *sharedWith = [self.recipes objectAtIndex:indexPath.row][@"shared-with"];
+    
+    if ([sharedWith count] > 0)
+    {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        button.tag = 2;
+        UIImage *sharingIndicator = [UIImage imageNamed: @"User Groups-50"];
+        float buttonLength = 24.0;
+        button.frame = CGRectMake(cell.frame.origin.x + cell.frame.size.width - 100, (cell.frame.size.height - buttonLength) / 2, buttonLength, buttonLength);
+        //    [button setTitle:@"World" forState:UIControlStateNormal];
+        [button setImage:sharingIndicator forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(onCustomAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+        button.backgroundColor= [UIColor clearColor];
+        [cell.contentView addSubview:button];
+    }
+}
+
+- (void) onCustomAccessoryTapped:(UIButton *) sender
+{
+    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
+    NSDictionary *sharedWith = [self.recipes objectAtIndex:indexPath.row][@"shared-with"];
+    NSLog(@"\n onCustomAccessoryTapped, sharedWith: %@", sharedWith);
+    [self tableView: self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
