@@ -30,6 +30,8 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
+    [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
+    
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"newUserWithNoVisualls" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"personalVisuallDidLoad" object:nil];
@@ -103,7 +105,6 @@
     }
     else if ([segue.identifier isEqualToString: @"unwindFromEditVisuall"])
     {
-        // TODO (Mar 10, 2017): Update local state and list view to show current title
         self.recipes[self.indexPath.row] = self.metadataOfCurrentVisuall;
         [self.tableView reloadData];
         [self.tableView selectRowAtIndexPath: self.indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -286,14 +287,64 @@
         button.tag = 2;
         UIImage *sharingIndicator = [UIImage imageNamed: @"User Groups-50"];
         float buttonLength = 24.0;
+        
+        NSLog(@"addSharingIndicatorToCell: %@", NSStringFromCGRect(cell.frame));
+        
         button.frame = CGRectMake(cell.frame.origin.x + cell.frame.size.width - 100, (cell.frame.size.height - buttonLength) / 2, buttonLength, buttonLength);
-        button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;  // http://erkanyildiz.me/lab/autoresizingmask/
+//        button.frame = CGRectMake(cell.contentView.frame.origin.x + cell.contentView.frame.size.width - 100,
+//                                  (cell.contentView.frame.size.height - buttonLength) / 2,
+//                                  buttonLength,
+//                                  buttonLength);
         [button setImage:sharingIndicator forState:UIControlStateNormal];
         [button addTarget:self action:@selector(onCustomAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
         button.backgroundColor= [UIColor clearColor];
         [cell.contentView addSubview:button];
+        
+//        button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;  // http://erkanyildiz.me/lab/autoresizingmask/
+        [self addConstraintsToShareButton: button fromCell: cell];
     }
 }
+
+/*
+ * Name:
+ * Description: http://stackoverflow.com/questions/30590903/adding-constraints-programmatically-in-objective-c
+ */
+- (void) addConstraintsToShareButton: (UIButton *) button fromCell: (UITableViewCell *) cell
+{
+    float buttonLength = 24.0;
+    float heightOffset = (cell.frame.size.height - buttonLength) / 2;
+    
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    /* Leading space to superview */
+    NSLayoutConstraint *leftButtonXConstraint = [NSLayoutConstraint
+                                                 constraintWithItem:button attribute: NSLayoutAttributeRight
+                                                 relatedBy:NSLayoutRelationEqual toItem:button.superview attribute:
+                                                 NSLayoutAttributeRight multiplier:1.0 constant: 0];
+    /* Top space to superview Y*/
+    NSLayoutConstraint *leftButtonYConstraint = [NSLayoutConstraint
+                                                 constraintWithItem:button attribute:NSLayoutAttributeTop
+                                                 relatedBy:NSLayoutRelationEqual toItem:button.superview attribute:
+                                                 NSLayoutAttributeTop multiplier:1.0f constant: heightOffset];
+    /* Fixed width */
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:button
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1.0
+                                                                        constant:buttonLength];
+    /* Fixed Height */
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:button
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0
+                                                                         constant:buttonLength];
+    
+    [button.superview addConstraints:@[leftButtonXConstraint, leftButtonYConstraint, widthConstraint, heightConstraint]];
+}
+
 
 - (void) onCustomAccessoryTapped:(UIButton *) sender
 {
