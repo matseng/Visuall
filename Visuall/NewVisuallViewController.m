@@ -57,41 +57,40 @@
         [self.deleteButton removeFromSuperview];
         [self.TitleTextField becomeFirstResponder];
         self.metadata = [[NSMutableDictionary alloc] init];
+        self.metadata[@"created-by-first-name"] = [[UserUtil sharedManager] firstName];
+        self.metadata[@"created-by-last-name"] = [[UserUtil sharedManager] lastName];
+        self.metadata[@"created-by-email"] = [[UserUtil sharedManager] email];
     }
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                          action:@selector(dismissKeyboard)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+
     [self.outerContainer addGestureRecognizer: tap];
     
-//    self.createdByLabel.text = [NSString stringWithFormat:@" %@ (%@) ", [[UserUtil sharedManager] displayName], [[UserUtil sharedManager] email]];
-    self.createdByLabel.text = [NSString stringWithFormat:@" %@ %@ (%@) ", self.metadata[@"created-by-first-name"], self.metadata[@"created-by-last-name"], self.metadata[@"created-by-email"]];
-//    [self.createdByLabel sizeToFit];
+    self.createdByLabel.text = [NSString stringWithFormat:@"  %@ %@ (%@)  ", self.metadata[@"created-by-first-name"], self.metadata[@"created-by-last-name"], self.metadata[@"created-by-email"]];
     self.createdByLabel.adjustsFontSizeToFitWidth = true;
-//    self.createdByLabel.text =  [[[UserUtil sharedManager] displayName] stringByAppendingString: [[UserUtil sharedManager] email]]; // TODO (Apr 20, 2017): replace later in above if else (if visuall was created by another)
-//    self.createdByLabel.layer.borderWidth = 1.0f;
-//    self.createdByLabel.layer.borderColor = self.TitleTextField.layer.borderColor;
-//    self.createdByLabel.layer.cornerRadius = self.TitleTextField.layer.cornerRadius;
-//    self.createdByLabel.layer.cornerRadius = 8.0f;
+    self.createdByLabel.layer.borderWidth = 1.0f;
+    self.createdByLabel.layer.cornerRadius = 6.0f;
+    self.createdByLabel.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+
     
     self.TitleTextField.delegate = self;
     [self.TitleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     self.sharedWithTextArea.layer.borderWidth = 1.0f;
-    self.sharedWithTextArea.layer.cornerRadius = 4.0f;
+    self.sharedWithTextArea.layer.cornerRadius = 6.0f;
     self.sharedWithTextArea.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     self.sharedWithTextArea.delegate = self;
     self.sharedWithArrayOfEmailAddresses = [NSNull null];
-    
-//    self.scrollView.frame = self.view.bounds;
-//    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.scrollView addSubview: self.outerContainer];
-    self.scrollView.contentSize = self.outerContainer.frame.size;
-    
     [self updateSubviews];
 }
 
-
+- (void) dismissKeyboard
+{
+    [self.TitleTextField resignFirstResponder];
+    [self.sharedWithTextArea resignFirstResponder];
+}
 
 - (void) textFieldDidChange: (UITextField *) textField
 {
@@ -199,7 +198,7 @@
 
 - (IBAction)onDeleteButtonPressed:(id)sender
 {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle: nil message:[NSString stringWithFormat:@"Delete this Visuall?"] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle: nil message:[NSString stringWithFormat:@"Permanently delete this Visuall?"] preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
     {
@@ -217,21 +216,6 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-/*
- * Name: updateSubviews
- * Description: Re-centers subviews upon change of device orientation
- */
-- (void) updateSubviews
-{
-//    CGRect rect = self.outerContainer.frame;
-//    self.outerContainer.center = self.view.center;
-//    rect = self.outerContainer.frame;
-//    rect.origin.y = 0;
-//    self.outerContainer.frame = rect;
-    
-    [self resizeBackgroundScrollView];
-}
-
 - (void) OrientationDidChange:(NSNotification*)notification
 {
     UIDeviceOrientation Orientation=[[UIDevice currentDevice]orientation];
@@ -246,8 +230,9 @@
     }
 }
 
-- (void) resizeBackgroundScrollView
+- (void) updateSubviews
 {
+    [self.navigationController.navigationBar setTranslucent: NO];  // NOTE: Changing this parameter affects positioning, weird.
     float x = 0;
     float y = 0;
     float width = [[UIScreen mainScreen] bounds].size.width;
@@ -256,18 +241,17 @@
     float h1 = self.navigationController.navigationBar.frame.size.height;
     float h2 = self.tabBarController.tabBar.frame.size.height;
     height = height - h0 - h1 - h2;
-    self.scrollView.frame = CGRectMake(x, h0 + h1, width, height);
-//    self.scrollView.frame = CGRectMake(x, y, width, height);
+    [self.view addSubview: self.scrollView];
+    self.scrollView.frame = CGRectMake(0, 0, width, height);
     
     CGRect rect = self.outerContainer.frame;
     rect.origin.x = (width - rect.size.width) / 2;
-    rect.origin.y = -h0 - h1;  // hack... not sure why this doesn't work with 0
+//    rect.origin.y = -h0 - h1;  // hack... not sure why this doesn't work with 0
+    rect.origin.y = 0;
     self.outerContainer.frame = rect;
-}
-
-- (void) dismissKeyboard
-{
-    [self.sharedWithTextArea resignFirstResponder];
+    self.outerContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [self.scrollView addSubview: self.outerContainer];
+    self.scrollView.contentSize = self.outerContainer.frame.size;
 }
 
 @end

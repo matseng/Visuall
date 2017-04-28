@@ -37,6 +37,10 @@
         NSString *providerID = profile.providerID;
         NSString *uid = profile.uid;  // Provider-specific UID
         self.displayName = profile.displayName;
+        self.firstName = [[[[GIDSignIn sharedInstance] currentUser] profile] givenName];
+        self.lastName = [[[[GIDSignIn sharedInstance] currentUser] profile] familyName];
+        self.email = [[[[GIDSignIn sharedInstance] currentUser] profile] email];
+        
         self.email = profile.email;
         //        provider = profile.email;
         NSURL *photoURL = profile.photoURL;
@@ -54,7 +58,7 @@
 - (StateUtilFirebase *) getState
 {
     ViewController *vc = (ViewController *)[self topViewController];
-    if ( vc && vc.visuallState)
+    if ( vc && vc.visuallState != [NSNull null])
     {
         return vc.visuallState;
     }

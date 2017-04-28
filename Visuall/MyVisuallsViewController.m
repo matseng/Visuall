@@ -30,19 +30,13 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
-    self.tableView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-//    self.recipes = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];
-
-//    self.recipes = [NSMutableArray arrayWithObjects: @{@"title": @"n/a"}, nil];
-//    self.recipes = [NSMutableArray arrayWithObjects: nil, nil];
-    self.recipes = [[NSMutableArray alloc] init];
-    
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"newUserWithNoVisualls" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector:@selector(personalVisuallsDidLoadNotification:) name:@"personalVisuallDidLoad" object:nil];
-    [StateUtilFirebase loadVisuallsListForCurrentUser];
+
+
+//    [StateUtilFirebase loadVisuallsListForCurrentUser];
+    [self refreshTable];
     
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"+ New"
                                                                       style:UIBarButtonItemStyleDone
@@ -58,9 +52,11 @@
     [self.view addSubview: self.av];
     [self.av startAnimating];
     
+    /*
     __refreshControl = [[UIRefreshControl alloc]init];
     [self.tableView addSubview: __refreshControl];
     [__refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+     */
 }
 
 - (void) viewWillAppear:(BOOL) animated
@@ -77,7 +73,12 @@
 
 - (void) refreshTable
 {
+    self.tableView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.recipes = [[NSMutableArray alloc] init];
+    
     NSLog(@"\n Now refreshing table");
+    
     [self.recipes removeAllObjects];
 //    self.tableView.dataSource = nil;
     [self.tableView reloadData];
@@ -179,7 +180,6 @@
 
 - (NSIndexPath *) appendVisuallToList: (NSDictionary *) dict
 {
-    
     for (NSDictionary *iterDict in self.recipes)  // TODO (Apr 25, 2017): Brute force method for updating metadata in list of visualls
     {
         if(iterDict[@"key"] == dict[@"key"] || [(NSString *) iterDict[@"key"] isEqualToString: (NSString *) dict[@"key"]] )
@@ -189,12 +189,12 @@
             return nil;
         }
     }
-    [self.recipes addObject: dict];
-    
+
+    [self.recipes addObject: dict];  // vs. [self.recipes insertObject: dict atIndex: 0];  // [self.tableView reloadData];
     [self.tableView beginUpdates];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:self.recipes.count - 1 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[ip]
-                          withRowAnimation:UITableViewRowAnimationBottom];
+                          withRowAnimation:UITableViewRowAnimationTop];
     [self.tableView endUpdates];
     return ip;
 }
@@ -270,30 +270,24 @@
 
 - (void) addSharingIndicatorToCell: (UITableViewCell *) cell andIndexPath: (NSIndexPath *) indexPath
 {
-    // Remove sharing indicator button from re-useable cell
-    if ([self.recipes objectAtIndex:indexPath.row][@"shared-with"] == [NSNull null])
+    for (UIView *subview in [cell.contentView subviews])
     {
-        UIView *subview = [cell subviews][0];
-        for (UIView *subview in [cell.contentView subviews])
+        if (subview.tag == 2)  // shared-with indicator button
         {
-            if (subview.tag == 2)  // shared-with indicator button
-            {
-                [subview removeFromSuperview];
-            }
+            [subview removeFromSuperview];
         }
-        return;
     }
 
     NSDictionary *sharedWith = [self.recipes objectAtIndex:indexPath.row][@"shared-with"];
     
-    if ([sharedWith count] > 0)
+    if ( sharedWith != [NSNull null] && [sharedWith count] > 0)
     {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         button.tag = 2;
         UIImage *sharingIndicator = [UIImage imageNamed: @"User Groups-50"];
         float buttonLength = 24.0;
         button.frame = CGRectMake(cell.frame.origin.x + cell.frame.size.width - 100, (cell.frame.size.height - buttonLength) / 2, buttonLength, buttonLength);
-        //    [button setTitle:@"World" forState:UIControlStateNormal];
+        button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;  // http://erkanyildiz.me/lab/autoresizingmask/
         [button setImage:sharingIndicator forState:UIControlStateNormal];
         [button addTarget:self action:@selector(onCustomAccessoryTapped:) forControlEvents:UIControlEventTouchUpInside];
         button.backgroundColor= [UIColor clearColor];

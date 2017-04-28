@@ -18,6 +18,10 @@
 
 @property (strong) NSString *displayName;
 
+@property (strong) NSString *firstName;
+
+@property (strong) NSString *lastName;
+
 @property (strong) NSString *email;
 
 
