@@ -7,8 +7,13 @@
 //
 
 #import "NetworkingViewController.h"
+#import "WebViewJavascriptBridge.h"
+
+
 
 @interface NetworkingViewController ()
+
+@property WebViewJavascriptBridge* bridge;
 
 @end
 
@@ -33,7 +38,13 @@
 //    self.webView2.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
     [self.view addSubview:self.webView2];
     
+    if (_bridge) {
+        return;
+    }
+    
+    [WebViewJavascriptBridge enableLogging];
     self.bridge = [WebViewJavascriptBridge bridgeForWebView: self.webView2];
+    [_bridge setWebViewDelegate: self];
     
     [self.bridge registerHandler:@"ObjC Echo" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSLog(@"ObjC Echo called with: %@", data);
@@ -42,6 +53,7 @@
     [self.bridge callHandler:@"JS Echo" data:nil responseCallback:^(id responseData) {
         NSLog(@"ObjC received response: %@", responseData);
     }];
+    
 }
 
 - (IBAction) buttonPressed:(id)sender
@@ -51,7 +63,12 @@
 //    
 //    [self.webView stringByEvaluatingJavaScriptFromString:@"document.getElement‌​ById('myId').value = 'myNewValue'"];
 //    [self.webView stringByEvaluatingJavaScriptFromString:@"increaseCounter(5)"];
-    [self.webView2 evaluateJavaScript:@"increaseCounter(5)" completionHandler: nil];
+//    [self.webView2 evaluateJavaScript:@"increaseCounter(5)" completionHandler: nil];
+    
+    [self.bridge callHandler:@"JS Echo" data: @{@"myKey": @7} responseCallback:^(id responseData) {
+        NSLog(@"ObjC received response: %@", responseData);
+    }];
+
     
 }
 

@@ -29,13 +29,16 @@ window.onload = function() {
     setupWebViewJavascriptBridge(function(bridge) {
                                  
                                  /* Initialize your app here */
+//                                 __bridge = bridge;
                                  
                                  bridge.registerHandler('JS Echo', function(data, responseCallback) {
                                                         console.log("JS Echo called with:", data)
+                                                        data["myKey"] = 17;
                                                         responseCallback(data)
-                                                        })
+                                                        });
+                                 
                                  bridge.callHandler('ObjC Echo', {'key':'value'}, function responseCallback(responseData) {
                                                     console.log("JS received response:", responseData)
-                                                    })
+                                                    });
                                  })
 }

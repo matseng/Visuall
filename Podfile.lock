@@ -53,6 +53,7 @@ PODS:
   - NKOColorPickerView (0.5)
   - RegExCategories (1.0)
   - SevenSwitch (1.4.0)
+  - WebViewJavascriptBridge (6.0.2)
 
 DEPENDENCIES:
   - Firebase (>= 2.5.1)
@@ -63,6 +64,7 @@ DEPENDENCIES:
   - NKOColorPickerView
   - RegExCategories (~> 1.0)
   - SevenSwitch (~> 1.4)
+  - WebViewJavascriptBridge (~> 6.0)
 
 SPEC CHECKSUMS:
   Firebase: 6250071f0e2440a5c4c67b8cb6b868f868237ac3
@@ -82,5 +84,8 @@ SPEC CHECKSUMS:
   NKOColorPickerView: 895ca86fe5bd16f27c311ce8f5888907efee29ad
   RegExCategories: e68befacacd5bda853c88f70ec745cb2d0cfb89c
   SevenSwitch: e992e56e2e7f401eb00538b9fa92bf848bacbe27
+  WebViewJavascriptBridge: 791ee0e26d1bf15efe5fb7fb9666a71a19b89d77
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: f41eaa7caf02b8539341a3c99e490c8407fa4292
+
+COCOAPODS: 1.2.1

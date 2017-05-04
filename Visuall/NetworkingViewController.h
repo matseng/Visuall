@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-#import "WebViewJavascriptBridge.h"
 
-@interface NetworkingViewController : UIViewController
 
-@property WebViewJavascriptBridge* bridge;
+@interface NetworkingViewController : UIViewController<WKNavigationDelegate>
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 
