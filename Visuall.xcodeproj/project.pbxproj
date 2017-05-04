@@ -23,6 +23,9 @@
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
+		713DE2531EBAA689006F5975 /* NetworkingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 713DE2521EBAA689006F5975 /* NetworkingViewController.m */; };
+		713DE2551EBAA784006F5975 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 713DE2541EBAA784006F5975 /* index.html */; };
+		713DE2571EBAAA1B006F5975 /* demo.js in Resources */ = {isa = PBXBuildFile; fileRef = 713DE2561EBAAA1B006F5975 /* demo.js */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
 		714847291D94B72200E73A7A /* FDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847221D94B72200E73A7A /* FDViewController.m */; };
 		7148472A1D94B72200E73A7A /* FDDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847241D94B72200E73A7A /* FDDrawView.m */; };
@@ -151,6 +154,10 @@
 		713D0D5C1CC18CAB00878EAE /* Note2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note2.m; sourceTree = "<group>"; };
 		713D0D5E1CC6AE4F00878EAE /* Group2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group2.h; sourceTree = "<group>"; };
 		713D0D5F1CC6AE4F00878EAE /* Group2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group2.m; sourceTree = "<group>"; };
+		713DE2511EBAA689006F5975 /* NetworkingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkingViewController.h; sourceTree = "<group>"; };
+		713DE2521EBAA689006F5975 /* NetworkingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkingViewController.m; sourceTree = "<group>"; };
+		713DE2541EBAA784006F5975 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		713DE2561EBAAA1B006F5975 /* demo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = demo.js; sourceTree = "<group>"; };
 		71443C651C6D5DB9006695F7 /* TouchDownGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchDownGestureRecognizer.h; sourceTree = "<group>"; };
 		71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchDownGestureRecognizer.m; sourceTree = "<group>"; };
 		714847211D94B72200E73A7A /* FDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDViewController.h; sourceTree = "<group>"; };
@@ -354,6 +361,7 @@
 			children = (
 				712EC95B1BEAF21500ED6803 /* AppDelegate.h */,
 				712EC95C1BEAF21500ED6803 /* AppDelegate.m */,
+				713DE24A1EBAA1C9006F5975 /* Javascript */,
 				71FD2EF51D6CB71D00CA5365 /* OtherViewControllers */,
 				71FD2EF61D6CB76300CA5365 /* ViewController */,
 				71710A811D5D033C0038D883 /* Menus */,
@@ -407,6 +415,15 @@
 				712EC9721BEAF21500ED6803 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		713DE24A1EBAA1C9006F5975 /* Javascript */ = {
+			isa = PBXGroup;
+			children = (
+				713DE2541EBAA784006F5975 /* index.html */,
+				713DE2561EBAAA1B006F5975 /* demo.js */,
+			);
+			name = Javascript;
 			sourceTree = "<group>";
 		};
 		7148470E1D94B2F900E73A7A /* Firebase Drawing */ = {
@@ -555,6 +572,8 @@
 		71FD2EF51D6CB71D00CA5365 /* OtherViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				713DE2511EBAA689006F5975 /* NetworkingViewController.h */,
+				713DE2521EBAA689006F5975 /* NetworkingViewController.m */,
 				71E1AF601D4C278900B818A0 /* WelcomeViewController.h */,
 				71E1AF611D4C278900B818A0 /* WelcomeViewController.m */,
 				71E1AF631D4C325400B818A0 /* TabBarViewController.h */,
@@ -729,6 +748,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				713DE2571EBAAA1B006F5975 /* demo.js in Resources */,
 				71C23F2D1D21F0FC00D53E0C /* Archers Arrow-50.png in Resources */,
 				716328BD1D260798009DF56B /* Archers-Arrowhead.png in Resources */,
 				716328B91D25F257009DF56B /* Sign Up-50.png in Resources */,
@@ -750,6 +770,7 @@
 				71D96BD21D2D974C00CD1C49 /* Reading-50.png in Resources */,
 				71D96BD61D2DA58000CD1C49 /* Info-50.png in Resources */,
 				712EC9681BEAF21500ED6803 /* LaunchScreen.xib in Resources */,
+				713DE2551EBAA784006F5975 /* index.html in Resources */,
 				71FD2EE01D5E7F5000CA5365 /* Decrease Font Filled-50.png in Resources */,
 				716328B71D25F244009DF56B /* Attach-50.png in Resources */,
 				71D96BE91D301D7A00CD1C49 /* Globe-50.png in Resources */,
@@ -848,6 +869,7 @@
 				885AFD7A1C0114FD00F89DE5 /* Visuall_CoreData.xcdatamodeld in Sources */,
 				88ED06221C05567E00C0486D /* GroupsCollection.m in Sources */,
 				711C1B5A1EAC243B00178782 /* StateUtilFirebase+Create.m in Sources */,
+				713DE2531EBAA689006F5975 /* NetworkingViewController.m in Sources */,
 				712682031D49997700A0A2F7 /* ScrollViewMod.m in Sources */,
 				71FD2EFE1D74DDF900CA5365 /* Collection.m in Sources */,
 				7116A2681E61199400FED276 /* NewVisuallViewController.m in Sources */,
