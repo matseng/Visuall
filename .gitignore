@@ -20,6 +20,8 @@ xcuserdata/
 ## Other
 *.moved-aside
 *.xcuserstate
+Visuall.xcworkspace/xcuserdata/michaeltseng.xcuserdatad/UserInterfaceState.xcuserstate
+Visuall.xcworkspace/xcuserdata/michaeltseng.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
 
 ## Obj-C/Swift specific
 *.hmap
