@@ -1,5 +1,6 @@
 // demo.js
 
+var __bridge;
 var counter = 0;
 
 function increaseCounter (num) {
@@ -9,6 +10,12 @@ function increaseCounter (num) {
     }
     counter = counter + num;
     document.getElementById('myId').value = counter;
+    
+    if (__bridge) {
+    __bridge.callHandler('ObjC Echo', {'key': counter}, function responseCallback(responseData) {
+                       console.log("JS received response:", responseData)
+                       });
+    }
 }
 
 function setupWebViewJavascriptBridge(callback) {
@@ -29,7 +36,7 @@ window.onload = function() {
     setupWebViewJavascriptBridge(function(bridge) {
                                  
                                  /* Initialize your app here */
-//                                 __bridge = bridge;
+                                 __bridge = bridge;
                                  
                                  bridge.registerHandler('JS Echo', function(data, responseCallback) {
                                                         console.log("JS Echo called with:", data)
