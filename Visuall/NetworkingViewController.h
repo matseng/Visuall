@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
+#import "WebViewJavascriptBridge.h"
 
 @interface NetworkingViewController : UIViewController
 
+@property WebViewJavascriptBridge* bridge;
+
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
+
+@property(strong,nonatomic) WKWebView *webView2;
 
 @property (strong, nonatomic) IBOutlet UITextField *textField;
 

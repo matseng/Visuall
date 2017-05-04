@@ -21,6 +21,8 @@ pod 'RegExCategories', '~> 1.0'
 
 pod 'NKOColorPickerView'
 
+pod 'WebViewJavascriptBridge', '~> 5.0'
+
 target 'Visuall' do
 
 end

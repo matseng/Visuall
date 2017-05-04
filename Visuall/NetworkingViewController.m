@@ -24,23 +24,35 @@
 //    NSURL *url = [NSURL URLWithString:urlString];
 //    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
     
+    
     NSString *localURL = [NSBundle pathForResource:@"index" ofType:@"html" inDirectory: [[NSBundle mainBundle] bundlePath]];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:localURL]];
     
-    [self.webView loadRequest:urlRequest];
-//    [self.view addSubview:webView];
+    self.webView2 = [[WKWebView alloc] initWithFrame: self.webView.frame];
+    [self.webView2 loadRequest: urlRequest];
+//    self.webView2.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+    [self.view addSubview:self.webView2];
     
+    self.bridge = [WebViewJavascriptBridge bridgeForWebView: self.webView2];
     
+    [self.bridge registerHandler:@"ObjC Echo" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@"ObjC Echo called with: %@", data);
+        responseCallback(data);
+    }];
+    [self.bridge callHandler:@"JS Echo" data:nil responseCallback:^(id responseData) {
+        NSLog(@"ObjC received response: %@", responseData);
+    }];
 }
 
 - (IBAction) buttonPressed:(id)sender
 {
-    NSString* value = [self.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('myId').value"];
-    NSLog(@"\n Value: %@", value);
+//    NSString* value = [self.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('myId').value"];
+//    NSLog(@"\n Value: %@", value);
+//    
+//    [self.webView stringByEvaluatingJavaScriptFromString:@"document.getElement‌​ById('myId').value = 'myNewValue'"];
+//    [self.webView stringByEvaluatingJavaScriptFromString:@"increaseCounter(5)"];
+    [self.webView2 evaluateJavaScript:@"increaseCounter(5)" completionHandler: nil];
     
-    [self.webView stringByEvaluatingJavaScriptFromString:@"document.getElement‌​ById('myId').value = 'myNewValue'"];
-    [self.webView stringByEvaluatingJavaScriptFromString:@"increaseCounter(5)"];
-
 }
 
 

@@ -23,7 +23,7 @@
 		712EC9741BEAF21500ED6803 /* VisuallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712EC9731BEAF21500ED6803 /* VisuallTests.m */; };
 		713D0D5D1CC18CAB00878EAE /* Note2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5C1CC18CAB00878EAE /* Note2.m */; };
 		713D0D601CC6AE4F00878EAE /* Group2.m in Sources */ = {isa = PBXBuildFile; fileRef = 713D0D5F1CC6AE4F00878EAE /* Group2.m */; };
-		713DE2531EBAA689006F5975 /* NetworkingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 713DE2521EBAA689006F5975 /* NetworkingViewController.m */; };
+		713DE2531EBAA689006F5975 /* NetworkingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 713DE2521EBAA689006F5975 /* NetworkingViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		713DE2551EBAA784006F5975 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 713DE2541EBAA784006F5975 /* index.html */; };
 		713DE2571EBAAA1B006F5975 /* demo.js in Resources */ = {isa = PBXBuildFile; fileRef = 713DE2561EBAAA1B006F5975 /* demo.js */; };
 		71443C671C6D5DB9006695F7 /* TouchDownGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 71443C661C6D5DB9006695F7 /* TouchDownGestureRecognizer.m */; };
