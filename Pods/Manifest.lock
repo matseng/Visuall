@@ -51,8 +51,21 @@ PODS:
   - GoogleUtilities (1.3.1):
     - GoogleSymbolUtilities (~> 1.0)
   - NKOColorPickerView (0.5)
+  - React/Core (0.44.1):
+    - React/cxxreact
+    - Yoga (= 0.44.1.React)
+  - React/cxxreact (0.44.1):
+    - React/jschelpers
+  - React/jschelpers (0.44.1)
+  - React/RCTNetwork (0.44.1):
+    - React/Core
+  - React/RCTText (0.44.1):
+    - React/Core
+  - React/RCTWebSocket (0.44.1):
+    - React/Core
   - RegExCategories (1.0)
   - SevenSwitch (1.4.0)
+  - Yoga (0.44.1.React)
 
 DEPENDENCIES:
   - Firebase (>= 2.5.1)
@@ -61,8 +74,19 @@ DEPENDENCIES:
   - Firebase/Storage
   - GoogleSignIn
   - NKOColorPickerView
+  - React/Core (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
   - RegExCategories (~> 1.0)
   - SevenSwitch (~> 1.4)
+  - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+EXTERNAL SOURCES:
+  React:
+    :path: ../node_modules/react-native
+  Yoga:
+    :path: ../node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
   Firebase: 6250071f0e2440a5c4c67b8cb6b868f868237ac3
@@ -80,7 +104,11 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   NKOColorPickerView: 895ca86fe5bd16f27c311ce8f5888907efee29ad
+  React: 7337248755fd106e94ba137750560b5e2e9be945
   RegExCategories: e68befacacd5bda853c88f70ec745cb2d0cfb89c
   SevenSwitch: e992e56e2e7f401eb00538b9fa92bf848bacbe27
+  Yoga: 06175e1f75c5c9e0983c8e618419da2332894c72
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: f9c199f0daa20c9f0be3f461567d4daec9395585
+
+COCOAPODS: 1.2.1

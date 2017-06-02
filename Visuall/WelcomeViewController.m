@@ -8,6 +8,7 @@
 
 #import "WelcomeViewController.h"
 #import "UserUtil.h"
+#import "RCTRootView.h"
 
 @implementation WelcomeViewController
 
@@ -15,10 +16,37 @@
     [super viewDidLoad];
     [[UserUtil sharedManager] setAutoSignInIndicator: YES];
     [GIDSignIn sharedInstance].uiDelegate = self;
-    [[GIDSignIn sharedInstance] signInSilently];  // Uncomment to automatically sign in the user
+//    [[GIDSignIn sharedInstance] signInSilently];  // Uncomment to automatically sign in the user
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
+
+- (IBAction)highScoresButtonPressed:(id)sender {
+    NSLog(@"High Score Button Pressed");
+    NSURL *jsCodeLocation = [NSURL
+                             URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios"];
+    RCTRootView *rootView =
+    [[RCTRootView alloc] initWithBundleURL : jsCodeLocation
+                         moduleName        : @"RNHighScores"
+                         initialProperties :
+     @{
+       @"scores" : @[
+               @{
+                   @"name" : @"Alex",
+                   @"value": @"42"
+                   },
+               @{
+                   @"name" : @"Joel",
+                   @"value": @"10"
+                   }
+               ]
+       }
+                          launchOptions    : nil];
+    UIViewController *vc = [[UIViewController alloc] init];
+    vc.view = rootView;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 
 /*
  * Name: updateSubviews
