@@ -29,6 +29,7 @@
 		7148472A1D94B72200E73A7A /* FDDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847241D94B72200E73A7A /* FDDrawView.m */; };
 		7148472B1D94B72200E73A7A /* FDPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847261D94B72200E73A7A /* FDPath.m */; };
 		7148472C1D94B72200E73A7A /* FDColorPickController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714847281D94B72200E73A7A /* FDColorPickController.m */; };
+		714DAADC1EE23169001A4C93 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 714DAADB1EE23169001A4C93 /* main.jsbundle */; };
 		715C60C11D78BBF300DD6942 /* DDFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C60C01D78BBF300DD6942 /* DDFileReader.m */; };
 		715C60C71D78EC0100DD6942 /* ViewController+xmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C60C61D78EC0100DD6942 /* ViewController+xmlParser.m */; };
 		715C8BAF1DC8189E008BC2A8 /* PathItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C8BAE1DC8189E008BC2A8 /* PathItem.m */; };
@@ -163,6 +164,7 @@
 		714847261D94B72200E73A7A /* FDPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDPath.m; sourceTree = "<group>"; };
 		714847271D94B72200E73A7A /* FDColorPickController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDColorPickController.h; sourceTree = "<group>"; };
 		714847281D94B72200E73A7A /* FDColorPickController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDColorPickController.m; sourceTree = "<group>"; };
+		714DAADB1EE23169001A4C93 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		715C60BF1D78BBF300DD6942 /* DDFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileReader.h; sourceTree = "<group>"; };
 		715C60C01D78BBF300DD6942 /* DDFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileReader.m; sourceTree = "<group>"; };
 		715C60C51D78EC0100DD6942 /* ViewController+xmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+xmlParser.h"; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 		712EC94B1BEAF21500ED6803 = {
 			isa = PBXGroup;
 			children = (
+				714DAADB1EE23169001A4C93 /* main.jsbundle */,
 				219E5FA31C00285E00CEE0D5 /* UIKit.framework */,
 				712EC9561BEAF21500ED6803 /* Visuall */,
 				712EC9701BEAF21500ED6803 /* VisuallTests */,
@@ -780,6 +783,7 @@
 				71D96BDA1D2E0D5300CD1C49 /* back.png in Resources */,
 				77E13DA61C011CF200105BB5 /* folder.png in Resources */,
 				71C23F391D23081700D53E0C /* fontColor.png in Resources */,
+				714DAADC1EE23169001A4C93 /* main.jsbundle in Resources */,
 				71C23F331D2217BB00D53E0C /* undo-arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

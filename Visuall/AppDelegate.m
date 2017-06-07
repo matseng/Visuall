@@ -68,6 +68,7 @@ didSignInForUser:(GIDGoogleUser *)user
      withError:(NSError *)error {
     if (error == nil) {
         GIDAuthentication *authentication = user.authentication;
+        NSLog(@"\n OAuth2 access token, %@", authentication.accessToken);
         [FIRDatabase database].persistenceEnabled = YES;
         FIRAuthCredential *credential =
         [FIRGoogleAuthProvider credentialWithIDToken:authentication.idToken

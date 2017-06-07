@@ -22,9 +22,46 @@
 }
 
 - (IBAction)highScoresButtonPressed:(id)sender {
+    [self highScoreButtonPressedHandler];
+}
+
+- (void) highScoreButtonPressedHandler
+{
+
+    
     NSLog(@"High Score Button Pressed");
-    NSURL *jsCodeLocation = [NSURL
-                             URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios"];
+//    NSURL *jsCodeLocation = [NSURL
+//                             URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios"];
+    
+    NSURL *jsCodeLocation;
+    
+    // Loading JavaScript code (https://gist.github.com/almost/898a829d5197c69d29b0)
+    #if DEBUG
+        // For Debug build load from development server. Start the server from the repository root:
+        //
+        // $ npm start
+        #if TARGET_IPHONE_SIMULATOR
+            // Run from locally running dev server:
+            // $ npm run
+            jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle"];
+
+        #else
+            // Run on device with code coming from dev server on PC (change the IP to your PCs IP):
+            // $ npm run
+            jsCodeLocation = [NSURL URLWithString:@"http://10.0.1.29:8081/index.ios.bundle"];
+
+    #endif
+    #else
+        // For production load from pre-bundled file on disk. To re-generate the static bundle, run
+        //
+        // $ curl http://localhost:8081/index.ios.bundle -o main.jsbundle
+        // $ react-native bundle --platform ios --dev true --entry-file index.ios.js --bundle-output ios/main.jsbundle
+        jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+    #endif
+    
+    NSString *credentials = [[[[GIDSignIn sharedInstance] currentUser] authentication] accessToken];
+    NSLog(@"\n accessToker: %@", credentials);
+    if (!credentials) credentials = @"13";
     RCTRootView *rootView =
     [[RCTRootView alloc] initWithBundleURL : jsCodeLocation
                          moduleName        : @"RNHighScores"
@@ -37,9 +74,9 @@
                    },
                @{
                    @"name" : @"Joel",
-                   @"value": @"10"
+                   @"value": credentials
                    }
-               ]
+               ],
        }
                           launchOptions    : nil];
     UIViewController *vc = [[UIViewController alloc] init];
@@ -140,6 +177,7 @@
 - (void) signInWillDispatch:(GIDSignIn *)signIn error:(NSError *)error
 {
 //    [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
+    [self highScoreButtonPressedHandler];
 }
 
 @end
