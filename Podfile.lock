@@ -57,6 +57,8 @@ PODS:
   - React/cxxreact (0.44.1):
     - React/jschelpers
   - React/jschelpers (0.44.1)
+  - React/RCTAnimation (0.44.1):
+    - React/Core
   - React/RCTNetwork (0.44.1):
     - React/Core
   - React/RCTText (0.44.1):
@@ -75,6 +77,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - NKOColorPickerView
   - React/Core (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
   - React/RCTNetwork (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
@@ -84,9 +87,9 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   Yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   Firebase: 6250071f0e2440a5c4c67b8cb6b868f868237ac3
@@ -100,7 +103,7 @@ SPEC CHECKSUMS:
   GoogleInterchangeUtilities: def8415a862effc67d549d5b5b0b9c7a2f97d4de
   GoogleNetworkingUtilities: 3e83269048cfb498dc7ec83ab36813360965c74f
   GoogleParsingUtilities: 30b3896f9ee167dc78747f013d3de157ced1cadf
-  GoogleSignIn: 09036ed61f8e75f1424100d63f7719480b2428c3
+  GoogleSignIn: '09036ed61f8e75f1424100d63f7719480b2428c3'
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   NKOColorPickerView: 895ca86fe5bd16f27c311ce8f5888907efee29ad
@@ -109,6 +112,6 @@ SPEC CHECKSUMS:
   SevenSwitch: e992e56e2e7f401eb00538b9fa92bf848bacbe27
   Yoga: 06175e1f75c5c9e0983c8e618419da2332894c72
 
-PODFILE CHECKSUM: f9c199f0daa20c9f0be3f461567d4daec9395585
+PODFILE CHECKSUM: 1d4bf323193b8c6deaa230f8f28b933b4aec8c86
 
 COCOAPODS: 1.2.1

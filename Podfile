@@ -5,6 +5,8 @@ platform :ios, '8.0'
 
 # Note to self: After adding a new pod file, may need to run: $ rm -rf ~/Library/Developer/Xcode/DerivedData
 
+project './Visuall.xcodeproj'
+
 pod 'Firebase', '>= 2.5.1'
 
 pod 'Firebase/Storage'
@@ -28,6 +30,7 @@ pod 'React', :path => '../node_modules/react-native', :subspecs => [
   'RCTText',
   'RCTNetwork',
   'RCTWebSocket', # needed for debugging
+  'RCTAnimation'
   # Add any other subspecs you want to use in your project
 ]
 # Explicitly include Yoga if you are using RN >= 0.42.0

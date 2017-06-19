@@ -16,7 +16,7 @@
     [super viewDidLoad];
     [[UserUtil sharedManager] setAutoSignInIndicator: YES];
     [GIDSignIn sharedInstance].uiDelegate = self;
-//    [[GIDSignIn sharedInstance] signInSilently];  // Uncomment to automatically sign in the user
+    [[GIDSignIn sharedInstance] signInSilently];  // Uncomment to automatically sign in the user
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(OrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
@@ -59,14 +59,14 @@
         jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
     #endif
     
-    NSString *credentials = [[[[GIDSignIn sharedInstance] currentUser] authentication] accessToken];
-    NSLog(@"\n accessToker: %@", credentials);
-    if (!credentials) credentials = @"13";
+    NSString *idToken = [[[[GIDSignIn sharedInstance] currentUser] authentication] idToken];
+    NSString *accessToken = [[[[GIDSignIn sharedInstance] currentUser] authentication] accessToken];
+
     RCTRootView *rootView =
     [[RCTRootView alloc] initWithBundleURL : jsCodeLocation
                          moduleName        : @"RNHighScores"
                          initialProperties :
-     @{
+    @{
        @"scores" : @[
                @{
                    @"name" : @"Alex",
@@ -74,10 +74,12 @@
                    },
                @{
                    @"name" : @"Joel",
-                   @"value": credentials
+                   @"value": @"99"
                    }
                ],
-       }
+       @"idToken": idToken,
+       @"accessToken": accessToken,
+    }
                           launchOptions    : nil];
     UIViewController *vc = [[UIViewController alloc] init];
     vc.view = rootView;
@@ -170,14 +172,15 @@
 
 - (void) segueToNextView
 {
-    [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
+//    [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
+    [self highScoreButtonPressedHandler];
 }
 
 
 - (void) signInWillDispatch:(GIDSignIn *)signIn error:(NSError *)error
 {
 //    [self performSegueWithIdentifier:@"segueToTabBarController" sender:self];
-    [self highScoreButtonPressedHandler];
+    [self segueToNextView];
 }
 
 @end
